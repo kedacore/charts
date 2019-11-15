@@ -1,0 +1,20 @@
+apiVersion: v1
+entries:
+  keda:
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2019-11-15T14:38:07.7062566-08:00"
+    description: Event based autoscaler for Azure Functions deployments on Kubernetes
+    digest: 53c33a5d6c2c1a75b318d5526ccf212f59cd53ba86438f43eda7d2298b00394e
+    home: https://github.com/kedacore/keda
+    icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
+    maintainers:
+    - email: ahmels@microsoft.com
+      name: Ahmed ElSayed
+    name: keda
+    sources:
+    - https://github.com/kedacore/keda
+    urls:
+    - https://kedacore.github.io/charts/keda-1.0.0.tgz
+    version: 1.0.0
+generated: "2019-11-15T14:38:07.7033682-08:00"
