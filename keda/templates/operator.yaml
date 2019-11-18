@@ -24,6 +24,8 @@ spec:
           image: "{{ .Values.image.keda }}"
           command:
           - keda
+          args:
+          - '--zap-level=info'
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
