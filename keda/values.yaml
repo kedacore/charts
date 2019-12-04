@@ -27,3 +27,5 @@ aadPodIdentity: ""
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /grpccerts path on the Pod
 grpcTLSCertsSecret: ""
+
+logLevel: info
