@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Lint 'KEDA' Helm chart
+      uses: helm/chart-testing-action@v1.0.0-alpha.3
+      with:
+        command: helm lint .\keda\
