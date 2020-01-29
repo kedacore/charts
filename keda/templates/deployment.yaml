@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    app: {{ .Values.operatorName }}
   name: {{ .Values.operatorName }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.operatorName }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -18,14 +18,22 @@ spec:
         aadpodidbinding: {{ .Values.aadPodIdentity }}
         {{- end }}
     spec:
-      serviceAccountName: {{ .Values.operatorName }}
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Values.operatorName }}
-          image: "{{ .Values.image.keda }}"
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.keda }}:{{ .Chart.AppVersion }}"
           command:
           - keda
           args:
-          - '--zap-level={{ .Values.logLevel }}'
+          - "--zap-level={{ .Values.logLevel }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
@@ -41,30 +49,48 @@ spec:
           - name: grpc-certs
             mountPath: /grpccerts
           {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
         - name: {{ .Values.operatorName }}-metrics-apiserver
-          image: {{ .Values.image.metricsAdapter }}
+          image: "{{ .Values.image.metricsAdapter }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
               value: ""
           args:
-          - /usr/local/bin/keda-adapter
-          - --secure-port=6443
-          - --logtostderr=true
-          - --v=0
+            - /usr/local/bin/keda-adapter
+            - --secure-port=6443
+            - --logtostderr=true
+            - --v=0
           ports:
-          - containerPort: 6443
-            name: https
-          - containerPort: 8080
-            name: http
+            - containerPort: {{ .Values.service.portHttps }}
+              name: https
+              protocol: TCP
+            - containerPort: {{ .Values.service.portHttp }}
+              name: http
+              protocol: TCP
           {{- if .Values.grpcTLSCertsSecret }}
           volumeMounts:
           - name: grpc-certs
             mountPath: /grpccerts
           {{- end }}
-        {{- if .Values.grpcTLSCertsSecret }}
-        volumes:
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.grpcTLSCertsSecret }}
+      volumes:
         - name: grpc-certs
           secret:
             secretName: {{ .Values.grpcTLSCertsSecret }}
-        {{- end }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
