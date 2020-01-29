@@ -1,18 +1,13 @@
 name: Pull request validation
 on: [pull_request]
 
-on:
-  pull_request:
-    branches:
-    - master
-
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-      
+
     - name: Lint 'KEDA' Helm chart
       uses: helm/chart-testing-action@v1.0.0-alpha.3
       with:
