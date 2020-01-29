@@ -63,10 +63,10 @@ spec:
             - --logtostderr=true
             - --v=0
           ports:
-            - containerPort: {{ .Values.service.portHttps }}
+            - containerPort: {{ .Values.service.portHttpsTarget }}
               name: https
               protocol: TCP
-            - containerPort: {{ .Values.service.portHttp }}
+            - containerPort: {{ .Values.service.portHttpTarget }}
               name: http
               protocol: TCP
           {{- if .Values.grpcTLSCertsSecret }}
