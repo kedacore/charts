@@ -41,27 +41,6 @@ spec:
           - name: grpc-certs
             mountPath: /grpccerts
           {{- end }}
-        - name: {{ .Values.operatorName }}-metrics-apiserver
-          image: {{ .Values.image.metricsAdapter }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          env:
-            - name: WATCH_NAMESPACE
-              value: ""
-          args:
-          - /usr/local/bin/keda-adapter
-          - --secure-port=6443
-          - --logtostderr=true
-          - --v=0
-          ports:
-          - containerPort: 6443
-            name: https
-          - containerPort: 8080
-            name: http
-          {{- if .Values.grpcTLSCertsSecret }}
-          volumeMounts:
-          - name: grpc-certs
-            mountPath: /grpccerts
-          {{- end }}
         {{- if .Values.grpcTLSCertsSecret }}
         volumes:
         - name: grpc-certs

@@ -52,17 +52,4 @@ rules:
   - horizontalpodautoscalers
   verbs:
    - '*'
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  creationTimestamp: null
-  name: {{ .Values.operatorName }}-external-metrics-reader
-rules:
-- apiGroups:
-  - "external.metrics.k8s.io"
-  resources:
-  - '*'
-  verbs:
-  - list
 {{- end -}}
