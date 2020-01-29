@@ -11,4 +11,7 @@ jobs:
     - name: Lint 'KEDA' Helm chart
       uses: helm/chart-testing-action@v1.0.0-alpha.3
       with:
-        command: helm lint .\keda\
+        command: lint
+        config: test/chart-testing.yml  
+        
+    
