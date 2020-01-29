@@ -1,0 +1,29 @@
+name: Lint Helm Chart
+on: [pull_request]
+
+jobs:
+  lint-helm-3-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+
+    - name: Lint 'KEDA' Helm chart
+      run: helm lint keda
+
+  lint-helm-2-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install v2.15.2
+      uses: Azure/setup-helm@v1
+      with:
+        version: v2.15.2
+
+    - name: Lint 'KEDA' Helm chart
+      run: helm lint keda
