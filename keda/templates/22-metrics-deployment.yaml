@@ -29,7 +29,7 @@ spec:
         - name: {{ .Values.operatorName }}-metrics-apiserver
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.metricsAdapter }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.metricsAdapter }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE

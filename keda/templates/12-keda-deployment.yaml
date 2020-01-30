@@ -29,7 +29,7 @@ spec:
         - name: {{ .Values.operatorName }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.keda }}:{{ .Chart.AppVersion }}"
+          image: "{{ .Values.image.keda }}"
           command:
           - keda
           args:

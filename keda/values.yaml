@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  keda: docker.io/kedacore/keda
-  metricsAdapter: docker.io/kedacore/keda-metrics-adapter
+  keda: docker.io/kedacore/keda:1.1.0
+  metricsAdapter: docker.io/kedacore/keda-metrics-adapter:1.1.0
   pullPolicy: Always
 
 watchNamespace: ""
