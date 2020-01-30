@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.operatorName }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.operatorName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.operatorName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.operatorName }}
+        {{- if .Values.aadPodIdentity }}
+        aadpodidbinding: {{ .Values.aadPodIdentity }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+        imagePullSecrets:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Values.operatorName }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.keda }}:{{ .Chart.AppVersion }}"
+          command:
+          - keda
+          args:
+          - "--zap-level={{ .Values.logLevel }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: WATCH_NAMESPACE
+              value: {{ .Values.watchNamespace }}
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: {{ .Values.operatorName }}
+          {{- if .Values.grpcTLSCertsSecret }}
+          volumeMounts:
+          - name: grpc-certs
+            mountPath: /grpccerts
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.grpcTLSCertsSecret }}
+      volumes:
+      - name: grpc-certs
+        secret:
+          secretName: {{ .Values.grpcTLSCertsSecret }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+        affinity:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
