@@ -2,6 +2,12 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Values.operatorName }}-system-auth-delegator
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name}}
   name: {{ .Values.operatorName }}:system:auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -15,6 +21,12 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Values.operatorName }}-auth-reader
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name}}
   name: {{ .Values.operatorName }}-auth-reader
   namespace: kube-system
 roleRef:
@@ -29,6 +41,12 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Values.operatorName }}-hpa-controller-external-metrics
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
   name: {{ .Values.operatorName }}-hpa-controller-external-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io
