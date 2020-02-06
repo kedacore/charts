@@ -1,8 +1,15 @@
 apiVersion: v1
 name: keda
 description: Event based autoscaler for Azure Functions deployments on Kubernetes
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
 version: 1.1.0
-appVersion: "1.1.0"
+
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: 1.1.0
+
 home: https://github.com/kedacore/keda
 icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
 sources:

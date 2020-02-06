@@ -1,6 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: {{ .Values.operatorName }}
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.operatorName }}
     app.kubernetes.io/name: {{ .Values.operatorName }}
@@ -9,8 +11,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.operatorName }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-  name: {{ .Values.operatorName }}
-  namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -24,14 +24,22 @@ spec:
         aadpodidbinding: {{ .Values.aadPodIdentity }}
         {{- end }}
     spec:
-      serviceAccountName: {{ .Values.operatorName }}
+      {{- with .Values.imagePullSecrets }}
+        imagePullSecrets:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Values.operatorName }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.keda }}"
           command:
           - keda
           args:
-          - '--zap-level={{ .Values.logLevel }}'
+          - "--zap-level={{ .Values.logLevel }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
@@ -47,9 +55,23 @@ spec:
           - name: grpc-certs
             mountPath: /grpccerts
           {{- end }}
-        {{- if .Values.grpcTLSCertsSecret }}
-        volumes:
-        - name: grpc-certs
-          secret:
-            secretName: {{ .Values.grpcTLSCertsSecret }}
-        {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- if .Values.grpcTLSCertsSecret }}
+      volumes:
+      - name: grpc-certs
+        secret:
+          secretName: {{ .Values.grpcTLSCertsSecret }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+        affinity:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 8 }}
+      {{- end }}

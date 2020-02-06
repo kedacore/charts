@@ -12,10 +12,12 @@ metadata:
 spec:
   ports:
   - name: https
-    port: 443
-    targetPort: 6443
+    port: {{ .Values.service.portHttps }}
+    targetPort: {{ .Values.service.portHttpsTarget }}
+    protocol: TCP
   - name: http
-    port: 80
-    targetPort: 8080
+    port: {{ .Values.service.portHttp }}
+    targetPort: {{ .Values.service.portHttpTarget }}
+    protocol: TCP
   selector:
     app: {{ .Values.operatorName }}-metrics-apiserver
