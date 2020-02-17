@@ -36,7 +36,15 @@ aadPodIdentity: ""
 # will be mounted to the /grpccerts path on the Pod
 grpcTLSCertsSecret: ""
 
+## Logging level for KEDA Controller 
+# allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
+# default value: info
 logLevel: info
+
+## Logging level for Metrics Server
+# allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
+# default value: 0
+logLevelMetrics: 0
 
 podSecurityContext: {}
   # fsGroup: 2000
