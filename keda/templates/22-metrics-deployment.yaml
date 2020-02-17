@@ -40,10 +40,10 @@ spec:
             - name: WATCH_NAMESPACE
               value: ""
           args:
-            - /usr/local/bin/keda-adapter
-            - --secure-port=6443
-            - --logtostderr=true
-            - --v=0
+          - /usr/local/bin/keda-adapter
+          - --secure-port=6443
+          - --logtostderr=true
+          - --v={{ .Values.logLevelMetrics }}
           ports:
             - containerPort: {{ .Values.service.portHttpsTarget }}
               name: https
