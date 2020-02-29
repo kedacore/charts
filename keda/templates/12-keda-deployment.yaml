@@ -11,6 +11,7 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.operatorName }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
