@@ -14,7 +14,7 @@ watchNamespace: ""
 imagePullSecrets: []
 operatorName: keda-operator
 
-extraLabels: ""
+additionalLabels: ""
 
 customResourceDefinition:
   create: true
