@@ -10,9 +10,9 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.operatorName }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-  {{- if .Values.annotations.apiserver }}
+  {{- if .Values.podAnnotations.metricsAdapter }}
   annotations:
-  {{ tpl .Values.annotations.apiserver . | indent 4}}
+  {{ tpl .Values.podAnnotations.metricsAdapter . | indent 4}}
   {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}

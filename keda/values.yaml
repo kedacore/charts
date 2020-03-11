@@ -15,9 +15,9 @@ imagePullSecrets: []
 operatorName: keda-operator
 
 additionalLabels: ""
-annotations:
-  operator: {}
-  apiserver: {}
+podAnnotations:
+  keda: {}
+  metricsAdapter: {}
 
 customResourceDefinition:
   create: true
