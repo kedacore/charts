@@ -86,3 +86,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+## Optional priorityClassName for KEDA Controller and Metrics Adapter
+priorityClassName: ""
