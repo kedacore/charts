@@ -19,6 +19,11 @@ podAnnotations:
   keda: {}
   metricsAdapter: {}
 
+disruption: ""
+# You can set minAvailable to an absolute number or a percentage
+# For more details: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+  # minAvailable: 50%
+
 customResourceDefinition:
   create: true
 
@@ -86,6 +91,16 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+  # podAntiAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #   - labelSelector:
+  #       matchExpressions:
+  #       - key: app
+  #         operator: In
+  #         values:
+  #         - keda-operator
+  #         - keda-operator-metrics-apiserver
+  #     topologyKey: "kubernetes.io/hostname"
 
 ## Optional priorityClassName for KEDA Controller and Metrics Adapter
 priorityClassName: ""
