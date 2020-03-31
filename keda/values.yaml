@@ -19,10 +19,11 @@ podAnnotations:
   keda: {}
   metricsAdapter: {}
 
-disruption: ""
-# You can set minAvailable to an absolute number or a percentage
-# For more details: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-  # minAvailable: 50%
+## See `kubectl explain poddisruptionbudget.spec` for more
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+podDisruptionBudget: {}
+#  minAvailable: 1
+#  maxUnavailable: 1
 
 customResourceDefinition:
   create: true
