@@ -12,10 +12,6 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
-  {{- if .Values.podAnnotations.keda }}
-  annotations:
-  {{ tpl .Values.podAnnotations.keda . | indent 4}}
-  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
