@@ -12,10 +12,6 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
-  {{- if .Values.podAnnotations.keda }}
-  annotations:
-  {{ tpl .Values.podAnnotations.keda . | indent 4}}
-  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -28,6 +24,10 @@ spec:
         {{- if .Values.aadPodIdentity }}
         aadpodidbinding: {{ .Values.aadPodIdentity }}
         {{- end }}
+      {{- if .Values.podAnnotations.keda }}
+      annotations:
+      {{- tpl .Values.podAnnotations.keda . | nindent 8}}
+      {{- end }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
