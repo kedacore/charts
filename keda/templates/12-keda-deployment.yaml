@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     app: {{ .Values.operatorName }}
+    name: {{ .Values.operatorName }}
     app.kubernetes.io/name: {{ .Values.operatorName }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/component: operator
