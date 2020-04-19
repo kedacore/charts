@@ -52,6 +52,11 @@ grpcTLSCertsSecret: ""
 # default value: info
 logLevel: info
 
+## Logging time format for KEDA Controller
+# allowed values: 'epoch', 'millis', 'nano', or 'iso8601'
+# default value: epoch
+logTimeFormat: epoch
+
 ## Logging level for Metrics Server
 # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
 # default value: 0
