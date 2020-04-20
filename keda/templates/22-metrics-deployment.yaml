@@ -45,7 +45,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
-              value: ""
+              value: {{ .Values.watchNamespace }}
           args:
           - /usr/local/bin/keda-adapter
           - --secure-port=6443
