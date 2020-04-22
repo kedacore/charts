@@ -49,6 +49,7 @@ spec:
           - keda
           args:
           - "--zap-level={{ .Values.logLevel }}"
+          - "--zap-time-encoding={{ .Values.logTimeFormat }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
