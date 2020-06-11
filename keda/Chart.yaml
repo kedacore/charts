@@ -17,3 +17,7 @@ sources:
 maintainers:
   - name: Ahmed ElSayed
     email: ahmels@microsoft.com
+  - name: Tom Kerkhove
+    email: kerkhove.tom@gmail.com
+  - name: Zbynek Roubalik
+    email: zroubali@redhat.com
