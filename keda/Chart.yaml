@@ -4,11 +4,11 @@ description: Event-based autoscaler for workloads on Kubernetes
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 1.4.1
+version: 1.4.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
-appVersion: 1.4.1
+appVersion: 1.4.2
 
 home: https://github.com/kedacore/keda
 icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
