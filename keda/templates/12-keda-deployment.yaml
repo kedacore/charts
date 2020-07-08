@@ -60,18 +60,30 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: {{ .Values.operatorName }}
-          {{- if .Values.grpcTLSCertsSecret }}
+            {{- if .Values.env }}
+            {{- toYaml .Values.env | nindent 12 -}}
+            {{- end }}
           volumeMounts:
+          {{- if .Values.grpcTLSCertsSecret }}
           - name: grpc-certs
             mountPath: /grpccerts
           {{- end }}
+          {{- if .Values.hashiCorpVaultTLS }}
+          - name: hashicorp-vault-certs
+            mountPath: /hashicorp-vaultcerts
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- if .Values.grpcTLSCertsSecret }}
       volumes:
+      {{- if .Values.grpcTLSCertsSecret }}
       - name: grpc-certs
         secret:
           secretName: {{ .Values.grpcTLSCertsSecret }}
+      {{- end }}
+      {{- if .Values.hashiCorpVaultTLS }}
+      - name: hashicorp-vault-certs
+        secret:
+          secretName: {{ .Values.hashiCorpVaultTLS }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

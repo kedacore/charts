@@ -47,6 +47,11 @@ aadPodIdentity: ""
 # will be mounted to the /grpccerts path on the Pod
 grpcTLSCertsSecret: ""
 
+# Set this if you are using HashiCorp Vault and want to communicate
+# over TLS (recommended). This variable holds the name of the secret that
+# will be mounted to the /vault path on the Pod
+hashiCorpVaultTLS: ""
+
 ## Logging level for KEDA Controller 
 # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
 # default value: info
@@ -110,3 +115,8 @@ affinity: {}
 
 ## Optional priorityClassName for KEDA Controller and Metrics Adapter
 priorityClassName: ""
+
+## Extra environment variables that will be passed onto Keda operator and metrics api service
+env:
+# - name: ENV_NAME
+#   value: 'ENV-VALUE'
