@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  keda: docker.io/kedacore/keda:1.5.0
-  metricsAdapter: docker.io/kedacore/keda-metrics-adapter:1.5.0
+  keda: docker.io/kedacore/keda:2.0.0-alpha1
+  metricsAdapter: docker.io/kedacore/keda-metrics-adapter:2.0.0-alpha1
   pullPolicy: Always
 
 watchNamespace: ""
@@ -120,3 +120,15 @@ priorityClassName: ""
 env:
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
+
+prometheus:
+  enabled: true
+  port: 9022
+  path: /metrics
+  podMonitor:
+    # Enables PodMonitor creation for the Prometheus Operator
+    enabled: true
+    interval:
+    scrapeTimeout:
+    namespace:
+    additionalLabels: {}

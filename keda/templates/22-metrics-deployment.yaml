@@ -22,8 +22,13 @@ spec:
         {{- if .Values.aadPodIdentity }}
         aadpodidbinding: {{ .Values.aadPodIdentity }}
         {{- end }}
-      {{- if .Values.podAnnotations.metricsAdapter }}
       annotations:
+      {{- if .Values.prometheus.enabled }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.prometheus.port | quote }}
+        prometheus.io/path: {{ .Values.prometheus.path }}
+      {{- end }}
+      {{- if .Values.podAnnotations.metricsAdapter }}
       {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
       {{- end }}
     spec:
@@ -53,6 +58,10 @@ spec:
           - /usr/local/bin/keda-adapter
           - --secure-port=6443
           - --logtostderr=true
+          {{ if .Values.prometheus.enabled }}
+          - --metrics-port={{ .Values.prometheus.port }}
+          - --metrics-path={{ .Values.prometheus.path }}
+          {{ end }}
           - --v={{ .Values.logLevelMetrics }}
           ports:
             - containerPort: {{ .Values.service.portHttpsTarget }}
@@ -61,6 +70,11 @@ spec:
             - containerPort: {{ .Values.service.portHttpTarget }}
               name: http
               protocol: TCP
+            {{ if .Values.prometheus.enabled }}
+            - containerPort: {{ .Values.prometheus.port }}
+              name: metrics
+              protocol: TCP
+            {{ end }}
           volumeMounts:
           {{- if .Values.grpcTLSCertsSecret }}
           - name: grpc-certs
