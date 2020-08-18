@@ -9,8 +9,7 @@ KEDA can run on both the cloud and the edge, integrates natively with Kubernetes
 <p align="center">
 We are a Cloud Native Computing Foundation (CNCF) sandbox project.
 
-<object data="https://raw.githubusercontent.com/kedacore/keda/master/images/logo-cncf.svg" width="500" type="image/svg+xml" alt="CNCF Logo">
-</object>
+<img src="https://raw.githubusercontent.com/kedacore/keda/master/images/logo-cncf.svg" height="75px">
 </p>
 
 ---
@@ -42,7 +41,7 @@ $ helm install keda kedacore/keda --namespace keda
 
 ## Uninstalling the Chart
 
-To uninstall/delete the `keda` deployment:
+To uninstall/delete the `keda` Helm chart:
 
 ```console
 helm uninstall keda
@@ -55,9 +54,11 @@ The command removes all the Kubernetes components associated with the chart and 
 The following table lists the configurable parameters of the Promitor chart and
 their default values.
 
-| Parameter                  | Description              | Default              |
-|:---------------------------|:-------------------------|:---------------------|
-| `image.keda`  | Image name of KEDA operator | `docker.io/kedacore/keda:1.3.0` |
+| Parameter                  | Description                               | Default                                         |
+|:---------------------------|:------------------------------------------|:------------------------------------------------|
+| `image.keda`               | Image name of KEDA operator               | `docker.io/kedacore/keda:1.5.0`                 |
+| `image.metricsAdapter`     | Image name of KEDA Metrics Adapter        | `docker.io/kedacore/keda-metrics-adapter:1.5.0` |
+| `image.pullPolicy`         | Policy to use to pull Docker images       | `Always`                                        |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
