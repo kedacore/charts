@@ -1,15 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.operatorName }}
+  name: {{ .Values.operator.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.operatorName }}
-    name: {{ .Values.operatorName }}
-    app.kubernetes.io/name: {{ .Values.operatorName }}
+    app: {{ .Values.operator.name }}
+    name: {{ .Values.operator.name }}
+    app.kubernetes.io/name: {{ .Values.operator.name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/component: operator
-    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
@@ -17,13 +17,13 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.operatorName }}
+      app: {{ .Values.operator.name }}
   template:
     metadata:
       labels:
-        app: {{ .Values.operatorName }}
-        {{- if .Values.aadPodIdentity }}
-        aadpodidbinding: {{ .Values.aadPodIdentity }}
+        app: {{ .Values.operator.name }}
+        {{- if .Values.podIdentity.activeDirectory.identity }}
+        aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
         {{- end }}
       {{- if .Values.podAnnotations.keda }}
       annotations:
@@ -41,15 +41,15 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Values.operatorName }}
+        - name: {{ .Values.operator.name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.keda }}"
           command:
           - keda
           args:
-          - "--zap-level={{ .Values.logLevel }}"
-          - "--zap-time-encoding={{ .Values.logTimeFormat }}"
+          - "--zap-level={{ .Values.logging.operator.level }}"
+          - "--zap-time-encoding={{ .Values.logging.operator.timeFormat }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
@@ -59,7 +59,7 @@ spec:
                 fieldRef:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
-              value: {{ .Values.operatorName }}
+              value: {{ .Values.operator.name }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
