@@ -3,7 +3,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ .Values.operatorName }}
+  name: {{ .Values.operator.name }}
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
@@ -13,5 +13,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: {{ .Values.operatorName }}
+      app: {{ .Values.operator.name }}
 {{- end }}

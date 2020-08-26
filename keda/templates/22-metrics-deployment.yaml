@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.operatorName }}-metrics-apiserver
+  name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ .Values.operatorName }}-metrics-apiserver
-    app.kubernetes.io/name: {{ .Values.operatorName }}-metrics-apiserver
+    app: {{ .Values.operator.name }}-metrics-apiserver
+    app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ .Values.operatorName }}-metrics-apiserver
+      app: {{ .Values.operator.name }}-metrics-apiserver
   template:
     metadata:
       labels:
-        app: {{ .Values.operatorName }}-metrics-apiserver
-        {{- if .Values.aadPodIdentity }}
-        aadpodidbinding: {{ .Values.aadPodIdentity }}
+        app: {{ .Values.operator.name }}-metrics-apiserver
+        {{- if .Values.podIdentity.activeDirectory.identity }}
+        aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
         {{- end }}
       {{- if .Values.podAnnotations.metricsAdapter }}
       annotations:
@@ -38,7 +38,7 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Values.operatorName }}-metrics-apiserver
+        - name: {{ .Values.operator.name }}-metrics-apiserver
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.metricsAdapter }}"
@@ -53,7 +53,7 @@ spec:
           - /usr/local/bin/keda-adapter
           - --secure-port=6443
           - --logtostderr=true
-          - --v={{ .Values.logLevelMetrics }}
+          - --v={{ .Values.logging.metricServer.level }}
           ports:
             - containerPort: {{ .Values.service.portHttpsTarget }}
               name: https

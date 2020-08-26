@@ -3,13 +3,13 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app.kubernetes.io/name: {{ .Values.operatorName }}-external-metrics-reader
+    app.kubernetes.io/name: {{ .Values.operator.name }}-external-metrics-reader
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   creationTimestamp: null
-  name: {{ .Values.operatorName }}-external-metrics-reader
+  name: {{ .Values.operator.name }}-external-metrics-reader
 rules:
 - apiGroups:
   - "external.metrics.k8s.io"

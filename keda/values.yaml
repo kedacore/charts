@@ -10,7 +10,8 @@ image:
 watchNamespace: ""
 
 imagePullSecrets: []
-operatorName: keda-operator
+operator:
+  name: keda-operator
 
 additionalLabels: ""
 podAnnotations:
@@ -39,8 +40,10 @@ serviceAccount:
   annotations: {}
 
 # Set to the value of the Azure Active Directory Pod Identity
-# This will be set as a label on the Keda Pod(s)
-aadPodIdentity: ""
+# This will be set as a label on the KEDA Pod(s)
+podIdentity:
+  activeDirectory:
+    identity: ""
 
 # Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
@@ -52,20 +55,21 @@ grpcTLSCertsSecret: ""
 # will be mounted to the /vault path on the Pod
 hashiCorpVaultTLS: ""
 
-## Logging level for KEDA Controller 
-# allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
-# default value: info
-logLevel: info
-
-## Logging time format for KEDA Controller
-# allowed values: 'epoch', 'millis', 'nano', or 'iso8601'
-# default value: epoch
-logTimeFormat: epoch
-
-## Logging level for Metrics Server
-# allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
-# default value: 0
-logLevelMetrics: 0
+logging:
+  operator:
+    ## Logging level for KEDA Operator 
+    # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
+    # default value: info
+    level: info
+    ## Logging time format for KEDA Operator
+    # allowed values: 'epoch', 'millis', 'nano', or 'iso8601'
+    # default value: epoch
+    timeFormat: epoch
+  metricServer:
+    ## Logging level for Metrics Server
+    # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
+    # default value: 0
+    level: 0
 
 podSecurityContext: {}
   # fsGroup: 2000
@@ -113,10 +117,10 @@ affinity: {}
   #         - keda-operator-metrics-apiserver
   #     topologyKey: "kubernetes.io/hostname"
 
-## Optional priorityClassName for KEDA Controller and Metrics Adapter
+## Optional priorityClassName for KEDA Operator and Metrics Adapter
 priorityClassName: ""
 
-## Extra environment variables that will be passed onto Keda operator and metrics api service
+## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
