@@ -57,7 +57,7 @@ their default values.
 | Parameter                              | Description                               | Default                                         |
 |:---------------------------------------|:------------------------------------------|:------------------------------------------------|
 | `image.keda`                           | Image name of KEDA operator               | `docker.io/kedacore/keda:1.5.0`                 |
-| `image.metricsAdapter`                 | Image name of KEDA Metrics Adapter        | `docker.io/kedacore/keda-metrics-adapter:1.5.0` |
+| `image.metricsApiServer`                 | Image name of KEDA Metrics API Server        | `docker.io/kedacore/keda-metrics-apiserver:1.5.0` |
 | `watchNamespace`                       | Policy to use to pull Docker images       | `` |
 | `operator.name`                        | Name of the KEDA operator | `keda-operator` |
 | `imagePullSecrets`                     | Name of secret to use to pull images to use to pull Docker images | `[]` |
