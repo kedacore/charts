@@ -3,8 +3,8 @@
 # Declare variables to be passed into your templates.
 
 image:
-  keda: docker.io/kedacore/keda:1.5.0
-  metricsAdapter: docker.io/kedacore/keda-metrics-apiserver:1.5.0
+  keda: docker.io/kedacore/keda:2.0.0-beta
+  metricsAdapter: docker.io/kedacore/keda-metrics-apiserver:2.0.0-beta
   pullPolicy: Always
 
 watchNamespace: ""
