@@ -3,9 +3,9 @@ entries:
   keda:
   - apiVersion: v1
     appVersion: 2.0.0-beta
-    created: "2020-09-11T16:13:42.8073402+02:00"
+    created: "2020-09-16T08:14:51.5794024+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
-    digest: 393e1f22f20aabb29b3831cfbfbdd59d81af8cac275029939494c25342351710
+    digest: f0a8f0b854246ee2258ec8f10528f2811681ad2e41946dc455586f1ba9818e01
     home: https://github.com/kedacore/keda
     icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
     maintainers:
@@ -23,7 +23,7 @@ entries:
     version: 2.0.0-beta
   - apiVersion: v1
     appVersion: 1.5.0
-    created: "2020-09-11T16:13:42.8043034+02:00"
+    created: "2020-09-16T08:14:51.5754242+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: 07b15ddae4f1c40747de063100a668ac15d504cd0548eac0e1a04381fcaa3b37
     home: https://github.com/kedacore/keda
@@ -43,7 +43,7 @@ entries:
     version: 1.5.0
   - apiVersion: v1
     appVersion: 1.4.1
-    created: "2020-09-11T16:13:42.7953392+02:00"
+    created: "2020-09-16T08:14:51.5714261+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: f8bf80186ac3343998021a1721d06a67fdacd1dab92e4a4992620903b52004a4
     home: https://github.com/kedacore/keda
@@ -63,7 +63,7 @@ entries:
     version: 1.4.2
   - apiVersion: v1
     appVersion: 1.4.1
-    created: "2020-09-11T16:13:42.7871765+02:00"
+    created: "2020-09-16T08:14:51.5674256+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: 97a2e5c0beff93bb71ff861da0f29d09dcf988e724784f8b7c56ac9872c37a81
     home: https://github.com/kedacore/keda
@@ -79,7 +79,7 @@ entries:
     version: 1.4.1
   - apiVersion: v1
     appVersion: 1.4.0
-    created: "2020-09-11T16:13:42.7792132+02:00"
+    created: "2020-09-16T08:14:51.5634+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: 7b2b4e29f867361af87a60411b0a196416b04b2e20f4091d166263ea5195c355
     home: https://github.com/kedacore/keda
@@ -95,7 +95,7 @@ entries:
     version: 1.4.0
   - apiVersion: v1
     appVersion: 1.4.0
-    created: "2020-09-11T16:13:42.7711766+02:00"
+    created: "2020-09-16T08:14:51.5584011+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: a9e78b6cb2257702296d7cc28ca7acdd0b11603aef7e95dbdc7d4ddfa3f3a49c
     home: https://github.com/kedacore/keda
@@ -111,7 +111,7 @@ entries:
     version: 1.3.2
   - apiVersion: v1
     appVersion: 1.3.0
-    created: "2020-09-11T16:13:42.7631782+02:00"
+    created: "2020-09-16T08:14:51.5554027+02:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: e13bcb65816ed59b10b32fa6db8f61668635459d56c2d599bb3c0bcc5dcc1368
     home: https://github.com/kedacore/keda
@@ -127,7 +127,7 @@ entries:
     version: 1.3.1
   - apiVersion: v1
     appVersion: 1.3.0
-    created: "2020-09-11T16:13:42.7551786+02:00"
+    created: "2020-09-16T08:14:51.5513983+02:00"
     description: Event based autoscaler for Azure Functions deployments on Kubernetes
     digest: c0772458ab70bf3f019dc0b899ff444b9d7e6dcc466afd62e3f62e90eb8a24ed
     home: https://github.com/kedacore/keda
@@ -143,7 +143,7 @@ entries:
     version: 1.3.0
   - apiVersion: v1
     appVersion: 1.2.0
-    created: "2020-09-11T16:13:42.7431978+02:00"
+    created: "2020-09-16T08:14:51.5483998+02:00"
     description: Event based autoscaler for Azure Functions deployments on Kubernetes
     digest: e041dbed2455fef34f2908594a42fc8a7f163a1f48be46c2f93dea46e36fc733
     home: https://github.com/kedacore/keda
@@ -159,7 +159,7 @@ entries:
     version: 1.2.0
   - apiVersion: v1
     appVersion: 1.1.0
-    created: "2020-09-11T16:13:42.7352115+02:00"
+    created: "2020-09-16T08:14:51.5433989+02:00"
     description: Event based autoscaler for Azure Functions deployments on Kubernetes
     digest: c624e6620a9a6f265f51a82ee0d8267dcb2637dd3777306afbb271746234ff2d
     home: https://github.com/kedacore/keda
@@ -175,7 +175,7 @@ entries:
     version: 1.1.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2020-09-11T16:13:42.7270893+02:00"
+    created: "2020-09-16T08:14:51.5393977+02:00"
     description: Event based autoscaler for Azure Functions deployments on Kubernetes
     digest: ef934588dce70d874ea69692e082b8a70ad19095090b8d4fa7b5cb69b2cecaf6
     home: https://github.com/kedacore/keda
@@ -189,4 +189,4 @@ entries:
     urls:
     - https://kedacore.github.io/charts/keda-1.0.0.tgz
     version: 1.0.0
-generated: "2020-09-11T16:13:42.7131284+02:00"
+generated: "2020-09-16T08:14:51.5344245+02:00"
