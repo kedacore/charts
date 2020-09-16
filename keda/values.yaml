@@ -4,7 +4,7 @@
 
 image:
   keda: docker.io/kedacore/keda:2.0.0-beta
-  metricsAdapter: docker.io/kedacore/keda-metrics-apiserver:2.0.0-beta
+  metricsApiServer: docker.io/kedacore/keda-metrics-apiserver:2.0.0-beta
   pullPolicy: Always
 
 watchNamespace: ""
