@@ -46,10 +46,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.keda }}"
           command:
-          - keda
+          - "/keda"
           args:
-          - "--zap-level={{ .Values.logging.operator.level }}"
-          - "--zap-time-encoding={{ .Values.logging.operator.timeFormat }}"
+          - "-zap-log-level={{ .Values.logging.operator.level }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: WATCH_NAMESPACE
