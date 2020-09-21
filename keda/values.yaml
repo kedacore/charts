@@ -57,14 +57,10 @@ hashiCorpVaultTLS: ""
 
 logging:
   operator:
-    ## Logging level for KEDA Operator 
+    ## Logging level for KEDA Operator
     # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
     # default value: info
     level: info
-    ## Logging time format for KEDA Operator
-    # allowed values: 'epoch', 'millis', 'nano', or 'iso8601'
-    # default value: epoch
-    timeFormat: epoch
   metricServer:
     ## Logging level for Metrics Server
     # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
