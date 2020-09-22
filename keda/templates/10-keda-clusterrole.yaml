@@ -47,7 +47,7 @@ rules:
   - get
   - create
 - apiGroups:
-  - keda.k8s.io
+  - keda.sh
   resources:
   - '*'
   verbs:
