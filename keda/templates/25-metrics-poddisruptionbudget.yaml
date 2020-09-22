@@ -3,7 +3,7 @@ apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
-  name: {{ .Values.operatorName }}-metrics-apiserver
+  name: {{ .Values.operator.name }}-metrics-apiserver
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
@@ -13,5 +13,5 @@ spec:
   {{- end }}
   selector:
     matchLabels:
-      app: {{ .Values.operatorName }}-metrics-apiserver
+      app: {{ .Values.operator.name }}-metrics-apiserver
 {{- end }}

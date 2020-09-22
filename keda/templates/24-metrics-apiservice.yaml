@@ -4,13 +4,13 @@ metadata:
   labels:
     app.kubernetes.io/name: v1beta1.external.metrics.k8s.io
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
   name: v1beta1.external.metrics.k8s.io
 spec:
   service:
-    name: {{ .Values.operatorName }}-metrics-apiserver
+    name: {{ .Values.operator.name }}-metrics-apiserver
     namespace: {{ .Release.Namespace }}
   group: external.metrics.k8s.io
   version: v1beta1
