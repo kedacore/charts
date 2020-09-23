@@ -14,23 +14,38 @@ rules:
 - apiGroups:
   - ""
   resources:
-  - pods
-  - services
-  - services/finalizers
-  - endpoints
-  - events
   - configmaps
-  - secrets
-  - namespaces
-  - external
+  - configmaps/status
+  - events
   verbs:
   - '*'
 - apiGroups:
-  - apps
+  - ""
   resources:
-  - deployments
-  - deployments/finalizers
-  - replicasets
+  - external
+  - pods
+  - secrets
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
+- apiGroups:
+  - '*'
+  resources:
+  - '*/scale'
+  verbs:
+  - '*'
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
   verbs:
   - '*'
 - apiGroups:
@@ -40,22 +55,25 @@ rules:
   verbs:
   - '*'
 - apiGroups:
-  - monitoring.coreos.com
+  - keda.sh
   resources:
-  - servicemonitors
+  - scaledjobs
+  - scaledjobs/status
   verbs:
-  - get
-  - create
+  - '*'
 - apiGroups:
   - keda.sh
   resources:
-  - '*'
+  - scaledobjects
+  - scaledobjects/finalizers
+  - scaledobjects/status
   verbs:
   - '*'
 - apiGroups:
-  - autoscaling
+  - keda.sh
   resources:
-  - horizontalpodautoscalers
+  - triggerauthentications
+  - triggerauthentications/status
   verbs:
-   - '*'
+  - '*'
 {{- end -}}
