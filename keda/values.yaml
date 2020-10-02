@@ -120,3 +120,15 @@ priorityClassName: ""
 env:
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
+
+prometheus:
+  enabled: false
+  port: 9022
+  path: /metrics
+  podMonitor:
+    # Enables PodMonitor creation for the Prometheus Operator
+    enabled: false
+    interval:
+    scrapeTimeout:
+    namespace:
+    additionalLabels: {}
