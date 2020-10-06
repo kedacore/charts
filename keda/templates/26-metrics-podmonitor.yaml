@@ -2,11 +2,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: {{ .Values.operatorName }}-metrics-apiserver
+  name: {{ .Values.operator.name }}-metrics-apiserver
   labels:
-    app.kubernetes.io/name: {{ .Values.operatorName }}
+    app.kubernetes.io/name: {{ .Values.operator.name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operatorName }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     {{- range $key, $value := .Values.prometheus.podMonitor.additionalLabels }}
@@ -31,5 +31,5 @@ spec:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app: {{ .Values.operatorName }}-metrics-apiserver
+      app: {{ .Values.operator.name }}-metrics-apiserver
 {{- end }}
