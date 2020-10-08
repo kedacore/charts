@@ -48,7 +48,9 @@ spec:
           command:
           - "/keda"
           args:
-          - "-zap-log-level={{ .Values.logging.operator.level }}"
+          - --enable-leader-election
+          - "--zap-log-level={{ .Values.logging.operator.level }}"
+          - --zap-encoder=console
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:

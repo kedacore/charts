@@ -51,13 +51,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 6443
+              port: {{ .Values.service.portHttpsTarget }}
               scheme: HTTPS
             initialDelaySeconds: 5
           readinessProbe:
             httpGet:
               path: /readyz
-              port: 6443
+              port: {{ .Values.service.portHttpsTarget }}
               scheme: HTTPS
             initialDelaySeconds: 5
           env:
@@ -68,7 +68,7 @@ spec:
             {{- end }}
           args:
           - /usr/local/bin/keda-adapter
-          - --secure-port=6443
+          - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           {{ if .Values.prometheus.enabled }}
           - --metrics-port={{ .Values.prometheus.port }}
