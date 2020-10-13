@@ -48,8 +48,20 @@ spec:
           command:
           - "/keda"
           args:
-          - "-zap-log-level={{ .Values.logging.operator.level }}"
+          - --enable-leader-election
+          - "--zap-log-level={{ .Values.logging.operator.level }}"
+          - --zap-encoder=console
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 25
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 20
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace }}

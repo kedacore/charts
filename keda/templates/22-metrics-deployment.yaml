@@ -48,6 +48,18 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.metricsApiServer }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: {{ .Values.service.portHttpsTarget }}
+              scheme: HTTPS
+            initialDelaySeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: {{ .Values.service.portHttpsTarget }}
+              scheme: HTTPS
+            initialDelaySeconds: 5
           env:
             - name: WATCH_NAMESPACE
               value: ""
@@ -56,7 +68,7 @@ spec:
             {{- end }}
           args:
           - /usr/local/bin/keda-adapter
-          - --secure-port=6443
+          - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           {{ if .Values.prometheus.enabled }}
           - --metrics-port={{ .Values.prometheus.port }}
