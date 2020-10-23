@@ -56,15 +56,17 @@ their default values.
 
 | Parameter                              | Description                               | Default                                         |
 |:---------------------------------------|:------------------------------------------|:------------------------------------------------|
-| `image.keda`                           | Image name of KEDA operator               | `docker.io/kedacore/keda:2.0.0-beta`                 |
-| `image.metricsApiServer`                 | Image name of KEDA Metrics API Server        | `docker.io/kedacore/keda-metrics-apiserver:2.0.0-beta` |
+| `image.keda.repository`                | Image name of KEDA operator               | `docker.io/kedacore/keda`                 |
+| `image.keda.tag`                       | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default | ``                 |
+| `image.metricsApiServer.repository`    | Image name of KEDA Metrics API Server        | `docker.io/kedacore/keda-metrics-apiserver` |
+| `image.metricsApiServer.tag`           | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | ``                 |
 | `watchNamespace`                       | Policy to use to pull Docker images       | `` |
 | `operator.name`                        | Name of the KEDA operator | `keda-operator` |
 | `imagePullSecrets`                     | Name of secret to use to pull images to use to pull Docker images | `[]` |
 | `additionalLabels`                     | Additional labels to apply to KEDA workloads | `` |
 | `podAnnotations.keda`                  | Pod annotations for KEDA operator | `` |
 | `podAnnotations.metricsAdapter`        | Pod annotations for KEDA Metrics Adapter | `` |
-| `podDisruptionBudget`                  | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}`                                        |
+| `podDisruptionBudget`                  | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `customResourceDefinition.create`      | Specifies whether KEDA CRDs should be created | `true`                                        |
 | `rbac.create`                          | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                | Specifies whether a service account should be created       | `true`                                        |
@@ -84,7 +86,6 @@ their default values.
 | `affinity`                             | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `priorityClassName`                    | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
 | `env`                                  | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
-| `service.type`                         | Service type for KEDA Metric Server | `ClusterIP`                                        |
 | `service.portHttp`                     | Service HTTP port for KEDA Metric Server service | `80`                                        |
 | `service.portHttpTarget`               | Service HTTP port for KEDA Metric Server container | `8080`                                        |
 | `service.portHttps`                    | HTTPS port for KEDA Metric Server service | `443`                                        |
@@ -95,7 +96,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to
 
 ```console
 $ helm install keda kedacore/keda --namespace keda \
-               --set image.keda='<image-name>'
+               --set service.portHttp='<http-port>'
 ```
 
 Alternatively, a YAML file that specifies the values for the above parameters can

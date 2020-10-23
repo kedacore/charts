@@ -44,7 +44,7 @@ spec:
         - name: {{ .Values.operator.name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.keda }}"
+          image: "{{ .Values.image.keda.repository }}:{{ .Values.image.keda.tag | default .Chart.AppVersion }}"
           command:
           - "/keda"
           args:
