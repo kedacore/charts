@@ -96,7 +96,8 @@ Specify each parameter using the `--set key=value[,key=value]` argument to
 
 ```console
 $ helm install keda kedacore/keda --namespace keda \
-               --set service.portHttp='<http-port>'
+               --set image.keda.tag=<different tag from app version>
+               --set image.metricsApiServer.tag=<different tag from app version>
 ```
 
 Alternatively, a YAML file that specifies the values for the above parameters can
