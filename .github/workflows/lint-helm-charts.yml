@@ -1,4 +1,4 @@
-name: Lint Helm Chart
+name: Helm Chart CI
 on: [pull_request]
 
 jobs:
@@ -13,6 +13,15 @@ jobs:
 
     - name: Lint 'KEDA' Helm chart
       run: helm lint keda
+
+  deploy-helm-3-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
       
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.0.0
