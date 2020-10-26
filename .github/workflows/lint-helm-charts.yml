@@ -26,8 +26,8 @@ jobs:
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.0.0
 
-    - name: Create keda-system namespace
-      run: kubectl create ns keda-system
+    - name: Create keda namespace
+      run: kubectl create ns keda
 
     - name: Install Helm chart
-      run: helm install keda .\keda\ --namespace keda-system
+      run: helm install keda .\keda\ --namespace keda
