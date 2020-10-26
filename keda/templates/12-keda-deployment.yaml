@@ -71,6 +71,10 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: {{ .Values.operator.name }}
+            {{- if .Values.httpTimeout }}
+            - name: KEDA_DEFAULT_HTTP_TIMEOUT
+              value: {{ .Values.httpTimeout }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
