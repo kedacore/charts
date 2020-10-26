@@ -26,6 +26,14 @@ jobs:
     - name: Create k8s Kind Cluster
       uses: helm/kind-action@v1.0.0
 
+    - name: Show Kubernetes version
+      run: |
+        kubectl version
+
+    - name: Show Helm version
+      run: |
+        helm version
+
     - name: Create keda namespace
       run: kubectl create ns keda
 
