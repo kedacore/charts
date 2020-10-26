@@ -38,4 +38,4 @@ jobs:
       run: kubectl create ns keda
 
     - name: Install Helm chart
-      run: helm install keda .\keda\ --namespace keda
+      run: helm install keda ./keda/ --namespace keda
