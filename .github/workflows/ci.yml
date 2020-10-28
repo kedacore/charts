@@ -37,6 +37,10 @@ jobs:
     - name: Initialize Helm
       run: |
         helm init --wait
+        # Based on https://github.com/helm/helm/issues/3130#issuecomment-372931407
+        kubectl --namespace kube-system create serviceaccount tiller
+        kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+        kubectl --namespace kube-system patch deploy tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}' 
 
     - name: Show Helm version
       run: |
