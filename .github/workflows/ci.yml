@@ -2,6 +2,51 @@ name: Helm Chart CI
 on: [pull_request]
 
 jobs:
+  lint-helm-2-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install v2.15.2
+      uses: Azure/setup-helm@v1
+      with:
+        version: v2.15.2
+
+    - name: Lint 'KEDA' Helm chart
+      run: helm lint keda
+
+  deploy-helm-2-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+      with:
+        version: v2.15.2
+      
+    - name: Create k8s Kind Cluster
+      uses: helm/kind-action@v1.0.0
+
+    - name: Show Kubernetes version
+      run: |
+        kubectl version
+
+    - name: Show Helm version
+      run: |
+        helm version
+
+    - name: Create keda namespace
+      run: kubectl create ns keda
+
+    - name: Template Helm chart
+      run: helm template keda ./keda/ --namespace keda
+
+    - name: Install Helm chart
+      run: helm install keda ./keda/ --namespace keda
+
   lint-helm-3-x:
     runs-on: ubuntu-latest
     steps:
@@ -36,6 +81,9 @@ jobs:
 
     - name: Create keda namespace
       run: kubectl create ns keda
+
+    - name: Template Helm chart
+      run: helm template keda ./keda/ --namespace keda
 
     - name: Install Helm chart
       run: helm install keda ./keda/ --namespace keda
