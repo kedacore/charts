@@ -42,14 +42,11 @@ jobs:
       run: |
         helm version
 
-    - name: Create keda namespace
-      run: kubectl create ns keda
-
     - name: Template Helm chart
-      run: helm template --name keda --namespace keda ./keda/
+      run: helm template --name keda ./keda/
 
     - name: Install Helm chart
-      run: helm install --name keda --namespace keda ./keda/
+      run: helm install --name keda ./keda/
 
   lint-helm-3-x:
     runs-on: ubuntu-latest
