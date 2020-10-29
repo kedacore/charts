@@ -16,43 +16,8 @@ jobs:
     - name: Lint 'KEDA' Helm chart
       run: helm lint keda
 
-  deploy-helm-2-x:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Helm install
-      uses: Azure/setup-helm@v1
-      with:
-        version: v2.15.2
-      
-    - name: Create k8s Kind Cluster
-      uses: helm/kind-action@v1.0.0
-
-    - name: Show Kubernetes version
-      run: |
-        kubectl version
-
-    - name: Prepare Tiller
-      run: |
-        # Based on https://github.com/helm/helm/issues/3130#issuecomment-372931407
-        kubectl --namespace kube-system create serviceaccount tiller
-        kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-
-    - name: Initialize Helm
-      run: |
-        helm init --wait --service-account tiller
-
-    - name: Show Helm version
-      run: |
-        helm version
-
     - name: Template Helm chart
       run: helm template --name keda ./keda/
-
-    - name: Install Helm chart
-      run: helm install --name keda ./keda/
 
   lint-helm-3-x:
     runs-on: ubuntu-latest
