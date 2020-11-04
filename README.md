@@ -1,10 +1,10 @@
-<p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-transparent.png" width="300"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-transparent.png" width="300"/></p>
 KEDA allows for fine grained autoscaling (including to/from zero) for event driven Kubernetes workloads. KEDA serves as a Kubernetes Metrics Server and allows users to define autoscaling rules using a dedicated Kubernetes custom resource definition.
 
 KEDA can run on both the cloud and the edge, integrates natively with Kubernetes components such as the Horizontal Pod Autoscaler, and has no external dependencies.
 
 We are a Cloud Native Computing Foundation (CNCF) sandbox project.
-![CNCF Logo](https://raw.githubusercontent.com/kedacore/keda/master/images/logo-cncf.svg)
+![CNCF Logo](https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg)
 
 ## Getting Started
 ### Adding our Helm chart repo
