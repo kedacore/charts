@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 name: keda
 description: Event-based autoscaler for workloads on Kubernetes
 
