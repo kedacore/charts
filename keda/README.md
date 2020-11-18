@@ -85,6 +85,7 @@ their default values.
 | `affinity`                             | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `priorityClassName`                    | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
 | `env`                                  | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
+| `service.annotations`                  | Annotations to add the KEDA Metric Server service | `{}`                                        |
 | `service.portHttp`                     | Service HTTP port for KEDA Metric Server service | `80`                                        |
 | `service.portHttpTarget`               | Service HTTP port for KEDA Metric Server container | `8080`                                        |
 | `service.portHttps`                    | HTTPS port for KEDA Metric Server service | `443`                                        |
