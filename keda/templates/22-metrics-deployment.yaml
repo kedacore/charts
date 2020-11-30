@@ -62,7 +62,7 @@ spec:
             initialDelaySeconds: 5
           env:
             - name: WATCH_NAMESPACE
-              value: ""
+              value: {{ .Values.watchNamespace | quote }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
