@@ -126,6 +126,16 @@ env:
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
 
+# Extra volumes and volume mounts for the deployment. Optional.
+volumes:
+  keda:
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  metricsApiServer:
+    extraVolumes: []
+    extraVolumeMounts: []
+
 prometheus:
   enabled: false
   port: 9022

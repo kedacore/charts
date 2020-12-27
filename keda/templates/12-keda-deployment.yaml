@@ -83,6 +83,9 @@ spec:
           - name: hashicorp-vault-certs
             mountPath: /hashicorp-vaultcerts
           {{- end }}
+          {{- if .Values.volumes.keda.extraVolumeMounts }}
+          {{- toYaml .Values.volumes.keda.extraVolumeMounts | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -95,6 +98,9 @@ spec:
       - name: hashicorp-vault-certs
         secret:
           secretName: {{ .Values.hashiCorpVaultTLS }}
+      {{- end }}
+      {{- if .Values.volumes.keda.extraVolumes }}
+      {{- toYaml .Values.volumes.keda.extraVolumes | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
