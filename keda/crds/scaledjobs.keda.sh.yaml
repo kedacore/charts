@@ -17,6 +17,12 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
+    - jsonPath: .spec.minReplicaCount
+      name: Min
+      type: integer
+    - jsonPath: .spec.maxReplicaCount
+      name: Max
+      type: integer
     - jsonPath: .spec.triggers[*].type
       name: Triggers
       type: string
@@ -1466,7 +1472,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -2706,7 +2711,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                 readinessProbe:
@@ -3952,7 +3956,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -6364,8 +6367,13 @@ spec:
                   properties:
                     authenticationRef:
                       description: ScaledObjectAuthRef points to the TriggerAuthentication
-                        object that is used to authenticate the scaler with the environment
+                        or ClusterTriggerAuthentication object that is used to authenticate
+                        the scaler with the environment
                       properties:
+                        kind:
+                          description: Kind of the resource being referred to. Defaults
+                            to TriggerAuthentication.
+                          type: string
                         name:
                           type: string
                       required:
