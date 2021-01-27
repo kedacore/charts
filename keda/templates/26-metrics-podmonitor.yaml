@@ -1,4 +1,4 @@
-{{- if and .Values.prometheus.enabled .Values.prometheus.podMonitor.enabled }}
+{{- if and .Values.prometheus.metricServer.enabled .Values.prometheus.metricServer.podMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
@@ -9,21 +9,21 @@ metadata:
     app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    {{- range $key, $value := .Values.prometheus.podMonitor.additionalLabels }}
+    {{- range $key, $value := .Values.prometheus.metricServer.podMonitor.additionalLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
-  {{- with .Values.prometheus.podMonitor.namespace }}
+  {{- with .Values.prometheus.metricServer.podMonitor.namespace }}
   namespace: {{ . }}
   {{- end }}
 spec:
   podMetricsEndpoints:
   - port: metrics
-    path: {{ .Values.prometheus.path }}
+    path: {{ .Values.prometheus.metricServer.path }}
     honorLabels: true
-    {{- with .Values.prometheus.podMonitor.interval }}
+    {{- with .Values.prometheus.metricServer.podMonitor.interval }}
     interval: {{ . }}
     {{- end }}
-    {{- with .Values.prometheus.podMonitor.scrapeTimeout }}
+    {{- with .Values.prometheus.metricServer.podMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
   namespaceSelector:

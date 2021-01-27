@@ -127,13 +127,25 @@ env:
 #   value: 'ENV-VALUE'
 
 prometheus:
-  enabled: false
-  port: 9022
-  path: /metrics
-  podMonitor:
-    # Enables PodMonitor creation for the Prometheus Operator
+  metricServer:
     enabled: false
-    interval:
-    scrapeTimeout:
-    namespace:
-    additionalLabels: {}
+    port: 9022
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
+  operator:
+    enabled: false
+    port: 8080
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
