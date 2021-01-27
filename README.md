@@ -18,7 +18,7 @@ $ helm repo add keda https://kedacore.github.io/charts
 ```
 $ helm search repo keda/
 NAME            CHART VERSION   APP VERSION     DESCRIPTION
-kedacore/keda   1.5.0           1.5.0           Event-based autoscaler for workloads on Kubernetes
+keda/keda       2.0.1           2.0.0           Event-based autoscaler for workloads on Kubernetes
 ```
 
 ## Releases
