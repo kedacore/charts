@@ -72,6 +72,7 @@ their default values.
 | `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
 | `podLabels.metricsAdapter`                                 | Pod labels for KEDA Metrics Adapter | `{}` |
 | `podDisruptionBudget`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
+| `keda.replicaCount`                                      | Capability to configure number of replicas for Keda   | `1` |
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
