@@ -81,6 +81,8 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
+  - clustertriggerauthentications
+  - clustertriggerauthentications/status
   - triggerauthentications
   - triggerauthentications/status
   verbs:
