@@ -64,8 +64,10 @@ their default values.
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
 | `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `` |
-| `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `` |
-| `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `` |
+| `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
+| `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
+| `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
+| `podLabels.metricsAdapter`                                 | Pod labels for KEDA Metrics Adapter | `{}` |
 | `podDisruptionBudget`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |

@@ -23,6 +23,9 @@ additionalLabels: ""
 podAnnotations:
   keda: {}
   metricsAdapter: {}
+podLabels:
+  keda: {}
+  metricsAdapter: {}
 
 ## See `kubectl explain poddisruptionbudget.spec` for more
 ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
