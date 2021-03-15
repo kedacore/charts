@@ -4,11 +4,11 @@
 
 image:
   keda:
-    repository: docker.io/kedacore/keda
+    repository: ghcr.io/kedacore/kedacore/keda
     # Allows people to override tag if they don't want to use the app version
     tag:
   metricsApiServer:
-    repository: docker.io/kedacore/keda-metrics-apiserver
+    repository: ghcr.io/kedacore/keda-metrics-apiserver
     # Allows people to override tag if they don't want to use the app version
     tag:
   pullPolicy: Always
