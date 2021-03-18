@@ -56,7 +56,7 @@ their default values.
 
 | Parameter                                                  | Description                               | Default                                         |
 |:-----------------------------------------------------------|:------------------------------------------|:------------------------------------------------|
-| `image.keda.repository`                                    | Image name of KEDA operator               | `ghcr.io/kedacore/kedacore/keda`                |
+| `image.keda.repository`                                    | Image name of KEDA operator               | `ghcr.io/kedacore/keda`                |
 | `image.keda.tag`                                           | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default | ``                 |
 | `image.metricsApiServer.repository`                        | Image name of KEDA Metrics API Server        | `ghcr.io/kedacore/keda-metrics-apiserver` |
 | `image.metricsApiServer.tag`                               | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | ``                 |
