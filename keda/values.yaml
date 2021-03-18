@@ -4,7 +4,7 @@
 
 image:
   keda:
-    repository: ghcr.io/kedacore/kedacore/keda
+    repository: ghcr.io/kedacore/keda
     # Allows people to override tag if they don't want to use the app version
     tag:
   metricsApiServer:
