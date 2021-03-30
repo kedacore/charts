@@ -127,7 +127,8 @@ priorityClassName: ""
 ## The default HTTP timeout in milliseconds that KEDA should use
 ## when making requests to external services. Removing this defaults
 ## to the hardcoded value (3000)
-httpTimeout: 3000
+http:
+  timeout: 3000
 
 ## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
