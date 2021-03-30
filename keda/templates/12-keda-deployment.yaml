@@ -80,7 +80,7 @@ spec:
               value: {{ .Values.operator.name }}
             {{- if .Values.http.timeout }}
             - name: KEDA_DEFAULT_HTTP_TIMEOUT
-              value: {{ .Values.http.timeout }}
+              value: {{ .Values.http.timeout | quote }}
             {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
