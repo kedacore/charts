@@ -26,6 +26,7 @@ rules:
   - pods
   - secrets
   - services
+  - serviceaccounts
   verbs:
   - get
   - list
@@ -42,6 +43,14 @@ rules:
   - '*/scale'
   verbs:
   - '*'
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  verbs:
+  - list
+  - watch
 - apiGroups:
   - autoscaling
   resources:
@@ -72,6 +81,8 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
+  - clustertriggerauthentications
+  - clustertriggerauthentications/status
   - triggerauthentications
   - triggerauthentications/status
   verbs:

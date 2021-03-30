@@ -4,11 +4,11 @@
 
 image:
   keda:
-    repository: docker.io/kedacore/keda
+    repository: ghcr.io/kedacore/keda
     # Allows people to override tag if they don't want to use the app version
-    tag: 
+    tag:
   metricsApiServer:
-    repository: docker.io/kedacore/keda-metrics-apiserver
+    repository: ghcr.io/kedacore/keda-metrics-apiserver
     # Allows people to override tag if they don't want to use the app version
     tag:
   pullPolicy: Always
@@ -23,15 +23,15 @@ additionalLabels: ""
 podAnnotations:
   keda: {}
   metricsAdapter: {}
+podLabels:
+  keda: {}
+  metricsAdapter: {}
 
 ## See `kubectl explain poddisruptionbudget.spec` for more
 ## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 podDisruptionBudget: {}
 #  minAvailable: 1
 #  maxUnavailable: 1
-
-customResourceDefinition:
-  create: true
 
 rbac:
   create: true
@@ -91,6 +91,8 @@ service:
   portHttps: 443
   portHttpsTarget: 6443
 
+  annotations: {}
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -133,13 +135,25 @@ env:
 #   value: 'ENV-VALUE'
 
 prometheus:
-  enabled: false
-  port: 9022
-  path: /metrics
-  podMonitor:
-    # Enables PodMonitor creation for the Prometheus Operator
+  metricServer:
     enabled: false
-    interval:
-    scrapeTimeout:
-    namespace:
-    additionalLabels: {}
+    port: 9022
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
+  operator:
+    enabled: false
+    port: 8080
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}

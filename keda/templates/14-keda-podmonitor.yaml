@@ -1,29 +1,29 @@
-{{- if and .Values.prometheus.metricServer.enabled .Values.prometheus.metricServer.podMonitor.enabled }}
+{{- if and .Values.prometheus.operator.enabled .Values.prometheus.operator.podMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: {{ .Values.operator.name }}-metrics-apiserver
+  name: {{ .Values.operator.name }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/part-of: {{ .Values.operator.name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    {{- range $key, $value := .Values.prometheus.metricServer.podMonitor.additionalLabels }}
+    {{- range $key, $value := .Values.prometheus.operator.podMonitor.additionalLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
-  {{- with .Values.prometheus.metricServer.podMonitor.namespace }}
+  {{- with .Values.prometheus.operator.podMonitor.namespace }}
   namespace: {{ . }}
   {{- end }}
 spec:
   podMetricsEndpoints:
-  - port: metrics
-    path: {{ .Values.prometheus.metricServer.path }}
+  - port: http
+    path: {{ .Values.prometheus.operator.path }}
     honorLabels: true
-    {{- with .Values.prometheus.metricServer.podMonitor.interval }}
+    {{- with .Values.prometheus.operator.podMonitor.interval }}
     interval: {{ . }}
     {{- end }}
-    {{- with .Values.prometheus.metricServer.podMonitor.scrapeTimeout }}
+    {{- with .Values.prometheus.operator.podMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
   namespaceSelector:
@@ -31,5 +31,5 @@ spec:
     - {{ .Release.Namespace }}
   selector:
     matchLabels:
-      app: {{ .Values.operator.name }}-metrics-apiserver
+      app: {{ .Values.operator.name }}
 {{- end }}

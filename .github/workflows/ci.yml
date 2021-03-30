@@ -37,5 +37,17 @@ jobs:
     - name: Create keda namespace
       run: kubectl create ns keda
 
+    - name: Template Helm chart
+      run: helm template keda ./keda/ --namespace keda
+
     - name: Install Helm chart
       run: helm install keda ./keda/ --namespace keda
+
+    - name: Get all ScaledObjects
+      run: kubectl get scaledobjects
+
+    - name: Get all ScaledJobs
+      run: kubectl get scaledjobs
+
+    - name: Get all TriggerAuthentication
+      run: kubectl get triggerauth

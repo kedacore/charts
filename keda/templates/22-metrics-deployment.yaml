@@ -22,11 +22,14 @@ spec:
         {{- if .Values.podIdentity.activeDirectory.identity }}
         aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
         {{- end }}
+        {{- if .Values.podLabels.metricsAdapter }}
+        {{- toYaml .Values.podLabels.metricsAdapter | nindent 8}}
+        {{- end }}
       annotations:
-      {{- if .Values.prometheus.enabled }}
+      {{- if .Values.prometheus.metricServer.enabled }}
         prometheus.io/scrape: "true"
-        prometheus.io/port: {{ .Values.prometheus.port | quote }}
-        prometheus.io/path: {{ .Values.prometheus.path }}
+        prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
+        prometheus.io/path: {{ .Values.prometheus.metricServer.path }}
       {{- end }}
       {{- if .Values.podAnnotations.metricsAdapter }}
       {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
@@ -62,7 +65,7 @@ spec:
             initialDelaySeconds: 5
           env:
             - name: WATCH_NAMESPACE
-              value: ""
+              value: {{ .Values.watchNamespace | quote }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
@@ -70,10 +73,10 @@ spec:
           - /usr/local/bin/keda-adapter
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
-          {{ if .Values.prometheus.enabled }}
-          - --metrics-port={{ .Values.prometheus.port }}
-          - --metrics-path={{ .Values.prometheus.path }}
-          {{ end }}
+          {{- if .Values.prometheus.metricServer.enabled }}
+          - --metrics-port={{ .Values.prometheus.metricServer.port }}
+          - --metrics-path={{ .Values.prometheus.metricServer.path }}
+          {{- end }}
           - --v={{ .Values.logging.metricServer.level }}
           ports:
             - containerPort: {{ .Values.service.portHttpsTarget }}
@@ -82,11 +85,11 @@ spec:
             - containerPort: {{ .Values.service.portHttpTarget }}
               name: http
               protocol: TCP
-            {{ if .Values.prometheus.enabled }}
-            - containerPort: {{ .Values.prometheus.port }}
+            {{- if .Values.prometheus.metricServer.enabled }}
+            - containerPort: {{ .Values.prometheus.metricServer.port }}
               name: metrics
               protocol: TCP
-            {{ end }}
+            {{- end }}
           volumeMounts:
           {{- if .Values.grpcTLSCertsSecret }}
           - name: grpc-certs

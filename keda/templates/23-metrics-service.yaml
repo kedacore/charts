@@ -9,6 +9,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
+  annotations:
+  {{- range $key, $value := .Values.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+  {{- end }}
 spec:
   ports:
   - name: https
