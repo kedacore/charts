@@ -124,6 +124,12 @@ affinity: {}
 ## Optional priorityClassName for KEDA Operator and Metrics Adapter
 priorityClassName: ""
 
+## The default HTTP timeout in milliseconds that KEDA should use
+## when making requests to external services. Removing this defaults to a
+## reasonable default
+http:
+  timeout: 3000
+
 ## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
 # - name: ENV_NAME
