@@ -43,8 +43,20 @@ jobs:
     - name: Install Helm chart
       run: helm install keda ./keda/ --namespace keda
 
-    - name: Get all ScaledObjects
+    - name: Get all CRDs
       run: kubectl get crds -o wide
+
+    - name: Verify clustertriggerauthentications.keda.sh CRD is installed
+      run: kubectl get crd/clustertriggerauthentications.keda.sh -o wide
+
+    - name: Verify triggerauthentications.keda.sh CRD is installed
+      run: kubectl get crd/triggerauthentications.keda.sh -o wide
+
+    - name: Verify scaledjobs.keda.sh CRD is installed
+      run: kubectl get crd/scaledjobs.keda.sh -o wide
+
+    - name: Verify scaledobjects.keda.sh CRD is installed
+      run: kubectl get crd/scaledobjects.keda.sh -o wide
 
     - name: Get all ScaledObjects
       run: kubectl get scaledobjects -o wide
@@ -58,5 +70,5 @@ jobs:
     - name: Deploy Nginx with autoscaling
       run: kubectl apply -f ./samples/nginx-scaledobject.yml
 
-    - name: Get all ScaledObjects
-      run: kubectl get scaledobjects -o wide
+    - name: Get our Nginx ScaledObject
+      run: kubectl get scaledobjects/nginx-autoscaling -o wide
