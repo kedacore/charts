@@ -44,6 +44,9 @@ jobs:
       run: helm install keda ./keda/ --namespace keda
 
     - name: Get all ScaledObjects
+      run: kubectl get crds -o wide
+
+    - name: Get all ScaledObjects
       run: kubectl get scaledobjects -o wide
 
     - name: Get all ScaledJobs
