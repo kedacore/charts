@@ -13,6 +13,9 @@ image:
     tag:
   pullPolicy: Always
 
+crds:
+  install: true
+
 watchNamespace: ""
 
 imagePullSecrets: []
