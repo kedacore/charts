@@ -44,10 +44,16 @@ jobs:
       run: helm install keda ./keda/ --namespace keda
 
     - name: Get all ScaledObjects
-      run: kubectl get scaledobjects
+      run: kubectl get scaledobjects -o wide
 
     - name: Get all ScaledJobs
-      run: kubectl get scaledjobs
+      run: kubectl get scaledjobs -o wide
 
     - name: Get all TriggerAuthentication
-      run: kubectl get triggerauth
+      run: kubectl get triggerauth -o wide
+
+    - name: Deploy Nginx with autoscaling
+      run: kubectl apply -f ./samples/nginx-scaledobject.yml
+
+    - name: Get all ScaledObjects
+      run: kubectl get scaledobjects -o wide
