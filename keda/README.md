@@ -57,9 +57,10 @@ their default values.
 | Parameter                                                  | Description                               | Default                                         |
 |:-----------------------------------------------------------|:------------------------------------------|:------------------------------------------------|
 | `image.keda.repository`                                    | Image name of KEDA operator               | `ghcr.io/kedacore/keda`                |
-| `image.keda.tag`                                           | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default | ``                 |
+| `image.keda.tag`                                           | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default | `` |
 | `image.metricsApiServer.repository`                        | Image name of KEDA Metrics API Server        | `ghcr.io/kedacore/keda-metrics-apiserver` |
-| `image.metricsApiServer.tag`                               | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | ``                 |
+| `image.metricsApiServer.tag`                               | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | `` |
+| `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
