@@ -112,6 +112,7 @@ spec:
         secret:
           secretName: {{ .Values.hashiCorpVaultTLS }}
       {{- end }}
+      hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
