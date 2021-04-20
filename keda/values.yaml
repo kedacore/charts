@@ -22,6 +22,9 @@ imagePullSecrets: []
 operator:
   name: keda-operator
 
+metricsServer:  
+  useHostNetwork: false
+
 additionalLabels: ""
 podAnnotations:
   keda: {}
