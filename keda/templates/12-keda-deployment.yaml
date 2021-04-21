@@ -53,7 +53,7 @@ spec:
           args:
           - --enable-leader-election
           - "--zap-log-level={{ .Values.logging.operator.level }}"
-          - --zap-encoder=console
+          - "--zap-encoder={{ .Values.logging.operator.format }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:
