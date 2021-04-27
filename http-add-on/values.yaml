@@ -5,6 +5,9 @@ additionalLabels: ""
 crds:
   install: true
 
+operator:
+  pullPolicy: Always
+
 images:
   operator: ghcr.io/kedacore/http-add-on-operator
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
