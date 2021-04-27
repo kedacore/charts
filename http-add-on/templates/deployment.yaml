@@ -4,8 +4,17 @@ metadata:
   labels:
     control-plane: controller-manager
     httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
-    keda.sh/addon: keda-http-addon
-  name: keda-http-addon-controller-manager
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-controller-manager
+    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
@@ -13,13 +22,22 @@ spec:
     matchLabels:
       control-plane: controller-manager
       httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
-      keda.sh/addon: keda-http-addon
+      keda.sh/addon: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         control-plane: controller-manager
         httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
-        keda.sh/addon: keda-http-addon
+        keda.sh/addon: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}
+        name: {{ .Chart.Name }}-operator
+        app.kubernetes.io/name: {{ .Chart.Name }}-operator
+        app.kubernetes.io/version: {{ .Values.version }}
+        app.kubernetes.io/component: operator
+        app.kubernetes.io/part-of: {{ .Chart.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    {{ tpl .Values.additionalLabels . | indent 4}}
     spec:
       containers:
       - args:
@@ -32,14 +50,14 @@ spec:
       - args:
         - --metrics-addr=127.0.0.1:8080
         - --enable-leader-election
-        image: {{ .Values.images.operator }}
+        image: "{{ .Values.images.operator }}:{{ .Values.version }}"
         imagePullPolicy: Always
-        name: manager
+        name: {{ .Chart.Name }}-operator
         env:
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_IMAGE
-          value: {{ .Values.images.scaler }}
+          value: "{{ .Values.images.scaler }}:{{ .Values.version }}"
         - name: KEDAHTTP_OPERATOR_INTERCEPTOR_IMAGE
-          value: {{ .Values.images.interceptor }}
+          value: "{{ .Values.images.interceptor }}:{{ .Values.version }}"
         # resources:
         #   limits:
         #     cpu: 0.5

@@ -1,0 +1,267 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-leader-election-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-leader-election-role
+  namespace: {{ .Release.Namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - configmaps/status
+  verbs:
+  - get
+  - update
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-manager-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-manager-role
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-manager-role
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - pods
+  - services
+  - endpoints
+  - endpoint
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+- apiGroups:
+  - keda.sh
+  resources:
+  - scaledobjects
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - patch
+  - watch
+- apiGroups:
+  - http.keda.sh
+  resources:
+  - httpscaledobjects
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - http.keda.sh
+  resources:
+  - httpscaledobjects/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - create
+  - delete
+  - update
+- apiGroups:
+  - networking
+  resources:
+  - ingresses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-proxy-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-proxy-role
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-proxy-role
+rules:
+- apiGroups:
+  - authentication.k8s.io
+  resources:
+  - tokenreviews
+  verbs:
+  - create
+- apiGroups:
+  - authorization.k8s.io
+  resources:
+  - subjectaccessreviews
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-metrics-reader
+    app.kubernetes.io/name: {{ .Chart.Name }}-metrics-reader
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-metrics-reader
+rules:
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-leader-election-binding
+    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-rolebinding
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-leader-election-rolebinding
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Chart.Name }}-leader-election-role
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-manager-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-manager-rolebinding
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Chart.Name }}-manager-role
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-proxy-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-proxy-rolebinding
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-proxy-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Chart.Name }}-proxy-role
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: {{ .Release.Namespace }}

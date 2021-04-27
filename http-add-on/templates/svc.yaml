@@ -4,8 +4,17 @@ metadata:
   labels:
     control-plane: controller-manager
     httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
-    keda.sh/addon: keda-http-addon
-  name: keda-http-addon-controller-manager-metrics-service
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-controller-manager-metrics-service
+    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager-metrics-service
+    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/component: controller-manager
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-controller-manager-metrics-service
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
@@ -15,4 +24,4 @@ spec:
   selector:
     control-plane: controller-manager
     httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
-    keda.sh/addon: keda-http-addon
+    keda.sh/addon: {{ .Chart.Name }}

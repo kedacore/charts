@@ -1,6 +1,6 @@
 apiVersion: v2
-name: http-add-on
-description: KEDA HTTP add-on operator chart
+name: keda-add-ons-http
+description: Event-based autoscaler for HTTP workloads on Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
 #
