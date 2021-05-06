@@ -7,6 +7,13 @@ crds:
 
 operator:
   pullPolicy: Always
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 64Mi
+    requests:
+      cpu: 250m
+      memory: 20Mi
 
 images:
   operator: ghcr.io/kedacore/http-add-on-operator

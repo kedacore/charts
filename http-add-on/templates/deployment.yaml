@@ -62,11 +62,6 @@ spec:
           value: {{ .Values.operator.pullPolicy | default "Always" }}
         - name: SCALER_PULL_POLICY
           value: {{ .Values.operator.pullPolicy | default "Always"}}
-        # resources:
-        #   limits:
-        #     cpu: 0.5
-        #     memory: 30Mi
-        #   requests:
-        #     cpu: 0.5
-        #     memory: 20Mi
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10
