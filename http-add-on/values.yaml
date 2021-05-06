@@ -14,6 +14,7 @@ operator:
     requests:
       cpu: 250m
       memory: 20Mi
+  port: 8443
 
 images:
   operator: ghcr.io/kedacore/http-add-on-operator

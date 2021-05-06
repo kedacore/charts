@@ -19,7 +19,7 @@ metadata:
 spec:
   ports:
   - name: https
-    port: 8443
+    port: {{ default 8443 .Values.operator.port }}
     targetPort: https
   selector:
     control-plane: controller-manager
