@@ -79,7 +79,7 @@ spec:
             - name: OPERATOR_NAME
               value: {{ .Values.operator.name }}
             {{- if .Values.http.timeout }}
-            - name: KEDA_DEFAULT_HTTP_TIMEOUT
+            - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             {{- end }}
             {{- if .Values.env }}
