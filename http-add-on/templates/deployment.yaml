@@ -55,9 +55,9 @@ spec:
         name: {{ .Chart.Name }}-operator
         env:
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_IMAGE
-          value: "{{ .Values.images.scaler }}:{{ .Values.version | default .Chart.AppVersion }}"
+          value: "{{ .Values.images.scaler }}:v{{ .Values.version | default .Chart.AppVersion }}"
         - name: KEDAHTTP_OPERATOR_INTERCEPTOR_IMAGE
-          value: "{{ .Values.images.interceptor }}:{{ .Values.version | default .Chart.AppVersion }}"
+          value: "{{ .Values.images.interceptor }}:v{{ .Values.version | default .Chart.AppVersion }}"
         - name: INTERCEPTOR_PULL_POLICY
           value: {{ .Values.operator.pullPolicy | default "Always" }}
         - name: SCALER_PULL_POLICY
