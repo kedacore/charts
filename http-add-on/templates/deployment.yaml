@@ -50,7 +50,7 @@ spec:
       - args:
         - --metrics-addr=127.0.0.1:8080
         - --enable-leader-election
-        image: "{{ .Values.images.operator }}:{{ .Values.version | default .Chart.AppVersion }}"
+        image: "{{ .Values.images.operator }}:v{{ .Values.version | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.operator.pullPolicy | default "Always" }}
         name: {{ .Chart.Name }}-operator
         env:
