@@ -64,4 +64,10 @@ jobs:
       run: kubectl get httpscaledobjects
 
     - name: Get all CRDs
-      run: kubectl get crds/httpscaledobjects
+      run: kubectl get crds
+
+    - name: Get HTTPScaledObject CRD
+      run: kubectl get crds/httpscaledobjects.http.keda.sh
+
+    - name: Describe HTTPScaledObject CRD
+      run: kubectl describe crds/httpscaledobjects.http.keda.sh
