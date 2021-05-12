@@ -6,11 +6,13 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/ci-http-add-on.yml'
       - 'http-add-on/**'
   pull_request:
     branches:
       - master
     paths:
+      - '.github/workflows/ci-http-add-on.yml'
       - 'http-add-on/**'
 
 jobs:

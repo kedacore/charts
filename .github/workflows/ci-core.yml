@@ -6,11 +6,13 @@ on:
     branches:
       - master
     paths:
+      - '.github/workflows/ci-core.yml'
       - 'keda/**'
   pull_request:
     branches:
       - master
     paths:
+      - '.github/workflows/ci-core.yml'
       - 'keda/**'
 
 jobs:
