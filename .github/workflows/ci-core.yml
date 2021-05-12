@@ -1,5 +1,19 @@
-name: Helm Chart CI
-on: [pull_request]
+name: Helm Chart CI (Core)
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/ci-core.yml'
+      - 'keda/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/ci-core.yml'
+      - 'keda/**'
 
 jobs:
   lint-helm-3-x:
