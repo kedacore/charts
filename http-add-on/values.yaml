@@ -1,0 +1,22 @@
+version: v0.1.0-v1alpha1
+
+additionalLabels: ""
+
+crds:
+  install: true
+
+operator:
+  pullPolicy: Always
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 64Mi
+    requests:
+      cpu: 250m
+      memory: 20Mi
+  port: 8443
+
+images:
+  operator: ghcr.io/kedacore/http-add-on-operator
+  interceptor: ghcr.io/kedacore/http-add-on-interceptor
+  scaler: ghcr.io/kedacore/http-add-on-scaler

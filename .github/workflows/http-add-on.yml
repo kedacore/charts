@@ -1,0 +1,53 @@
+name: HTTP add-on Helm Chart CI
+on: [pull_request]
+
+jobs:
+  lint-helm-3-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+
+    - name: Lint 'http-add-on' Helm chart
+      run: helm lint http-add-on
+
+  deploy-helm-3-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+
+    - name: Create k8s Kind Cluster
+      uses: helm/kind-action@v1.0.0
+
+    - name: Show Kubernetes version
+      run: |
+        kubectl version
+
+    - name: Show Helm version
+      run: |
+        helm version
+
+    - name: Create keda namespace
+      run: kubectl create ns keda
+
+    - name: Install Keda chart
+      run: helm install keda kedacore/keda --namespace keda
+
+    - name: Template Helm chart
+      run: helm template http-add-on ./http-add-on/ --namespace keda
+
+    - name: Install Helm chart
+      run: helm install http-add-on ./http-add-on/ --namespace keda
+
+    - name: Get all HTTPScaledObjects
+      run: kubectl get httpscaledobjects
+
+    - name: Get all CRDs
+      run: kubectl get crds/httpscaledobjects
