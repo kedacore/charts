@@ -1,5 +1,17 @@
-name: HTTP add-on Helm Chart CI
-on: [pull_request]
+name: Helm Chart CI (HTTP add-on)
+on:
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
+  push:
+    branches:
+      - master
+    paths:
+      - 'http-add-on/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'http-add-on/**'
 
 jobs:
   lint-helm-3-x:
@@ -38,7 +50,7 @@ jobs:
       run: kubectl create ns keda
 
     - name: Install Keda chart
-      run: helm install keda kedacore/keda --namespace keda
+      run: helm install keda ./keda/ --namespace keda
 
     - name: Template Helm chart
       run: helm template http-add-on ./http-add-on/ --namespace keda
