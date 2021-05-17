@@ -1,5 +1,3 @@
-version: v0.1.0-v1alpha1
-
 additionalLabels: ""
 
 crds:
@@ -17,6 +15,7 @@ operator:
   port: 8443
 
 images:
+  tag: latest
   operator: ghcr.io/kedacore/http-add-on-operator
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
   scaler: ghcr.io/kedacore/http-add-on-scaler
