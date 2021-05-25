@@ -3,12 +3,12 @@ kind: Deployment
 metadata:
   labels:
     control-plane: controller-manager
-    httpscaledobjects.http.keda.sh/version: {{ .Chart.AppVersion }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-controller-manager
     app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -21,18 +21,18 @@ spec:
   selector:
     matchLabels:
       control-plane: controller-manager
-      httpscaledobjects.http.keda.sh/version: {{ .Chart.AppVersion }}
+      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
       keda.sh/addon: {{ .Chart.Name }}
   template:
     metadata:
       labels:
         control-plane: controller-manager
-        httpscaledobjects.http.keda.sh/version: {{ .Chart.AppVersion }}
+        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
         keda.sh/addon: {{ .Chart.Name }}
         app: {{ .Chart.Name }}
         name: {{ .Chart.Name }}-operator
         app.kubernetes.io/name: {{ .Chart.Name }}-operator
-        app.kubernetes.io/version: {{ .Chart.AppVersion }}
+        app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
         app.kubernetes.io/component: operator
         app.kubernetes.io/part-of: {{ .Chart.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}

@@ -15,7 +15,7 @@ operator:
   port: 8443
 
 images:
-  tag: latest
+  tag:
   operator: ghcr.io/kedacore/http-add-on-operator
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
   scaler: ghcr.io/kedacore/http-add-on-scaler
