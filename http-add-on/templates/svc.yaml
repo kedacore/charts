@@ -3,12 +3,12 @@ kind: Service
 metadata:
   labels:
     control-plane: controller-manager
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-controller-manager-metrics-service
     app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager-metrics-service
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -23,5 +23,5 @@ spec:
     targetPort: https
   selector:
     control-plane: controller-manager
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}

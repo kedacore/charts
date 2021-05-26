@@ -2,12 +2,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-leader-election-role
     app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -48,12 +48,12 @@ kind: ClusterRole
 metadata:
   creationTimestamp: null
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-manager-role
     app.kubernetes.io/name: {{ .Chart.Name }}-manager-role
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -142,12 +142,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-proxy-role
     app.kubernetes.io/name: {{ .Chart.Name }}-proxy-role
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -172,12 +172,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-metrics-reader
     app.kubernetes.io/name: {{ .Chart.Name }}-metrics-reader
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -194,12 +194,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-leader-election-binding
     app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-rolebinding
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -220,12 +220,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-manager-rolebinding
     app.kubernetes.io/name: {{ .Chart.Name }}-manager-rolebinding
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -245,12 +245,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.version }}
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-proxy-rolebinding
     app.kubernetes.io/name: {{ .Chart.Name }}-proxy-rolebinding
-    app.kubernetes.io/version: {{ .Values.version }}
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: controller-manager
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
