@@ -1,0 +1,23 @@
+{{- if and .Values.prometheus.operator.enabled .Values.prometheus.operator.prometheusRules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: prometheusRule
+metadata:
+  name: {{ .Values.operator.name }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.operator.name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/part-of: {{ .Values.operator.name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- range $key, $value := .Values.prometheus.operator.prometheusRules.additionalLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- with .Values.prometheus.operator.prometheusRules.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+spec:
+  groups:
+  - name: {{ .Values.operator.name }}
+    rules:
+{{ toYaml .Values.prometheus.operator.prometheusRules.alerts | indent 6 }}
+{{- end }}
