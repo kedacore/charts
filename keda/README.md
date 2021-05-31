@@ -112,10 +112,14 @@ their default values.
 | `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for keda operator using podMonitor crd (prometheus operator) | ``
 | `prometheus.operator.podMonitor.namespace`                 | Scraping namespace for keda operator using podMonitor crd (prometheus operator) | ``
 | `prometheus.operator.podMonitor.additionalLabels`          | Additional labels to add for keda operator using podMonitor crd (prometheus operator) | `{}`
-| `volumes.keda.extraVolumes`                                | Extra volumes for keda deployment                                 | `[]`
-| `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for keda deployment                                 | `[]`
-| `volumes.metricsApiServer.extraVolumes`                    | Extra volumes for metric server deployment                                 | `[]`
-| `volumes.metricsApiServer.extraVolumeMounts`               | Extra volume mounts for metric server deployment                                 | `[]`
+| `prometheus.operator.prometheusRules.enabled`              | Enable monitoring for keda operator using prometheusRules crd (prometheus operator) | `false`
+| `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for keda operator using prometheusRules crd (prometheus operator) | ``
+| `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for keda operator using prometheusRules crd (prometheus operator) | `{}`
+| `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for keda operator using prometheusRules crd (prometheus operator) | `[]`
+| `volumes.keda.extraVolumes`                                | Extra volumes for keda deployment | `[]`
+| `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for keda deployment | `[]`
+| `volumes.metricsApiServer.extraVolumes`                    | Extra volumes for metric server deployment | `[]`
+| `volumes.metricsApiServer.extraVolumeMounts`               | Extra volume mounts for metric server deployment | `[]`
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
