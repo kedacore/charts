@@ -1,6 +1,6 @@
 {{- if and .Values.prometheus.operator.enabled .Values.prometheus.operator.prometheusRules.enabled }}
 apiVersion: monitoring.coreos.com/v1
-kind: prometheusRule
+kind: PrometheusRule
 metadata:
   name: {{ .Values.operator.name }}
   labels:
