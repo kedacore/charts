@@ -81,6 +81,9 @@ jobs:
     - name: Get all TriggerAuthentication
       run: kubectl get triggerauth -o wide
 
+    - name: Get all ClusterTriggerAuthentication
+      run: kubectl get clustertriggerauth -o wide
+
     - name: Deploy Nginx with autoscaling
       run: kubectl apply -f ./samples/nginx-scaledobject.yml
 
