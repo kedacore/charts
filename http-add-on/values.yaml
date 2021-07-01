@@ -13,6 +13,26 @@ operator:
       cpu: 250m
       memory: 20Mi
   port: 8443
+  adminService: operator-admin
+  adminServicePort: 9090
+  routingTableURLPath: routing
+
+scaler:
+  pullPolicy: Always
+  grpcPort: 9090
+  healthPort: 9091
+
+interceptor:
+  pullPolicy: Always
+  adminService: http-add-on-interceptor-admin
+  adminPort: 9090
+  proxyService: http-add-on-interceptor-proxy
+  proxyPort: 8080
+  routingTableUpdateDurationMS: 500
+  tcpConnectTimeout: 500ms
+  keepAlive: 1s
+  responseHeaderTimeout: 500ms
+  replicasWaitTimeout: 1500ms
 
 images:
   tag:
