@@ -50,6 +50,7 @@ spec:
       - args:
         - --metrics-addr=127.0.0.1:8080
         - --enable-leader-election
+        - --admin-port={{ .Values.operator.adminPort }}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.operator.pullPolicy | default "Always" }}
         name: {{ .Chart.Name }}-operator
@@ -62,6 +63,9 @@ spec:
           value: {{ .Values.operator.pullPolicy | default "Always" }}
         - name: SCALER_PULL_POLICY
           value: {{ .Values.operator.pullPolicy | default "Always"}}
+        ports: 
+        - containerPort: {{ .Values.operator.adminPort }}
+          name: adminHTTP
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10

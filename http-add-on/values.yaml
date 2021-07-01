@@ -14,7 +14,7 @@ operator:
       memory: 20Mi
   port: 8443
   adminService: operator-admin
-  adminServicePort: 9090
+  adminPort: 9090
   routingTableURLPath: routing
 
 scaler:
