@@ -42,31 +42,31 @@ spec:
       containers:
       - args:
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.interceptor.pullPolicy | default "Always" }}
-        name: {{ .Chart.Name }}-interceptor
+        imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
+        name: "{{ .Chart.Name }}-interceptor"
         env:
         - name: KEDA_HTTP_OPERATOR_SERVICE_NAME
-          value: "{{ .Chart.Name }}-{{ .Values.operator.adminService }}"
+          value: "{{ .Values.operator.adminService }}"
         - name: KEDA_HTTP_OPERATOR_SERVICE_PORT
-          value: {{ .Values.operator.adminPort }}
+          value: "{{ .Values.operator.adminPort }}"
         - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_PATH
-          value: {{ .Values.operator.routingTableURLPath }}
+          value: "{{ .Values.operator.routingTableURLPath }}"
         - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_UPDATE_DURATION_MS
-          value: {{ .Values.interceptor.routingTableUpdateDurationMS }}
+          value: "{{ .Values.interceptor.routingTableUpdateDurationMS }}"
         - name: KEDA_HTTP_CURRENT_NAMESPACE
-          value: {{ .Release.Namespace }}
+          value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_PROXY_PORT
-          value: {{ .Values.interceptor.proxyPort }}
+          value: "{{ .Values.interceptor.proxyPort }}"
         - name: KEDA_HTTP_ADMIN_PORT
-          value: {{ .Values.interceptor.adminPort }}
+          value: "{{ .Values.interceptor.adminPort }}"
         - name: KEDA_HTTP_CONNECT_TIMEOUT
-          value: {{ .Values.interceptor.tcpConnectTimeout }}
+          value: "{{ .Values.interceptor.tcpConnectTimeout }}"
         - name: KEDA_HTTP_KEEP_ALIVE
-          value: {{ .Values.interceptor.keepAlive }}
+          value: "{{ .Values.interceptor.keepAlive }}"
         - name: KEDA_RESPONSE_HEADER_TIMEOUT
-          value: {{ .Values.interceptor.responseHeaderTimeout }}
+          value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
-          value: {{ .Values.interceptor.replicasWaitTimeout }}
+          value: "{{ .Values.interceptor.replicasWaitTimeout }}"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10

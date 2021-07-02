@@ -30,9 +30,9 @@ spec:
         httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
         keda.sh/addon: {{ .Chart.Name }}
         app: {{ .Chart.Name }}
-        name: {{ .Chart.Name }}-external-scaler
-        app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
-        app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+        name: "{{ .Chart.Name }}-external-scaler"
+        app.kubernetes.io/name: "{{ .Chart.Name }}-external-scaler"
+        app.kubernetes.io/version: "{{ .Values.images.tag | default .Chart.AppVersion }}"
         app.kubernetes.io/component: external-scaler
         app.kubernetes.io/part-of: {{ .Chart.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -43,18 +43,18 @@ spec:
       - args:
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
-        name: {{ .Chart.Name }}-external-scaler
+        name: "{{ .Chart.Name }}-external-scaler"
         env:
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
         - name: KEDA_HTTP_HEALTH_PORT
           value: "{{ .Values.scaler.healthPort }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
-          value: {{ .Release.Namespace }}
+          value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_SERVICE
-          value: {{ .Values.interceptor.adminService }}
+          value: "{{ .Values.interceptor.adminService }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_PORT
-          value: {{ .Values.interceptor.adminPort }}
+          value: "{{ .Values.interceptor.adminPort }}"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10

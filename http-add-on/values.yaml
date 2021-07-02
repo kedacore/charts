@@ -18,15 +18,16 @@ operator:
   routingTableURLPath: routing
 
 scaler:
+  service: external-scaler
   pullPolicy: Always
   grpcPort: 9090
   healthPort: 9091
 
 interceptor:
   pullPolicy: Always
-  adminService: http-add-on-interceptor-admin
+  adminService: interceptor-admin
   adminPort: 9090
-  proxyService: http-add-on-interceptor-proxy
+  proxyService: interceptor-proxy
   proxyPort: 8080
   routingTableUpdateDurationMS: 500
   tcpConnectTimeout: 500ms

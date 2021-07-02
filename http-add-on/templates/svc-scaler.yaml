@@ -6,15 +6,15 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-external-scaler-service
-    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager-metrics-service
+    name: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
+    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler-service
     app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: external-scaler
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
-  name: {{ .Chart.Name }}-external-scaler
+  name: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
