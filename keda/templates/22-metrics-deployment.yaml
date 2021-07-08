@@ -118,10 +118,8 @@ spec:
       {{- if .Values.volumes.metricsApiServer.extraVolumes }}
       {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 8 }}
       {{- end }}
-      {{- if .Values.metricsServer.useHostNetwork }}
-      hostNetwork: true
-      dsnPolicy: ClusterFirstWithHostNet
-      {{- end }}
+      dsnPolicy: {{ .Values.metricsServer.dnsPolicy }}
+      hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
