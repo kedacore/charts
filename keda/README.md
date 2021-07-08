@@ -63,7 +63,7 @@ their default values.
 | `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
-| `metricsServer.dnsPolicy`                                  | specify dnsPolicy for the metric server Pod | `ClusterFirst`
+| `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
 | `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `` |
