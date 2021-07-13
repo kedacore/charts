@@ -62,7 +62,7 @@ spec:
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
           value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
-          value: {{ default 9090 .Values.scaler.grpcPort }}
+          value: "{{ default 9090 .Values.scaler.grpcPort }}"
         ports: 
         - containerPort: {{ .Values.operator.adminPort }}
           name: admin-http
