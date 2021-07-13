@@ -46,7 +46,7 @@ spec:
         name: "{{ .Chart.Name }}-interceptor"
         env:
         - name: KEDA_HTTP_OPERATOR_SERVICE_NAME
-          value: "{{ .Values.operator.adminService }}"
+          value: "{{ .Chart.Name }}-{{ .Values.operator.adminService }}"
         - name: KEDA_HTTP_OPERATOR_SERVICE_PORT
           value: "{{ .Values.operator.adminPort }}"
         - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_PATH
