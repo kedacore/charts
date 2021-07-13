@@ -67,6 +67,11 @@ spec:
           value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
           value: "{{ .Values.interceptor.replicasWaitTimeout }}"
+        ports:
+        - containerPort: {{ .Values.interceptor.adminPort }}
+          name: inter-admin
+        - containerPort: {{ .Values.interceptor.proxyPort }}
+          name: inter-proxy
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10
