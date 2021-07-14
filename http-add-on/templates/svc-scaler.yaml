@@ -25,5 +25,3 @@ spec:
     port: {{ default 9091 .Values.scaler.healthPort }}
   selector:
     control-plane: external-scaler
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}

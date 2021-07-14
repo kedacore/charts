@@ -20,8 +20,6 @@ spec:
   ports:
   - name: https
     port: {{ default 9091 .Values.interceptor.adminPort }}
-    targetPort: https
+    targetPort: inter-admin
   selector:
-    control-plane: interceptor-admin
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
+    control-plane: interceptor

@@ -20,8 +20,6 @@ spec:
   ports:
   - name: https
     port: {{ default 9091 .Values.interceptor.proxyPort }}
-    targetPort: https
+    targetPort: inter-proxy
   selector:
-    control-plane: interceptor-proxy
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
+    control-plane: interceptor
