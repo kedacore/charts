@@ -52,9 +52,9 @@ spec:
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_SERVICE
-          value: "{{ .Values.interceptor.adminService }}"
+          value: "{{ .Chart.Name }}-{{ .Values.interceptor.adminService }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_PORT
-          value: "{{ .Values.interceptor.adminPort }}"
+          value: "{{ default 9091 .Values.interceptor.adminPort }}"
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10
