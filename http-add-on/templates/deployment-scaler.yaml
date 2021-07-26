@@ -44,6 +44,11 @@ spec:
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
         name: "{{ .Chart.Name }}-external-scaler"
+        ports:
+        - containerPort: {{ .Values.scaler.healthPort }}
+          name: scaler-health
+        - containerPort: {{ .Values.scaler.grpcPort }}
+          name: scaler-grpc
         env:
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
