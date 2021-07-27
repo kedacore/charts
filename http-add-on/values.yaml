@@ -34,6 +34,8 @@ interceptor:
   keepAlive: 1s
   responseHeaderTimeout: 500ms
   replicasWaitTimeout: 1500ms
+  minReplicas: 1
+  maxReplicas: 50
 
 images:
   tag:
