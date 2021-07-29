@@ -1,4 +1,4 @@
-# this is the ScaledObject that tells the interceptor 
+# this is the ScaledObject that tells KEDA to scale the interceptor fleet
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
@@ -12,5 +12,5 @@ spec:
   triggers:
     - type: external
       metadata:
-        scalerAddress: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
+        scalerAddress: "{{ .Chart.Name }}-{{ .Values.scaler.service }}:{{ default 9091 .Values.scaler.grpcPort }}"
         host: interceptor
