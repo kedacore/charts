@@ -99,6 +99,7 @@ their default values.
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443`                                        |
 | `prometheus.metricServer.enabled`                          | Enable metric server prometheus metrics expose | `false`
 | `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022`
+| `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics`
 | `prometheus.metricServer.path`                             | Path used for exposing metric server prometheus metrics | `/metrics`
 | `prometheus.metricServer.podMonitor.enabled`               | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false`
 | `prometheus.metricServer.podMonitor.interval`              | Scraping interval for metric server using podMonitor crd (prometheus operator) | ``
@@ -107,6 +108,7 @@ their default values.
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
 | `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
 | `prometheus.operator.port`                                 | HTTP port used for exposing keda operator prometheus metrics | `9022`
+| `prometheus.operator.port`                                 | HTTP port name used for exposing keda operator prometheus metrics | `metrics`
 | `prometheus.operator.path`                                 | Path used for exposing keda operator prometheus metrics | `/metrics`
 | `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for keda operator using podMonitor crd (prometheus operator) | `false`
 | `prometheus.operator.podMonitor.interval`                  | Scraping interval for keda operator using podMonitor crd (prometheus operator) | ``
