@@ -172,7 +172,6 @@ prometheus:
   operator:
     enabled: false
     port: 8080
-    portName: metrics
     path: /metrics
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
