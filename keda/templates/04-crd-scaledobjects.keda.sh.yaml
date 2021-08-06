@@ -47,6 +47,9 @@ spec:
     - jsonPath: .status.conditions[?(@.type=="Active")].status
       name: Active
       type: string
+    - jsonPath: .status.conditions[?(@.type=="Fallback")].status
+      name: Fallback
+      type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
       type: date
@@ -204,6 +207,22 @@ spec:
               cooldownPeriod:
                 format: int32
                 type: integer
+              fallback:
+                description: Fallback is the spec for fallback options
+                properties:
+                  failureThreshold:
+                    format: int32
+                    type: integer
+                  replicas:
+                    format: int32
+                    type: integer
+                required:
+                - failureThreshold
+                - replicas
+                type: object
+              idleReplicaCount:
+                format: int32
+                type: integer
               maxReplicaCount:
                 format: int32
                 type: integer
@@ -246,6 +265,9 @@ spec:
                       required:
                       - name
                       type: object
+                    fallback:
+                      format: int32
+                      type: integer
                     metadata:
                       additionalProperties:
                         type: string
@@ -294,6 +316,19 @@ spec:
                 items:
                   type: string
                 type: array
+              health:
+                additionalProperties:
+                  description: HealthStatus is the status for a ScaledObject's health
+                  properties:
+                    numberOfFailures:
+                      format: int32
+                      type: integer
+                    status:
+                      description: HealthStatusType is an indication of whether the
+                        health status is happy or failing
+                      type: string
+                  type: object
+                type: object
               lastActiveTime:
                 format: date-time
                 type: string
