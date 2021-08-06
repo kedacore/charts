@@ -54,6 +54,7 @@ spec:
           - --enable-leader-election
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
+          - "--metrics-addr=:{{ .Values.service.operator.portHttpTarget }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:
@@ -66,7 +67,7 @@ spec:
               port: 8081
             initialDelaySeconds: 20
           ports:
-          - containerPort: 8080
+          - containerPort: {{ .Values.service.operator.portHttpTarget }}
             name: http
             protocol: TCP
           env:

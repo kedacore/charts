@@ -54,13 +54,13 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: {{ .Values.service.portHttpsTarget }}
+              port: {{ .Values.service.metricServer.portHttpsTarget }}
               scheme: HTTPS
             initialDelaySeconds: 5
           readinessProbe:
             httpGet:
               path: /readyz
-              port: {{ .Values.service.portHttpsTarget }}
+              port: {{ .Values.service.metricServer.portHttpsTarget }}
               scheme: HTTPS
             initialDelaySeconds: 5
           env:
@@ -71,7 +71,7 @@ spec:
             {{- end }}
           args:
           - /usr/local/bin/keda-adapter
-          - --secure-port={{ .Values.service.portHttpsTarget }}
+          - --secure-port={{ .Values.service.metricServer.portHttpsTarget }}
           - --logtostderr=true
           {{- if .Values.prometheus.metricServer.enabled }}
           - --metrics-port={{ .Values.prometheus.metricServer.port }}
@@ -79,10 +79,10 @@ spec:
           {{- end }}
           - --v={{ .Values.logging.metricServer.level }}
           ports:
-            - containerPort: {{ .Values.service.portHttpsTarget }}
+            - containerPort: {{ .Values.service.metricServer.portHttpsTarget }}
               name: https
               protocol: TCP
-            - containerPort: {{ .Values.service.portHttpTarget }}
+            - containerPort: {{ .Values.service.metricServer.portHttpTarget }}
               name: http
               protocol: TCP
             {{- if .Values.prometheus.metricServer.enabled }}

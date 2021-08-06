@@ -16,12 +16,12 @@ metadata:
 spec:
   ports:
   - name: https
-    port: {{ .Values.service.portHttps }}
-    targetPort: {{ .Values.service.portHttpsTarget }}
+    port: {{ .Values.service.metricServer.portHttps }}
+    targetPort: {{ .Values.service.metricServer.portHttpsTarget }}
     protocol: TCP
   - name: http
-    port: {{ .Values.service.portHttp }}
-    targetPort: {{ .Values.service.portHttpTarget }}
+    port: {{ .Values.service.metricServer.portHttp }}
+    targetPort: {{ .Values.service.metricServer.portHttpTarget }}
     protocol: TCP
   {{- if .Values.prometheus.metricServer.enabled }}
   - name: {{ .Values.prometheus.metricServer.portName }}

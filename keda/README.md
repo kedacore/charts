@@ -92,11 +92,14 @@ their default values.
 | `priorityClassName`                                        | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
 | `env`                                                      | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
 | `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
-| `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}`                                        |
-| `service.portHttp`                                         | Service HTTP port for KEDA Metric Server service | `80`                                        |
-| `service.portHttpTarget`                                   | Service HTTP port for KEDA Metric Server container | `8080`                                        |
-| `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443`                                        |
-| `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443`                                        |
+| `service.operator.annotations`                             | Annotations to add the KEDA Operator service | `{}`                                        |
+| `service.operator.portHttp`                                | Service HTTP port for KEDA Operator service | `80`                                        |
+| `service.operator.portHttpTarget`                          | Service HTTP port for KEDA Operator container | `8080`                                        |
+| `service.metricServer.annotations`                         | Annotations to add the KEDA Metric Server service | `{}`                                        |
+| `service.metricServer.portHttp`                            | Service HTTP port for KEDA Metric Server service | `80`                                        |
+| `service.metricServer.portHttpTarget`                      | Service HTTP port for KEDA Metric Server container | `8080`                                        |
+| `service.metricServer.portHttps`                           | HTTPS port for KEDA Metric Server service | `443`                                        |
+| `service.metricServer.portHttpsTarget`                     | HTTPS port for KEDA Metric Server container | `6443`             –                           |
 | `prometheus.metricServer.enabled`                          | Enable metric server prometheus metrics expose | `false`
 | `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022`
 | `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics`
@@ -107,7 +110,6 @@ their default values.
 | `prometheus.metricServer.podMonitor.namespace`             | Scraping namespace for metric server using podMonitor crd (prometheus operator) | ``
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
 | `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
-| `prometheus.operator.port`                                 | HTTP port used for exposing keda operator prometheus metrics | `9022`
 | `prometheus.operator.path`                                 | Path used for exposing keda operator prometheus metrics | `/metrics`
 | `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for keda operator using podMonitor crd (prometheus operator) | `false`
 | `prometheus.operator.podMonitor.interval`                  | Scraping interval for keda operator using podMonitor crd (prometheus operator) | ``

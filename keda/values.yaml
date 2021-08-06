@@ -96,13 +96,18 @@ securityContext: {}
   # runAsUser: 1000
 
 service:
-  type: ClusterIP
-  portHttp: 80
-  portHttpTarget: 8080
-  portHttps: 443
-  portHttpsTarget: 6443
-
-  annotations: {}
+  operator:
+    type: ClusterIP
+    portHttp: 80
+    portHttpTarget: 8080
+    annotations: {}
+  metricServer:
+    type: ClusterIP
+    portHttp: 80
+    portHttpTarget: 8080
+    portHttps: 443
+    portHttpsTarget: 6443
+    annotations: {}
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -171,7 +176,6 @@ prometheus:
       additionalLabels: {}
   operator:
     enabled: false
-    port: 8080
     path: /metrics
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
