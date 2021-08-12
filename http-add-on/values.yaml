@@ -36,6 +36,7 @@ interceptor:
   replicasWaitTimeout: 1500ms
   minReplicas: 1
   maxReplicas: 50
+  pollingInterval: 1
 
 images:
   tag:

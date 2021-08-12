@@ -6,6 +6,7 @@ metadata:
 spec:
   minReplicaCount: {{ .Values.interceptor.minReplicas }}
   maxReplicaCount: {{ .Values.interceptor.maxReplicas }}
+  pollingInterval: {{ .Values.interceptor.pollingInterval }}
   scaleTargetRef:
     name: "{{ .Chart.Name }}-interceptor"
     kind: Deployment
