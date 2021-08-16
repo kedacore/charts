@@ -57,8 +57,6 @@ spec:
         env:
         - name: KEDAHTTP_INTERCEPTOR_SERVICE
           value: "{{.Chart.Name}}-{{ .Values.interceptor.adminService }}"
-        - name: SCALER_PULL_POLICY
-          value: {{ .Values.operator.pullPolicy | default "Always"}}
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
           value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT

@@ -45,13 +45,13 @@ spec:
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"
         env:
-        - name: KEDA_HTTP_OPERATOR_SERVICE_NAME
-          value: "{{ .Chart.Name }}-{{ .Values.operator.adminService }}"
-        - name: KEDA_HTTP_OPERATOR_SERVICE_PORT
-          value: "{{ .Values.operator.adminPort }}"
-        - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_PATH
-          value: "{{ .Values.operator.routingTableURLPath }}"
-        - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_UPDATE_DURATION_MS
+        # - name: KEDA_HTTP_OPERATOR_SERVICE_NAME
+        #   value: "{{ .Chart.Name }}-{{ .Values.operator.adminService }}"
+        # - name: KEDA_HTTP_OPERATOR_SERVICE_PORT
+        #   value: "{{ .Values.operator.adminPort }}"
+        # - name: KEDA_HTTP_OPERATOR_ROUTING_TABLE_PATH
+        #   value: "{{ .Values.operator.routingTableURLPath }}"
+        - name: KEDA_HTTP_ROUTING_TABLE_UPDATE_DURATION_MS
           value: "{{ .Values.interceptor.routingTableUpdateDurationMS }}"
         - name: KEDA_HTTP_CURRENT_NAMESPACE
           value: "{{ .Release.Namespace }}"
