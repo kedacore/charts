@@ -35,7 +35,7 @@ Please see the [complete installation instructions](https://github.com/kedacore/
 Please see the [contributing documentation for all instructions](https://github.com/kedacore/http-add-on/tree/main/docs/contributing.md).
 
 ---
-We are a Cloud Native Computing Foundation (CNCF) sandbox project.
+We are a Cloud Native Computing Foundation (CNCF) incubation project.
 <p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg" height="75px"></p>
 
 ---

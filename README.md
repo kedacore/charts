@@ -3,7 +3,7 @@ KEDA allows for fine grained autoscaling (including to/from zero) for event driv
 
 KEDA can run on both the cloud and the edge, integrates natively with Kubernetes components such as the Horizontal Pod Autoscaler, and has no external dependencies.
 
-We are a Cloud Native Computing Foundation (CNCF) sandbox project.
+We are a Cloud Native Computing Foundation (CNCF) incubation project.
 ![CNCF Logo](https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg)
 
 ## Getting Started
