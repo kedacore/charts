@@ -5,10 +5,8 @@ metadata:
   name: {{ .Values.operator.name }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
     {{- range $key, $value := .Values.prometheus.operator.podMonitor.additionalLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}

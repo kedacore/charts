@@ -27,6 +27,10 @@ metricsServer:
   dnsPolicy: ClusterFirst
   useHostNetwork: false
 
+# -- Custom labels to add into metadata
+customLabels: {}
+  # foo: bar
+
 additionalLabels: ""
 podAnnotations:
   keda: {}
