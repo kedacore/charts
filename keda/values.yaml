@@ -28,10 +28,9 @@ metricsServer:
   useHostNetwork: false
 
 # -- Custom labels to add into metadata
-customLabels: {}
-  # foo: bar
+additionalLabels: #{}
+  foo: bar
 
-additionalLabels: ""
 podAnnotations:
   keda: {}
   metricsAdapter: {}

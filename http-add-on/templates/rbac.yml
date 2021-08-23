@@ -6,13 +6,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-leader-election-role
-    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
-    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    app.kubernetes.io/component: controller-manager
-    app.kubernetes.io/part-of: {{ .Chart.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
+    {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-leader-election-role
   namespace: {{ .Release.Namespace }}
 rules:
@@ -58,7 +52,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-manager-role
 rules:
 - apiGroups:
@@ -152,7 +145,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-proxy-role
 rules:
 - apiGroups:
@@ -182,7 +174,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-metrics-reader
 rules:
 - nonResourceURLs:
@@ -204,7 +195,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-leader-election-rolebinding
   namespace: {{ .Release.Namespace }}
 roleRef:
@@ -230,7 +220,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -255,7 +244,6 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io

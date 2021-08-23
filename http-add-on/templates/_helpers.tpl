@@ -3,21 +3,21 @@
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "keda.chart" -}}
+{{- define "keda-addons-http.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Generate basic labels
 */}}
-{{- define "keda.labels" }}
-helm.sh/chart: {{ include "keda.chart" . }}
-app.kubernetes.io/component: operator
+{{- define "keda-addons-http.labels" }}
+helm.sh/chart: {{ include "keda-addons-http.chart" . }}
+app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
+app.kubernetes.io/component: controller-manager
+app.kubernetes.io/part-of: {{ .Chart.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion }}
-{{- end }}
+app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
 {{- if .Values.additionalLabels }}
 {{ toYaml .Values.additionalLabels }}
 {{- end }}
