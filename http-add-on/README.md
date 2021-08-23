@@ -82,6 +82,7 @@ their default values.
 
 | Parameter                                                  | Description                               | Default                                         |
 |:-----------------------------------------------------------|:------------------------------------------|:------------------------------------------------|
+| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
 | `images.tag`                                               | Image tag for the http add on             | None, it uses Helm chart's app version as a default                              |
 | `images.operator`                                          | Image name for the operator image component | `ghcr.io/kedacore/http-add-on-operator:latest` |
 | `images.interceptor`                                       | Image name for the interceptor image component | `ghcr.io/kedacore/http-add-on-interceptor:latest` |
