@@ -37,6 +37,7 @@ interceptor:
   minReplicas: 1
   maxReplicas: 50
   pollingInterval: 1
+  deploymentCachePollingIntervalMS: 1000
 
 images:
   tag:

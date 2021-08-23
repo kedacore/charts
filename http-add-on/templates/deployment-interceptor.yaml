@@ -67,6 +67,8 @@ spec:
           value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
           value: "{{ .Values.interceptor.replicasWaitTimeout }}"
+        - name: KEDA_HTTP_DEPLOYMENT_CACHE_POLLING_INTERVAL_MS
+          value: "{{ .Values.interceptor.deploymentCachePollingIntervalMS }}"
         ports:
         - containerPort: {{ .Values.interceptor.adminPort }}
           name: inter-admin
