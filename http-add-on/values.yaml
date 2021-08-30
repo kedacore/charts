@@ -1,6 +1,6 @@
 # -- Custom labels to add into metadata
-additionalLabels: #{}
-  foo: bar
+additionalLabels: {}
+  # foo: bar
 
 crds:
   install: true
