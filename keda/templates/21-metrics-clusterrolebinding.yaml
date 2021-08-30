@@ -4,7 +4,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-system-auth-delegator
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-system-auth-delegator
 roleRef:
@@ -21,7 +20,6 @@ kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-auth-reader
   namespace: kube-system
@@ -39,7 +37,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-hpa-controller-external-metrics
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-hpa-controller-external-metrics
 roleRef:

@@ -6,7 +6,6 @@ metadata:
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
 spec:
   replicas: 1
@@ -18,7 +17,6 @@ spec:
       labels:
         app: {{ .Values.operator.name }}-metrics-apiserver
         app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
-        app.kubernetes.io/part-of: {{ .Values.operator.name }}
         {{- include "keda.labels" . | indent 8 }}
         {{- if .Values.podIdentity.activeDirectory.identity }}
         aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}

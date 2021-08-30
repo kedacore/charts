@@ -4,7 +4,6 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   creationTimestamp: null
   name: {{ .Values.operator.name }}

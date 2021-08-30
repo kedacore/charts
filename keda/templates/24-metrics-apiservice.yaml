@@ -3,7 +3,6 @@ kind: APIService
 metadata:
   labels:
     app.kubernetes.io/name: v1beta1.external.metrics.k8s.io
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   name: v1beta1.external.metrics.k8s.io
 spec:

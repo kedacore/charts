@@ -15,6 +15,7 @@ helm.sh/chart: {{ include "keda.chart" . }}
 app.kubernetes.io/component: operator
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/part-of: {{ .Values.operator.name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}
 {{- end }}

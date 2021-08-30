@@ -4,7 +4,6 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}
 roleRef:
