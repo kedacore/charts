@@ -66,6 +66,10 @@ spec:
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
+            {{- if .Values.http.timeout }}
+            - name: KEDA_HTTP_DEFAULT_TIMEOUT
+              value: {{ .Values.http.timeout | quote }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
