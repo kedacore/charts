@@ -51,7 +51,7 @@ spec:
           command:
           - "/keda"
           args:
-          - --enable-leader-election
+          - --leader-elect
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
