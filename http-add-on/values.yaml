@@ -38,6 +38,11 @@ interceptor:
   maxReplicas: 50
   pollingInterval: 1
   deploymentCachePollingIntervalMS: 1000
+  forceHTTP2: false
+  maxIdleConns: 100
+  idleConnTimeout: 90s
+  tlsHandshakeTimeout: 10s
+  expectContinueTimeout: 1s
 
 images:
   tag:

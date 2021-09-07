@@ -69,6 +69,16 @@ spec:
           value: "{{ .Values.interceptor.replicasWaitTimeout }}"
         - name: KEDA_HTTP_DEPLOYMENT_CACHE_POLLING_INTERVAL_MS
           value: "{{ .Values.interceptor.deploymentCachePollingIntervalMS }}"
+        - name: KEDA_HTTP_FORCE_HTTP2
+          value: "{{ .Values.interceptor.forceHTTP2 }}"
+        - name: KEDA_HTTP_MAX_IDLE_CONNS
+          value: "{{ .Values.interceptor.maxIdleConns }}"
+        - name: KEDA_HTTP_IDLE_CONN_TIMEOUT
+          value: "{{ .Values.interceptor.idleConnTimeout }}"
+        - name: KEDA_HTTP_TLS_HANDSHAKE_TIMEOUT
+          value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
+        - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
+          value: "{{ .Values.interceptor.expectContinueTimeout }}"
         ports:
         - containerPort: {{ .Values.interceptor.adminPort }}
           name: inter-admin
