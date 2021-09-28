@@ -22,6 +22,7 @@ scaler:
   pullPolicy: Always
   grpcPort: 9090
   healthPort: 9091
+  pendingRequestsInterceptor: 200
 
 interceptor:
   pullPolicy: Always
