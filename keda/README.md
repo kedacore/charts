@@ -66,7 +66,7 @@ their default values.
 | `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
-| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `` |
+| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
 | `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
 | `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
 | `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
