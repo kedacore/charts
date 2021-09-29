@@ -6,6 +6,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-leader-election-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-leader-election-role
   namespace: {{ .Release.Namespace }}
@@ -46,6 +47,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-manager-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-manager-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-manager-role
 rules:
@@ -134,6 +136,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-proxy-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-proxy-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-role
 rules:
@@ -158,6 +161,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-metrics-reader
+    app.kubernetes.io/name: {{ .Chart.Name }}-metrics-reader
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-metrics-reader
 rules:
@@ -174,6 +178,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-leader-election-binding
+    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-binding
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-leader-election-rolebinding
   namespace: {{ .Release.Namespace }}
@@ -194,6 +199,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-manager-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-manager-rolebinding
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-manager-rolebinding
 roleRef:
@@ -213,6 +219,7 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-proxy-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-proxy-rolebinding
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-rolebinding
 roleRef:

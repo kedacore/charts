@@ -12,7 +12,6 @@ Generate basic labels
 */}}
 {{- define "keda-addons-http.labels" }}
 helm.sh/chart: {{ include "keda-addons-http.chart" . }}
-app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
 app.kubernetes.io/component: controller-manager
 app.kubernetes.io/part-of: {{ .Chart.Name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
