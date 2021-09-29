@@ -38,7 +38,7 @@ interceptor:
   minReplicas: 1
   maxReplicas: 50
   pollingInterval: 1
-  deploymentCachePollingIntervalMS: 1000
+  deploymentCachePollingIntervalMS: 250
   forceHTTP2: false
   maxIdleConns: 100
   idleConnTimeout: 90s
