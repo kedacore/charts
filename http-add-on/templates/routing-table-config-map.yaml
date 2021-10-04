@@ -7,4 +7,3 @@ metadata:
     "keda.sh/addon": "http-add-on"
     "app":           "http-add-on"
     "name":          "http-add-on-routing-table"
-data:
