@@ -6,7 +6,7 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: "{{ .Chart.Name }}-{{ .Values.interceptor.proxyService }}"
+    name: "{{ .Chart.Name }}-{{ .Values.interceptor.proxy.service }}"
     app.kubernetes.io/name: {{ .Chart.Name }}-interceptor-proxy
     app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: interceptor-proxy
@@ -14,12 +14,12 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
-  name: "{{ .Chart.Name }}-{{ .Values.interceptor.proxyService }}"
+  name: "{{ .Chart.Name }}-{{ .Values.interceptor.proxy.service }}"
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
   - name: https
-    port: {{ default 9091 .Values.interceptor.proxyPort }}
+    port: {{ default 9091 .Values.interceptor.proxy.port }}
     targetPort: inter-proxy
   selector:
     control-plane: interceptor

@@ -4,9 +4,9 @@ kind: ScaledObject
 metadata:
   name: "{{ .Chart.Name }}-interceptor"
 spec:
-  minReplicaCount: {{ .Values.interceptor.minReplicas }}
-  maxReplicaCount: {{ .Values.interceptor.maxReplicas }}
-  pollingInterval: {{ .Values.interceptor.pollingInterval }}
+  minReplicaCount: {{ .Values.interceptor.replicas.min }}
+  maxReplicaCount: {{ .Values.interceptor.replicas.max }}
+  pollingInterval: {{ .Values.interceptor.scaledObject.pollingInterval }}
   scaleTargetRef:
     name: "{{ .Chart.Name }}-interceptor"
     kind: Deployment

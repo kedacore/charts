@@ -56,15 +56,15 @@ spec:
         name: "{{ .Chart.Name }}-operator"
         env:
         - name: KEDAHTTP_INTERCEPTOR_SERVICE
-          value: "{{.Chart.Name}}-{{ .Values.interceptor.adminService }}"
+          value: "{{.Chart.Name}}-{{ .Values.interceptor.admin.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
           value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
           value: "{{ default 9090 .Values.scaler.grpcPort }}"
         - name: KEDAHTTP_INTERCEPTOR_ADMIN_PORT
-          value: "{{ .Values.interceptor.adminPort }}"
+          value: "{{ .Values.interceptor.admin.port }}"
         - name: KEDAHTTP_INTERCEPTOR_PROXY_PORT
-          value: "{{ .Values.interceptor.proxyPort }}"
+          value: "{{ .Values.interceptor.proxy.port }}"
 
         ports: 
         - containerPort: {{ .Values.operator.adminPort }}
