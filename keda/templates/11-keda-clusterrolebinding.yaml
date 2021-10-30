@@ -12,6 +12,6 @@ roleRef:
   name: {{ .Values.operator.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.operator.name }}
+  name: {{ .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 {{- end -}}
