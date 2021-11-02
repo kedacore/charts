@@ -3,10 +3,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
   annotations:
@@ -23,5 +20,11 @@ spec:
     port: {{ .Values.service.portHttp }}
     targetPort: {{ .Values.service.portHttpTarget }}
     protocol: TCP
+  {{- if .Values.prometheus.metricServer.enabled }}
+  - name: {{ .Values.prometheus.metricServer.portName }}
+    port: {{ .Values.prometheus.metricServer.port }}
+    targetPort: {{ .Values.prometheus.metricServer.port }}
+    protocol: TCP
+  {{- end }}
   selector:
     app: {{ .Values.operator.name }}-metrics-apiserver

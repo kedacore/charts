@@ -7,10 +7,7 @@ metadata:
   name: scaledobjects.keda.sh
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   group: keda.sh
   names:
@@ -46,6 +43,9 @@ spec:
       type: string
     - jsonPath: .status.conditions[?(@.type=="Active")].status
       name: Active
+      type: string
+    - jsonPath: .status.conditions[?(@.type=="Fallback")].status
+      name: Fallback
       type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
@@ -204,6 +204,22 @@ spec:
               cooldownPeriod:
                 format: int32
                 type: integer
+              fallback:
+                description: Fallback is the spec for fallback options
+                properties:
+                  failureThreshold:
+                    format: int32
+                    type: integer
+                  replicas:
+                    format: int32
+                    type: integer
+                required:
+                - failureThreshold
+                - replicas
+                type: object
+              idleReplicaCount:
+                format: int32
+                type: integer
               maxReplicaCount:
                 format: int32
                 type: integer
@@ -246,6 +262,9 @@ spec:
                       required:
                       - name
                       type: object
+                    fallback:
+                      format: int32
+                      type: integer
                     metadata:
                       additionalProperties:
                         type: string
@@ -294,6 +313,19 @@ spec:
                 items:
                   type: string
                 type: array
+              health:
+                additionalProperties:
+                  description: HealthStatus is the status for a ScaledObject's health
+                  properties:
+                    numberOfFailures:
+                      format: int32
+                      type: integer
+                    status:
+                      description: HealthStatusType is an indication of whether the
+                        health status is happy or failing
+                      type: string
+                  type: object
+                type: object
               lastActiveTime:
                 format: date-time
                 type: string

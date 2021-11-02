@@ -1,5 +1,6 @@
-# any custom labels to use across resources
-additionalLabels: ""
+# Custom labels to add into metadata
+additionalLabels: {}
+  # foo: bar
 
 crds:
   # whether to install CRDs or not

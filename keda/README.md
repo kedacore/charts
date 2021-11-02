@@ -7,7 +7,7 @@ KEDA can run on both the cloud and the edge, integrates natively with Kubernetes
 
 ---
 <p align="center">
-We are a Cloud Native Computing Foundation (CNCF) sandbox project.
+We are a Cloud Native Computing Foundation (CNCF) incubation project.
 
 <img src="https://raw.githubusercontent.com/kedacore/keda/master/images/logo-cncf.svg" height="75px">
 </p>
@@ -63,9 +63,10 @@ their default values.
 | `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
+| `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
-| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `` |
+| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
 | `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
 | `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
 | `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
@@ -98,6 +99,7 @@ their default values.
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443`                                        |
 | `prometheus.metricServer.enabled`                          | Enable metric server prometheus metrics expose | `false`
 | `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022`
+| `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics`
 | `prometheus.metricServer.path`                             | Path used for exposing metric server prometheus metrics | `/metrics`
 | `prometheus.metricServer.podMonitor.enabled`               | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false`
 | `prometheus.metricServer.podMonitor.interval`              | Scraping interval for metric server using podMonitor crd (prometheus operator) | ``

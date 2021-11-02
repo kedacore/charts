@@ -7,10 +7,7 @@ metadata:
   name: scaledjobs.keda.sh
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   group: keda.sh
   names:
@@ -6744,6 +6741,10 @@ spec:
                     type: integer
                   customScalingRunningJobPercentage:
                     type: string
+                  pendingPodConditions:
+                    items:
+                      type: string
+                    type: array
                   strategy:
                     type: string
                 type: object
@@ -6768,6 +6769,9 @@ spec:
                       required:
                       - name
                       type: object
+                    fallback:
+                      format: int32
+                      type: integer
                     metadata:
                       additionalProperties:
                         type: string

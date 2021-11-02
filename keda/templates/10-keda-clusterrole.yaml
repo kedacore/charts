@@ -4,10 +4,7 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
   creationTimestamp: null
   name: {{ .Values.operator.name }}
 rules:
@@ -61,6 +58,12 @@ rules:
   - batch
   resources:
   - jobs
+  verbs:
+  - '*'
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
   verbs:
   - '*'
 - apiGroups:
