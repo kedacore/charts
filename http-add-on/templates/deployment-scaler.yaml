@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: external-scaler
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-external-scaler
+    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    app.kubernetes.io/component: external-scaler
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-external-scaler
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: external-scaler
+      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+      keda.sh/addon: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        control-plane: external-scaler
+        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+        keda.sh/addon: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}
+        name: "{{ .Chart.Name }}-external-scaler"
+        app.kubernetes.io/name: "{{ .Chart.Name }}-external-scaler"
+        app.kubernetes.io/version: "{{ .Values.images.tag | default .Chart.AppVersion }}"
+        app.kubernetes.io/component: external-scaler
+        app.kubernetes.io/part-of: {{ .Chart.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    {{ tpl .Values.additionalLabels . | indent 4}}
+    spec:
+      containers:
+      - args:
+        image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
+        name: "{{ .Chart.Name }}-external-scaler"
+        ports:
+        - containerPort: {{ .Values.scaler.healthPort }}
+          name: scaler-health
+        - containerPort: {{ .Values.scaler.grpcPort }}
+          name: scaler-grpc
+        env:
+        - name: KEDA_HTTP_SCALER_PORT
+          value: "{{ .Values.scaler.grpcPort }}"
+        - name: KEDA_HTTP_HEALTH_PORT
+          value: "{{ .Values.scaler.healthPort }}"
+        - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
+          value: "{{ .Release.Namespace }}"
+        - name: KEDA_HTTP_SCALER_TARGET_ADMIN_SERVICE
+          value: "{{ .Chart.Name }}-{{ .Values.interceptor.admin.service }}"
+        - name: KEDA_HTTP_SCALER_TARGET_ADMIN_PORT
+          value: "{{ default 9091 .Values.interceptor.admin.port }}"
+        - name: KEDA_HTTP_SCALER_TARGET_PENDING_REQUESTS_INTERCEPTOR
+          value: "{{ default 200 .Values.scaler.pendingRequestsInterceptor }}"
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      terminationGracePeriodSeconds: 10

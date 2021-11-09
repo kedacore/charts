@@ -40,18 +40,25 @@ spec:
       - args:
         - --metrics-addr=127.0.0.1:8080
         - --enable-leader-election
+        - --admin-port={{ .Values.operator.adminPort }}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.operator.pullPolicy | default "Always" }}
-        name: {{ .Chart.Name }}-operator
+        imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
+        name: "{{ .Chart.Name }}-operator"
         env:
-        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_IMAGE
-          value: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
-        - name: KEDAHTTP_OPERATOR_INTERCEPTOR_IMAGE
-          value: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
-        - name: INTERCEPTOR_PULL_POLICY
-          value: {{ .Values.operator.pullPolicy | default "Always" }}
-        - name: SCALER_PULL_POLICY
-          value: {{ .Values.operator.pullPolicy | default "Always"}}
+        - name: KEDAHTTP_INTERCEPTOR_SERVICE
+          value: "{{.Chart.Name}}-{{ .Values.interceptor.admin.service }}"
+        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
+          value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
+        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
+          value: "{{ default 9090 .Values.scaler.grpcPort }}"
+        - name: KEDAHTTP_INTERCEPTOR_ADMIN_PORT
+          value: "{{ .Values.interceptor.admin.port }}"
+        - name: KEDAHTTP_INTERCEPTOR_PROXY_PORT
+          value: "{{ .Values.interceptor.proxy.port }}"
+
+        ports: 
+        - containerPort: {{ .Values.operator.adminPort }}
+          name: admin-http
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10

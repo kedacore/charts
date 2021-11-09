@@ -18,5 +18,3 @@ spec:
     targetPort: https
   selector:
     control-plane: controller-manager
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}

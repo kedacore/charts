@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: interceptor
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    app.kubernetes.io/component: interceptor
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{ tpl .Values.additionalLabels . | indent 4}}
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: interceptor
+      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+      keda.sh/addon: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        control-plane: interceptor
+        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+        keda.sh/addon: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}
+        name: {{ .Chart.Name }}-interceptor
+        app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+        app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+        app.kubernetes.io/component: interceptor
+        app.kubernetes.io/part-of: {{ .Chart.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    {{ tpl .Values.additionalLabels . | indent 4}}
+    spec:
+      containers:
+      - args:
+        image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
+        name: "{{ .Chart.Name }}-interceptor"
+        env:
+        - name: KEDA_HTTP_ROUTING_TABLE_UPDATE_DURATION_MS
+          value: "{{ .Values.interceptor.routingTableUpdateDurationMS }}"
+        - name: KEDA_HTTP_CURRENT_NAMESPACE
+          value: "{{ .Release.Namespace }}"
+        - name: KEDA_HTTP_PROXY_PORT
+          value: "{{ .Values.interceptor.proxy.port }}"
+        - name: KEDA_HTTP_ADMIN_PORT
+          value: "{{ .Values.interceptor.admin.port }}"
+        - name: KEDA_HTTP_CONNECT_TIMEOUT
+          value: "{{ .Values.interceptor.tcpConnectTimeout }}"
+        - name: KEDA_HTTP_KEEP_ALIVE
+          value: "{{ .Values.interceptor.keepAlive }}"
+        - name: KEDA_RESPONSE_HEADER_TIMEOUT
+          value: "{{ .Values.interceptor.responseHeaderTimeout }}"
+        - name: KEDA_CONDITION_WAIT_TIMEOUT
+          value: "{{ .Values.interceptor.replicas.waitTimeout }}"
+        - name: KEDA_HTTP_DEPLOYMENT_CACHE_POLLING_INTERVAL_MS
+          value: "{{ .Values.interceptor.deploymentCachePollingIntervalMS }}"
+        - name: KEDA_HTTP_FORCE_HTTP2
+          value: "{{ .Values.interceptor.forceHTTP2 }}"
+        - name: KEDA_HTTP_MAX_IDLE_CONNS
+          value: "{{ .Values.interceptor.maxIdleConns }}"
+        - name: KEDA_HTTP_IDLE_CONN_TIMEOUT
+          value: "{{ .Values.interceptor.idleConnTimeout }}"
+        - name: KEDA_HTTP_TLS_HANDSHAKE_TIMEOUT
+          value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
+        - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
+          value: "{{ .Values.interceptor.expectContinueTimeout }}"
+        ports:
+        - containerPort: {{ .Values.interceptor.admin.port }}
+          name: inter-admin
+        - containerPort: {{ .Values.interceptor.proxy.port }}
+          name: inter-proxy
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      terminationGracePeriodSeconds: 10
