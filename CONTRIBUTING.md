@@ -8,31 +8,41 @@ Thanks for helping making KEDA better!
 You can easily release a new Helm chart version:
 
 1. Update the version of the Helm chart in `Chart.yaml`
-2. Package the Helm chart
+2. Package the Helm chart. For KEDA:
 ```shell
 $ helm package keda
 Successfully packaged chart and saved it to: C:\Code\GitHub\charts\keda-0.1.0.tgz
 ```
 
-3. Move the new chart to the docs folder
+For HTTP Addon:
+
+```shell
+$ helm package http-add-on
+Successfully packaged chart and saved it to: /home/ecomaz/src/keda/charts/keda-add-ons-http-0.2.0.tgz
+```
+
+1. Move the new chart to the docs folder. For both KEDA and the HTTP Addon, use the below command:
+
 ```shell
 $ mv keda-*.tgz docs
 ```
 
-4. Re-index the Helm repo to add our new version
+1. Re-index the Helm repo to add our new version. For both KEDA and the HTTP Addon, use the below command:
+
 ```shell
 $ helm repo index docs --url https://kedacore.github.io/charts
 ```
 
-5. Commit changes
+1. Commit changes. For both KEDA and the HTTP Addon, use the below command:
+
 ```shell
 git add .
 git commit -sm "Packaged new Helm chart version"
 git push origin chart-release
 ```
 
-6. Create a pull request with our new Helm index
-7. Create a GitHub release for your new Helm chart version by using the following template
+1. Create a pull request with our new Helm index
+2. Create a GitHub release for your new Helm chart version by using the following template
 
 > *Chart: {{Chart Version}} | App: {{App Name}}*
 > {{Description about the Helm chart}}
