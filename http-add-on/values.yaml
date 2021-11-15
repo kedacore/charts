@@ -58,7 +58,7 @@ interceptor:
     # this is the maximum amount of time it will
     # wait for the backing deployment to reach 1
     # or more replicas
-    waitTimeout: 1500ms
+    waitTimeout: 20s
   
   # configuration for the ScaledObject resource for the
   # interceptor
