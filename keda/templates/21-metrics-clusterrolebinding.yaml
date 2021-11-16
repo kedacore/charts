@@ -13,7 +13,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.serviceAccount.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -30,7 +30,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ .Values.serviceAccount.name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding

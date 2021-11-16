@@ -15,7 +15,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
   name: {{ .Chart.Name }}-interceptor
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 spec:
   replicas: 1
   selector:

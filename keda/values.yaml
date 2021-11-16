@@ -2,6 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# Optionally declare a namespace via values
+# When using keda as a dependency set the value `keda.namespace` to control
+# which namespace keda will be installed in.
+namespace:
+
 image:
   keda:
     repository: ghcr.io/kedacore/keda

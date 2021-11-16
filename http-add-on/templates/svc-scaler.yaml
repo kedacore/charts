@@ -15,7 +15,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
 {{ tpl .Values.additionalLabels . | indent 4}}
   name: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 spec:
   ports:
   - name: grpc

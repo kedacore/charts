@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-metrics-apiserver
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
   annotations:
   {{- range $key, $value := .Values.service.annotations }}
     {{ $key }}: {{ $value | quote }}

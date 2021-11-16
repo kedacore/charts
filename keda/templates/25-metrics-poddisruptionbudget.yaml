@@ -2,7 +2,7 @@
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver

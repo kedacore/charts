@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager-metrics-service
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-controller-manager-metrics-service
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 spec:
   ports:
   - name: https

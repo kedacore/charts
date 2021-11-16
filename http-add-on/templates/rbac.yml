@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-leader-election-role
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 rules:
 - apiGroups:
   - ""
@@ -181,7 +181,7 @@ metadata:
     app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-binding
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-leader-election-rolebinding
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -189,7 +189,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -209,7 +209,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -229,4 +229,4 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ default .Release.Namespace .Values.namespace }}
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver

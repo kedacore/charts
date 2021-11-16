@@ -8,7 +8,7 @@ metadata:
 spec:
   service:
     name: {{ .Values.operator.name }}-metrics-apiserver
-    namespace: {{ .Release.Namespace }}
+  # namespace: {{ default .Release.Namespace .Values.namespace }}
   group: external.metrics.k8s.io
   version: v1beta1
   insecureSkipTLSVerify: true
