@@ -1,3 +1,8 @@
+# Optionally declare a namespace via values
+# When using keda as a dependency set the value `keda.namespace` to control
+# which namespace keda will be installed in.
+namespace:
+
 # Custom labels to add into metadata
 additionalLabels: ""
 
