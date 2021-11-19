@@ -1,6 +1,9 @@
 # Optionally declare a namespace via values
 # When using keda as a dependency set the value `keda.namespace` to control
-# which namespace keda will be installed in.
+# which namespace the HTTP Addon will be installed in.
+# If this is not set, the chart will use the namespace of the release.
+# If this is set, a new namespace will be created with this name
+# and the chart will use that.
 namespace:
 
 # Custom labels to add into metadata
