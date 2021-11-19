@@ -112,7 +112,7 @@ images:
   # stable release in the official images, `canary` is 
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
-  tag: latest
+  tag: 0.2.0
   # the operator image to use. the default is the official build
   operator: ghcr.io/kedacore/http-add-on-operator
   # the interceptor image to use. the default is the official build
