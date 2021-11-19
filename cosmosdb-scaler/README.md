@@ -9,20 +9,29 @@ Chart for installing KEDA external scaler for Azure Cosmos DB.
 ## Installation
 
 1. Add and update Helm chart repo.
-    - `helm repo add kedacore https://kedacore.github.io/charts`
-    - `helm repo update`
+
+    ```shell
+    helm repo add kedacore https://kedacore.github.io/charts
+    helm repo update
+    ```
 
 1. Install KEDA Helm chart (*or follow one of the other installation methods on [KEDA documentation](https://keda.sh/docs/deploy)*).
-    - `helm install keda kedacore/keda --namespace keda --create-namespace`
 
-1. Install Cosmos DB scaler Helm chart.
-    - `helm install cosmosdb-scaler kedacore/keda-external-scaler-azure-cosmos-db --namespace keda --create-namespace`
+    ```shell
+    helm install keda kedacore/keda --namespace keda --create-namespace
+    ```
+
+1. Install 'Cosmos DB scaler' Helm chart.
+
+    ```shell
+    helm install cosmosdb-scaler kedacore/keda-external-scaler-azure-cosmos-db --namespace keda --create-namespace
+    ```
 
 ## Values
 
 | Key | Type | Default | Description |
 |---|---|---|---|
-| additionalLables | object | `{}` | Additional labels that should be applied to all resources |
+| additionalLabels | object | `{}` | Additional labels that should be applied to all resources |
 | image.pullPolicy | string | `"Always"` | The image pull policy for Cosmos DB scaler |
 | image.repository | string | `"ghcr.io/kedacore/keda-external-scaler-azure-cosmos-db"` | The Docker image repository to use for Cosmos DB scaler |
 | image.tag | string | `"0.1.0"` | The Docker image tag to use for Cosmos DB scaler |
