@@ -7,6 +7,7 @@ We are a Cloud Native Computing Foundation (CNCF) incubation project.
 ![CNCF Logo](https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg)
 
 ## Getting Started
+
 ### Adding our Helm chart repo
 
 ```console
@@ -15,10 +16,13 @@ $ helm repo add kedacore https://kedacore.github.io/charts
 ```
 
 ### Browse all our Helm charts
-```
+
+```console
 $ helm search repo kedacore/
-NAME            CHART VERSION   APP VERSION     DESCRIPTION
-kedacore/keda	2.0.1        	2.0.0      	Event-based autoscaler for workloads on Kubernetes
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION
+
+kedacore/keda                   2.4.0           2.4.0           Event-based autoscaler for workloads on Kubernetes
+kedacore/keda-add-ons-http      0.2.0           0.2.0           Event-based autoscaler for HTTP workloads on Ku...
 ```
 
 ## Releases
