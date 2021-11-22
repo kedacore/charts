@@ -3,15 +3,15 @@
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "cosmosdb-scaler.chart" -}}
+{{- define "keda-add-ons-azure-cosmos-db.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 These labels will be applied to all Cosmos DB scaler resources in the chart.
 */}}
-{{- define "cosmosdb-scaler.labels" }}
-helm.sh/chart: {{ include "cosmosdb-scaler.chart" . }}
+{{- define "keda-add-ons-azure-cosmos-db.labels" }}
+helm.sh/chart: {{ include "keda-add-ons-azure-cosmos-db.chart" . }}
 app: {{ .Chart.Name }}
 control-plane: external-scaler
 keda.sh/addon: {{ .Chart.Name }}

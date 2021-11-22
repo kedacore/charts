@@ -1,8 +1,6 @@
-# https://helm.sh/docs/topics/charts/#the-chartyaml-file
-
 apiVersion: v2
-name: keda-external-scaler-azure-cosmos-db
-description: Scale applications based on changes to Azure Cosmos DB container data
+name: keda-add-ons-azure-cosmos-db
+description: Event-based autoscaler for Azure Cosmos DB change feed consumer applications
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -32,4 +30,4 @@ maintainers:
   - name: Jatin Sanghvi
     email: jasanghv@microsoft.com
   - name: Tom Kerkhove
-    email: kerkhove.tom@gmail.com
+    email: tomkerkhove@microsoft.com

@@ -13,15 +13,15 @@ You can easily release a new Helm chart version:
         $ helm package keda --destination docs
         Successfully packaged chart and saved it to: docs/keda-2.4.0.tgz
         ```
-    - For HTTP Addon:
+    - For HTTP add-on:
         ```shell
         $ helm package http-add-on --destination docs
         Successfully packaged chart and saved it to: docs/keda-add-ons-http-0.2.0.tgz
         ```
-    - For KEDA external scaler for Azure Cosmos DB:
+    - For Azure Cosmos DB add-on:
         ```shell
-        $ helm package cosmosdb-scaler --destination docs
-        Successfully packaged chart and saved it to: docs/keda-external-scaler-azure-cosmos-db-0.1.0.tgz
+        $ helm package azure-cosmos-db-add-on --destination docs
+        Successfully packaged chart and saved it to: docs/keda-add-ons-azure-cosmos-db-0.1.0.tgz
         ```
 1. Re-index the Helm repo to add our new version:
     ```shell
