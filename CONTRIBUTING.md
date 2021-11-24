@@ -7,7 +7,7 @@ Thanks for helping making KEDA better!
 You can easily release a new Helm chart version:
 
 1. Update the version of the Helm chart in `Chart.yaml`.
-1. Package the Helm chart
+2. Package the Helm chart
     - For KEDA:
         ```shell
         $ helm package keda --destination docs
