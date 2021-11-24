@@ -27,7 +27,7 @@ You can easily release a new Helm chart version:
     ```shell
     $ helm repo index docs --url https://kedacore.github.io/charts
     ```
-1. Commit changes:
+4. Commit changes:
     ```shell
     git add .
     git commit -sm "Packaged new Helm chart version"
