@@ -1,0 +1,48 @@
+name: Helm Chart CI (Azure Cosmos DB external scaler)
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/ci-azure-cosmos-db-external-scaler.yml
+      - azure-cosmos-db-external-scaler/**
+  pull_request:
+    branches:
+      - master
+    paths:
+      - .github/workflows/ci-azure-cosmos-db-external-scaler.yml
+      - azure-cosmos-db-external-scaler/**
+
+jobs:
+  verify-helm-chart:
+    name: Verify Helm chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Helm
+        uses: azure/setup-helm@v1
+
+      - name: Lint 'Azure Cosmos DB external scaler' Helm chart
+        run: helm lint ./azure-cosmos-db-external-scaler/ --strict
+
+      - name: Show 'Azure Cosmos DB external scaler' Helm chart template
+        run: helm template test-release ./azure-cosmos-db-external-scaler/ --namespace test-namespace
+
+      - name: Create k8s Kind Cluster
+        uses: helm/kind-action@v1.2.0
+
+      - name: Install 'Azure Cosmos DB external scaler' chart
+        run: helm install test-release ./azure-cosmos-db-external-scaler/ --namespace test-namespace --create-namespace --wait --timeout=2m
+
+      - name: Get 'Azure Cosmos DB external scaler' service
+        run: kubectl get service azure-cosmos-db-external-scaler --namespace=test-namespace
+
+      - name: Get 'Azure Cosmos DB external scaler' deployment
+        run: kubectl get deployment azure-cosmos-db-external-scaler --namespace=test-namespace
+
+      - name: Uninstall 'Azure Cosmos DB external scaler' Helm chart
+        run: helm uninstall test-release --namespace test-namespace
