@@ -33,8 +33,8 @@ You can easily release a new Helm chart version:
     git commit -sm "Packaged new Helm chart version"
     git push origin chart-release
     ```
-1. Create a pull request with our new Helm index.
-1. Create a GitHub release for your new Helm chart version by using the following template.
+5. Create a pull request with our new Helm index.
+6. Create a GitHub release for your new Helm chart version by using the following template.
 
 > *Chart: {{Chart Version}} | App: {{App Name}}*
 > {{Description about the Helm chart}}
