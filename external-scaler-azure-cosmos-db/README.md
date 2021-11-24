@@ -21,7 +21,7 @@ Chart for installing KEDA external scaler for Azure Cosmos DB.
     helm install keda kedacore/keda --namespace keda --create-namespace
     ```
 
-1. Install 'Azure Cosmos DB external scaler' Helm chart.
+1. Install Azure Cosmos DB external scaler Helm chart.
 
     ```shell
     helm install external-scaler-azure-cosmos-db kedacore/external-scaler-azure-cosmos-db --namespace keda --create-namespace
