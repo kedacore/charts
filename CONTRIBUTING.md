@@ -20,8 +20,8 @@ You can easily release a new Helm chart version:
         ```
     - For Azure Cosmos DB external scaler:
         ```shell
-        $ helm package azure-cosmos-db-external-scaler --destination docs
-        Successfully packaged chart and saved it to: docs/azure-cosmos-db-external-scaler-0.1.0.tgz
+        $ helm package external-scaler-azure-cosmos-db --destination docs
+        Successfully packaged chart and saved it to: docs/external-scaler-azure-cosmos-db-0.1.0.tgz
         ```
 1. Re-index the Helm repo to add our new version:
     ```shell
