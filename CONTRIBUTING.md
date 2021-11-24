@@ -23,7 +23,7 @@ You can easily release a new Helm chart version:
         $ helm package external-scaler-azure-cosmos-db --destination docs
         Successfully packaged chart and saved it to: docs/external-scaler-azure-cosmos-db-0.1.0.tgz
         ```
-1. Re-index the Helm repo to add our new version:
+3. Re-index the Helm repo to add our new version:
     ```shell
     $ helm repo index docs --url https://kedacore.github.io/charts
     ```
