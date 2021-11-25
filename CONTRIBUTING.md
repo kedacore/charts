@@ -11,7 +11,7 @@ You can easily release a new Helm chart version:
     - For KEDA:
         ```shell
         $ helm package keda --destination docs
-        Successfully packaged chart and saved it to: docs/keda-2.4.0.tgz
+        Successfully packaged chart and saved it to: docs/keda-2.5.0.tgz
         ```
     - For HTTP add-on:
         ```shell
@@ -33,8 +33,9 @@ You can easily release a new Helm chart version:
     git commit -sm "Packaged new Helm chart version"
     git push origin chart-release
     ```
-5. Create a pull request with our new Helm index.
-6. Create a GitHub release for your new Helm chart version by using the following template.
+5. Update the version in README.md.
+6. Create a pull request with our new Helm index.
+7. Create a GitHub release for your new Helm chart version by using the following template.
 
 > *Chart: {{Chart Version}} | App: {{App Name}}*
 > {{Description about the Helm chart}}

@@ -17,6 +17,8 @@ sources:
 maintainers:
   - name: Ahmed ElSayed
     email: ahmels@microsoft.com
+  - name: Jorge Turrado
+    email: jorge_turrado@hotmail.es
   - name: Tom Kerkhove
     email: kerkhove.tom@gmail.com
   - name: Zbynek Roubalik
