@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.3.0
+    controller-gen.kubebuilder.io/version: v0.6.1
   name: triggerauthentications.keda.sh
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
@@ -39,14 +39,10 @@ spec:
         description: TriggerAuthentication defines how a trigger can authenticate
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: 'APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: 'Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
@@ -55,8 +51,7 @@ spec:
             properties:
               env:
                 items:
-                  description: AuthEnvironment is used to authenticate using environment
-                    variables in the destination ScaleTarget spec
+                  description: AuthEnvironment is used to authenticate using environment variables in the destination ScaleTarget spec
                   properties:
                     containerName:
                       type: string
@@ -70,18 +65,15 @@ spec:
                   type: object
                 type: array
               hashiCorpVault:
-                description: HashiCorpVault is used to authenticate using Hashicorp
-                  Vault
+                description: HashiCorpVault is used to authenticate using Hashicorp Vault
                 properties:
                   address:
                     type: string
                   authentication:
-                    description: VaultAuthentication contains the list of Hashicorp
-                      Vault authentication methods
+                    description: VaultAuthentication contains the list of Hashicorp Vault authentication methods
                     type: string
                   credential:
-                    description: Credential defines the Hashicorp Vault credentials
-                      depending on the authentication method
+                    description: Credential defines the Hashicorp Vault credentials depending on the authentication method
                     properties:
                       serviceAccount:
                         type: string
@@ -90,12 +82,13 @@ spec:
                     type: object
                   mount:
                     type: string
+                  namespace:
+                    type: string
                   role:
                     type: string
                   secrets:
                     items:
-                      description: VaultSecret defines the mapping between the path
-                        of the secret in Vault to the parameter
+                      description: VaultSecret defines the mapping between the path of the secret in Vault to the parameter
                       properties:
                         key:
                           type: string
@@ -115,8 +108,7 @@ spec:
                 - secrets
                 type: object
               podIdentity:
-                description: AuthPodIdentity allows users to select the platform native
-                  identity mechanism
+                description: AuthPodIdentity allows users to select the platform native identity mechanism
                 properties:
                   provider:
                     description: PodIdentityProvider contains the list of providers
@@ -126,8 +118,7 @@ spec:
                 type: object
               secretTargetRef:
                 items:
-                  description: AuthSecretTargetRef is used to authenticate using a
-                    reference to a secret
+                  description: AuthSecretTargetRef is used to authenticate using a reference to a secret
                   properties:
                     key:
                       type: string

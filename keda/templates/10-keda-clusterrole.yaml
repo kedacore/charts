@@ -23,7 +23,6 @@ rules:
   - pods
   - secrets
   - services
-  - serviceaccounts
   verbs:
   - get
   - list
@@ -69,7 +68,15 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
+  - clustertriggerauthentications
+  - clustertriggerauthentications/status
+  verbs:
+  - '*'
+- apiGroups:
+  - keda.sh
+  resources:
   - scaledjobs
+  - scaledjobs/finalizers
   - scaledjobs/status
   verbs:
   - '*'
@@ -84,8 +91,6 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
-  - clustertriggerauthentications
-  - clustertriggerauthentications/status
   - triggerauthentications
   - triggerauthentications/status
   verbs:
