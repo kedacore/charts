@@ -36,6 +36,8 @@ You can easily release a new Helm chart version:
 5. Update the version in README.md.
 6. Create a pull request with our new Helm index.
 7. Create a GitHub release for your new Helm chart version by using the following template.
+    - Make sure to list the changes to our Helm chart which are tracked in the [KEDA Core vNext](https://github.com/kedacore/charts/milestone/10) milestone
+    - Instead of listing all KEDA core changes, simply refer to our release notes on the other repo (see template)
 
 > *Chart: {{Chart Version}} | App: {{App Name}}*
 > {{Description about the Helm chart}}
@@ -51,6 +53,7 @@ You can easily release a new Helm chart version:
 >
 > ### Features
 >
+> - Support for KEDA v{version} ([release notes]({{URL to release}}))
 > - {{List new features}}
 >
 > ### Fixes / Changes
@@ -64,6 +67,9 @@ You can easily release a new Helm chart version:
 > ### Removal
 >
 > - {{List removed features}}
+
+8. Create a new milestone called `KEDA Core v{version}`
+9. Move the closed items from `KEDA Core vNext` to the new milestone and close it
 
 ## Developer Certificate of Origin: Signing your work
 
