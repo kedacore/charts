@@ -122,4 +122,4 @@ images:
   # the scaler image to use. the default is the official build
   scaler: ghcr.io/kedacore/http-add-on-scaler
   # the kube-rbac-proxy image to use
-  kube-rbac-proxy: gcr.io/kubebuilder/kube-rbac-proxy
+  kuberbacproxy: gcr.io/kubebuilder/kube-rbac-proxy
