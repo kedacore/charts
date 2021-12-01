@@ -113,9 +113,13 @@ images:
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   tag: 0.2.0
+  # rbacproxytag is the image tag for kube rbac proxy image
+  rbacproxytag: v0.5.0
   # the operator image to use. the default is the official build
   operator: ghcr.io/kedacore/http-add-on-operator
   # the interceptor image to use. the default is the official build
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
   # the scaler image to use. the default is the official build
   scaler: ghcr.io/kedacore/http-add-on-scaler
+  # the kube-rbac-proxy image to use
+  kube-rbac-proxy: gcr.io/kubebuilder/kube-rbac-proxy
