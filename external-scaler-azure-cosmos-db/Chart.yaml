@@ -21,9 +21,9 @@ version: 0.1.0
 # incremented each time you make changes to the application and it is recommended to use it with quotes.
 appVersion: 0.1.0
 
-home: https://github.com/kedacore/keda-external-scaler-azure-cosmos-db
+home: https://github.com/kedacore/external-scaler-azure-cosmos-db
 sources:
-  - https://github.com/kedacore/keda-external-scaler-azure-cosmos-db
+  - https://github.com/kedacore/external-scaler-azure-cosmos-db
 maintainers:
   - name: Ahmed ElSayed
     email: ahmels@microsoft.com

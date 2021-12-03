@@ -2,9 +2,9 @@
 
 Chart for installing KEDA external scaler for Azure Cosmos DB.
 
-- [Documentation](https://github.com/kedacore/keda-external-scaler-azure-cosmos-db#readme)
-- [Release Notes](https://github.com/kedacore/keda-external-scaler-azure-cosmos-db/releases/tag/v0.1.0)
-- [Example Usage](https://github.com/kedacore/keda-external-scaler-azure-cosmos-db/tree/main/src/Scaler.Demo)
+- [Documentation](https://github.com/kedacore/external-scaler-azure-cosmos-db#readme)
+- [Release Notes](https://github.com/kedacore/external-scaler-azure-cosmos-db/releases/tag/v0.1.0)
+- [Example Usage](https://github.com/kedacore/external-scaler-azure-cosmos-db/tree/main/src/Scaler.Demo)
 
 ## Installation
 
@@ -33,7 +33,7 @@ Chart for installing KEDA external scaler for Azure Cosmos DB.
 |---|---|---|---|
 | additionalLabels | object | `{}` | Additional labels that should be applied to all resources |
 | image.pullPolicy | string | `"Always"` | The image pull policy for Azure Cosmos DB external scaler |
-| image.repository | string | `"ghcr.io/kedacore/keda-external-scaler-azure-cosmos-db"` | The Docker image repository to use for Azure Cosmos DB external scaler |
+| image.repository | string | `"ghcr.io/kedacore/external-scaler-azure-cosmos-db"` | The Docker image repository to use for Azure Cosmos DB external scaler |
 | image.tag | string | `"0.1.0"` | The Docker image tag to use for Azure Cosmos DB external scaler |
 | port | int | `4050` | The incoming port for 'Azure Cosmos DB external scaler' service |
 | resources.limits.cpu | string | `"100m"` | Maximum limit on CPU for 'Azure Cosmos DB external scaler' pod |
