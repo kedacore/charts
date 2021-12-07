@@ -15,34 +15,90 @@ on:
       - external-scaler-azure-cosmos-db/**
 
 jobs:
+  lint-helm-3-x:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+
+    - name: Lint 'Azure Cosmos DB external scaler' Helm chart
+      run: helm lint ./external-scaler-azure-cosmos-db/ --strict
+
+  deploy-helm-3-x:
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
+    needs: lint-helm-3-x
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Images are defined on every Kind release
+          # See https://github.com/kubernetes-sigs/kind/releases
+        - kubernetesVersion: v1.22
+          kindImage: kindest/node:v1.22.0@sha256:b8bda84bb3a190e6e028b1760d277454a72267a5454b57db34437c34a588d047
+        - kubernetesVersion: v1.21
+          kindImage: kindest/node:v1.21.1@sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
+        - kubernetesVersion: v1.20
+          kindImage: kindest/node:v1.20.7@sha256:cbeaf907fc78ac97ce7b625e4bf0de16e3ea725daf6b04f930bd14c67c671ff9
+        - kubernetesVersion: v1.19
+          kindImage: kindest/node:v1.19.11@sha256:07db187ae84b4b7de440a73886f008cf903fcf5764ba8106a9fd5243d6f32729
+        - kubernetesVersion: v1.18
+          kindImage: kindest/node:v1.18.19@sha256:7af1492e19b3192a79f606e43c35fb741e520d195f96399284515f077b3b622c
+        - kubernetesVersion: v1.17
+          kindImage: kindest/node:v1.17.17@sha256:66f1d0d91a88b8a001811e2f1054af60eef3b669a9a74f9b6db871f2f1eeed00
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
   verify-helm-chart:
     name: Verify Helm chart
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Check out code
+      uses: actions/checkout@v2
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v1
+    - name: Helm install
+      uses: Azure/setup-helm@v1
+      
+    - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
+      uses: helm/kind-action@v1.2.0
+      with:
+        node_image: ${{ matrix.kindImage }}
 
-      - name: Lint 'Azure Cosmos DB external scaler' Helm chart
-        run: helm lint ./external-scaler-azure-cosmos-db/ --strict
+    - name: Show Kubernetes version
+      run: |
+        kubectl version
 
-      - name: Show 'Azure Cosmos DB external scaler' Helm chart template
-        run: helm template test-release ./external-scaler-azure-cosmos-db/ --namespace test-namespace
+    - name: Show Kubernetes nodes
+      run: |
+        kubectl get nodes -o wide
 
-      - name: Create k8s Kind Cluster
-        uses: helm/kind-action@v1.2.0
+    - name: Show Helm version
+      run: |
+        helm version
 
-      - name: Install 'Azure Cosmos DB external scaler' chart
-        run: helm install test-release ./external-scaler-azure-cosmos-db/ --namespace test-namespace --create-namespace --wait --timeout=2m
+    - name: Create KEDA namespace
+      run: kubectl create ns keda
 
-      - name: Get 'Azure Cosmos DB external scaler' service
-        run: kubectl get service external-scaler-azure-cosmos-db --namespace=test-namespace
+    - name: Template Helm chart
+      run: helm template test-release ./external-scaler-azure-cosmos-db/ --namespace test-namespace
 
-      - name: Get 'Azure Cosmos DB external scaler' deployment
-        run: kubectl get deployment external-scaler-azure-cosmos-db --namespace=test-namespace
+    - name: Install Helm chart
+      run: helm install test-release ./external-scaler-azure-cosmos-db/ --namespace test-namespace --create-namespace --wait --timeout=2m
 
-      - name: Uninstall 'Azure Cosmos DB external scaler' Helm chart
-        run: helm uninstall test-release --namespace test-namespace
+    - name: Show Kubernetes resources
+      run: kubectl get all --namespace keda
+      if: always()
+
+    - name: Get 'Azure Cosmos DB external scaler' service
+      run: kubectl get service external-scaler-azure-cosmos-db --namespace=test-namespace
+
+    - name: Get 'Azure Cosmos DB external scaler' deployment
+      run: kubectl get deployment external-scaler-azure-cosmos-db --namespace=test-namespace
+
+    - name: Uninstall 'Azure Cosmos DB external scaler' Helm chart
+      run: helm uninstall test-release --namespace test-namespace
