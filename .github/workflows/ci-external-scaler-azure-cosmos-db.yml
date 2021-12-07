@@ -1,4 +1,4 @@
-name: Helm Chart CI (Azure Cosmos DB external scaler)
+name: Helm Chart CI (External Scalers - Azure Cosmos DB)
 
 on:
   push:
@@ -16,6 +16,7 @@ on:
 
 jobs:
   lint-helm-3-x:
+    name: Lint Helm Chart
     runs-on: ubuntu-latest
     steps:
     - name: Check out code

@@ -17,6 +17,7 @@ on:
 
 jobs:
   lint-helm-3-x:
+    name: Lint Helm Chart
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
