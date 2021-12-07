@@ -54,14 +54,6 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
-  verify-helm-chart:
-    name: Verify Helm chart
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
     - name: Helm install
       uses: Azure/setup-helm@v1
       
