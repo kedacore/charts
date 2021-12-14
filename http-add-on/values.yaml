@@ -20,6 +20,9 @@ operator:
   port: 8443
   adminService: operator-admin
   adminPort: 9090
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 scaler:
   service: external-scaler
@@ -27,6 +30,9 @@ scaler:
   grpcPort: 9090
   healthPort: 9091
   pendingRequestsInterceptor: 200
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 interceptor:
   # the image pull policy of the interceptor
@@ -102,6 +108,10 @@ interceptor:
   # response headers. see https://pkg.go.dev/net/http#Transport
   # under the 'ExpectContinueTimeout' field for more details
   expectContinueTimeout: 1s
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 # configuration for the images to use for each component
 images:
