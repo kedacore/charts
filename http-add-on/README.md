@@ -80,6 +80,7 @@ The command removes all the Kubernetes components associated with the chart and 
 The following table lists the configurable parameters of the Promitor chart and
 their default values.
 
+
 | Parameter                                                  | Description                               | Default                                         |
 |:-----------------------------------------------------------|:------------------------------------------|:------------------------------------------------|
 | `images.tag`                                               | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`             | None, it uses Helm chart's app version as a default                              |
