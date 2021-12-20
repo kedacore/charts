@@ -81,3 +81,15 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       terminationGracePeriodSeconds: 10
+      {{- with .Values.interceptor.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.interceptor.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.interceptor.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

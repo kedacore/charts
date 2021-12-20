@@ -20,7 +20,8 @@ watchNamespace: ""
 
 imagePullSecrets: []
 operator:
-  name: keda-operator
+  name: keda-operator  
+  replicaCount: 1
 
 metricsServer:
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
