@@ -4,13 +4,13 @@ on:
   # but only for the main branch
   push:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/ci-core.yml'
       - 'keda/**'
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/ci-core.yml'
       - 'keda/**'

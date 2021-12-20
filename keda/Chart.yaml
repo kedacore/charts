@@ -11,7 +11,7 @@ version: 2.5.0
 appVersion: 2.5.0
 
 home: https://github.com/kedacore/keda
-icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
+icon: https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-500x500-white.png
 sources:
   - https://github.com/kedacore/keda
 maintainers:
