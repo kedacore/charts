@@ -20,6 +20,9 @@ operator:
   port: 8443
   adminService: operator-admin
   adminPort: 9090
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 scaler:
   service: external-scaler
@@ -27,6 +30,9 @@ scaler:
   grpcPort: 9090
   healthPort: 9091
   pendingRequestsInterceptor: 200
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
 interceptor:
   # the image pull policy of the interceptor
@@ -103,6 +109,10 @@ interceptor:
   # under the 'ExpectContinueTimeout' field for more details
   expectContinueTimeout: 1s
 
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
 # configuration for the images to use for each component
 images:
   # tag is the image tag to use for all images.
@@ -119,3 +129,7 @@ images:
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
   # the scaler image to use. the default is the official build
   scaler: ghcr.io/kedacore/http-add-on-scaler
+  # the kube-rbac-proxy image to use
+  kubeRbacProxy:
+    name: gcr.io/kubebuilder/kube-rbac-proxy
+    tag: v0.5.0
