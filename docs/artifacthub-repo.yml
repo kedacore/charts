@@ -1,5 +1,5 @@
 # Configuration for our Artifact Hub repository
-# See https://github.com/artifacthub/hub/blob/master/docs/metadata/artifacthub-repo.yml
+# See https://github.com/artifacthub/hub/blob/main/docs/metadata/artifacthub-repo.yml
 repositoryID: e7f9f3ad-5080-4095-8ff9-98a0b71371b4
 owners:
   - name: KEDA Maintainers
