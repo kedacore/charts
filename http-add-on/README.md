@@ -86,6 +86,8 @@ their default values.
 | `images.operator`                                          | Image name for the operator image component | `ghcr.io/kedacore/http-add-on-operator:latest` |
 | `images.interceptor`                                       | Image name for the interceptor image component | `ghcr.io/kedacore/http-add-on-interceptor:latest` |
 | `images.scaler`                                            | Image name for the scaler image component | `ghcr.io/kedacore/http-add-on-scaler:latest` |
+| `images.kubeRbacProxy.name`                                | Image name for the Kube RBAC Proxy image component | `gcr.io/kubebuilder/kube-rbac-proxy` |
+| `images.kubeRbacProxy.tag`                                 | Image tag for the Kube RBAC Proxy image component | `v0.5.0` |
 | `additionalLabels`                                         | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. | Nothing |
 | `crds.install`                                             | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | `true` |
 | `operator.pullPolicy`                                      | The image pull policy for the operator component | `Always` |
@@ -96,11 +98,17 @@ their default values.
 | `operator.port`                                            | The port for the operator main server to run on | `8443` |
 | `operator.adminService`                                    | The name of the [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/) for the operator's admin server | `operator-admin` |
 | `operator.adminPort`                                       | The port for the operator's admin server to run on | `9090` |
+| `operator.nodeSelector`                                    | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
+| `operator.tolerations`                                     | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
+| `operator.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `scaler.service`                                           | The name of the Kubernetes `Service` for the scaler component | `external-scaler` |
 | `scaler.pullPolicy`                                        | The image pull policy for the scaler component | `Always` |
 | `scaler.grpcPort`                                          | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. | `9090` |
 | `scaler.healthPort`                                        | The port for the scaler's health check and admin server | `9091` |
 | `scaler.pendingRequestsInterceptor`                        | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. | `200` |
+| `scaler.nodeSelector`                                      | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
+| `scaler.tolerations`                                       | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
+| `scaler.affinity`                                          | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `interceptor.pullPolicy` | The image pull policy for the interceptor component | `Always` |
 | `interceptor.admin.service` | The name of the Kubernetes `Service` for the interceptor's admin service | `interceptor-admin` |
 | `interceptor.admin.port` | The port for the interceptor's admin server to run on | `9090` |
@@ -120,6 +128,9 @@ their default values.
 | `interceptor.idleConnTimeout` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. | `90s` |
 | `interceptor.tlsHandshakeTimeout` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. | `10s` |
 | `interceptor.expectContinueTimeout` | Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details | `1s` |
+| `interceptor.nodeSelector`                                 | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
+| `interceptor.tolerations`                                  | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
+| `interceptor.affinity`                                     | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:

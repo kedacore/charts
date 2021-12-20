@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-transparent.png" width="300"/></p>
+<p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-transparent.png" width="300"/></p>
 <p style="font-size: 25px" align="center"><b>Kubernetes-based Event Driven Autoscaling</b></p>
 
 KEDA allows for fine grained autoscaling (including to/from zero) for event driven Kubernetes workloads.  KEDA serves as a Kubernetes Metrics Server and allows users to define autoscaling rules using a dedicated Kubernetes custom resource definition.
@@ -9,7 +9,7 @@ KEDA can run on both the cloud and the edge, integrates natively with Kubernetes
 <p align="center">
 We are a Cloud Native Computing Foundation (CNCF) incubation project.
 
-<img src="https://raw.githubusercontent.com/kedacore/keda/master/images/logo-cncf.svg" height="75px">
+<img src="https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg" height="75px">
 </p>
 
 ---
@@ -63,6 +63,7 @@ their default values.
 | `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
+| `operator.replicaCount`                                      | Capability to configure the number of replicas for KEDA operator.<br /><br />While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic.<br /><br />You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.| `1` |
 | `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
