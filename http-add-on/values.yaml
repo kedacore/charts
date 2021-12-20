@@ -1,10 +1,15 @@
+# Custom labels to add into metadata
 additionalLabels: ""
 
 crds:
+  # whether to install CRDs or not
   install: true
 
+# operator-specific configuration values
 operator:
+  # the image pull policy of the operator
   pullPolicy: Always
+  # operator pod resource limits
   resources:
     limits:
       cpu: 0.5
@@ -13,9 +18,118 @@ operator:
       cpu: 250m
       memory: 20Mi
   port: 8443
+  adminService: operator-admin
+  adminPort: 9090
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
+scaler:
+  service: external-scaler
+  pullPolicy: Always
+  grpcPort: 9090
+  healthPort: 9091
+  pendingRequestsInterceptor: 200
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+interceptor:
+  # the image pull policy of the interceptor
+  pullPolicy: Always
+  # configurable values for the interceptor's admin
+  # service. the admin service is a cluster-internal 
+  # HTTP interface for triggering debugging behavior
+  admin:
+    # the name of the admin Service resource
+    service: interceptor-admin
+    # the port that the admin Service listens on
+    port: 9090
+  # configurable values for the interceptor's proxy
+  # service. the proxy service is the publicly accessible
+  # HTTP interface that production requests go to
+  proxy:
+    # the name of the proxy Service resource
+    service: interceptor-proxy
+    # the port the proxy service listens on
+    port: 8080
+  replicas:
+    # the minimum number of interceptors that should be
+    # running at any given time
+    min: 1
+    # the maximum number of interceptors that should be 
+    # running at any given time
+    max: 50
+    # after the interceptor receives a request,
+    # this is the maximum amount of time it will
+    # wait for the backing deployment to reach 1
+    # or more replicas
+    waitTimeout: 20s
+  
+  # configuration for the ScaledObject resource for the
+  # interceptor
+  scaledObject:
+    # the polling interval (in milliseconds) for KEDA
+    # to issue scaling inquiries to the external scaler
+    # regarding the interceptor
+    pollingInterval: 1
+
+  # how often the interceptor does a full refresh of
+  # the routing table
+  routingTableUpdateDurationMS: 500
+  # how long the interceptor waits for a TCP connection
+  # to be established before failing the request
+  tcpConnectTimeout: 500ms
+  # the interceptor's keep-alive timeout
+  keepAlive: 1s
+  # how long the interceptor waits for response headers
+  # from the backing application before failing the
+  # request
+  responseHeaderTimeout: 500ms
+  # how often the interceptor does a full refresh of
+  # its deployment cache
+  deploymentCachePollingIntervalMS: 250
+  # whether to force HTTP/2 on incoming requests. 
+  # corresponds to the "ForceAttemptHTTP2" field
+  # in https://pkg.go.dev/net/http#Transport
+  forceHTTP2: false
+  # the maximum number of idle connections allowed in
+  # the interceptor's in-memory connection pool.
+  # set this to 0 to indicate no limit
+  maxIdleConns: 100
+  # the timeout after which any idle connection is closed
+  # and removed from the interceptor's in-memory connection
+  # pool
+  idleConnTimeout: 90s
+  # the maximum amount of time the interceptor will wait
+  # for a TLS handshake. set to zero to indicate no timeout
+  tlsHandshakeTimeout: 10s
+  # special handling for responses with "Expect: 100-continue"
+  # response headers. see https://pkg.go.dev/net/http#Transport
+  # under the 'ExpectContinueTimeout' field for more details
+  expectContinueTimeout: 1s
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# configuration for the images to use for each component
 images:
-  tag:
+  # tag is the image tag to use for all images.
+  # for example, if the operator image is "myoperator" and 
+  # tag is "mytag", the operator image used will be
+  # "myoperator:mytag". `latest` is used to indicate the latest
+  # stable release in the official images, `canary` is 
+  # the build for the latest commit to the `main` branch,
+  # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
+  tag: 0.2.0
+  # the operator image to use. the default is the official build
   operator: ghcr.io/kedacore/http-add-on-operator
+  # the interceptor image to use. the default is the official build
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
+  # the scaler image to use. the default is the official build
   scaler: ghcr.io/kedacore/http-add-on-scaler
+  # the kube-rbac-proxy image to use
+  kubeRbacProxy:
+    name: gcr.io/kubebuilder/kube-rbac-proxy
+    tag: v0.5.0

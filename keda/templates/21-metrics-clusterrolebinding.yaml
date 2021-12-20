@@ -4,18 +4,15 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-system-auth-delegator
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name}}
-  name: {{ .Values.operator.name }}:system:auth-delegator
+    {{- include "keda.labels" . | indent 4 }}
+  name: {{ .Values.operator.name }}-system-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.operator.name }}
+  name: {{ .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -23,10 +20,7 @@ kind: RoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name}}
+    {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-auth-reader
   namespace: kube-system
 roleRef:
@@ -35,7 +29,7 @@ roleRef:
   name: extension-apiserver-authentication-reader
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.operator.name }}
+  name: {{ .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -43,10 +37,7 @@ kind: ClusterRoleBinding
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-hpa-controller-external-metrics
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-hpa-controller-external-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io

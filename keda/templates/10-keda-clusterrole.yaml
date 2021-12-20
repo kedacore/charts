@@ -4,10 +4,7 @@ kind: ClusterRole
 metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
   creationTimestamp: null
   name: {{ .Values.operator.name }}
 rules:
@@ -26,9 +23,15 @@ rules:
   - pods
   - secrets
   - services
-  - serviceaccounts
   verbs:
   - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
   - list
   - watch
 - apiGroups:
@@ -64,9 +67,23 @@ rules:
   verbs:
   - '*'
 - apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - '*'
+- apiGroups:
+  - keda.sh
+  resources:
+  - clustertriggerauthentications
+  - clustertriggerauthentications/status
+  verbs:
+  - '*'
+- apiGroups:
   - keda.sh
   resources:
   - scaledjobs
+  - scaledjobs/finalizers
   - scaledjobs/status
   verbs:
   - '*'
@@ -81,8 +98,6 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
-  - clustertriggerauthentications
-  - clustertriggerauthentications/status
   - triggerauthentications
   - triggerauthentications/status
   verbs:

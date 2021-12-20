@@ -20,12 +20,18 @@ watchNamespace: ""
 
 imagePullSecrets: []
 operator:
-  name: keda-operator
+  name: keda-operator  
+  replicaCount: 1
 
-metricsServer:  
+metricsServer:
+  # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+  dnsPolicy: ClusterFirst
   useHostNetwork: false
 
-additionalLabels: ""
+# -- Custom labels to add into metadata
+additionalLabels: {}
+  # foo: bar
+
 podAnnotations:
   keda: {}
   metricsAdapter: {}
@@ -102,17 +108,18 @@ service:
 
   annotations: {}
 
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+# We provides the default values that we describe in our docs:
+# https://keda.sh/docs/latest/operate/cluster/
+# If you want to specify the resources (or totally remove the defaults), change or comment the following
+# lines, adjust them as necessary, or simply add the curly braces after 'operator' and/or 'metricServer'
+# and remove/comment the default values
+resources: 
+  limits:
+    cpu: 1
+    memory: 1000Mi
+  requests:
+    cpu: 100m
+    memory: 100Mi
 
 nodeSelector: {}
 
@@ -158,6 +165,7 @@ prometheus:
   metricServer:
     enabled: false
     port: 9022
+    portName: metrics
     path: /metrics
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -185,7 +193,7 @@ prometheus:
       alerts: []
         # - alert: KedaScalerErrors
         #   annotations:
-        #     description: Keda scaledObject {{ $labels.scaledObject }} is experiencing erros with {{ $labels.scaler }} scaler
+        #     description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
         #     summary: Keda Scaler {{ $labels.scaler }} Errors
         #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
         #   for: 2m

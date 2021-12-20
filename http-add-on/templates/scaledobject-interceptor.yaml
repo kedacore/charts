@@ -1,0 +1,17 @@
+# this is the ScaledObject that tells KEDA to scale the interceptor fleet
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: "{{ .Chart.Name }}-interceptor"
+spec:
+  minReplicaCount: {{ .Values.interceptor.replicas.min }}
+  maxReplicaCount: {{ .Values.interceptor.replicas.max }}
+  pollingInterval: {{ .Values.interceptor.scaledObject.pollingInterval }}
+  scaleTargetRef:
+    name: "{{ .Chart.Name }}-interceptor"
+    kind: Deployment
+  triggers:
+    - type: external
+      metadata:
+        scalerAddress: "{{ .Chart.Name }}-{{ .Values.scaler.service }}:{{ default 9091 .Values.scaler.grpcPort }}"
+        host: interceptor

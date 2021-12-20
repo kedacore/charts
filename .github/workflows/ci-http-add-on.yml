@@ -4,19 +4,20 @@ on:
   # but only for the main branch
   push:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/ci-http-add-on.yml'
       - 'http-add-on/**'
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - '.github/workflows/ci-http-add-on.yml'
       - 'http-add-on/**'
 
 jobs:
   lint-helm-3-x:
+    name: Lint Helm Chart
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
@@ -29,7 +30,27 @@ jobs:
       run: helm lint http-add-on
 
   deploy-helm-3-x:
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
+    needs: lint-helm-3-x
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Images are defined on every Kind release
+          # See https://github.com/kubernetes-sigs/kind/releases
+        - kubernetesVersion: v1.22
+          kindImage: kindest/node:v1.22.0@sha256:b8bda84bb3a190e6e028b1760d277454a72267a5454b57db34437c34a588d047
+        - kubernetesVersion: v1.21
+          kindImage: kindest/node:v1.21.1@sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6
+        - kubernetesVersion: v1.20
+          kindImage: kindest/node:v1.20.7@sha256:cbeaf907fc78ac97ce7b625e4bf0de16e3ea725daf6b04f930bd14c67c671ff9
+        - kubernetesVersion: v1.19
+          kindImage: kindest/node:v1.19.11@sha256:07db187ae84b4b7de440a73886f008cf903fcf5764ba8106a9fd5243d6f32729
+        - kubernetesVersion: v1.18
+          kindImage: kindest/node:v1.18.19@sha256:7af1492e19b3192a79f606e43c35fb741e520d195f96399284515f077b3b622c
+        - kubernetesVersion: v1.17
+          kindImage: kindest/node:v1.17.17@sha256:66f1d0d91a88b8a001811e2f1054af60eef3b669a9a74f9b6db871f2f1eeed00
     steps:
     - name: Check out code
       uses: actions/checkout@v2
@@ -37,21 +58,27 @@ jobs:
     - name: Helm install
       uses: Azure/setup-helm@v1
 
-    - name: Create k8s Kind Cluster
-      uses: helm/kind-action@v1.0.0
+    - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
+      uses: helm/kind-action@v1.2.0
+      with:
+        node_image: ${{ matrix.kindImage }}
 
     - name: Show Kubernetes version
       run: |
         kubectl version
 
+    - name: Show Kubernetes nodes
+      run: |
+        kubectl get nodes -o wide
+
     - name: Show Helm version
       run: |
         helm version
 
-    - name: Create keda namespace
+    - name: Create KEDA namespace
       run: kubectl create ns keda
 
-    - name: Install Keda chart
+    - name: Install KEDA chart
       run: helm install keda ./keda/ --namespace keda
 
     - name: Template Helm chart
@@ -59,6 +86,10 @@ jobs:
 
     - name: Install Helm chart
       run: helm install http-add-on ./http-add-on/ --namespace keda
+
+    - name: Show Kubernetes resources
+      run: kubectl get all --namespace keda
+      if: always()
 
     - name: Get all HTTPScaledObjects
       run: kubectl get httpscaledobjects

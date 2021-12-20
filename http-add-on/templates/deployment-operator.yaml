@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    control-plane: controller-manager
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-controller-manager
+    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-controller-manager
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: controller-manager
+      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+      keda.sh/addon: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        control-plane: controller-manager
+        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+        keda.sh/addon: {{ .Chart.Name }}
+        app: {{ .Chart.Name }}
+        name: {{ .Chart.Name }}-controller-manager
+        app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
+        {{- include "keda-addons-http.labels" . | indent 8 }}
+    spec:
+      containers:
+      - args:
+        - --secure-listen-address=0.0.0.0:{{ .Values.operator.port | default 8443 }}
+        - --upstream=http://127.0.0.1:8080/
+        - --logtostderr=true
+        - --v=10
+        image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
+        name: kube-rbac-proxy
+      - args:
+        - --metrics-addr=127.0.0.1:8080
+        - --enable-leader-election
+        - --admin-port={{ .Values.operator.adminPort }}
+        image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
+        name: "{{ .Chart.Name }}-operator"
+        env:
+        - name: KEDAHTTP_INTERCEPTOR_SERVICE
+          value: "{{.Chart.Name}}-{{ .Values.interceptor.admin.service }}"
+        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
+          value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
+        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
+          value: "{{ default 9090 .Values.scaler.grpcPort }}"
+        - name: KEDAHTTP_INTERCEPTOR_ADMIN_PORT
+          value: "{{ .Values.interceptor.admin.port }}"
+        - name: KEDAHTTP_INTERCEPTOR_PROXY_PORT
+          value: "{{ .Values.interceptor.proxy.port }}"
+        - name: KEDA_HTTP_OPERATOR_NAMESPACE
+          value: "{{ .Release.Namespace }}"
+
+        ports: 
+        - containerPort: {{ .Values.operator.adminPort }}
+          name: admin-http
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      terminationGracePeriodSeconds: 10
+      {{- with .Values.operator.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.operator.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.operator.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

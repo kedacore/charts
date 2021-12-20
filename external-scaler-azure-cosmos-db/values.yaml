@@ -1,0 +1,21 @@
+# Additional labels that should be applied to all resources.
+additionalLabels: {}
+#  name: <value>
+
+# Docker image configuration.
+image:
+  repository: ghcr.io/kedacore/external-scaler-azure-cosmos-db
+  tag: 0.1.0
+  pullPolicy: Always
+
+# Service incoming port.
+port: 4050
+
+# Container resource requests and limits.
+resources:
+  requests:
+    cpu: 10m
+    memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 512Mi

@@ -6,10 +6,7 @@ metadata:
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    app.kubernetes.io/part-of: {{ .Values.operator.name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   replicas: 1
   selector:
@@ -19,6 +16,8 @@ spec:
     metadata:
       labels:
         app: {{ .Values.operator.name }}-metrics-apiserver
+        app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
+        {{- include "keda.labels" . | indent 8 }}
         {{- if .Values.podIdentity.activeDirectory.identity }}
         aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
         {{- end }}
@@ -66,6 +65,10 @@ spec:
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
+            {{- if .Values.http.timeout }}
+            - name: KEDA_HTTP_DEFAULT_TIMEOUT
+              value: {{ .Values.http.timeout | quote }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
@@ -118,6 +121,7 @@ spec:
       {{- if .Values.volumes.metricsApiServer.extraVolumes }}
       {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 8 }}
       {{- end }}
+      dnsPolicy: {{ .Values.metricsServer.dnsPolicy }}
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

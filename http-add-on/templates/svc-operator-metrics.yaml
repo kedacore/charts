@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    control-plane: controller-manager
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-controller-manager-metrics-service
+    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager-metrics-service
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-controller-manager-metrics-service
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: https
+    port: {{ default 8443 .Values.operator.port }}
+    targetPort: https
+  selector:
+    control-plane: controller-manager
