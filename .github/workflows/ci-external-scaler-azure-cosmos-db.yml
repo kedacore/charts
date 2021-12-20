@@ -3,13 +3,13 @@ name: Helm Chart CI (Azure Cosmos DB external scaler)
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - .github/workflows/ci-external-scaler-azure-cosmos-db.yml
       - external-scaler-azure-cosmos-db/**
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - .github/workflows/ci-external-scaler-azure-cosmos-db.yml
       - external-scaler-azure-cosmos-db/**
