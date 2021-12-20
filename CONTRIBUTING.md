@@ -111,7 +111,7 @@ No worries - You can easily replay your changes, sign them and force push them!
 
 ```shell
 git checkout <branch-name>
-git reset $(git merge-base master <branch-name>)
+git reset $(git merge-base main <branch-name>)
 git add -A
 git commit -sm "one commit on <branch-name>"
 git push --force
