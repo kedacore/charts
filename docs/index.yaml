@@ -28,7 +28,7 @@ entries:
     description: Event-based autoscaler for workloads on Kubernetes
     digest: e3406ba0417fa4649e3673e3849cb9d87562cc2bac0cc326d8d394ab6ecf5e20
     home: https://github.com/kedacore/keda
-    icon: https://raw.githubusercontent.com/kedacore/keda/master/images/keda-logo-500x500-white.png
+    icon: https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-500x500-white.png
     maintainers:
     - email: ahmels@microsoft.com
       name: Ahmed ElSayed
