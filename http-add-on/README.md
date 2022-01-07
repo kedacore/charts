@@ -90,6 +90,7 @@ their default values.
 | `images.kubeRbacProxy.tag`                                 | Image tag for the Kube RBAC Proxy image component | `v0.5.0` |
 | `additionalLabels`                                         | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. | Nothing |
 | `crds.install`                                             | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | `true` |
+| `operator.watchNamespace`                                  | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. | `""` |
 | `operator.pullPolicy`                                      | The image pull policy for the operator component | `Always` |
 | `operator.resources.limits.cpu`                            | The CPU resource limit for the operator component | `0.5` |
 | `operator.resources.limits.memory`                         | The memory resource limit for the operator component | `64Mi` |
