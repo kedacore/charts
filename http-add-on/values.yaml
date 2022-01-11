@@ -7,6 +7,10 @@ crds:
 
 # operator-specific configuration values
 operator:
+  # the namespace to watch for new HTTPScaledObjects.
+  # leave this empty to tell the operator to watch in all
+  # namespaces
+  watchNamespace: ""
   # the image pull policy of the operator
   pullPolicy: Always
   # operator pod resource limits

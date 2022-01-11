@@ -57,6 +57,8 @@ spec:
           value: "{{ .Values.interceptor.proxy.port }}"
         - name: KEDA_HTTP_OPERATOR_NAMESPACE
           value: "{{ .Release.Namespace }}"
+        - name: KEDA_HTTP_OPERATOR_WATCH_NAMESPACE
+          value: "{{ .Values.operator.watchNamespace }}"
 
         ports: 
         - containerPort: {{ .Values.operator.adminPort }}
