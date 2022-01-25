@@ -18,6 +18,9 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
+    - jsonPath: .spec.targetPendingRequests
+      name: TargetPendingRequests
+      type: integer
     - jsonPath: .spec.scaleTargetRef.deploymentName
       name: ScaleTargetDeploymentName
       type: string
@@ -77,6 +80,9 @@ spec:
                     format: int32
                     type: integer
                 type: object
+              targetPendingRequests:
+                description: Value for the pending requests that the scaler will return to KEDA
+                type: integer
               scaleTargetRef:
                 description: The name of the deployment to route HTTP requests to
                   (and to autoscale). Either this or Image must be set
@@ -158,4 +164,5 @@ status:
     plural: ""
   conditions: []
   storedVersions: []
-{{ end }}
+  {{ end }}
+  
