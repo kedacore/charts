@@ -96,11 +96,17 @@ podSecurityContext: {}
 
 securityContext: {}
   # operator:
+  #   capabilities:
+  #     drop:
+  #     - ALL
   #   allowPrivilegeEscalation: false
   #   readOnlyRootFilesystem: true
   #   runAsNonRoot: true
   #   runAsUser: 1000
   # metricServer:
+  #   capabilities:
+  #     drop:
+  #     - ALL
   #   allowPrivilegeEscalation: false
   #   runAsNonRoot: true
   #   runAsUser: 1000
