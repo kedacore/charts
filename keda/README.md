@@ -84,7 +84,7 @@ their default values.
 | `logging.operator.format`                                  | Logging format for KEDA Operator. Allowed values are 'console' & 'json'. | `console`                                        |
 | `logging.operator.timeFormat`                              | Logging time format for KEDA Operator. Allowed values are 'epoch', 'millis', 'nano', or 'iso8601'. | `epoch` |
 | `logging.metricServer.level`                               | Logging level for Metrics Server.Policy to use to pull Docker images. Allowed values are '0' for info, '4' for debug, or an integer value greater than 0, specified as string | `0` |
-| `securityContext`                                          | Security context of the pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | `{}` |
+| `securityContext`                                          | Security context of the containers within pod. ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | `{}` |
 | `podSecurityContext`                                       | Pod security context of the pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | `{}` |
 | `resources`                                                | Manage resource request & limits of KEDA workload ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `{}` |
 | `nodeSelector`                                             | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |

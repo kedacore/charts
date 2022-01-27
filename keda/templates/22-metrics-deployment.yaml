@@ -43,11 +43,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext.metricServer | nindent 8 }}
       containers:
         - name: {{ .Values.operator.name }}-metrics-apiserver
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.securityContext.metricServer | nindent 12 }}
           image: "{{ .Values.image.metricsApiServer.repository }}:{{ .Values.image.metricsApiServer.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
@@ -106,7 +106,7 @@ spec:
           {{- toYaml .Values.volumes.metricsApiServer.extraVolumeMounts | nindent 12 }}
           {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.resources.metricServer | nindent 12 }}
       volumes:
       {{- if .Values.grpcTLSCertsSecret }}
       - name: grpc-certs

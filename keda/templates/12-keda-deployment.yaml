@@ -40,11 +40,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
       containers:
         - name: {{ .Values.operator.name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.securityContext.operator | nindent 12 }}
           image: "{{ .Values.image.keda.repository }}:{{ .Values.image.keda.tag | default .Chart.AppVersion }}"
           command:
           - "/keda"
@@ -96,7 +96,7 @@ spec:
           {{- toYaml .Values.volumes.keda.extraVolumeMounts | nindent 12 }}
           {{- end }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.resources.operator | nindent 12 }}
       volumes:
       {{- if .Values.grpcTLSCertsSecret }}
       - name: grpc-certs
