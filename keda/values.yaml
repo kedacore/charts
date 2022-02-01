@@ -89,15 +89,27 @@ logging:
     level: 0
 
 podSecurityContext: {}
-  # fsGroup: 2000
+  # operator:
+  #   fsGroup: 2000
+  # metricServer:
+  #   fsGroup: 2000
 
 securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  # operator:
+  #   capabilities:
+  #     drop:
+  #     - ALL
+  #   allowPrivilegeEscalation: false
+  #   readOnlyRootFilesystem: true
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
+  # metricServer:
+  #   capabilities:
+  #     drop:
+  #     - ALL
+  #   allowPrivilegeEscalation: false
+  #   runAsNonRoot: true
+  #   runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -113,13 +125,21 @@ service:
 # If you want to specify the resources (or totally remove the defaults), change or comment the following
 # lines, adjust them as necessary, or simply add the curly braces after 'operator' and/or 'metricServer'
 # and remove/comment the default values
-resources: 
-  limits:
-    cpu: 1
-    memory: 1000Mi
-  requests:
-    cpu: 100m
-    memory: 100Mi
+resources:
+  operator:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  metricServer:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
 
 nodeSelector: {}
 
