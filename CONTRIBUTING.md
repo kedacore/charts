@@ -27,13 +27,13 @@ You can easily release a new Helm chart version:
     ```shell
     $ helm repo index docs --url https://kedacore.github.io/charts
     ```
-4. Commit changes:
+4. Update the version in the "Browse all our Helm charts" section of our README.md
+5. Commit changes:
     ```shell
     git add .
     git commit -sm "Packaged new Helm chart version"
     git push origin chart-release
     ```
-5. Update the version in README.md.
 6. Create a pull request with our new Helm index.
 7. Create a GitHub release for your new Helm chart version by using the following template.
     - Make sure to list the changes to our Helm chart which are tracked in the [KEDA Core vNext](https://github.com/kedacore/charts/milestone/10) milestone
