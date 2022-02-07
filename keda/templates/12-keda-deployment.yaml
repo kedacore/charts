@@ -60,6 +60,9 @@ spec:
           - --leader-elect
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
+          {{- range $key, $value := .Values.extraArgs.keda }}
+          - --{{ $key }}={{ $value }}
+          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:
