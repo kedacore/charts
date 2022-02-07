@@ -97,6 +97,8 @@ their default values.
 | `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
 | `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `priorityClassName`                                        | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
+| `extraArgs.keda`                                           | Additional KEDA Operator container arguments| `{}` |
+| `extraArgs.metricsAdapter`                                 | Additional Metrics Adapter container arguments | `{}` |
 | `env`                                                      | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
 | `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
 | `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}`                                        |

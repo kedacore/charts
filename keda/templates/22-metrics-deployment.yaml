@@ -89,6 +89,9 @@ spec:
           - --metrics-path={{ .Values.prometheus.metricServer.path }}
           {{- end }}
           - --v={{ .Values.logging.metricServer.level }}
+          {{- range $key, $value := .Values.extraArgs.metricsAdapter }}
+          - --{{ $key }}={{ $value }}
+          {{- end }}
           ports:
             - containerPort: {{ .Values.service.portHttpsTarget }}
               name: https
