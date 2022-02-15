@@ -127,7 +127,7 @@ spec:
       {{- toYaml .Values.volumes.keda.extraVolumes | nindent 8 }}
       {{- end }}
       nodeSelector:
-        kubernetes.io/os: linux      
+        kubernetes.io/os: linux
       {{- with .Values.nodeSelector }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
