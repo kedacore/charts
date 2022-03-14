@@ -20,8 +20,11 @@ watchNamespace: ""
 
 imagePullSecrets: []
 operator:
-  name: keda-operator  
+  name: keda-operator
   replicaCount: 1
+  podDisruptionBudget:  {} 
+  #  minAvailable: 1
+  #  maxUnavailable: 1
 
 metricsServer:
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
@@ -29,7 +32,8 @@ metricsServer:
   useHostNetwork: false
 
 # -- Custom labels to add into metadata
-additionalLabels: {}
+additionalLabels:
+  {}
   # foo: bar
 
 podAnnotations:
@@ -38,12 +42,6 @@ podAnnotations:
 podLabels:
   keda: {}
   metricsAdapter: {}
-
-## See `kubectl explain poddisruptionbudget.spec` for more
-## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
-podDisruptionBudget: {}
-#  minAvailable: 1
-#  maxUnavailable: 1
 
 rbac:
   create: true
@@ -88,13 +86,15 @@ logging:
     # default value: 0
     level: 0
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # operator:
   #   fsGroup: 2000
   # metricServer:
   #   fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # operator:
   #   capabilities:
   #     drop:
@@ -145,7 +145,8 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity: {}
+affinity:
+  {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
   #   - labelSelector:
@@ -215,7 +216,8 @@ prometheus:
       enabled: false
       namespace:
       additionalLabels: {}
-      alerts: []
+      alerts:
+        []
         # - alert: KedaScalerErrors
         #   annotations:
         #     description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
@@ -223,5 +225,3 @@ prometheus:
         #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
         #   for: 2m
         #   labels:
-
-

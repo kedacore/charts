@@ -64,6 +64,7 @@ their default values.
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
 | `operator.replicaCount`                                      | Capability to configure the number of replicas for KEDA operator.<br /><br />While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic.<br /><br />You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.| `1` |
+| `operator.podDisruptionBudget`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
@@ -72,7 +73,6 @@ their default values.
 | `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
 | `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
 | `podLabels.metricsAdapter`                                 | Pod labels for KEDA Metrics Adapter | `{}` |
-| `podDisruptionBudget`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
