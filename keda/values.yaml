@@ -19,17 +19,23 @@ crds:
 watchNamespace: ""
 
 imagePullSecrets: []
+
 operator:
   name: keda-operator
   replicaCount: 1
-  podDisruptionBudget:  {} 
-  #  minAvailable: 1
-  #  maxUnavailable: 1
 
 metricsServer:
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ClusterFirst
   useHostNetwork: false
+
+podDisruptionBudget: {}
+  # operator:
+  #   minAvailable: 1
+  #   maxUnavailable: 1
+  # metricServer: 
+  #   minAvailable: 1
+  #   maxUnavailable: 1
 
 # -- Custom labels to add into metadata
 additionalLabels:

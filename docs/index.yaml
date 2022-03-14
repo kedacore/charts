@@ -24,29 +24,6 @@ entries:
   keda:
   - apiVersion: v2
     appVersion: 2.6.1
-    created: "2022-03-14T13:32:43.583921+01:00"
-    description: Event-based autoscaler for workloads on Kubernetes
-    digest: 213a1cac7b87237c12d1303d124d57193b9947e67beb9354a1980925c4eeb193
-    home: https://github.com/kedacore/keda
-    icon: https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-500x500-white.png
-    kubeVersion: '>=v1.17.0-0'
-    maintainers:
-    - email: ahmels@microsoft.com
-      name: Ahmed ElSayed
-    - email: jorge_turrado@hotmail.es
-      name: Jorge Turrado
-    - email: kerkhove.tom@gmail.com
-      name: Tom Kerkhove
-    - email: zroubali@redhat.com
-      name: Zbynek Roubalik
-    name: keda
-    sources:
-    - https://github.com/kedacore/keda
-    urls:
-    - https://kedacore.github.io/charts/keda-2.6.3.tgz
-    version: 2.6.3
-  - apiVersion: v2
-    appVersion: 2.6.1
     created: "2022-03-14T13:32:43.581204+01:00"
     description: Event-based autoscaler for workloads on Kubernetes
     digest: af7ec480a66e9f033ab44d28b3df518c0def8ea289996c413dae34e307a0a033

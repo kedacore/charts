@@ -1,4 +1,4 @@
-{{- if .Values.operator.podDisruptionBudget }}
+{{- if .Values.podDisruptionBudget.operator }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -8,11 +8,11 @@ metadata:
     app.kubernetes.io/name: {{ .Values.serviceAccount.name }}
     {{- include "keda.labels" . | indent 4 }}
 spec:
-  {{- if .Values.operator.podDisruptionBudget.minAvailable }}
-  minAvailable: {{ .Values.operator.podDisruptionBudget.minAvailable }}
+  {{- if .Values.podDisruptionBudget.operator.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.operator.minAvailable }}
   {{- end }}
-  {{- if .Values.operator.podDisruptionBudget.maxUnavailable }}
-  maxUnavailable: {{ .Values.operator.podDisruptionBudget.maxUnavailable }}
+  {{- if .Values.podDisruptionBudget.operator.maxUnavailable }}
+  maxUnavailable: {{ .Values.podDisruptionBudget.operator.maxUnavailable }}
   {{- end }}
   selector:
     matchLabels:
