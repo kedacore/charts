@@ -76,6 +76,7 @@ their default values.
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
+| `serviceAccount.automountServiceAccountToken`              | Specifies whether created service account should automount API-Credentials | `true` |
 | `serviceAccount.annotations`                               | Annotations to add to the service account | `{}` |
 | `podIdentity.activeDirectory.identity`                     | Identity in Azure Active Directory to use for Azure pod identity | `` |
 | `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
