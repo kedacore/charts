@@ -50,6 +50,8 @@ spec:
         - containerPort: {{ .Values.scaler.grpcPort }}
           name: scaler-grpc
         env:
+        - name: KEDA_HTTP_SCALER_TARGET_ADMIN_DEPLOYMENT
+          value: "{{ .Chart.Name }}-interceptor"
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
         - name: KEDA_HTTP_HEALTH_PORT
