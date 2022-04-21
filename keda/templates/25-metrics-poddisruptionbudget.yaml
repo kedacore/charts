@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   labels:
-    app.kubernetes.io/name: {{ .Values.serviceAccount.name }}-metrics-apiserver
+    app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     {{- include "keda.labels" . | indent 4 }}
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
