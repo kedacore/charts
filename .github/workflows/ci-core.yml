@@ -30,14 +30,22 @@ jobs:
       run: helm lint keda
 
   deploy-helm-3-x:
-    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
     needs: lint-helm-3-x
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        enableAzureWorkloadIdentity: [false, true]
         kubernetesVersion: [v1.23, v1.22, v1.21, v1.20, v1.19, v1.18, v1.17]
         include:
+          # Azure Workload Identity
+        - enableAzureWorkloadIdentity: true
+          tenantId: contoso
+          clientId: ABC
+        - enableAzureWorkloadIdentity: false
+          tenantId: ""
+          clientId: ""
           # Images are defined on every Kind release
           # See https://github.com/kubernetes-sigs/kind/releases
         - kubernetesVersion: v1.23
@@ -82,10 +90,10 @@ jobs:
       run: kubectl create ns keda
 
     - name: Template Helm chart
-      run: helm template keda ./keda/ --namespace keda
+      run: helm template keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }}
 
     - name: Install Helm chart
-      run: helm install keda ./keda/ --namespace keda
+      run: helm install keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }}
 
     - name: Show Kubernetes resources
       run: kubectl get all --namespace keda
