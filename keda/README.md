@@ -78,6 +78,10 @@ their default values.
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
 | `serviceAccount.annotations`                               | Annotations to add to the service account | `{}` |
 | `podIdentity.activeDirectory.identity`                     | Identity in Azure Active Directory to use for Azure pod identity | `` |
+| `podIdentity.azureWorkload.clientId`                       | Azure Active Directory Client ID use for Azure Workload Identity. | `` |
+| `podIdentity.azureWorkload.enabled`                        | Specifies whether Azure Workload Identity is to be enabled. | `false` |
+| `podIdentity.azureWorkload.tenantId`                       | Azure Active Directory Tenant ID use for Azure Workload Identity. | `` |
+| `podIdentity.azureWorkload.tokenExpiration`                | Expiration duration (seconds) for projected service account tokens. | `3600` |
 | `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
 | `hashiCorpVaultTLS`                                        | Name of the secret that will be mounted to the /vault path on the Pod to communicate over TLS with HashiCorp Vault (recommended). | `` |
 | `logging.operator.level`                                   | Logging level for KEDA Operator. Allowed values are 'debug', 'info' & 'error'. | `info`                                        |
