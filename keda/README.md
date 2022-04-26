@@ -78,6 +78,10 @@ their default values.
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
 | `serviceAccount.annotations`                               | Annotations to add to the service account | `{}` |
 | `podIdentity.activeDirectory.identity`                     | Identity in Azure Active Directory to use for Azure pod identity | `` |
+| `podIdentity.azureWorkload.clientId`                       | Id of Azure Active Directory Client to use for authentication with Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
+| `podIdentity.azureWorkload.enabled`                        | Specifies whether [Azure Workload Identity](https://azure.github.io/azure-workload-identity/) is to be enabled or not. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `false` |
+| `podIdentity.azureWorkload.tenantId`                       | Id Azure Active Directory Tenant to use for authentication with for Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
+| `podIdentity.azureWorkload.tokenExpiration`                | Duration in seconds to automatically expire tokens for the service account. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `3600` |
 | `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
 | `hashiCorpVaultTLS`                                        | Name of the secret that will be mounted to the /vault path on the Pod to communicate over TLS with HashiCorp Vault (recommended). | `` |
 | `logging.operator.level`                                   | Logging level for KEDA Operator. Allowed values are 'debug', 'info' & 'error'. | `info`                                        |

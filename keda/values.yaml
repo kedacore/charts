@@ -20,7 +20,7 @@ watchNamespace: ""
 
 imagePullSecrets: []
 operator:
-  name: keda-operator  
+  name: keda-operator
   replicaCount: 1
 
 metricsServer:
@@ -57,11 +57,24 @@ serviceAccount:
   # Annotations to add to the service account
   annotations: {}
 
-# Set to the value of the Azure Active Directory Pod Identity
-# This will be set as a label on the KEDA Pod(s)
 podIdentity:
   activeDirectory:
+    # Set to the value of the Azure Active Directory Pod Identity
+    # See https://keda.sh/docs/concepts/authentication/#azure-pod-identity
+    # This will be set as a label on the KEDA Pod(s)
     identity: ""
+  azureWorkload:
+    # Set to true to enable Azure Workload Identity usage.
+    # See https://keda.sh/docs/concepts/authentication/#azure-workload-identity
+    # This will be set as a label on the KEDA service account.
+    enabled: false
+    # Set to the value of the Azure Active Directory Client and Tenant Ids
+    # respectively. These will be set as annotations on the KEDA service account.
+    clientId: ""
+    tenantId: ""
+    # Set to the value of the service account token expiration duration.
+    # This will be set as an annotation on the KEDA service account.
+    tokenExpiration: 3600
 
 # Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
