@@ -106,29 +106,31 @@ logging:
     level: 0
 
 podSecurityContext:
-  {}
-  # operator:
-  #   fsGroup: 2000
-  # metricServer:
-  #   fsGroup: 2000
+  operator:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+  metricServer:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    ## Metrics server needs to write the self-signed cert so it's not possible set this
+    # readOnlyRootFilesystem: true
 
 securityContext:
-  {}
-  # operator:
-  #   capabilities:
-  #     drop:
-  #     - ALL
-  #   allowPrivilegeEscalation: false
-  #   readOnlyRootFilesystem: true
-  #   runAsNonRoot: true
-  #   runAsUser: 1000
-  # metricServer:
-  #   capabilities:
-  #     drop:
-  #     - ALL
-  #   allowPrivilegeEscalation: false
-  #   runAsNonRoot: true
-  #   runAsUser: 1000
+  operator:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
+  metricServer:
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 1000
+    fsGroup: 1000
 
 service:
   type: ClusterIP
