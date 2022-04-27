@@ -1,4 +1,4 @@
-{{- if .Values.podDisruptionBudget }}
+{{- if or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable)  .Values.podDisruptionBudget.metricServer }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
@@ -11,10 +11,19 @@ spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}
   minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
   {{- end }}
-  {{- if .Values.podDisruptionBudget.maxUnavailable }}
+  {{-  if .Values.podDisruptionBudget.maxUnavailable }}
   maxUnavailable: {{ .Values.podDisruptionBudget.maxUnavailable }}
+  {{- end }}
+  {{- if .Values.podDisruptionBudget.metricServer }}
+  {{- if .Values.podDisruptionBudget.metricServer.minAvailable }}
+  minAvailable: {{ .Values.podDisruptionBudget.metricServer.minAvailable }}
+  {{- end }}
+  {{- if  .Values.podDisruptionBudget.metricServer.maxUnavailable }}
+  maxUnavailable: {{ .Values.podDisruptionBudget.metricServer.maxUnavailable }}
+  {{- end }}
   {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}-metrics-apiserver
 {{- end }}
+
