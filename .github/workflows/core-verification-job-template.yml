@@ -4,7 +4,7 @@ on:
       jobNameTemplate:
         description: 'Template of name to use for jobs'
         required: false
-        default: 'Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})'
+        default: 'Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && ''With Azure Workload Identity'') || ''Without Azure Workload Identity'' }})'
         type: string
       enableAzureWorkloadIdentity:
         description: 'Stringified JSON array listing configuration options for Azure Workload Identity'
