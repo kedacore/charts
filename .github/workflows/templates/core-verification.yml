@@ -1,47 +1,21 @@
-name: Helm Chart CI (Core)
 on:
-  # Trigger the workflow on push or pull request,
-  # but only for the main branch
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/ci-core.yml'
-      - 'keda/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - '.github/workflows/ci-core.yml'
-      - 'keda/**'
-
-env:
-  kubernetesVersions: "[v1.23, v1.22, v1.21, v1.20, v1.19, v1.18, v1.17]"
-
+  workflow_call:
+    inputs:
+      kubernetesVersion:
+        description: 'Stringified JSON object listing Kubernetes version to run against'
+        required: true
+        type: string
 jobs:
   lint-helm-3-x:
-    name: Lint Helm Chart
-    runs-on: ubuntu-latest
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v2
-
-    - name: Helm install
-      uses: Azure/setup-helm@v1
-
-    - name: Lint 'KEDA' Helm chart
-      run: helm lint keda
-
-  deploy-helm-3-x:
-    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
+    name: NEW Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
     needs: lint-helm-3-x
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         enableAzureWorkloadIdentity: [false, true]
-        enablePodDisruptionBudget: [false, true]
-        kubernetesVersion: [v1.23, v1.22, v1.21, v1.20, v1.19, v1.18, v1.17]
+        # Workaround, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676
+        kubernetesVersion: ${{fromJson(inputs.kubernetesVersions)}}
         include:
           # Azure Workload Identity
         - enableAzureWorkloadIdentity: true
@@ -136,8 +110,3 @@ jobs:
     - name: Get our Nginx ScaledObject
       run: kubectl get scaledobjects/nginx-autoscaling -o wide
       if: always()
-  azure-workload-identity:
-    uses: ./.github/workflows/templates/core-verification.yml    
-    needs: lint-helm-3-x
-    with:
-      kubernetesVersion: $kubernetesVersions
