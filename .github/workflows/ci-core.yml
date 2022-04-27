@@ -150,4 +150,4 @@ jobs:
     uses: ./.github/workflows/core-verification-job-template.yml    
     needs: lint-helm-3-x
     with:
-      enablePodDisruptionBudget: "[\"false\", \"true\"]"
+      enablePodDisruptionBudget: "[false, true]"
