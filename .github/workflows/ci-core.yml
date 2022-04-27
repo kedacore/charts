@@ -138,10 +138,16 @@ jobs:
       run: kubectl get scaledobjects/nginx-autoscaling -o wide
       if: always()
 
-  wip:
+  azure-workload-identity:
     uses: ./.github/workflows/core-verification-job-template.yml    
     needs: lint-helm-3-x
     with:
       enableAzureWorkloadIdentity: "[\"false\", \"true\"]"
       azureTenantId: "contoso"
       azureClientId: "ABC"
+
+  pod-disruption-budget:
+    uses: ./.github/workflows/core-verification-job-template.yml    
+    needs: lint-helm-3-x
+    with:
+      enablePodDisruptionBudget: "[\"false\", \"true\"]"

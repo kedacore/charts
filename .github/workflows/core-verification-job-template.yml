@@ -1,6 +1,11 @@
 on:
   workflow_call:
     inputs:
+      enablePodDisruptionBudget:
+        description: 'Stringified JSON array listing configuration options for Pod Disruption Budget.'
+        required: false
+        default: '[\"false\"]'
+        type: string
       enableAzureWorkloadIdentity:
         description: 'Stringified JSON array listing configuration options for Azure Workload Identity.'
         required: false
@@ -16,13 +21,14 @@ on:
         type: string
 jobs:
   verify-chart:
-    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         # Workaround, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676
         enableAzureWorkloadIdentity: ${{ fromJson(inputs.enableAzureWorkloadIdentity) }}
+        enablePodDisruptionBudget: ${{ fromJson(inputs.enablePodDisruptionBudget) }}
         kubernetesVersion: [v1.23, v1.22, v1.21, v1.20, v1.19, v1.18, v1.17]
         include:
           # Azure Workload Identity
