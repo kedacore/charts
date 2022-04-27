@@ -4,12 +4,12 @@ on:
       enablePodDisruptionBudget:
         description: 'Stringified JSON array listing configuration options for Pod Disruption Budget.'
         required: false
-        default: '[\"false\"]'
+        default: '[false]'
         type: string
       enableAzureWorkloadIdentity:
         description: 'Stringified JSON array listing configuration options for Azure Workload Identity.'
         required: false
-        default: '[\"false\"]'
+        default: '[false]'
         type: string
       azureTenantId:
         description: 'Id of Azure tenant to use for Azure Workload Identity.'
