@@ -7,12 +7,14 @@ on:
       - main
     paths:
       - '.github/workflows/ci-core.yml'
+      - '.github/workflows/core-verification-job-template.yml'
       - 'keda/**'
   pull_request:
     branches:
       - main
     paths:
       - '.github/workflows/ci-core.yml'
+      - '.github/workflows/core-verification-job-template.yml'
       - 'keda/**'
 
 env:
@@ -135,8 +137,9 @@ jobs:
     - name: Get our Nginx ScaledObject
       run: kubectl get scaledobjects/nginx-autoscaling -o wide
       if: always()
+
   wip:
-    uses: ./.github/workflows/templates/core-verification.yml    
+    uses: ./.github/workflows/core-verification-job-template.yml    
     needs: lint-helm-3-x
     with:
       kubernetesVersion: $kubernetesVersions
