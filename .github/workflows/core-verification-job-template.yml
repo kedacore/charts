@@ -2,16 +2,16 @@ on:
   workflow_call:
     inputs:
       enableAzureWorkloadIdentity:
-        description: 'Stringified JSON array listing configuration options for Azure Workload Identity'
+        description: 'Stringified JSON array listing configuration options for Azure Workload Identity.'
         required: false
         default: '[\"false\"]'
         type: string
       azureTenantId:
-        description: 'Id of Azure tenant to use for Azure Workload Identity'
+        description: 'Id of Azure tenant to use for Azure Workload Identity.'
         required: false
         type: string
       azureClientId:
-        description: 'Id of Azure tenant to use for Azure Workload Identity'
+        description: 'Id of Azure tenant to use for Azure Workload Identity.'
         required: false
         type: string
 jobs:
