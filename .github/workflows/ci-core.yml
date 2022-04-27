@@ -142,4 +142,6 @@ jobs:
     uses: ./.github/workflows/core-verification-job-template.yml    
     needs: lint-helm-3-x
     with:
-      kubernetesVersion: $kubernetesVersions
+      enableAzureWorkloadIdentity: "[\"false\", \"true\"]"
+      azureTenantId: "contoso"
+      azureClientId: "ABC"

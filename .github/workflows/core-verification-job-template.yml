@@ -1,24 +1,39 @@
 on:
   workflow_call:
     inputs:
-      kubernetesVersion:
-        description: 'Stringified JSON object listing Kubernetes version to run against'
-        required: true
+      jobNameTemplate:
+        description: 'Template of name to use for jobs'
+        required: false
+        default: 'Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})'
+        type: string
+      enableAzureWorkloadIdentity:
+        description: 'Stringified JSON array listing configuration options for Azure Workload Identity'
+        required: false
+        default: '[\"false\"]'
+        type: string
+      azureTenantId:
+        description: 'Id of Azure tenant to use for Azure Workload Identity'
+        required: false
+        type: string
+      azureClientId:
+        description: 'Id of Azure tenant to use for Azure Workload Identity'
+        required: false
         type: string
 jobs:
-  lint-helm-3-x:
-    name: NEW Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
+  verify-chart:
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        enableAzureWorkloadIdentity: [false, true]
+        # Workaround, see https://github.community/t/reusable-workflow-with-strategy-matrix/205676
+        enableAzureWorkloadIdentity: ${{ fromJson(inputs.enableAzureWorkloadIdentity) }}
         kubernetesVersion: [v1.23, v1.22, v1.21, v1.20, v1.19, v1.18, v1.17]
         include:
           # Azure Workload Identity
         - enableAzureWorkloadIdentity: true
-          tenantId: contoso
-          clientId: ABC
+          tenantId: ${{ inputs.azureTenantId }}
+          clientId: ${{ inputs.azureClientId }}
         - enableAzureWorkloadIdentity: false
           tenantId: ""
           clientId: ""
