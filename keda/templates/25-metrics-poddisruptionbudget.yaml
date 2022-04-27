@@ -26,4 +26,4 @@ spec:
     matchLabels:
       app: {{ .Values.operator.name }}-metrics-apiserver
 {{- end }}
-{{- end }}
+
