@@ -8,7 +8,6 @@ on:
 jobs:
   lint-helm-3-x:
     name: NEW Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }})
-    needs: lint-helm-3-x
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
