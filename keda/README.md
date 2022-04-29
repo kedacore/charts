@@ -89,12 +89,12 @@ their default values.
 | `logging.operator.format`                                  | Logging format for KEDA Operator. Allowed values are 'console' & 'json'. | `console`                                        |
 | `logging.operator.timeFormat`                              | Logging time format for KEDA Operator. Allowed values are 'epoch', 'millis', 'nano', or 'iso8601'. | `epoch` |
 | `logging.metricServer.level`                               | Logging level for Metrics Server.Policy to use to pull Docker images. Allowed values are '0' for info, '4' for debug, or an integer value greater than 0, specified as string | `0` |
-| `securityContext`                                          | Security context for all containers ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#securityContext-default-configuration) |
-| `securityContext.operator`                                 | Security context of the operator container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#securityContext-default-configuration) |
-| `securityContext.metricServer`                             | Security context of the metricServer container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#securityContext-default-configuration) |
-| `podSecurityContext`                                       | Pod security context for all pods ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#securityContext-default-configuration) |
-| `podSecurityContext.operator`                              | Pod security context of the KEDA operator pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#securityContext-default-configuration) |
-| `podSecurityContext.metricServer`                          | Pod security context of the KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#securityContext-default-configuration) |
+| `securityContext`                                          | Security context for all containers ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
+| `securityContext.operator`                                 | Security context of the operator container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
+| `securityContext.metricServer`                             | Security context of the metricServer container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
+| `podSecurityContext`                                       | Pod security context for all pods ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
+| `podSecurityContext.operator`                              | Pod security context of the KEDA operator pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
+| `podSecurityContext.metricServer`                          | Pod security context of the KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
 | `resources`                                                | Manage resource request & limits of all KEDA workloads ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `{}` |
 | `resources.operator`                                       | Manage resource request & limits of KEDA operator pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
 | `resources.metricServer`                                   | Manage resource request & limits of KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
@@ -153,9 +153,9 @@ be provided while installing the chart. For example,
 helm install keda kedacore/keda --namespace keda -f values.yaml
 ```
 
-## securityContext default configuration
+## KEDA is secure by default
 
-KEDA's default configuration tries to be safest as possible, that's why the configuration is safe as default using these values:
+Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default:
 ```yaml
 podSecurityContext:
   operator:
