@@ -40,18 +40,18 @@ spec:
       {{- end }}
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
-        {{- if .Values.podSecurityContext.operator }}
-        {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
+        {{- if .Values.securityContext.operator }}
+        {{- toYaml .Values.securityContext.operator | nindent 8 }}
         {{- else }}
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.securityContext | nindent 8 }}
         {{- end }}
       containers:
         - name: {{ .Values.operator.name }}
           securityContext:
-            {{- if .Values.securityContext.operator }}
-            {{- toYaml .Values.securityContext.operator | nindent 12 }}
+            {{- if .Values.podSecurityContext.operator }}
+            {{- toYaml .Values.podSecurityContext.operator | nindent 12 }}
             {{- else }}
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
             {{- end }}
           image: "{{ .Values.image.keda.repository }}:{{ .Values.image.keda.tag | default .Chart.AppVersion }}"
           command:
