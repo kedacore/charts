@@ -65,7 +65,7 @@ jobs:
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
       uses: helm/kind-action@v1.2.0
       with:
-        version: 1.13.0
+        version: v1.13.0
         node_image: ${{ matrix.kindImage }}
 
     - name: Show Kubernetes version
