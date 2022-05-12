@@ -157,7 +157,7 @@ helm install keda kedacore/keda --namespace keda -f values.yaml
 
 Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default:
 ```yaml
-podSecurityContext:
+securityContext:
   operator:
     capabilities:
       drop:
@@ -172,15 +172,9 @@ podSecurityContext:
     ## Metrics server needs to write the self-signed cert so it's not possible set this
     # readOnlyRootFilesystem: true
 
-securityContext:
+podSecurityContext:
   operator:
     runAsNonRoot: true
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
   metricServer:
     runAsNonRoot: true
-    runAsUser: 1000
-    runAsGroup: 1000
-    fsGroup: 1000
 ```
