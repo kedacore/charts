@@ -96,9 +96,13 @@ logging:
     # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
     # default value: info
     level: info
-    # allowed valuesL 'json' or 'console'
+    # allowed values: 'json' or 'console'
     # default value: console
     format: console
+    ## Logging time encoding for KEDA Operator
+    # allowed values are 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano'
+    # default value: rfc3339
+    timeEncoding: rfc3339
   metricServer:
     ## Logging level for Metrics Server
     # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
