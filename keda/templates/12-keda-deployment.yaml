@@ -60,6 +60,7 @@ spec:
           - --leader-elect
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
+          - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
           {{- range $key, $value := .Values.extraArgs.keda }}
           - --{{ $key }}={{ $value }}
           {{- end }}
