@@ -25,7 +25,7 @@ spec:
         {{- toYaml .Values.podLabels.metricsAdapter | nindent 8}}
         {{- end }}
       annotations:
-      {{- if .Values.prometheus.metricServer.enabled }}
+      {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
         prometheus.io/path: {{ .Values.prometheus.metricServer.path }}
