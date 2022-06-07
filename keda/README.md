@@ -51,7 +51,7 @@ The command removes all the Kubernetes components associated with the chart and 
 
 ## Configuration
 
-The following table lists the configurable parameters of the Promitor chart and
+The following table lists the configurable parameters of the KEDA chart and
 their default values.
 
 | Parameter                                                  | Description                               | Default                                         |
