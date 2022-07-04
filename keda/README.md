@@ -77,6 +77,7 @@ their default values.
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
+| `serviceAccount.automountServiceAccountToken`              | Specifies whether created service account should automount API-Credentials | `true` |
 | `serviceAccount.annotations`                               | Annotations to add to the service account | `{}` |
 | `podIdentity.activeDirectory.identity`                     | Identity in Azure Active Directory to use for Azure pod identity | `` |
 | `podIdentity.azureWorkload.clientId`                       | Id of Azure Active Directory Client to use for authentication with Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
