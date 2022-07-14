@@ -18,7 +18,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - name: https
+  - name: http
     port: {{ default 9091 .Values.interceptor.proxy.port }}
     targetPort: inter-proxy
   selector:
