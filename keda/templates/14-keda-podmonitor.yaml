@@ -23,6 +23,10 @@ spec:
     {{- with .Values.prometheus.operator.podMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
+    {{- with .Values.prometheus.operator.podMonitor.relabelings }}
+    relabelings:
+{{ toYaml . | indent 4 }}
+    {{- end }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}
