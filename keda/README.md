@@ -121,6 +121,7 @@ their default values.
 | `prometheus.metricServer.podMonitor.scrapeTimeout`         | Scraping timeout for metric server using podMonitor crd (prometheus operator) | ``
 | `prometheus.metricServer.podMonitor.namespace`             | Scraping namespace for metric server using podMonitor crd (prometheus operator) | ``
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
+| `prometheus.metricServer.podMonitor.relabelings`           | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) | `[]`
 | `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
 | `prometheus.operator.port`                                 | HTTP port used for exposing keda operator prometheus metrics | `9022`
 | `prometheus.operator.path`                                 | Path used for exposing keda operator prometheus metrics | `/metrics`
@@ -133,6 +134,7 @@ their default values.
 | `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for keda operator using prometheusRules crd (prometheus operator) | ``
 | `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for keda operator using prometheusRules crd (prometheus operator) | `{}`
 | `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for keda operator using prometheusRules crd (prometheus operator) | `[]`
+| `prometheus.operator.podMonitor.relabelings`               | List of expressions that define custom relabeling rules for keda operator podMonitor crd (prometheus operator) | `[]`
 | `volumes.keda.extraVolumes`                                | Extra volumes for keda deployment | `[]`
 | `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for keda deployment | `[]`
 | `volumes.metricsApiServer.extraVolumes`                    | Extra volumes for metric server deployment | `[]`

@@ -227,6 +227,7 @@ prometheus:
       scrapeTimeout:
       namespace:
       additionalLabels: {}
+      relabelings: []
   operator:
     enabled: false
     port: 8080
@@ -238,6 +239,7 @@ prometheus:
       scrapeTimeout:
       namespace:
       additionalLabels: {}
+      relabelings: []
     prometheusRules:
       # Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
