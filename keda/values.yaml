@@ -182,7 +182,6 @@ affinity:
   #         operator: In
   #         values:
   #         - keda-operator
-  #         - keda-operator-metrics-apiserver
   #     topologyKey: "kubernetes.io/hostname"
 
 ## Optional priorityClassName for KEDA Operator and Metrics Adapter
