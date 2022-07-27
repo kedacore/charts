@@ -2,52 +2,241 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-image:
-  keda:
+keda:
+  image:
     repository: ghcr.io/kedacore/keda
     # Allows people to override tag if they don't want to use the app version
     tag:
-  metricsApiServer:
-    repository: ghcr.io/kedacore/keda-metrics-apiserver
-    # Allows people to override tag if they don't want to use the app version
-    tag:
-  pullPolicy: Always
+    pullPolicy: Always
 
-crds:
-  install: true
+  imagePullSecrets: []
 
-watchNamespace: ""
+  crds:
+    install: true
 
-imagePullSecrets: []
+  watchNamespace: ""
 
-operator:
   name: keda-operator
   replicaCount: 1
 
-metricsServer:
+  podDisruptionBudget: {}
+    # minAvailable:
+    # maxUnavailable: 1
+
+  # -- Custom labels to add into metadata
+  additionalLabels: {}
+
+  podAnnotations: {}
+  podLabels: {}
+
+  logging:
+    # -- Logging level for KEDA Operator
+    # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
+    # default value: info
+    level: info
+    # -- Logging format for KEDA Operator
+    # allowed values: 'json' or 'console'
+    # default value: console
+    format: console
+    # -- Logging time encoding for KEDA Operator
+    # allowed values are 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano'
+    # default value: rfc3339
+    timeEncoding: rfc3339
+
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+
+  podSecurityContext:
+    runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+
+  service:
+    type: ClusterIP
+    portHttp: 80
+    portHttpTarget: 8080
+    portHttps: 443
+    portHttpsTarget: 6443
+    annotations: {}
+
+  # We provides the default values that we describe in our docs:
+  # https://keda.sh/docs/latest/operate/cluster/
+  # If you want to specify the resources (or totally remove the defaults), change or comment the following
+  # lines, adjust them as necessary, or simply add the curly braces after 'operator' and/or 'metricServer'
+  # and remove/comment the default values
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - keda-operator
+    #     topologyKey: "kubernetes.io/hostname"
+
+  ## Optional priorityClassName for KEDA Operator and Metrics Adapter
+  priorityClassName: ""
+
+  ## The default HTTP timeout in milliseconds that KEDA should use
+  ## when making requests to external services. Removing this defaults to a
+  ## reasonable default
+  http:
+    timeout: 3000
+
+  ## Extra KEDA Operator container arguments
+  extraArgs: {}
+
+  ## Extra environment variables that will be passed onto KEDA operator
+  env:
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
+
+  # Extra volumes and volume mounts for the deployment. Optional.
+  volumes:
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  prometheus:
+    enabled: false
+    port: 8080
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
+      relabelings: []
+    prometheusRules:
+      # Enables PrometheusRules creation for the Prometheus Operator
+      enabled: false
+      namespace:
+      additionalLabels: {}
+      alerts: []
+        # - alert: KedaScalerErrors
+        #   annotations:
+        #     description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
+        #     summary: Keda Scaler {{ $labels.scaler }} Errors
+        #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
+        #   for: 2m
+        #   labels:
+
+metricsApiServer:
+  image:
+    repository: ghcr.io/kedacore/keda-metrics-apiserver
+    # Allows people to override tag if they don't want to use the app version
+    tag:
+    pullPolicy: Always
+
+  imagePullSecrets: []
+
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ClusterFirst
   useHostNetwork: false
 
-podDisruptionBudget: {}
-  # operator:
-  #   minAvailable: 1
-  #   maxUnavailable: 1
-  # metricServer: 
-  #   minAvailable: 1
-  #   maxUnavailable: 1
+  podDisruptionBudget: {}
+    # minAvailable:
+    # maxUnavailable: 1
 
-# -- Custom labels to add into metadata
-additionalLabels:
-  {}
-  # foo: bar
+  # -- Custom labels to add into metadata
+  additionalLabels: {}
 
-podAnnotations:
-  keda: {}
-  metricsAdapter: {}
-podLabels:
-  keda: {}
-  metricsAdapter: {}
+  logging:
+    # -- Logging level for Metrics Server
+    # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
+    # default value: 0
+    level: 0
+
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    ## Metrics server needs to write the self-signed cert so it's not possible set this
+    # readOnlyRootFilesystem: true
+
+  podSecurityContext:
+    runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+
+  # We provides the default values that we describe in our docs:
+  # https://keda.sh/docs/latest/operate/cluster/
+  # If you want to specify the resources (or totally remove the defaults), change or comment the following
+  # lines, adjust them as necessary, or simply add the curly braces after 'operator' and/or 'metricServer'
+  # and remove/comment the default values
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - keda-operator-metrics-apiserver
+    #     topologyKey: "kubernetes.io/hostname"
+
+  ## Optional priorityClassName for KEDA Operator and Metrics Adapter
+  priorityClassName: ""
+
+  ## Extra Metrics Adapter container arguments
+  extraArgs: {}
+
+  ## Extra environment variables that will be passed onto metrics api service
+  env:
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
+
+  # Extra volumes and volume mounts for the deployment. Optional.
+  volumes:
+    extraVolumes: []
+    extraVolumeMounts: []
+
+  prometheus:
+    enabled: false
+    port: 9022
+    portName: metrics
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
+      relabelings: []
 
 rbac:
   create: true
@@ -57,7 +246,7 @@ serviceAccount:
   create: true
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: keda-operator
+  name:
   # Specifies whether a service account should automount API-Credentials
   automountServiceAccountToken: true
   # Annotations to add to the service account
@@ -91,165 +280,3 @@ grpcTLSCertsSecret: ""
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /vault path on the Pod
 hashiCorpVaultTLS: ""
-
-logging:
-  operator:
-    ## Logging level for KEDA Operator
-    # allowed values: 'debug', 'info', 'error', or an integer value greater than 0, specified as string
-    # default value: info
-    level: info
-    # allowed values: 'json' or 'console'
-    # default value: console
-    format: console
-    ## Logging time encoding for KEDA Operator
-    # allowed values are 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano'
-    # default value: rfc3339
-    timeEncoding: rfc3339
-  metricServer:
-    ## Logging level for Metrics Server
-    # allowed values: '0' for info, '4' for debug, or an integer value greater than 0, specified as string
-    # default value: 0
-    level: 0
-
-securityContext:
-  operator:
-    capabilities:
-      drop:
-      - ALL
-    allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: true
-  metricServer:
-    capabilities:
-      drop:
-      - ALL
-    allowPrivilegeEscalation: false
-    ## Metrics server needs to write the self-signed cert so it's not possible set this
-    # readOnlyRootFilesystem: true
-
-podSecurityContext:
-  operator:
-    runAsNonRoot: true
-    # runAsUser: 1000
-    # runAsGroup: 1000
-    # fsGroup: 1000
-  metricServer:
-    runAsNonRoot: true
-    # runAsUser: 1000
-    # runAsGroup: 1000
-    # fsGroup: 1000
-
-service:
-  type: ClusterIP
-  portHttp: 80
-  portHttpTarget: 8080
-  portHttps: 443
-  portHttpsTarget: 6443
-
-  annotations: {}
-
-# We provides the default values that we describe in our docs:
-# https://keda.sh/docs/latest/operate/cluster/
-# If you want to specify the resources (or totally remove the defaults), change or comment the following
-# lines, adjust them as necessary, or simply add the curly braces after 'operator' and/or 'metricServer'
-# and remove/comment the default values
-resources:
-  operator:
-    limits:
-      cpu: 1
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
-  metricServer:
-    limits:
-      cpu: 1
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity:
-  {}
-  # podAntiAffinity:
-  #   requiredDuringSchedulingIgnoredDuringExecution:
-  #   - labelSelector:
-  #       matchExpressions:
-  #       - key: app
-  #         operator: In
-  #         values:
-  #         - keda-operator
-  #     topologyKey: "kubernetes.io/hostname"
-
-## Optional priorityClassName for KEDA Operator and Metrics Adapter
-priorityClassName: ""
-
-## The default HTTP timeout in milliseconds that KEDA should use
-## when making requests to external services. Removing this defaults to a
-## reasonable default
-http:
-  timeout: 3000
-
-## Extra KEDA Operator and Metrics Adapter container arguments
-extraArgs:
-  keda: {}
-  metricsAdapter: {}
-
-## Extra environment variables that will be passed onto KEDA operator and metrics api service
-env:
-# - name: ENV_NAME
-#   value: 'ENV-VALUE'
-
-# Extra volumes and volume mounts for the deployment. Optional.
-volumes:
-  keda:
-    extraVolumes: []
-    extraVolumeMounts: []
-
-  metricsApiServer:
-    extraVolumes: []
-    extraVolumeMounts: []
-
-prometheus:
-  metricServer:
-    enabled: false
-    port: 9022
-    portName: metrics
-    path: /metrics
-    podMonitor:
-      # Enables PodMonitor creation for the Prometheus Operator
-      enabled: false
-      interval:
-      scrapeTimeout:
-      namespace:
-      additionalLabels: {}
-      relabelings: []
-  operator:
-    enabled: false
-    port: 8080
-    path: /metrics
-    podMonitor:
-      # Enables PodMonitor creation for the Prometheus Operator
-      enabled: false
-      interval:
-      scrapeTimeout:
-      namespace:
-      additionalLabels: {}
-      relabelings: []
-    prometheusRules:
-      # Enables PrometheusRules creation for the Prometheus Operator
-      enabled: false
-      namespace:
-      additionalLabels: {}
-      alerts:
-        []
-        # - alert: KedaScalerErrors
-        #   annotations:
-        #     description: Keda scaledObject {{ $labels.scaledObject }} is experiencing errors with {{ $labels.scaler }} scaler
-        #     summary: Keda Scaler {{ $labels.scaler }} Errors
-        #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
-        #   for: 2m
-        #   labels:
