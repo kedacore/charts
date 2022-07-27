@@ -33,7 +33,7 @@ podDisruptionBudget: {}
   # operator:
   #   minAvailable: 1
   #   maxUnavailable: 1
-  # metricServer: 
+  # metricServer:
   #   minAvailable: 1
   #   maxUnavailable: 1
 
@@ -193,6 +193,13 @@ priorityClassName: ""
 ## reasonable default
 http:
   timeout: 3000
+
+# KEDA Operator leader election leasing options. Optional.
+# If specified, should be a duration (e.g. '300ms' or '10s')
+leaderElection:
+  leaseDuration:
+  renewDeadline:
+  retryPeriod:
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:

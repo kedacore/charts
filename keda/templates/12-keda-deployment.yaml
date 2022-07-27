@@ -93,6 +93,18 @@ spec:
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             {{- end }}
+            {{- if .Values.leaderElection.leaseDuration }}
+            - name: KEDA_LEADER_ELECTION_LEASE_DURATION
+              value: {{ .Values.leaderElection.leaseDuration | quote }}
+            {{- end }}
+            {{- if .Values.leaderElection.renewDeadline }}
+            - name: KEDA_LEADER_ELECTION_RENEW_DEADLINE
+              value: {{ .Values.leaderElection.renewDeadline | quote }}
+            {{- end }}
+            {{- if .Values.leaderElection.retryPeriod }}
+            - name: KEDA_LEADER_ELECTION_RETRY_PERIOD
+              value: {{ .Values.leaderElection.retryPeriod | quote }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}

@@ -106,7 +106,10 @@ their default values.
 | `extraArgs.keda`                                           | Additional KEDA Operator container arguments| `{}` |
 | `extraArgs.metricsAdapter`                                 | Additional Metrics Adapter container arguments | `{}` |
 | `env`                                                      | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
-| `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
+| `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `3000` |
+| `leaderElection.leaseDuration`                             | The duration that non-leader KEDA Operator candidates will wait to force acquire leadership. | `` |
+| `leaderElection.renewDeadline`                             | The duration that the acting control plane will retry refreshing KEDA Operator leadership before giving up. | `` |
+| `leaderElection.retryPeriod`                               | The duration KEDA Operators should wait between leadership acquisition attempts. | `` |
 | `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}`                                        |
 | `service.portHttp`                                         | Service HTTP port for KEDA Metric Server service | `80`                                        |
 | `service.portHttpTarget`                                   | Service HTTP port for KEDA Metric Server container | `8080`                                        |
