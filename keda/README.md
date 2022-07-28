@@ -64,8 +64,10 @@ their default values.
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
 | `operator.replicaCount`                                      | Capability to configure the number of replicas for KEDA operator.<br /><br />While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic.<br /><br />You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.| `1` |
+| `operator.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for KEDA operator. Takes precedence over the `affinity` field | `{}` |
 | `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
+| `metricsServer.affinity`                                   | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for Metrics API Server. Takes precedence over the `affinity` field | `{}` |
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
 | `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
 | `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
@@ -103,7 +105,7 @@ their default values.
 | `resources.metricServer`                                   | Manage resource request & limits of KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
 | `nodeSelector`                                             | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
 | `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
-| `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
+| `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for both KEDA operator and Metrics API Server | `{}` |
 | `priorityClassName`                                        | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
 | `extraArgs.keda`                                           | Additional KEDA Operator container arguments| `{}` |
 | `extraArgs.metricsAdapter`                                 | Additional Metrics Adapter container arguments | `{}` |

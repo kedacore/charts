@@ -23,11 +23,33 @@ imagePullSecrets: []
 operator:
   name: keda-operator
   replicaCount: 1
+  # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for KEDA operator. Takes precedence over the `affinity` field
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - keda-operator
+    #     topologyKey: "kubernetes.io/hostname"
 
 metricsServer:
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ClusterFirst
   useHostNetwork: false
+  # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for Metrics API Server. Takes precedence over the `affinity` field
+  affinity: {}
+    # podAntiAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #   - labelSelector:
+    #       matchExpressions:
+    #       - key: app
+    #         operator: In
+    #         values:
+    #         - keda-operator-metrics-apiserver
+    #     topologyKey: "kubernetes.io/hostname"
 
 upgradeStrategy:
   operator: {}
@@ -184,8 +206,8 @@ nodeSelector: {}
 
 tolerations: []
 
-affinity:
-  {}
+# -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for both KEDA operator and Metrics API Server
+affinity: {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
   #   - labelSelector:
