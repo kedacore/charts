@@ -10,6 +10,10 @@ metadata:
     {{- include "keda.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.operator.replicaCount}}
+  {{- with .Values.upgradeStrategy.operator }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}

@@ -29,6 +29,18 @@ metricsServer:
   dnsPolicy: ClusterFirst
   useHostNetwork: false
 
+upgradeStrategy:
+  operator: {}
+    # type: RollingUpdate
+    # rollingUpdate:
+    #   maxUnavailable: 1
+    #   maxSurge: 1
+  metricsApiServer: {}
+    # type: RollingUpdate
+    # rollingUpdate:
+    #   maxUnavailable: 1
+    #   maxSurge: 1
+
 podDisruptionBudget: {}
   # operator:
   #   minAvailable: 1
