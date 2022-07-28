@@ -70,6 +70,8 @@ their default values.
 | `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
 | `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
 | `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
+| `upgradeStrategy.operator`                                 | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for operator      | `{}` |
+| `upgradeStrategy.metricsApiServer`                         | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for Metrics Api Server      | `{}` |
 | `podDisruptionBudget.operator`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `podDisruptionBudget.metricServer`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
 | `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |

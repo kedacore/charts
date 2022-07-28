@@ -9,6 +9,10 @@ metadata:
     {{- include "keda.labels" . | indent 4 }}
 spec:
   replicas: 1
+  {{- with .Values.upgradeStrategy.metricsApiServer }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}-metrics-apiserver
