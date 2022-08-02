@@ -7,6 +7,8 @@ crds:
 
 # operator-specific configuration values
 operator:
+  # the image pull secrets for the operator
+  imagePullSecrets: []
   # the namespace to watch for new HTTPScaledObjects.
   # leave this empty to tell the operator to watch in all
   # namespaces
@@ -29,6 +31,8 @@ operator:
   affinity: {}
 
 scaler:
+  # the image pull secrets for the scaler
+  imagePullSecrets: []
   service: external-scaler
   pullPolicy: Always
   grpcPort: 9090
@@ -39,6 +43,8 @@ scaler:
   affinity: {}
 
 interceptor:
+  # the image pull secrets for the interceptor
+  imagePullSecrets: []
   # the image pull policy of the interceptor
   pullPolicy: Always
   # configurable values for the interceptor's admin

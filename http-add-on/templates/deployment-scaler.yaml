@@ -39,6 +39,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     {{ tpl .Values.additionalLabels . | indent 4}}
     spec:
+      imagePullSecrets: 
+        {{- toYaml .Values.scaler.imagePullSecrets | indent 8 }}
       containers:
       - args:
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
