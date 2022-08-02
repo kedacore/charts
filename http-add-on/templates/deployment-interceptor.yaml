@@ -40,7 +40,7 @@ spec:
     {{ tpl .Values.additionalLabels . | indent 4}}
     spec:
       imagePullSecrets: 
-        {{- toYaml .Values.interceptor.imagePullSecrets | indent 8 }}
+        {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}
       containers:
       - args:
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
