@@ -92,6 +92,7 @@ their default values.
 | `crds.install`                                             | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | `true` |
 | `operator.watchNamespace`                                  | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. | `""` |
 | `operator.pullPolicy`                                      | The image pull policy for the operator component | `Always` |
+| `operator.imagePullSecrets`                                | The image pull secrets for the operator component | `[]` |
 | `operator.resources.limits.cpu`                            | The CPU resource limit for the operator component | `0.5` |
 | `operator.resources.limits.memory`                         | The memory resource limit for the operator component | `64Mi` |
 | `operator.resources.requests.cpu`                          | The CPU resource request for the operator component | `250m` |
@@ -104,12 +105,14 @@ their default values.
 | `operator.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
 | `scaler.service`                                           | The name of the Kubernetes `Service` for the scaler component | `external-scaler` |
 | `scaler.pullPolicy`                                        | The image pull policy for the scaler component | `Always` |
+| `scaler.imagePullSecrets`                                  | The image pull secrets for the scaler component | `[]` |
 | `scaler.grpcPort`                                          | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. | `9090` |
 | `scaler.healthPort`                                        | The port for the scaler's health check and admin server | `9091` |
 | `scaler.pendingRequestsInterceptor`                        | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. | `200` |
 | `scaler.nodeSelector`                                      | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
 | `scaler.tolerations`                                       | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
 | `scaler.affinity`                                          | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
+| `interceptor.imagePullSecrets`                             | The image pull secrets for the interceptor component | `[]` |
 | `interceptor.pullPolicy` | The image pull policy for the interceptor component | `Always` |
 | `interceptor.admin.service` | The name of the Kubernetes `Service` for the interceptor's admin service | `interceptor-admin` |
 | `interceptor.admin.port` | The port for the interceptor's admin server to run on | `9090` |
