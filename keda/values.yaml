@@ -36,6 +36,7 @@ operator:
     #     topologyKey: "kubernetes.io/hostname"
 
 metricsServer:
+  replicaCount: 1
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ClusterFirst
   useHostNetwork: false

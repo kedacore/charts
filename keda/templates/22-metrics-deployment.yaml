@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     {{- include "keda.labels" . | indent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.metricsServer.replicaCount }}
   {{- with .Values.upgradeStrategy.metricsApiServer }}
   strategy:
     {{- toYaml . | nindent 4 }}
