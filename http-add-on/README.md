@@ -92,7 +92,7 @@ their default values.
 | `crds.install`                                             | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | `true` |
 | `operator.watchNamespace`                                  | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. | `""` |
 | `operator.pullPolicy`                                      | The image pull policy for the operator component | `Always` |
-| `operator.imagePullSecrets`                                      | The image pull secrets for the operator component | `[]` |
+| `operator.imagePullSecrets`                                | The image pull secrets for the operator component | `[]` |
 | `operator.resources.limits.cpu`                            | The CPU resource limit for the operator component | `0.5` |
 | `operator.resources.limits.memory`                         | The memory resource limit for the operator component | `64Mi` |
 | `operator.resources.requests.cpu`                          | The CPU resource request for the operator component | `250m` |
