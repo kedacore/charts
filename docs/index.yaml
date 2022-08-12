@@ -890,6 +890,7 @@ entries:
   - apiVersion: v2
     appVersion: 0.0.1
     description: Event-based autoscaler for HTTP workloads on Kubernetes
+    maintainers:
     - email: ahmels@microsoft.com
       name: Ahmed ElSayed
     - email: kerkhove.tom@gmail.com
