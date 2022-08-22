@@ -4,7 +4,7 @@ description: Event-based autoscaler for workloads on Kubernetes
 
 # Specify the Kubernetes version range that we support.
 # We allow pre-release versions for cloud-specific Kubernetes versions such as  v1.21.5-gke.1302 or v1.18.9-eks-d1db3c
-kubeVersion: ">=v1.17.0-0"
+kubeVersion: ">=v1.20.0-0"
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
