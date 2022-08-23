@@ -153,9 +153,8 @@ securityContext:
       - ALL
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
-    ## Add explicit seccompProfile type for Kubernetes 1.19+
-    # seccompProfile:
-    #   type: RuntimeDefault
+    seccompProfile:
+      type: RuntimeDefault
   metricServer:
     capabilities:
       drop:
@@ -163,9 +162,8 @@ securityContext:
     allowPrivilegeEscalation: false
     ## Metrics server needs to write the self-signed cert. See FAQ for discussion of options.
     # readOnlyRootFilesystem: true
-    ## Add explicit seccompProfile type for Kubernetes 1.19+
-    # seccompProfile:
-    #   type: RuntimeDefault
+    seccompProfile:
+      type: RuntimeDefault
 
 podSecurityContext:
   operator:
