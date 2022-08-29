@@ -106,6 +106,7 @@ their default values.
 | `resources.metricServer`                                   | Manage resource request & limits of KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
 | `nodeSelector`                                             | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
 | `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
+| topologySpreadConstraints | object | `{}` | Pod Topology Constraints https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
 | `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for both KEDA operator and Metrics API Server | `{}` |
 | `priorityClassName`                                        | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
 | `extraArgs.keda`                                           | Additional KEDA Operator container arguments| `{}` |
