@@ -68,7 +68,7 @@ podDisruptionBudget: {}
   # operator:
   #   minAvailable: 1
   #   maxUnavailable: 1
-  # metricServer: 
+  # metricServer:
   #   minAvailable: 1
   #   maxUnavailable: 1
 
@@ -210,6 +210,11 @@ resources:
 nodeSelector: {}
 
 tolerations: []
+
+# -- Pod Topology Constraints https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+topologySpreadConstraints: {}
+  #operator: []
+  #metricsServer: []
 
 # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for both KEDA operator and Metrics API Server
 affinity: {}
