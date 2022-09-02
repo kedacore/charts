@@ -45,8 +45,8 @@ You can easily release a new Helm chart version:
 > ## TL;DR
 >
 > ```shell
-> helm repo add keda https://kedacore.github.io/charts
-> helm install keda/keda
+> helm repo add kedacore https://kedacore.github.io/charts
+> helm install keda kedacore/keda
 > ```
 >
 > ## What is new?
