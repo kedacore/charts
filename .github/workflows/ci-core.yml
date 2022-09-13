@@ -63,9 +63,8 @@ jobs:
       uses: Azure/setup-helm@v1
       
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
-      uses: helm/kind-action@v1.2.0
+      uses: helm/kind-action@main
       with:
-        version: v0.13.0
         node_image: ${{ matrix.kindImage }}
 
     - name: Show Kubernetes version
