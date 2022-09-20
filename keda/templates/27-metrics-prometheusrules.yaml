@@ -1,0 +1,20 @@
+{{- if and .Values.prometheus.metricServer.enabled .Values.prometheus.metricServer.prometheusRules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Values.operator.name }}-metrics-apiserver
+  labels:
+    app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
+    {{- include "keda.labels" . | indent 4 }}
+    {{- range $key, $value := .Values.prometheus.metricServer.prometheusRules.additionalLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- with .Values.prometheus.metricServer.prometheusRules.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+spec:
+  groups:
+  - name: {{ .Values.operator.name }}-metrics-apiserver
+    rules:
+{{ toYaml .Values.prometheus.metricServer.prometheusRules.alerts | indent 6 }}
+{{- end }}
