@@ -87,6 +87,7 @@ spec:
             {{- end }}
           args:
           - /usr/local/bin/keda-adapter
+          - --port={{ .Values.service.portHttpTarget }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           {{- if .Values.prometheus.metricServer.enabled }}
