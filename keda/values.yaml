@@ -116,6 +116,22 @@ podIdentity:
     # Set to the value of the service account token expiration duration.
     # This will be set as an annotation on the KEDA service account.
     tokenExpiration: 3600
+  irsa:
+    # Set to true to enable AWS IAM Roles for Service Accounts (IRSA).
+    enabled: false
+    # Sets the token audience for IRSA.
+    # This will be set as an annotation on the KEDA service account.
+    audience: "sts.amazonaws.com"
+    # Set to the value of the ARN of an IAM role with a web identity provider.
+    # This will be set as an annotation on the KEDA service account.
+    roleArn: ""
+    # Sets the use of an STS regional endpoint instead of global. 
+    # Recommended to use regional endpoint in almost all cases.
+    # This will be set as an annotation on the KEDA service account.
+    stsRegionalEndpoints: "true"
+    # Set to the value of the service account token expiration duration.
+    # This will be set as an annotation on the KEDA service account.
+    tokenExpiration: 86400
 
 # Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
