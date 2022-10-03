@@ -89,6 +89,11 @@ their default values.
 | `podIdentity.azureWorkload.enabled`                        | Specifies whether [Azure Workload Identity](https://azure.github.io/azure-workload-identity/) is to be enabled or not. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `false` |
 | `podIdentity.azureWorkload.tenantId`                       | Id Azure Active Directory Tenant to use for authentication with for Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
 | `podIdentity.azureWorkload.tokenExpiration`                | Duration in seconds to automatically expire tokens for the service account. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `3600` |
+| `podIdentity.aws.irsa.audience`                            | Sets the token audience for IRSA. | `sts.amazonaws.com` |
+| `podIdentity.aws.irsa.enabled`                             | Specifies whether [AWS IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is to be enabled or not. | `false` |
+| `podIdentity.aws.irsa.roleArn`                             | ARN of an IRSA IAM role with a web identity provider to use for authentication via STS. | `` |
+| `podIdentity.aws.irsa.stsRegionalEndpoints`                | Sets the use of an STS regional endpoint instead of global. Recommended to use regional endpoint in almost all cases. | `true` |
+| `podIdentity.aws.irsa.tokenExpiration`                     | Duration in seconds to automatically expire tokens for the service account. | `86400` |
 | `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
 | `hashiCorpVaultTLS`                                        | Name of the secret that will be mounted to the /vault path on the Pod to communicate over TLS with HashiCorp Vault (recommended). | `` |
 | `logging.operator.level`                                   | Logging level for KEDA Operator. Allowed values are 'debug', 'info' & 'error'. | `info`                                        |
