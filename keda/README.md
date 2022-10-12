@@ -110,7 +110,7 @@ their default values.
 | `resources.operator`                                       | Manage resource request & limits of KEDA operator pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
 | `resources.metricServer`                                   | Manage resource request & limits of KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
 | `nodeSelector`                                             | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
-| `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
+| `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `[]` |
 | `topologySpreadConstraints.operator` | object | `{}` | Pod Topology Constraints of KEDA operator pod https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
 | `topologySpreadConstraints.metricsServer` | object | `{}` | Pod Topology Constraints of KEDA metrics apiserver pod https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
 | `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for both KEDA operator and Metrics API Server | `{}` |
