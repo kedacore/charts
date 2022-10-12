@@ -320,5 +320,10 @@ prometheus:
         #   for: 2m
         #   labels:
 
-restrict:
-  secret: false
+permissions:
+  metricServer:
+    restrict:
+      secret: false
+  operator:
+    restrict:
+      secret: false

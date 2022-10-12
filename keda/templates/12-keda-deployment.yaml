@@ -106,9 +106,9 @@ spec:
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             {{- end }}
-            {{- if .Values.restrict.secret }}
+            {{- if .Values.permissions.operator.restrict.secret }}
             - name: KEDA_RESTRICT_SECRET_ACCESS
-              value: {{ .Values.restrict.secret | quote }}
+              value: {{ .Values.permissions.operator.restrict.secret | quote }}
             {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
