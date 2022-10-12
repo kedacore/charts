@@ -134,6 +134,10 @@ their default values.
 | `prometheus.metricServer.podMonitor.namespace`             | Scraping namespace for metric server using podMonitor crd (prometheus operator) | ``
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
 | `prometheus.metricServer.podMonitor.relabelings`           | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) | `[]`
+| `prometheus.metricServer.prometheusRules.enabled`          | Enable monitoring for keda metricServer using prometheusRules crd (prometheus operator) | `false`
+| `prometheus.metricServer.prometheusRules.namespace`        | Scraping namespace for keda metricServer using prometheusRules crd (prometheus operator) | ``
+| `prometheus.metricServer.prometheusRules.additionalLabels` | Additional labels to add for keda metricServer using prometheusRules crd (prometheus operator) | `{}`
+| `prometheus.metricServer.prometheusRules.alerts`           | Additional alerts to add for keda metricServer using prometheusRules crd (prometheus operator) | `[]`
 | `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
 | `prometheus.operator.path`                                 | Path used for exposing keda operator prometheus metrics | `/metrics`
 | `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for keda operator using podMonitor crd (prometheus operator) | `false`
@@ -141,10 +145,6 @@ their default values.
 | `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for keda operator using podMonitor crd (prometheus operator) | ``
 | `prometheus.operator.podMonitor.namespace`                 | Scraping namespace for keda operator using podMonitor crd (prometheus operator) | ``
 | `prometheus.operator.podMonitor.additionalLabels`          | Additional labels to add for keda operator using podMonitor crd (prometheus operator) | `{}`
-| `prometheus.operator.prometheusRules.enabled`              | Enable monitoring for keda operator using prometheusRules crd (prometheus operator) | `false`
-| `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for keda operator using prometheusRules crd (prometheus operator) | ``
-| `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for keda operator using prometheusRules crd (prometheus operator) | `{}`
-| `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for keda operator using prometheusRules crd (prometheus operator) | `[]`
 | `prometheus.operator.podMonitor.relabelings`               | List of expressions that define custom relabeling rules for keda operator podMonitor crd (prometheus operator) | `[]`
 | `volumes.keda.extraVolumes`                                | Extra volumes for keda deployment | `[]`
 | `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for keda deployment | `[]`

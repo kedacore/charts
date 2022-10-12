@@ -289,18 +289,6 @@ prometheus:
       namespace:
       additionalLabels: {}
       relabelings: []
-  operator:
-    enabled: false
-    port: 8080
-    path: /metrics
-    podMonitor:
-      # Enables PodMonitor creation for the Prometheus Operator
-      enabled: false
-      interval:
-      scrapeTimeout:
-      namespace:
-      additionalLabels: {}
-      relabelings: []
     prometheusRules:
       # Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
@@ -315,3 +303,15 @@ prometheus:
         #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
         #   for: 2m
         #   labels:
+  operator:
+    enabled: false
+    port: 8080
+    path: /metrics
+    podMonitor:
+      # Enables PodMonitor creation for the Prometheus Operator
+      enabled: false
+      interval:
+      scrapeTimeout:
+      namespace:
+      additionalLabels: {}
+      relabelings: []
