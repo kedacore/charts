@@ -24,7 +24,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Helm install
-      uses: Azure/setup-helm@v1
+      uses: Azure/setup-helm@v3
 
     - name: Lint 'http-add-on' Helm chart
       run: helm lint http-add-on
@@ -51,7 +51,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Helm install
-      uses: Azure/setup-helm@v1
+      uses: Azure/setup-helm@v3
 
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
       uses: helm/kind-action@main
