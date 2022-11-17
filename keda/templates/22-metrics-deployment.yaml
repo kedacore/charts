@@ -90,6 +90,7 @@ spec:
           - --port={{ .Values.service.portHttpTarget }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
+          - --disable-compression
           {{- if .Values.prometheus.metricServer.enabled }}
           - --metrics-port={{ .Values.prometheus.metricServer.port }}
           - --metrics-path={{ .Values.prometheus.metricServer.path }}
