@@ -257,8 +257,10 @@ http:
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
-  keda: {}
-  metricsAdapter: {}
+  keda:
+    disable-compression: true
+  metricsAdapter:
+    disable-compression: true
 
 ## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
