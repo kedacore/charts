@@ -23,7 +23,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Helm install
-      uses: Azure/setup-helm@v1
+      uses: Azure/setup-helm@v3
 
     - name: Lint 'Azure Cosmos DB external scaler' Helm chart
       run: helm lint ./external-scaler-azure-cosmos-db/ --strict
@@ -60,7 +60,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Helm install
-      uses: Azure/setup-helm@v1
+      uses: Azure/setup-helm@v3
       
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
       uses: helm/kind-action@v1.2.0
