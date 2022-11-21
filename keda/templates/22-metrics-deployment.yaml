@@ -28,6 +28,9 @@ spec:
         {{- if .Values.podLabels.metricsAdapter }}
         {{- toYaml .Values.podLabels.metricsAdapter | nindent 8}}
         {{- end }}
+        {{- if .Values.podIdentity.azureWorkload.enabled }}
+        azure.workload.identity/use: "true"
+        {{- end }}
       annotations:
       {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
         prometheus.io/scrape: "true"
