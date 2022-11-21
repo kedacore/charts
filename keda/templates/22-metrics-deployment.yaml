@@ -6,6 +6,9 @@ metadata:
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
+    {{- if .Values.podIdentity.azureWorkload.enabled }}
+    azure.workload.identity/use: {{ .Values.podIdentity.azureWorkload.enabled | quote }}
+    {{- end }}
     {{- include "keda.labels" . | indent 4 }}
 spec:
   replicas: {{ .Values.metricsServer.replicaCount }}
