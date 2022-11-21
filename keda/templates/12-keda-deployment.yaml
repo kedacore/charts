@@ -31,7 +31,7 @@ spec:
         {{- toYaml .Values.podLabels.keda | nindent 8}}
         {{- end }}
         {{- if .Values.podIdentity.azureWorkload.enabled }}
-        azure.workload.identity/use: {{ .Values.podIdentity.azureWorkload.enabled | quote }}
+        azure.workload.identity/use: "true"
         {{- end }}
       {{- if .Values.podAnnotations.keda }}
       annotations:
