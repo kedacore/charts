@@ -1,5 +1,5 @@
 {{- if or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable)  .Values.podDisruptionBudget.metricServer }}
-apiVersion: policy/v1beta1
+apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
