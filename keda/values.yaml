@@ -23,6 +23,7 @@ imagePullSecrets: []
 operator:
   name: keda-operator
   replicaCount: 1
+  useHostNetwork: false
   # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
