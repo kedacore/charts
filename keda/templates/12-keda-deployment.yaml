@@ -135,6 +135,7 @@ spec:
       {{- if .Values.volumes.keda.extraVolumes }}
       {{- toYaml .Values.volumes.keda.extraVolumes | nindent 8 }}
       {{- end }}
+      dnsPolicy: {{ .Values.operator.dnsPolicy }}
       hostNetwork: {{ .Values.operator.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
