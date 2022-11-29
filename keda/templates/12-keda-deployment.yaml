@@ -69,6 +69,9 @@ spec:
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
+          {{- if .Values.prometheus.operator.enabled }}
+          - --metrics-port=:{{ .Values.prometheus.operator.port }}
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - --{{ $key }}={{ $value }}
           {{- end }}

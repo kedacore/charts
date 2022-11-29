@@ -15,7 +15,7 @@ metadata:
 spec:
   podMetricsEndpoints:
   - port: http
-    path: {{ .Values.prometheus.operator.path }}
+    path: /metrics
     honorLabels: true
     {{- with .Values.prometheus.operator.podMonitor.interval }}
     interval: {{ . }}
