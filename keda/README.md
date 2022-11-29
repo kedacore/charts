@@ -124,7 +124,7 @@ their default values.
 | `service.portHttpTarget`                                   | Service HTTP port for KEDA Metric Server container | `8080`                                        |
 | `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443`                                        |
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443`                                        |
-| `prometheus.metricServer.enabled`                          | Enable metric server prometheus metrics expose | `false`
+| `prometheus.metricServer.enabled`                          | Enable metric server Prometheus metrics expose | `false`
 | `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022`
 | `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics`
 | `prometheus.metricServer.path`                             | Path used for exposing metric server prometheus metrics | `/metrics`
@@ -134,20 +134,20 @@ their default values.
 | `prometheus.metricServer.podMonitor.namespace`             | Scraping namespace for metric server using podMonitor crd (prometheus operator) | ``
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
 | `prometheus.metricServer.podMonitor.relabelings`           | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) | `[]`
-| `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
-| `prometheus.operator.port`                                 | Path used for exposing keda operator prometheus metrics | `8080`
-| `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for keda operator using podMonitor crd (prometheus operator) | `false`
-| `prometheus.operator.podMonitor.interval`                  | Scraping interval for keda operator using podMonitor crd (prometheus operator) | ``
-| `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for keda operator using podMonitor crd (prometheus operator) | ``
-| `prometheus.operator.podMonitor.namespace`                 | Scraping namespace for keda operator using podMonitor crd (prometheus operator) | ``
-| `prometheus.operator.podMonitor.additionalLabels`          | Additional labels to add for keda operator using podMonitor crd (prometheus operator) | `{}`
-| `prometheus.operator.prometheusRules.enabled`              | Enable monitoring for keda operator using prometheusRules crd (prometheus operator) | `false`
-| `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for keda operator using prometheusRules crd (prometheus operator) | ``
-| `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for keda operator using prometheusRules crd (prometheus operator) | `{}`
-| `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for keda operator using prometheusRules crd (prometheus operator) | `[]`
-| `prometheus.operator.podMonitor.relabelings`               | List of expressions that define custom relabeling rules for keda operator podMonitor crd (prometheus operator) | `[]`
-| `volumes.keda.extraVolumes`                                | Extra volumes for keda deployment | `[]`
-| `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for keda deployment | `[]`
+| `prometheus.operator.enabled`                              | Enable KEDA Operator prometheus metrics expose | `false`
+| `prometheus.operator.port`                                 | Port used for exposing KEDA Operator prometheus metrics | `8080`
+| `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for KEDA Operator using podMonitor crd (prometheus operator) | `false`
+| `prometheus.operator.podMonitor.interval`                  | Scraping interval for KEDA Operator using podMonitor crd (prometheus operator) | ``
+| `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for KEDA Operator using podMonitor crd (prometheus operator) | ``
+| `prometheus.operator.podMonitor.namespace`                 | Scraping namespace for KEDA Operator using podMonitor crd (prometheus operator) | ``
+| `prometheus.operator.podMonitor.additionalLabels`          | Additional labels to add for KEDA Operator using podMonitor crd (prometheus operator) | `{}`
+| `prometheus.operator.prometheusRules.enabled`              | Enable monitoring for KEDA Operator using prometheusRules crd (prometheus operator) | `false`
+| `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for KEDA Operator using prometheusRules crd (prometheus operator) | ``
+| `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for KEDA Operator using prometheusRules crd (prometheus operator) | `{}`
+| `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) | `[]`
+| `prometheus.operator.podMonitor.relabelings`               | List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator) | `[]`
+| `volumes.keda.extraVolumes`                                | Extra volumes for KEDA deployment | `[]`
+| `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for KEDA deployment | `[]`
 | `volumes.metricsApiServer.extraVolumes`                    | Extra volumes for metric server deployment | `[]`
 | `volumes.metricsApiServer.extraVolumeMounts`               | Extra volume mounts for metric server deployment | `[]`
 
