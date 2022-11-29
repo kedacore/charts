@@ -135,7 +135,7 @@ their default values.
 | `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}`
 | `prometheus.metricServer.podMonitor.relabelings`           | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) | `[]`
 | `prometheus.operator.enabled`                              | Enable keda operator prometheus metrics expose | `false`
-| `prometheus.operator.path`                                 | Path used for exposing keda operator prometheus metrics | `/metrics`
+| `prometheus.operator.port`                                 | Path used for exposing keda operator prometheus metrics | `8080`
 | `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for keda operator using podMonitor crd (prometheus operator) | `false`
 | `prometheus.operator.podMonitor.interval`                  | Scraping interval for keda operator using podMonitor crd (prometheus operator) | ``
 | `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for keda operator using podMonitor crd (prometheus operator) | ``
