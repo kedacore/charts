@@ -2,6 +2,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-system-auth-delegator
     {{- include "keda.labels" . | indent 4 }}
@@ -18,6 +20,8 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
     {{- include "keda.labels" . | indent 4 }}
@@ -35,6 +39,8 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-hpa-controller-external-metrics
     {{- include "keda.labels" . | indent 4 }}

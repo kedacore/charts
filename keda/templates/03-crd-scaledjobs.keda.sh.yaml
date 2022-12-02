@@ -4,6 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.9.0
+    {{- if .Values.additionalAnnotations }}
+    {{- toYaml .Values.additionalAnnotations | indent 4 }}
+    {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
