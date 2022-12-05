@@ -71,6 +71,7 @@ their default values.
 | `metricsServer.affinity`                                   | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for Metrics API Server. Takes precedence over the `affinity` field | `{}` |
 | `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
 | `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
+| `additionalAnnotations`                                    | Additional annotations to apply to KEDA workloads | `{}` |
 | `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
 | `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
 | `upgradeStrategy.operator`                                 | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for operator      | `{}` |

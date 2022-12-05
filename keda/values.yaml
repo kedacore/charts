@@ -77,6 +77,11 @@ additionalLabels:
   {}
   # foo: bar
 
+# -- Custom annotations to add into metadata
+additionalAnnotations:
+  {}
+  # foo: bar
+
 podAnnotations:
   keda: {}
   metricsAdapter: {}

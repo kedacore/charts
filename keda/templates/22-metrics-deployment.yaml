@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
@@ -32,6 +34,7 @@ spec:
         azure.workload.identity/use: "true"
         {{- end }}
       annotations:
+      {{- toYaml .Values.additionalAnnotations | nindent 8 }}
       {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}

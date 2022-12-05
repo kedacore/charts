@@ -4,6 +4,8 @@ kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.operator.name }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.serviceAccount.name }}
     {{- include "keda.labels" . | indent 4 }}
