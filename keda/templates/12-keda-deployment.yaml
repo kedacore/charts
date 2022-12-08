@@ -106,6 +106,10 @@ spec:
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             {{- end }}
+            {{- if ( not .Values.http.keepAlive.enabled ) }}
+            - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
+              value: "true"
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
