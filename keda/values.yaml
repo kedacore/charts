@@ -319,3 +319,11 @@ prometheus:
         #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
         #   for: 2m
         #   labels:
+
+permissions:
+  metricServer:
+    restrict:
+      secret: false
+  operator:
+    restrict:
+      secret: false
