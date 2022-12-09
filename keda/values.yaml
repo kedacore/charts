@@ -131,7 +131,7 @@ podIdentity:
       # Set to the value of the ARN of an IAM role with a web identity provider.
       # This will be set as an annotation on the KEDA service account.
       roleArn: ""
-      # Sets the use of an STS regional endpoint instead of global. 
+      # Sets the use of an STS regional endpoint instead of global.
       # Recommended to use regional endpoint in almost all cases.
       # This will be set as an annotation on the KEDA service account.
       stsRegionalEndpoints: "true"
@@ -259,6 +259,8 @@ priorityClassName: ""
 ## reasonable default
 http:
   timeout: 3000
+  keepAlive:
+    enabled: true
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
