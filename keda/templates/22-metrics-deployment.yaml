@@ -92,6 +92,10 @@ spec:
             - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
               value: "true"
             {{- end }}
+            {{- if .Values.permissions.metricServer.restrict.secret }}
+            - name: KEDA_RESTRICT_SECRET_ACCESS
+              value: {{ .Values.permissions.metricServer.restrict.secret | quote }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}

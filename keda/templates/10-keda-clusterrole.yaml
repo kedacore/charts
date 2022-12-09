@@ -23,7 +23,9 @@ rules:
   resources:
   - external
   - pods
+    {{- if eq .Values.permissions.operator.restrict.secret false }}
   - secrets
+    {{- end }}
   - services
   verbs:
   - get
