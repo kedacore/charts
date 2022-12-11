@@ -82,6 +82,11 @@ jobs:
     - name: Generate values
       run: |
         cat <<EOF > test-values.yaml
+        image:
+          keda:
+            tag: main
+          metricsApiServer:   
+            tag: main
         podIdentity:
           azureWorkload:
             enabled: ${{ matrix.enableAzureWorkloadIdentity }}
