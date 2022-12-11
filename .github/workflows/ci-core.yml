@@ -92,6 +92,11 @@ jobs:
             maxUnavailable: 1 
           metricServer:
             maxUnavailable: 1
+        prometheus:
+          operator:
+            enabled: true
+            podMonitor:
+              enabled: true
         EOF
 
     - name: Create KEDA namespace
