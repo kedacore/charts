@@ -79,14 +79,29 @@ jobs:
       run: |
         helm version
 
+    - name: Generate values
+      run: |
+        cat <<EOF > test-values.yaml
+        podIdentity:
+          azureWorkload:
+            enabled: ${{ matrix.enableAzureWorkloadIdentity }}
+            tenantId: ${{ matrix.tenantId }}
+            clientId: ${{ matrix.clientId }}
+        podDisruptionBudget:
+          operator:
+            maxUnavailable: 1 
+          metricServer:
+            maxUnavailable: 1
+        EOF
+
     - name: Create KEDA namespace
       run: kubectl create ns keda
 
     - name: Template Helm chart
-      run: helm template keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }} --set podDisruptionBudget.operator.maxUnavailable=1 --set podDisruptionBudget.metricServer.maxUnavailable=1
+      run: helm template keda ./keda/ --namespace keda --values test-values.yaml
 
     - name: Install Helm chart
-      run: helm install keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }} --set podDisruptionBudget.operator.maxUnavailable=1 --set podDisruptionBudget.metricServer.maxUnavailable=1
+      run: helm install keda ./keda/ --namespace keda --values test-values.yaml --wait
 
     - name: Show Kubernetes resources
       run: kubectl get all --namespace keda
