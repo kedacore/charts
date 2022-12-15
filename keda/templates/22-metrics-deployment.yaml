@@ -34,15 +34,17 @@ spec:
         azure.workload.identity/use: "true"
         {{- end }}
       annotations:
-      {{- toYaml .Values.additionalAnnotations | nindent 8 }}
-      {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
+        {{- if .Values.additionalAnnotations }}
+        {{- toYaml .Values.additionalAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
         prometheus.io/path: {{ .Values.prometheus.metricServer.path }}
-      {{- end }}
-      {{- if .Values.podAnnotations.metricsAdapter }}
-      {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
-      {{- end }}
+        {{- end }}
+        {{- if .Values.podAnnotations.metricsAdapter }}
+        {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
+        {{- end }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
