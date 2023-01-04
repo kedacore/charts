@@ -27,11 +27,11 @@ spec:
   {{ toYaml . | indent 4 }}
   {{- end }}
   endpoints:
-  - port: {{ .Values.prometheus.metricServer.serviceMonitor.port }}
+  - port: {{ .Values.prometheus.metricServer.portName }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}
-    path: {{ .Values.prometheus.metricServer.serviceMonitor.path }}
+    path: {{ .Values.prometheus.metricServer.path }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.interval }}
     interval: {{ . }}
     {{- end }}

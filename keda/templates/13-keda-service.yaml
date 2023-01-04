@@ -5,7 +5,7 @@ metadata:
     {{- if and .Values.prometheus.operator.enabled ( not (or .Values.prometheus.operator.podMonitor.enabled .Values.prometheus.operator.serviceMonitor.enabled )) }}
     prometheus.io/scrape: "true"
     prometheus.io/port: {{ .Values.prometheus.operator.port | quote }}
-    prometheus.io/path: {{ .Values.prometheus.operator.path }}
+    prometheus.io/path: "/metrics"
     {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}

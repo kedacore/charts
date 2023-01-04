@@ -296,7 +296,6 @@ prometheus:
       podTargetLabels: []
       port: metrics
       targetPort:
-      path: /metrics
       interval:
       scrapeTimeout:
       relabellings: []
@@ -312,7 +311,6 @@ prometheus:
   operator:
     enabled: false
     port: 8080
-    path: /metrics
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -321,7 +319,6 @@ prometheus:
       podTargetLabels: []
       port: metrics
       targetPort:
-      path: /metrics
       interval:
       scrapeTimeout:
       relabellings: []

@@ -31,7 +31,7 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}
-    path: {{ .Values.prometheus.operator.serviceMonitor.path }}
+    path: /metrics
     {{- with .Values.prometheus.operator.serviceMonitor.interval }}
     interval: {{ . }}
     {{- end }}
