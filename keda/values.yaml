@@ -312,6 +312,7 @@ prometheus:
   operator:
     enabled: false
     port: 8080
+    path: /metrics
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
