@@ -288,6 +288,18 @@ prometheus:
     port: 9022
     portName: metrics
     path: /metrics
+    serviceMonitor:
+      # Enables ServiceMonitor creation for the Prometheus Operator
+      enabled: false
+      jobLabel:
+      targetLabels: []
+      podTargetLabels: []
+      port: metrics
+      targetPort:
+      interval:
+      scrapeTimeout:
+      relabellings: []
+      additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -299,6 +311,18 @@ prometheus:
   operator:
     enabled: false
     port: 8080
+    serviceMonitor:
+      # Enables ServiceMonitor creation for the Prometheus Operator
+      enabled: false
+      jobLabel:
+      targetLabels: []
+      podTargetLabels: []
+      port: metrics
+      targetPort:
+      interval:
+      scrapeTimeout:
+      relabellings: []
+      additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
       enabled: false
