@@ -266,6 +266,8 @@ http:
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
+  keda: {}
+  metricsAdapter: {}
 
 ## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
