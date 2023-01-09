@@ -118,7 +118,7 @@ their default values.
 | `interceptor.admin.port` | The port for the interceptor's admin server to run on | `9090` |
 | `interceptor.proxy.service` | The name of the Kubernetes `Service` for the interceptor's proxy service. This is the service that accepts live HTTP traffic. | `interceptor-proxy` |
 | `interceptor.proxy.port` | The port on which the interceptor's proxy service will listen for live HTTP traffic | `8080` |
-| `interceptor.replicas.min` | The minimum number of interceptor replicas that should ever be running | `1` |
+| `interceptor.replicas.min` | The minimum number of interceptor replicas that should ever be running | `3` |
 | `interceptor.replicas.max` | The maximum number of interceptor replicas that should ever be running | `50` |
 | `interceptor.replicas.waitTimeout` | The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure | `1500ms` |
 | `interceptor.scaledObject.pollingInterval` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor | `1` |
