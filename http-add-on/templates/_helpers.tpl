@@ -21,3 +21,24 @@ app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
 {{ toYaml .Values.additionalLabels }}
 {{- end }}
 {{- end }}
+
+{{/*
+    Selector labels
+*/}}
+{{- define "keda-addons-http.shared.selectorLabels" -}}
+control-plane: interceptor
+httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+keda.sh/addon: {{ .Chart.Name }}
+{{- end }}
+{{- define "keda-addons-http.interceptor.selectorLabels" -}}
+{{ include "keda-addons-http.shared.selectorLabels" . }}
+control-plane: interceptor
+{{- end }}
+{{- define "keda-addons-http.scaler.selectorLabels" -}}
+{{ include "keda-addons-http.shared.selectorLabels" . }}
+control-plane: external-scaler
+{{- end }}
+{{- define "keda-addons-http.operator.selectorLabels" -}}
+{{ include "keda-addons-http.shared.selectorLabels" . }}
+control-plane: controller-manager
+{{- end }}

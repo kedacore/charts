@@ -20,9 +20,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      control-plane: interceptor
-      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-      keda.sh/addon: {{ .Chart.Name }}
+      {{- include "keda-addons-http.interceptor.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
@@ -94,4 +92,13 @@ spec:
       {{- with .Values.interceptor.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.highAvailability.enabled }}
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: {{ .Values.highAvailability.podTopologySpread.topologyKey }}
+        whenUnsatisfiable: {{ .Values.highAvailability.podTopologySpread.whenUnsatisfiable }}
+        labelSelector:
+          matchLabels:
+            {{- include "keda-addons-http.interceptor.selectorLabels" . | nindent 12 }}
       {{- end }}

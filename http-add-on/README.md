@@ -88,8 +88,10 @@ their default values.
 | `images.scaler`                                            | Image name for the scaler image component | `ghcr.io/kedacore/http-add-on-scaler:latest` |
 | `images.kubeRbacProxy.name`                                | Image name for the Kube RBAC Proxy image component | `gcr.io/kubebuilder/kube-rbac-proxy` |
 | `images.kubeRbacProxy.tag`                                 | Image tag for the Kube RBAC Proxy image component | `v0.5.0` |
-| `additionalLabels`                                         | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. | Nothing |
 | `crds.install`                                             | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) | `true` |
+| `highAvailability.enabled`                                 | Indication whether or not the KEDA components should be scheduled highly available in the cluster, if possible. | `true` |
+| `highAvailability.podTopologySpread.whenUnsatisfiable`     | Node label used to determine how pods should be spread across nodes. Learn more in the [Kubernetes docs](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) | `topology.kubernetes.io/zone` |
+| `highAvailability.podTopologySpread.whenUnsatisfiable`     | Indication how pods should be spread across nodes in case the requirement cannot be met. Learn more in the [Kubernetes docs](https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/) | `ScheduleAnyway` |
 | `operator.watchNamespace`                                  | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. | `""` |
 | `operator.pullPolicy`                                      | The image pull policy for the operator component | `Always` |
 | `operator.imagePullSecrets`                                | The image pull secrets for the operator component | `[]` |
@@ -135,6 +137,7 @@ their default values.
 | `interceptor.nodeSelector`                                 | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
 | `interceptor.tolerations`                                  | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
 | `interceptor.affinity`                                     | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
+| `additionalLabels`                                         | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. | Nothing |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:

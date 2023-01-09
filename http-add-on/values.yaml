@@ -143,3 +143,9 @@ images:
   kubeRbacProxy:
     name: gcr.io/kubebuilder/kube-rbac-proxy
     tag: v0.5.0
+
+highAvailability:
+  enabled: true
+  podTopologySpread:
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway

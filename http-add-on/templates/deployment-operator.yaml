@@ -15,9 +15,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      control-plane: controller-manager
-      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-      keda.sh/addon: {{ .Chart.Name }}
+      {{- include "keda-addons-http.operator.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
@@ -79,4 +77,13 @@ spec:
       {{- with .Values.operator.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.highAvailability.enabled }}
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: {{ .Values.highAvailability.podTopologySpread.topologyKey }}
+        whenUnsatisfiable: {{ .Values.highAvailability.podTopologySpread.whenUnsatisfiable }}
+        labelSelector:
+          matchLabels:
+            {{- include "keda-addons-http.operator.selectorLabels" . | nindent 12 }}
       {{- end }}
