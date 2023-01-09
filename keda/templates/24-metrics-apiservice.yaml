@@ -1,6 +1,8 @@
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: v1beta1.external.metrics.k8s.io
     {{- include "keda.labels" . | indent 4 }}

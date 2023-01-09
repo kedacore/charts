@@ -79,6 +79,11 @@ additionalLabels:
   {}
   # foo: bar
 
+# -- Custom annotations to add into metadata
+additionalAnnotations:
+  {}
+  # foo: bar
+
 podAnnotations:
   keda: {}
   metricsAdapter: {}
@@ -128,7 +133,7 @@ podIdentity:
       # Set to the value of the ARN of an IAM role with a web identity provider.
       # This will be set as an annotation on the KEDA service account.
       roleArn: ""
-      # Sets the use of an STS regional endpoint instead of global. 
+      # Sets the use of an STS regional endpoint instead of global.
       # Recommended to use regional endpoint in almost all cases.
       # This will be set as an annotation on the KEDA service account.
       stsRegionalEndpoints: "true"
@@ -256,6 +261,8 @@ priorityClassName: ""
 ## reasonable default
 http:
   timeout: 3000
+  keepAlive:
+    enabled: true
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
@@ -281,6 +288,18 @@ prometheus:
     port: 9022
     portName: metrics
     path: /metrics
+    serviceMonitor:
+      # Enables ServiceMonitor creation for the Prometheus Operator
+      enabled: false
+      jobLabel:
+      targetLabels: []
+      podTargetLabels: []
+      port: metrics
+      targetPort:
+      interval:
+      scrapeTimeout:
+      relabellings: []
+      additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -292,7 +311,18 @@ prometheus:
   operator:
     enabled: false
     port: 8080
-    path: /metrics
+    serviceMonitor:
+      # Enables ServiceMonitor creation for the Prometheus Operator
+      enabled: false
+      jobLabel:
+      targetLabels: []
+      podTargetLabels: []
+      port: metrics
+      targetPort:
+      interval:
+      scrapeTimeout:
+      relabellings: []
+      additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -315,3 +345,11 @@ prometheus:
         #   expr: sum by ( scaledObject , scaler) (rate(keda_metrics_adapter_scaler_errors[2m]))  > 0
         #   for: 2m
         #   labels:
+
+permissions:
+  metricServer:
+    restrict:
+      secret: false
+  operator:
+    restrict:
+      secret: false

@@ -79,14 +79,45 @@ jobs:
       run: |
         helm version
 
+    - name: Generate values
+      run: |
+        cat <<EOF > test-values.yaml
+        image:
+          keda:
+            tag: main
+          metricsApiServer:   
+            tag: main
+        podIdentity:
+          azureWorkload:
+            enabled: ${{ matrix.enableAzureWorkloadIdentity }}
+            tenantId: ${{ matrix.tenantId }}
+            clientId: ${{ matrix.clientId }}
+        podDisruptionBudget:
+          operator:
+            maxUnavailable: 1 
+          metricServer:
+            maxUnavailable: 1
+        prometheus:
+          operator:
+            enabled: true
+            podMonitor:
+              enabled: true
+        EOF
+
+    - name: Install deps
+      run: |
+        helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+        helm repo update
+        helm install prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --wait
+
     - name: Create KEDA namespace
       run: kubectl create ns keda
 
     - name: Template Helm chart
-      run: helm template keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }}
+      run: helm template keda ./keda/ --namespace keda --values test-values.yaml
 
     - name: Install Helm chart
-      run: helm install keda ./keda/ --namespace keda --set podIdentity.azureWorkload.enabled=${{ matrix.enableAzureWorkloadIdentity }} --set podIdentity.azureWorkload.tenantId=${{ matrix.tenantId }} --set podIdentity.azureWorkload.clientId=${{ matrix.clientId }}
+      run: helm install keda ./keda/ --namespace keda --values test-values.yaml --wait
 
     - name: Show Kubernetes resources
       run: kubectl get all --namespace keda

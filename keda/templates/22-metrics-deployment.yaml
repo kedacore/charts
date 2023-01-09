@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app: {{ .Values.operator.name }}-metrics-apiserver
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
@@ -28,15 +30,21 @@ spec:
         {{- if .Values.podLabels.metricsAdapter }}
         {{- toYaml .Values.podLabels.metricsAdapter | nindent 8}}
         {{- end }}
+        {{- if .Values.podIdentity.azureWorkload.enabled }}
+        azure.workload.identity/use: "true"
+        {{- end }}
       annotations:
-      {{- if and .Values.prometheus.metricServer.enabled ( not .Values.prometheus.metricServer.podMonitor.enabled ) }}
+        {{- if .Values.additionalAnnotations }}
+        {{- toYaml .Values.additionalAnnotations | nindent 8 }}
+        {{- end }}
+        {{- if and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )) }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
         prometheus.io/path: {{ .Values.prometheus.metricServer.path }}
-      {{- end }}
-      {{- if .Values.podAnnotations.metricsAdapter }}
-      {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
-      {{- end }}
+        {{- end }}
+        {{- if .Values.podAnnotations.metricsAdapter }}
+        {{- toYaml .Values.podAnnotations.metricsAdapter | nindent 8}}
+        {{- end }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
@@ -82,6 +90,14 @@ spec:
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             {{- end }}
+            {{- if ( not .Values.http.keepAlive.enabled ) }}
+            - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
+              value: "true"
+            {{- end }}
+            {{- if .Values.permissions.metricServer.restrict.secret }}
+            - name: KEDA_RESTRICT_SECRET_ACCESS
+              value: {{ .Values.permissions.metricServer.restrict.secret | quote }}
+            {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
@@ -91,6 +107,7 @@ spec:
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           - --disable-compression={{ .Values.metricsServer.disableCompression}}
+          - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.cluster.local:9666
           {{- if .Values.prometheus.metricServer.enabled }}
           - --metrics-port={{ .Values.prometheus.metricServer.port }}
           - --metrics-path={{ .Values.prometheus.metricServer.path }}

@@ -3,6 +3,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: {{ .Values.operator.name }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
@@ -15,7 +17,7 @@ metadata:
 spec:
   podMetricsEndpoints:
   - port: http
-    path: {{ .Values.prometheus.operator.path }}
+    path: /metrics
     honorLabels: true
     {{- with .Values.prometheus.operator.podMonitor.interval }}
     interval: {{ . }}

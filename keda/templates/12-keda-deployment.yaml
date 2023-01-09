@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ .Values.operator.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app: {{ .Values.operator.name }}
     name: {{ .Values.operator.name }}
@@ -28,12 +30,18 @@ spec:
         aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
         {{- end }}
         {{- if .Values.podLabels.keda }}
-        {{- toYaml .Values.podLabels.keda | nindent 8}}
+        {{- toYaml .Values.podLabels.keda | nindent 8 }}
         {{- end }}
-      {{- if .Values.podAnnotations.keda }}
+        {{- if .Values.podIdentity.azureWorkload.enabled }}
+        azure.workload.identity/use: "true"
+        {{- end }}
       annotations:
-      {{- toYaml .Values.podAnnotations.keda | nindent 8}}
-      {{- end }}
+        {{- if .Values.podAnnotations.keda }}
+        {{- toYaml .Values.podAnnotations.keda | nindent 8 }}
+        {{- end }}
+        {{- if .Values.additionalAnnotations }}
+        {{- toYaml .Values.additionalAnnotations | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
@@ -67,6 +75,9 @@ spec:
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
+          {{- if .Values.prometheus.operator.enabled }}
+          - --metrics-bind-address=:{{ .Values.prometheus.operator.port }}
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - --{{ $key }}={{ $value }}
           {{- end }}
@@ -97,6 +108,14 @@ spec:
             {{- if .Values.http.timeout }}
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
+            {{- end }}
+            {{- if ( not .Values.http.keepAlive.enabled ) }}
+            - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
+              value: "true"
+            {{- end }}
+            {{- if .Values.permissions.operator.restrict.secret }}
+            - name: KEDA_RESTRICT_SECRET_ACCESS
+              value: {{ .Values.permissions.operator.restrict.secret | quote }}
             {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}

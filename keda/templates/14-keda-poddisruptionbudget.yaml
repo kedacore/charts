@@ -1,13 +1,11 @@
 {{- if or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable)  .Values.podDisruptionBudget.operator }}
-{{- if .Capabilities.APIVersions.Has "policy/v1/PodDisruptionBudget" }}
 apiVersion: policy/v1
-{{- else }}
-apiVersion: policy/v1beta1
-{{- end }}
 kind: PodDisruptionBudget
 metadata:
   namespace: {{ .Release.Namespace }}
   name: {{ .Values.operator.name }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.serviceAccount.name }}
     {{- include "keda.labels" . | indent 4 }}

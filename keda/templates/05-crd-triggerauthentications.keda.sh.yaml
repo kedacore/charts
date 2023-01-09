@@ -4,6 +4,9 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.9.0
+    {{- if .Values.additionalAnnotations }}
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
@@ -98,6 +101,18 @@ spec:
                     - clientId
                     - clientSecret
                     - tenantId
+                    type: object
+                  podIdentity:
+                    description: AuthPodIdentity allows users to select the platform
+                      native identity mechanism
+                    properties:
+                      identityId:
+                        type: string
+                      provider:
+                        description: PodIdentityProvider contains the list of providers
+                        type: string
+                    required:
+                    - provider
                     type: object
                   secrets:
                     items:
