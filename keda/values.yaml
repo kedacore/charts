@@ -23,6 +23,7 @@ imagePullSecrets: []
 operator:
   name: keda-operator
   replicaCount: 1
+  disableCompression: true
   # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -37,6 +38,7 @@ operator:
 
 metricsServer:
   replicaCount: 1
+  disableCompression: true
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   dnsPolicy: ClusterFirst
   useHostNetwork: false
@@ -257,10 +259,6 @@ http:
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
-  keda:
-    disable-compression: true
-  metricsAdapter:
-    disable-compression: true
 
 ## Extra environment variables that will be passed onto KEDA operator and metrics api service
 env:
