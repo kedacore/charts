@@ -1,0 +1,38 @@
+{{- if and .Values.prometheus.webhooks.enabled .Values.prometheus.webhooks.serviceMonitor.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Values.webhooks.name }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.webhooks.name }}
+    {{- include "keda.labels" . | indent 4 }}
+    {{- range $key, $value := .Values.prometheus.webhooks.serviceMonitor.additionalLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- with .Values.prometheus.webhooks.serviceMonitor.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+spec:
+  endpoints:
+  - port: metrics
+    path: /metrics
+    honorLabels: true
+    {{- with .Values.prometheus.webhooks.serviceMonitor.interval }}
+    interval: {{ . }}
+    {{- end }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.scrapeTimeout }}
+    scrapeTimeout: {{ . }}
+    {{- end }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.relabelings }}
+    relabelings:
+{{ toYaml . | indent 4 }}
+    {{- end }}
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Values.webhooks.name }}
+{{- end }}
