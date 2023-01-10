@@ -417,13 +417,17 @@ prometheus:
     enabled: false
     port: 8080
     serviceMonitor:
-      # Enables serviceMonitor creation for the Prometheus Operator
+      # Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
+      jobLabel:
+      targetLabels: []
+      podTargetLabels: []
+      port: metrics
+      targetPort:
       interval:
       scrapeTimeout:
-      namespace:
+      relabellings: []
       additionalLabels: {}
-      relabelings: []
     prometheusRules:
       # Enables PrometheusRules creation for the Prometheus Operator
       enabled: false

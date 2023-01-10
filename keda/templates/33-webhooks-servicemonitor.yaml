@@ -15,19 +15,32 @@ metadata:
   namespace: {{ . }}
   {{- end }}
 spec:
+  {{- with .Values.prometheus.webhooks.serviceMonitor.jobLabel }}
+  jobLabel: {{ . }}
+  {{- end }}
+  {{- with .Values.prometheus.webhooks.serviceMonitor.targetLabels }}
+  targetLabels:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
+  {{- with .Values.prometheus.webhooks.serviceMonitor.podTargetLabels }}
+  podTargetLabels:
+  {{ toYaml . | indent 4 }}
+  {{- end }}
   endpoints:
-  - port: metrics
+  - port: {{ .Values.prometheus.webhooks.serviceMonitor.port }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.targetPort }}
+    targetPort: {{ . }}
+    {{- end }}
     path: /metrics
-    honorLabels: true
     {{- with .Values.prometheus.webhooks.serviceMonitor.interval }}
     interval: {{ . }}
     {{- end }}
     {{- with .Values.prometheus.webhooks.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
-    {{- with .Values.prometheus.webhooks.serviceMonitor.relabelings }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.relabellings }}
     relabelings:
-{{ toYaml . | indent 4 }}
+    {{ toYaml . | indent 6 }}
     {{- end }}
   namespaceSelector:
     matchNames:
