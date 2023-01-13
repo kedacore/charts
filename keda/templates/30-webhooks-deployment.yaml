@@ -107,7 +107,7 @@ spec:
             readOnly: true
           {{- if .Values.volumes.webhooks.extraVolumeMounts }}
           {{- toYaml .Values.volumes.webhooks.extraVolumeMounts | nindent 12 }}
-          {{- end }}          
+          {{- end }}
           resources:
             {{- if .Values.resources.webhooks }}
             {{- toYaml .Values.resources.webhooks | nindent 12 }}
