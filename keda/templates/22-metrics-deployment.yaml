@@ -107,6 +107,10 @@ spec:
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.cluster.local:9666
+          - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
+          - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
+          - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
+          - --cert-dir={{ .Values.certificates.mountPath }}
           {{- if .Values.prometheus.metricServer.enabled }}
           - --metrics-port={{ .Values.prometheus.metricServer.port }}
           - --metrics-path={{ .Values.prometheus.metricServer.path }}
