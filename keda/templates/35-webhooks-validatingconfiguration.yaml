@@ -1,0 +1,60 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ .Values.webhooks.name }}
+    {{- include "keda.labels" . | indent 4 }}
+  name: keda-admission
+  namespace: {{ .Release.Namespace }}
+webhooks:
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: {{ .Values.webhooks.name }}
+      namespace: {{ .Release.Namespace }}
+      path: /validate-keda-sh-v1alpha1-scaledobject
+  failurePolicy: {{ .Values.webhooks.failurePolicy }}
+  matchPolicy: Equivalent
+  name: vscaledobject.kb.io
+  namespaceSelector: {}
+  objectSelector: {}
+  rules:
+  - apiGroups:
+    - keda.sh
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - scaledobjects
+  sideEffects: None
+  timeoutSeconds: 10
+
+
+
+
+
+{{- if and .Values.prometheus.webhooks.enabled .Values.prometheus.webhooks.prometheusRules.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Values.webhooks.name }}
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.webhooks.name }}
+    {{- include "keda.labels" . | indent 4 }}
+    {{- range $key, $value := .Values.prometheus.webhooks.prometheusRules.additionalLabels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- with .Values.prometheus.webhooks.prometheusRules.namespace }}
+  namespace: {{ . }}
+  {{- end }}
+spec:
+  groups:
+  - name: {{ .Values.webhooks.name }}
+    rules:
+{{ toYaml .Values.prometheus.webhooks.prometheusRules.alerts | indent 6 }}
+{{- end }}

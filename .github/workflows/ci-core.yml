@@ -37,7 +37,7 @@ jobs:
       fail-fast: false
       matrix:
         enableAzureWorkloadIdentity: [false, true]
-        kubernetesVersion: [v1.25, v1.24, v1.23]
+        kubernetesVersion: [v1.26, v1.25, v1.24, v1.23]
         include:
           # Azure Workload Identity
         - enableAzureWorkloadIdentity: true
@@ -48,6 +48,8 @@ jobs:
           clientId: ""
           # Images are defined on every Kind release
           # See https://github.com/kubernetes-sigs/kind/releases
+        - kubernetesVersion: v1.26
+          kindImage: kindest/node:v1.26.0@sha256:691e24bd2417609db7e589e1a479b902d2e209892a10ce375fab60a8407c7352
         - kubernetesVersion: v1.25
           kindImage: kindest/node:v1.25.0@sha256:428aaa17ec82ccde0131cb2d1ca6547d13cf5fdabcc0bbecf749baa935387cbf
         - kubernetesVersion: v1.24
@@ -87,6 +89,8 @@ jobs:
             tag: main
           metricsApiServer:   
             tag: main
+          webhooks:   
+            tag: main
         podIdentity:
           azureWorkload:
             enabled: ${{ matrix.enableAzureWorkloadIdentity }}
@@ -97,11 +101,19 @@ jobs:
             maxUnavailable: 1 
           metricServer:
             maxUnavailable: 1
+          webhooks:
+            maxUnavailable: 1
         prometheus:
           operator:
             enabled: true
             podMonitor:
               enabled: true
+          webhooks:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+        webhooks:
+          failurePolicy: Fail
         EOF
 
     - name: Install deps
