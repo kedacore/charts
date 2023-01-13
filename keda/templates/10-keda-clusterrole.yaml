@@ -61,6 +61,16 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - apiregistration.k8s.io
+  resources:
+  - apiservices
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
   {{- end }}
 - apiGroups:
   - apps
