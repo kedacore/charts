@@ -139,7 +139,7 @@ spec:
           {{- end }}
           {{- if .Values.volumes.keda.extraVolumeMounts }}
           {{- toYaml .Values.volumes.keda.extraVolumeMounts | nindent 12 }}
-          {{- end }}          
+          {{- end }}
           resources:
             {{- if .Values.resources.operator }}
             {{- toYaml .Values.resources.operator | nindent 12 }}
