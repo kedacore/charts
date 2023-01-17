@@ -1,3 +1,4 @@
+{{- if and .Values.webhooks.enabled }}
 {{- if and .Values.prometheus.webhooks.enabled .Values.prometheus.webhooks.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -48,4 +49,5 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ .Values.webhooks.name }}
+{{- end }}
 {{- end }}
