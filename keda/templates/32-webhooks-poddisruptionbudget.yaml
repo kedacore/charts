@@ -1,3 +1,4 @@
+{{- if and .Values.webhooks.enabled }}
 {{- if or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable)  .Values.podDisruptionBudget.webhooks }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -27,4 +28,5 @@ spec:
   selector:
     matchLabels:
       app: {{ .Values.webhooks.name }}
+{{- end }}
 {{- end }}

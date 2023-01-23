@@ -1,0 +1,35 @@
+{{- if .Values.certificates.certManager.enabled }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ .Values.operator.name }}-tls-certificates
+  namespace: {{ .Release.Namespace }}
+spec:
+  commonName: {{ .Values.operator.name }}
+  dnsNames:
+  - {{ .Values.operator.name }}.{{ .Release.Namespace }}
+  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc
+  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.local
+  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}
+  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc
+  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc.local
+  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}
+  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc
+  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.local
+  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  secretName: {{ .Values.certificates.secretName }}
+  usages:
+    - server auth
+    - client auth
+  privateKey:
+    algorithm: RSA
+    size: 2048
+  duration: 8760h # 1 year
+  renewBefore: 5840h # 8 months
+  issuerRef:
+    name: {{ .Values.operator.name }}-issuer
+    kind: Issuer
+    group: cert-manager.io
+{{- end }}
