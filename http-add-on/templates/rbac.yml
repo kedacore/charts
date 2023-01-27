@@ -5,10 +5,10 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-leader-election-role
-    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-role
+    name: {{ .Chart.Name }}-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-leader-election-role
+  name: {{ .Chart.Name }}-role
   namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups:
@@ -16,27 +16,7 @@ rules:
   resources:
   - configmaps
   verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - configmaps/status
-  verbs:
-  - get
-  - update
-  - patch
-- apiGroups:
-  - ""
-  resources:
-  - events
-  verbs:
-  - create
+  - '*'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -46,19 +26,22 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-manager-role
-    app.kubernetes.io/name: {{ .Chart.Name }}-manager-role
+    name: {{ .Chart.Name }}-role
+    app.kubernetes.io/name: {{ .Chart.Name }}-role
     {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-manager-role
+  name: {{ .Chart.Name }}-role
+rules:
 rules:
 - apiGroups:
   - ""
   resources:
   - configmaps
+  - configmaps/status
+  - endpoint
+  - endpoints
+  - events
   - pods
   - services
-  - endpoints
-  - endpoint
   verbs:
   - create
   - delete
@@ -76,17 +59,15 @@ rules:
   - list
   - watch
 - apiGroups:
-  - keda.sh
+  - coordination.k8s.io
   resources:
-  - scaledobjects
+  - leases
   verbs:
   - create
   - delete
   - get
   - list
   - update
-  - patch
-  - watch
 - apiGroups:
   - http.keda.sh
   resources:
@@ -108,15 +89,17 @@ rules:
   - patch
   - update
 - apiGroups:
-  - coordination.k8s.io
+  - keda.sh
   resources:
-  - leases
+  - scaledobjects
   verbs:
-  - get
-  - list
   - create
   - delete
+  - get
+  - list
+  - patch
   - update
+  - watch
 - apiGroups:
   - networking
   resources:
@@ -131,6 +114,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  creationTimestamp: null
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
@@ -140,18 +124,14 @@ metadata:
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-role
 rules:
-- apiGroups:
-  - authentication.k8s.io
+- apiGroups: ["authentication.k8s.io"]
   resources:
   - tokenreviews
-  verbs:
-  - create
-- apiGroups:
-  - authorization.k8s.io
+  verbs: ["create"]
+- apiGroups: ["authorization.k8s.io"]
   resources:
   - subjectaccessreviews
-  verbs:
-  - create
+  verbs: ["create"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -177,18 +157,18 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-leader-election-binding
-    app.kubernetes.io/name: {{ .Chart.Name }}-leader-election-binding
+    name: {{ .Chart.Name }}-role-binding
+    app.kubernetes.io/name: {{ .Chart.Name }}-role-binding
     {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-leader-election-rolebinding
+  name: {{ .Chart.Name }}-role-rolebinding
   namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ .Chart.Name }}-leader-election-role
+  name: {{ .Chart.Name }}-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -198,17 +178,17 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-manager-rolebinding
-    app.kubernetes.io/name: {{ .Chart.Name }}-manager-rolebinding
+    name: {{ .Chart.Name }}-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-rolebinding
     {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-manager-rolebinding
+  name: {{ .Chart.Name }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Chart.Name }}-manager-role
+  name: {{ .Chart.Name }}-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -218,8 +198,8 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-proxy-rolebinding
-    app.kubernetes.io/name: {{ .Chart.Name }}-proxy-rolebinding
+    name: {{ .Chart.Name }}-rolebinding
+    app.kubernetes.io/name: {{ .Chart.Name }}-rolebinding
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-rolebinding
 roleRef:
@@ -228,5 +208,5 @@ roleRef:
   name: {{ .Chart.Name }}-proxy-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}

@@ -3,6 +3,7 @@ apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
   name: "{{ .Chart.Name }}-interceptor"
+  namespace: {{ .Release.Namespace }}
 spec:
   minReplicaCount: {{ .Values.interceptor.replicas.min }}
   maxReplicaCount: {{ .Values.interceptor.replicas.max }}
