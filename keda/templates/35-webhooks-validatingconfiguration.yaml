@@ -1,6 +1,18 @@
+{{- if and .Values.webhooks.enabled }}
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
+  annotations:
+    {{- if .Values.certificates.certManager.enabled }}
+    {{- if .Values.certificates.certManager.generateCA }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-ca
+    {{- else }}
+    cert-manager.io/inject-ca-from-secret: {{ .Release.Namespace }}/{{ .Values.certificates.certManager.caSecretName }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.additionalAnnotations }}
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.webhooks.name }}
     {{- include "keda.labels" . | indent 4 }}
@@ -31,30 +43,4 @@ webhooks:
     - scaledobjects
   sideEffects: None
   timeoutSeconds: 10
-
-
-
-
-
-{{- if and .Values.prometheus.webhooks.enabled .Values.prometheus.webhooks.prometheusRules.enabled }}
-apiVersion: monitoring.coreos.com/v1
-kind: PrometheusRule
-metadata:
-  name: {{ .Values.webhooks.name }}
-  annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
-  labels:
-    app.kubernetes.io/name: {{ .Values.webhooks.name }}
-    {{- include "keda.labels" . | indent 4 }}
-    {{- range $key, $value := .Values.prometheus.webhooks.prometheusRules.additionalLabels }}
-    {{ $key }}: {{ $value | quote }}
-    {{- end }}
-  {{- with .Values.prometheus.webhooks.prometheusRules.namespace }}
-  namespace: {{ . }}
-  {{- end }}
-spec:
-  groups:
-  - name: {{ .Values.webhooks.name }}
-    rules:
-{{ toYaml .Values.prometheus.webhooks.prometheusRules.alerts | indent 6 }}
 {{- end }}

@@ -1,3 +1,4 @@
+{{- if and .Values.webhooks.enabled }}
 {{- if and .Values.prometheus.webhooks.enabled .Values.prometheus.webhooks.prometheusRules.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -19,4 +20,5 @@ spec:
   - name: {{ .Values.webhooks.name }}
     rules:
 {{ toYaml .Values.prometheus.webhooks.prometheusRules.alerts | indent 6 }}
+{{- end }}
 {{- end }}

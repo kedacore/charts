@@ -1,0 +1,11 @@
+{{- if and .Values.certificates.certManager.enabled .Values.certificates.certManager.generateCA }}
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  annotations:
+    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+  name: {{ .Values.operator.name }}-selfsigned-issuer
+  namespace: {{ .Release.Namespace }}
+spec:
+  selfSigned: {}
+{{- end }}

@@ -2,7 +2,16 @@ apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
   annotations:
+    {{- if .Values.certificates.certManager.enabled }}
+    {{- if .Values.certificates.certManager.generateCA }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-ca
+    {{- else }}
+    cert-manager.io/inject-ca-from-secret: {{ .Release.Namespace }}/{{ .Values.certificates.certManager.caSecretName }}
+    {{- end }}
+    {{- end }}
+    {{- if .Values.additionalAnnotations }}
     {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- end }}
   labels:
     app.kubernetes.io/name: v1beta1.external.metrics.k8s.io
     {{- include "keda.labels" . | indent 4 }}
@@ -13,6 +22,5 @@ spec:
     namespace: {{ .Release.Namespace }}
   group: external.metrics.k8s.io
   version: v1beta1
-  insecureSkipTLSVerify: true
   groupPriorityMinimum: 100
   versionPriority: 100
