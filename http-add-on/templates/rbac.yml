@@ -31,7 +31,6 @@ metadata:
     {{- include "keda-addons-http.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-role
 rules:
-rules:
 - apiGroups:
   - ""
   resources:
