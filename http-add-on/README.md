@@ -46,7 +46,7 @@ We are a Cloud Native Computing Foundation (CNCF) incubation project.
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
-helm install http-add-on kedacore/http-add-on --create-namespace --namespace keda
+helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda
 ```
 
 ## Introduction
@@ -60,7 +60,7 @@ As part of that, it will install all the required Custom Resource Definitions (C
 To install the chart with the release name `http-add-on`, please read the [install instructions on the official repository to get started](https://github.com/kedacore/http-add-on/tree/main/docs/install.md):
 
 ```console
-$ helm install http-add-on kedacore/http-add-on --namespace keda
+$ helm install http-add-on kedacore/keda-add-ons-http --namespace keda
 ```
 
 > **Important:** This chart **needs** KEDA installed in your cluster to work properly.
@@ -140,7 +140,7 @@ Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
 
 ```console
-$ helm install http-add-on kedacore/http-add-on --namespace keda \
+$ helm install http-add-on kedacore/keda-add-ons-http --namespace keda \
                --set version=<different tag from app version>
 ```
 
@@ -148,5 +148,5 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 be provided while installing the chart. For example,
 
 ```console
-helm install http-add-on kedacore/http-add-on --namespace keda -f values.yaml
+helm install http-add-on kedacore/keda-add-ons-http --namespace keda -f values.yaml
 ```
