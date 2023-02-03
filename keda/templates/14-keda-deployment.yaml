@@ -110,10 +110,10 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: {{ .Values.operator.name }}
-            {{- if .Values.http.timeout }}
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
-            {{- end }}
+            - name: KEDA_HTTP_MIN_TLS_VERSION
+              value: {{ .Values.http.minTlsVersion }}
             {{- if ( not .Values.http.keepAlive.enabled ) }}
             - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
               value: "true"

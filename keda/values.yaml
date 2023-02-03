@@ -325,6 +325,7 @@ http:
   timeout: 3000
   keepAlive:
     enabled: true
+  minTlsVersion: TLS12
 
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
