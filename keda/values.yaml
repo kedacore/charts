@@ -470,3 +470,14 @@ permissions:
   operator:
     restrict:
       secret: false
+
+# Array of extra K8s manifests to deploy
+extraObjects: []
+  # - apiVersion: keda.k8s.io/v1alpha1
+  #   kind: ClusterTriggerAuthentication
+  #   metadata:
+  #     name: aws-credentials
+  #     namespace: keda
+  #   spec:
+  #     podIdentity:
+  #       provider: aws-eks

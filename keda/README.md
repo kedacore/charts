@@ -218,7 +218,7 @@ their default values.
 | `certificates.certManager.generateCA`                      | Generates a self-signed CA with Cert-manager | `true` |
 | `certificates.certManager.caSecretName`                    | Secret name where the CA is stored (generatedby cert-manager or user given) | `kedaorg-ca` |
 | `certificates.certManager.secretTemplate`                  | [Labels or annotations to add to the secret generated](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources) by cert-manager | `{}` |
-
+| `extraObjects`                                             | Array of extra K8s manifests to deploy | `[]`|
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
