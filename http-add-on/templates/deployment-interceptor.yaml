@@ -41,7 +41,7 @@ spec:
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}
-      serviceAccountName: {{ .Chart.Name }}
+      serviceAccountName: {{ .Chart.Name }}-interceptor
       containers:
       - args:
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
