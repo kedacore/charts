@@ -1,0 +1,84 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-interceptor
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ .Chart.Name }}-interceptor
+subjects:
+- kind: ServiceAccount
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
+    keda.sh/addon: {{ .Chart.Name }}
+    app: {{ .Chart.Name }}
+    name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    {{- include "keda-addons-http.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-interceptor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Chart.Name }}-interceptor
+subjects:
+- kind: ServiceAccount
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
