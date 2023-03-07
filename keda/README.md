@@ -62,6 +62,7 @@ their default values.
 | `image.metricsApiServer.tag`                               | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | `` |
 | `image.webhooks.repository`                                | Image name of KEDA admission-webhooks               | `ghcr.io/kedacore/keda-admission-webhooks` |
 | `image.webhooks.tag`                                       | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default | `` |
+| `clusterDomain`                               | The cluster domain name | `cluster.local`                 |
 | `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
 | `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
 | `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
