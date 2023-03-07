@@ -9,16 +9,13 @@ spec:
   dnsNames:
   - {{ .Values.operator.name }}.{{ .Release.Namespace }}
   - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc
-  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.local
-  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}
   - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc
-  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc.local
-  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .Values.operator.name }}-metrics-apiserver.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}
   - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc
-  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.local
-  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   secretName: {{ .Values.certificates.secretName }}
   usages:
     - server auth

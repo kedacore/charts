@@ -106,7 +106,7 @@ spec:
           - --port={{ .Values.service.portHttpTarget }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
-          - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.cluster.local:9666
+          - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9666
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key

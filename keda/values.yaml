@@ -17,6 +17,9 @@ image:
     tag:
   pullPolicy: Always
 
+# Kubernetes cluster domain
+clusterDomain: cluster.local
+
 crds:
   install: true
 
@@ -442,7 +445,7 @@ certificates:
   mountPath: /certs
   certManager:
     enabled: false
-    # If generateCA is false, the secret with the CA 
+    # If generateCA is false, the secret with the CA
     # has to be annotated with 'cert-manager.io/allow-direct-injection: "true"'
     generateCA: true
     caSecretName: "kedaorg-ca"
