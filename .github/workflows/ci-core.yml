@@ -120,6 +120,15 @@ jobs:
           certManager:
             enabled: ${{ matrix.enableCertManager }}
             generateCA: true
+        extraObjects:
+          - apiVersion: keda.k8s.io/v1alpha1
+            kind: ClusterTriggerAuthentication
+            metadata:
+              name: aws-credentials
+              namespace: keda
+            spec:
+              podIdentity:
+                provider: aws-eks
         EOF
 
     - name: Install deps
