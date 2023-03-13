@@ -86,6 +86,10 @@ spec:
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
             - name: KEDA_HTTP_MIN_TLS_VERSION
