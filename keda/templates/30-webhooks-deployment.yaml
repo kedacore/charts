@@ -27,6 +27,9 @@ spec:
         name: {{ .Values.webhooks.name }}
         app.kubernetes.io/name: {{ .Values.webhooks.name }}
         {{- include "keda.labels" . | indent 8 }}       
+        {{- if .Values.podLabels.webhooks }}
+        {{- toYaml .Values.podLabels.webhooks | nindent 8 }}
+        {{- end }}
       annotations:
         {{- if .Values.podAnnotations.webhooks }}
         {{- toYaml .Values.podAnnotations.webhooks | nindent 8 }}
@@ -98,7 +101,11 @@ spec:
             - name: POD_NAME
               valueFrom:
                 fieldRef:
-                  fieldPath: metadata.name            
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}

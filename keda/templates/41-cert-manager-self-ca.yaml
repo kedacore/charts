@@ -11,8 +11,8 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
-  duration: 8760h # 1 year
-  renewBefore: 5840h # 8 months
+  duration: 8760h0m0s # 1 year
+  renewBefore: 5840h0m0s # 8 months
   issuerRef:
     name: {{ .Values.operator.name }}-selfsigned-issuer
     kind: Issuer
