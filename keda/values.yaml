@@ -226,8 +226,7 @@ securityContext:
       drop:
       - ALL
     allowPrivilegeEscalation: false
-    ## Metrics server needs to write the self-signed cert. See FAQ for discussion of options.
-    # readOnlyRootFilesystem: true
+    readOnlyRootFilesystem: true
     seccompProfile:
       type: RuntimeDefault
   webhooks:
