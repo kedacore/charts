@@ -148,7 +148,7 @@ spec:
             mountPath: /hashicorp-vaultcerts
           {{- end }}
           {{- if .Values.volumes.metricsApiServer.extraVolumeMounts }}
-          {{- toYaml .Values.volumes.metricsApiServer.extraVolumeMounts | nindent 12 }}
+          {{- toYaml .Values.volumes.metricsApiServer.extraVolumeMounts | nindent 10 }}
           {{- end }}
           resources:
             {{- if .Values.resources.metricServer }}
@@ -172,7 +172,7 @@ spec:
           secretName: {{ .Values.hashiCorpVaultTLS }}
       {{- end }}
       {{- if .Values.volumes.metricsApiServer.extraVolumes }}
-      {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 8 }}
+      {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 6 }}
       {{- end }}
       dnsPolicy: {{ .Values.metricsServer.dnsPolicy }}
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
