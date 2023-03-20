@@ -31,7 +31,7 @@ jobs:
       run: helm lint keda
 
   deploy-helm-3-x:
-    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }}) (${{ (matrix.enableCertManager == true && 'With cert-manager') || 'Without cert-manager' }}) in namespace '(matrix.namespace)'
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }}) (${{ (matrix.enableCertManager == true && 'With cert-manager') || 'Without cert-manager' }}) in namespace '${{matrix.namespace}}'
     needs: lint-helm-3-x
     runs-on: ubuntu-latest
     strategy:
@@ -39,8 +39,6 @@ jobs:
       matrix:
         enableAzureWorkloadIdentity: [false, true]
         kubernetesVersion: [v1.26, v1.25, v1.24]
-        namespace: ["keda", "not-keda"]
-        enableCertManager: [false, true]
         include:
           # Azure Workload Identity
         - enableAzureWorkloadIdentity: true
@@ -57,6 +55,15 @@ jobs:
           kindImage: kindest/node:v1.25.0@sha256:428aaa17ec82ccde0131cb2d1ca6547d13cf5fdabcc0bbecf749baa935387cbf
         - kubernetesVersion: v1.24
           kindImage: kindest/node:v1.24.0@sha256:406fd86d48eaf4c04c7280cd1d2ca1d61e7d0d61ddef0125cb097bc7b82ed6a1
+          # To not have a cartesian explosion, we only test cert-manager and namespaces in latest k8s version        
+        - kubernetesVersion: v1.26
+          enableCertManager: true
+        - kubernetesVersion: v1.26
+          enableCertManager: false
+        - kubernetesVersion: v1.26
+          namespace: "keda"
+        - kubernetesVersion: v1.26
+          namespace: "not-keda"
 
     steps:
     - name: Check out code
