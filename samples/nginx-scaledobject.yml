@@ -33,7 +33,7 @@ metadata:
 spec:
   scaleTargetRef:
     name: nginx
-  minReplicaCount: 0
+  minReplicaCount: 1
   maxReplicaCount: 5
   triggers:
   - type: cpu
