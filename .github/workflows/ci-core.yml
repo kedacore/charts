@@ -31,7 +31,7 @@ jobs:
       run: helm lint keda
 
   deploy-helm-3-x:
-    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }} | ${{ (matrix.enableCertManager == true && 'With cert-manager') || 'Without cert-manager' }}) in namespace '${{matrix.namespace}}'
+    name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }} in '${{matrix.namespace}}' namespace (${{ (matrix.enableAzureWorkloadIdentity == true && 'With Azure Workload Identity') || 'Without Azure Workload Identity' }} | ${{ (matrix.enableCertManager == true && 'With cert-manager') || 'Without cert-manager' }})
     needs: lint-helm-3-x
     runs-on: ubuntu-latest
     strategy:
