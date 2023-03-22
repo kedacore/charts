@@ -142,7 +142,7 @@ spec:
             mountPath: /hashicorp-vaultcerts
           {{- end }}
           {{- if .Values.volumes.keda.extraVolumeMounts }}
-          {{- toYaml .Values.volumes.keda.extraVolumeMounts | nindent 12 }}
+          {{- toYaml .Values.volumes.keda.extraVolumeMounts | nindent 10 }}
           {{- end }}
           resources:
             {{- if .Values.resources.operator }}
@@ -167,7 +167,7 @@ spec:
           secretName: {{ .Values.hashiCorpVaultTLS }}
       {{- end }}
       {{- if .Values.volumes.keda.extraVolumes }}
-      {{- toYaml .Values.volumes.keda.extraVolumes | nindent 8 }}
+      {{- toYaml .Values.volumes.keda.extraVolumes | nindent 6 }}
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
