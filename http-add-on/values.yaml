@@ -122,6 +122,14 @@ interceptor:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # interceptor pod resource limits
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 64Mi
+    requests:
+      cpu: 250m
+      memory: 20Mi
 
 # configuration for the images to use for each component
 images:
