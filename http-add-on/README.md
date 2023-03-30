@@ -135,6 +135,10 @@ their default values.
 | `interceptor.nodeSelector`                                 | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
 | `interceptor.tolerations`                                  | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `{}` |
 | `interceptor.affinity`                                     | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) | `{}` |
+| `interceptor.resources.limits.cpu`                            | The CPU resource limit for the operator component | `0.5` |
+| `interceptor.resources.limits.memory`                         | The memory resource limit for the operator component | `64Mi` |
+| `interceptor.resources.requests.cpu`                          | The CPU resource request for the operator component | `250m` |
+| `interceptor.resources.requests.memory`                       | The memory resource request for the operator component | `20Mi` |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
