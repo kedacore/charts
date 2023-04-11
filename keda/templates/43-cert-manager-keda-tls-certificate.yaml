@@ -17,6 +17,8 @@ spec:
   - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc
   - {{ .Values.webhooks.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   secretName: {{ .Values.certificates.secretName }}
+  secretTemplate:
+    {{- toYaml .Values.certificates.certManager.secretTemplate | nindent 4 }}
   usages:
     - server auth
     - client auth
