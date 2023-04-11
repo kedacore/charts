@@ -449,8 +449,7 @@ certificates:
     generateCA: true
     caSecretName: "kedaorg-ca"
     # Add labels/annotations to secrets created by Certificate resources
-    secretTemplate:
-      {}
+    secretTemplate: {}
       # annotations:
       #   my-secret-annotation-1: "foo"
       #   my-secret-annotation-2: "bar"
