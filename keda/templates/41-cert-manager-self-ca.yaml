@@ -8,6 +8,8 @@ spec:
   isCA: true
   commonName: {{ .Values.operator.name }}
   secretName: {{ .Values.certificates.certManager.caSecretName }}
+  secretTemplate:
+    {{- toYaml .Values.certificates.certManager.secretTemplate | nindent 4 }}
   privateKey:
     algorithm: RSA
     size: 2048

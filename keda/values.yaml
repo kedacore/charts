@@ -448,6 +448,13 @@ certificates:
     # has to be annotated with 'cert-manager.io/allow-direct-injection: "true"'
     generateCA: true
     caSecretName: "kedaorg-ca"
+    # Add labels/annotations to secrets created by Certificate resources
+    secretTemplate: {}
+      # annotations:
+      #   my-secret-annotation-1: "foo"
+      #   my-secret-annotation-2: "bar"
+      # labels:
+      #   my-secret-label: foo
 
 permissions:
   metricServer:
