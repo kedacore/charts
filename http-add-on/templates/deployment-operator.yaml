@@ -39,6 +39,8 @@ spec:
         - --logtostderr=true
         - --v=10
         image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
         name: kube-rbac-proxy
       - args:
         - --metrics-addr=127.0.0.1:8080
