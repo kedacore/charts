@@ -39,6 +39,13 @@ spec:
         - --logtostderr=true
         - --v=10
         image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
+        resources:
+            limits:
+              cpu: 300m
+              memory: 200Mi
+            requests:
+              cpu: 10m
+              memory: 20Mi
         name: kube-rbac-proxy
       - args:
         - --metrics-addr=127.0.0.1:8080
