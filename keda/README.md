@@ -149,9 +149,8 @@ their default values.
 | `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443` |
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443` |
 | `prometheus.metricServer.enabled`                          | Enable metric server Prometheus metrics expose | `false` |
-| `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022` |
+| `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `8088` |
 | `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics` |
-| `prometheus.metricServer.path`                             | Path used for exposing metric server prometheus metrics | `/metrics` |
 | `prometheus.metricServer.podMonitor.enabled`               | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false` |
 | `prometheus.metricServer.podMonitor.interval`              | Scraping interval for metric server using podMonitor crd (prometheus operator) | `` |
 | `prometheus.metricServer.podMonitor.scrapeTimeout`         | Scraping timeout for metric server using podMonitor crd (prometheus operator) | `` |
