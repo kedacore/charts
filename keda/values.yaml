@@ -269,8 +269,6 @@ podSecurityContext:
 
 service:
   type: ClusterIP
-  portHttp: 80
-  portHttpTarget: 8080
   portHttps: 443
   portHttpsTarget: 6443
 

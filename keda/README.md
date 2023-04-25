@@ -144,8 +144,6 @@ their default values.
 | `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
 | `http.minTlsVersion` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) | `` |
 | `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}` |
-| `service.portHttp`                                         | Service HTTP port for KEDA Metric Server service | `80` |
-| `service.portHttpTarget`                                   | Service HTTP port for KEDA Metric Server container | `8080` |
 | `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443` |
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443` |
 | `prometheus.metricServer.enabled`                          | Enable metric server Prometheus metrics expose | `false` |
