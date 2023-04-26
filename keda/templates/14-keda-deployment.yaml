@@ -174,6 +174,9 @@ spec:
       {{- with .Values.nodeSelector }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.podIdentity.gcp.enabled }}
+        iam.gke.io/gke-metadata-server-enabled: "true"
+      {{- end }}
       {{- if .Values.operator.affinity }}
       affinity:
         {{- toYaml .Values.operator.affinity | nindent 8 }}
