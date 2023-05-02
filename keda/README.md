@@ -107,6 +107,8 @@ their default values.
 | `podIdentity.aws.irsa.roleArn`                             | ARN of an IRSA IAM role with a web identity provider to use for authentication via STS. | `` |
 | `podIdentity.aws.irsa.stsRegionalEndpoints`                | Sets the use of an STS regional endpoint instead of global. Recommended to use regional endpoint in almost all cases. | `true` |
 | `podIdentity.aws.irsa.tokenExpiration`                     | Duration in seconds to automatically expire tokens for the service account. | `86400` |
+| `podIdentity.gcp.enabled` | Specifies whether [GCP Workload Identity](https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity) to be enabled or not. | `false` |
+| `podIdentity.gcp.gcpIAMServiceAccount` | GCP IAM Service Account Email which you would like to use for workload identity. | `` |
 | `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
 | `hashiCorpVaultTLS`                                        | Name of the secret that will be mounted to the /vault path on the Pod to communicate over TLS with HashiCorp Vault (recommended). | `` |
 | `logging.operator.level`                                   | Logging level for KEDA Operator. Allowed values are 'debug', 'info' & 'error'. | `info`                                        |
