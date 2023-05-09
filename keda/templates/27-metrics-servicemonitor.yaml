@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
-  {{- with .Values.prometheus.metricServer.serviceMonitor.annotations }}
+  {{- with .Values.additionalAnnotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
