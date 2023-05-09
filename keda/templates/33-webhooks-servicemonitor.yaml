@@ -5,7 +5,7 @@ kind: ServiceMonitor
 metadata:
   name: {{ .Values.webhooks.name }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml .Values.prometheus.webhooks.serviceMonitor.additionalAnnotations | nindent 4 }}
   labels:
     app.kubernetes.io/name: {{ .Values.webhooks.name }}
     {{- include "keda.labels" . | indent 4 }}
