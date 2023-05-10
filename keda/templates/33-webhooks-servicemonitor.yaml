@@ -4,7 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.webhooks.name }}
-  {{- with .Values.additionalAnnotations }}
+  {{- with (mergeOverwrite (deepCopy .Values.additionalAnnotations) .Values.prometheus.webhooks.serviceMonitor.annotations) }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}

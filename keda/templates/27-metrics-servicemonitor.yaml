@@ -3,9 +3,11 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
-  {{- with .Values.additionalAnnotations }}
+  {{- with (mergeOverwrite (deepCopy .Values.additionalAnnotations) .Values.prometheus.metricServer.serviceMonitor.annotations) }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
   {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}

@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.operator.name }}
-  {{- with .Values.additionalAnnotations }}
+  {{- with (mergeOverwrite (deepCopy .Values.additionalAnnotations) .Values.prometheus.operator.serviceMonitor.annotations) }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
