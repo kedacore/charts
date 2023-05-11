@@ -126,6 +126,8 @@ jobs:
             metadata:
               name: aws-credentials
               namespace: keda
+              annotations:
+                helm.sh/hook: post-install
             spec:
               podIdentity:
                 provider: aws-eks
