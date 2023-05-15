@@ -1,4 +1,4 @@
-{{- if .Values.certificates.certManager.enabled }}
+{{- if and .Values.certificates.certManager.enabled (not .Values.certificates.certManager.existingIssuer.enabled) }}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -7,6 +7,5 @@ metadata:
   name: {{ .Values.operator.name }}-issuer
   namespace: {{ .Release.Namespace }}
 spec:
-  ca:
-    secretName: {{ .Values.certificates.certManager.caSecretName }}
+  selfSigned: {}
 {{- end }}

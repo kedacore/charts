@@ -594,12 +594,6 @@ certificates:
   certManager:
     # -- Enables Cert-manager for certificate management
     enabled: false
-    # -- Generates a self-signed CA with Cert-manager.
-    # If generateCA is false, the secret with the CA
-    # has to be annotated with `cert-manager.io/allow-direct-injection: "true"`
-    generateCA: true
-    # -- Secret name where the CA is stored (generatedby cert-manager or user given)
-    caSecretName: "kedaorg-ca"
     # -- Add labels/annotations to secrets created by Certificate resources
     # [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources)
     secretTemplate: {}
@@ -608,6 +602,13 @@ certificates:
       #   my-secret-annotation-2: "bar"
       # labels:
       #   my-secret-label: foo
+    existingIssuer:
+      # -- Use an existing cert-manager issuer
+      enabled: false
+      # -- Kind of the existing cert-manager issuer
+      kind: ClusterIssuer
+      # -- Name of the existing cert-manager issuer
+      name: ""
 
 permissions:
   metricServer:

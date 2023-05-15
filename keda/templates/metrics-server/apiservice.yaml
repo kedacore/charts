@@ -3,11 +3,7 @@ kind: APIService
 metadata:
   annotations:
     {{- if .Values.certificates.certManager.enabled }}
-    {{- if .Values.certificates.certManager.generateCA }}
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-ca
-    {{- else }}
-    cert-manager.io/inject-ca-from-secret: {{ .Release.Namespace }}/{{ .Values.certificates.certManager.caSecretName }}
-    {{- end }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-tls-certificates
     {{- end }}
     {{- if .Values.additionalAnnotations }}
     {{- toYaml .Values.additionalAnnotations | nindent 4 }}

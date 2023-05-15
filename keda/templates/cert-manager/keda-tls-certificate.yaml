@@ -28,7 +28,12 @@ spec:
   duration: 8760h0m0s # 1 year
   renewBefore: 5840h0m0s # 8 months
   issuerRef:
+    {{- if .Values.certificates.certManager.existingIssuer.enabled }}
+    name: {{ .Values.certificates.certManager.existingIssuer.name }}
+    kind: {{ .Values.certificates.certManager.existingIssuer.kind }}
+    {{- else }}
     name: {{ .Values.operator.name }}-issuer
     kind: Issuer
+    {{- end }}
     group: cert-manager.io
 {{- end }}
