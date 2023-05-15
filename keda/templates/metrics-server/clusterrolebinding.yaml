@@ -2,11 +2,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-system-auth-delegator
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
   name: {{ .Values.operator.name }}-system-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -20,11 +22,13 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
   name: {{ .Values.operator.name }}-auth-reader
   namespace: kube-system
 roleRef:
@@ -39,11 +43,13 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-hpa-controller-external-metrics
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
   name: {{ .Values.operator.name }}-hpa-controller-external-metrics
 roleRef:
   apiGroup: rbac.authorization.k8s.io

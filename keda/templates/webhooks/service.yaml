@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Service
 metadata:
+  {{- if and .Values.prometheus.webhooks.enabled ( not .Values.prometheus.webhooks.serviceMonitor.enabled ) }}
   annotations:
-    {{- if and .Values.prometheus.webhooks.enabled ( not .Values.prometheus.webhooks.serviceMonitor.enabled ) }}
     prometheus.io/scrape: "true"
     prometheus.io/port: {{ .Values.prometheus.webhooks.port | quote }}
     prometheus.io/path: "/metrics"
-    {{- end }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.webhooks.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
   name: {{ .Values.webhooks.name }}
   namespace: {{ .Release.Namespace }}
 spec:
