@@ -54,172 +54,193 @@ The command removes all the Kubernetes components associated with the chart and 
 The following table lists the configurable parameters of the KEDA chart and
 their default values.
 
-| Parameter                                                  | Description                               | Default                                         |
-|:-----------------------------------------------------------|:------------------------------------------|:------------------------------------------------|
-| `image.keda.repository`                                    | Image name of KEDA operator               | `ghcr.io/kedacore/keda` |
-| `image.keda.tag`                                           | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default | `` |
-| `image.metricsApiServer.repository`                        | Image name of KEDA Metrics API Server        | `ghcr.io/kedacore/keda-metrics-apiserver` |
-| `image.metricsApiServer.tag`                               | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default | `` |
-| `image.webhooks.repository`                                | Image name of KEDA admission-webhooks               | `ghcr.io/kedacore/keda-admission-webhooks` |
-| `image.webhooks.tag`                                       | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default | `` |
-| `clusterDomain`                               | The cluster domain name | `cluster.local`                 |
-| `crds.install`                               | Defines whether the KEDA CRDs have to be installed or not. | `true`                 |
-| `watchNamespace`                                           | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces | `` |
-| `operator.name`                                            | Name of the KEDA operator | `keda-operator` |
-| `operator.replicaCount`                                      | Capability to configure the number of replicas for KEDA operator.<br /><br />While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic.<br /><br />You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.<br /><br />Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).| `1` |
-| `operator.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for KEDA operator. Takes precedence over the `affinity` field | `{}` |
-| `metricsServer.replicaCount`                                      | Capability to configure the number of replicas for KEDA metric server.<br /><br />While you can run more replicas of our metric server, only one instance will used and serve traffic.<br /><br />You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.<br /><br /> Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).| `1` |
-| `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
-| `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
-| `metricsServer.affinity`                                   | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for Metrics API Server. Takes precedence over the `affinity` field | `{}` |
-| `webhooks.enable`                                           | Enable admission webhooks | `true` |
-| `webhooks.name`                                             | Name of the KEDA admission webhooks | `keda-admission-webhooks` |
-| `webhooks.replicaCount`                                      | Capability to configure the number of replicas for KEDA admission webhooks | `1` |
-| `webhooks.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for KEDA admission webhooks. Takes precedence over the `affinity` field | `{}` |
-| `webhooks.failurePolicy`                                     | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks | `Ignore` |
-| `imagePullSecrets`                                         | Name of secret to use to pull images to use to pull Docker images | `[]` |
-| `additionalLabels`                                         | Additional labels to apply to KEDA workloads | `{}` |
-| `additionalAnnotations`                                    | Additional annotations to apply to KEDA workloads | `{}` |
-| `podAnnotations.keda`                                      | Pod annotations for KEDA operator | `{}` |
-| `podAnnotations.metricsAdapter`                            | Pod annotations for KEDA Metrics Adapter | `{}` |
-| `podAnnotations.webhooks`                                  | Pod annotations for KEDA Admission webhooks | `{}` |
-| `upgradeStrategy.operator`                                 | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for operator      | `{}` |
-| `upgradeStrategy.metricsApiServer`                         | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for Metrics Api Server      | `{}` |
-| `upgradeStrategy.webhooks`                                 | Capability to configure [Deployment upgrade strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy) for Admission webhooks      | `{}` |
-| `podDisruptionBudget.operator`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
-| `podDisruptionBudget.metricServer`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
-| `podDisruptionBudget.webhooks`                                      | Capability to configure [Pod Disruption Budget](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)       | `{}` |
-| `podLabels.keda`                                           | Pod labels for KEDA operator | `{}` |
-| `podLabels.metricsAdapter`                                 | Pod labels for KEDA Metrics Adapter | `{}` |
-| `podLabels.webhooks`                                       | Pod labels for KEDA Admission webhooks | `{}` |
-| `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
-| `rbac.aggregateToDefaultRoles`                             | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) | `false`                                        |
-| `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
-| `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
-| `serviceAccount.automountServiceAccountToken`              | Specifies whether created service account should automount API-Credentials | `true` |
-| `serviceAccount.annotations`                               | Annotations to add to the service account | `{}` |
-| `podIdentity.activeDirectory.identity`                     | Identity in Azure Active Directory to use for Azure pod identity | `` |
-| `podIdentity.azureWorkload.clientId`                       | Id of Azure Active Directory Client to use for authentication with Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
-| `podIdentity.azureWorkload.enabled`                        | Specifies whether [Azure Workload Identity](https://azure.github.io/azure-workload-identity/) is to be enabled or not. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `false` |
-| `podIdentity.azureWorkload.tenantId`                       | Id Azure Active Directory Tenant to use for authentication with for Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `` |
-| `podIdentity.azureWorkload.tokenExpiration`                | Duration in seconds to automatically expire tokens for the service account. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) | `3600` |
-| `podIdentity.aws.irsa.audience`                            | Sets the token audience for IRSA. | `sts.amazonaws.com` |
-| `podIdentity.aws.irsa.enabled`                             | Specifies whether [AWS IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is to be enabled or not. | `false` |
-| `podIdentity.aws.irsa.roleArn`                             | ARN of an IRSA IAM role with a web identity provider to use for authentication via STS. | `` |
-| `podIdentity.aws.irsa.stsRegionalEndpoints`                | Sets the use of an STS regional endpoint instead of global. Recommended to use regional endpoint in almost all cases. | `true` |
-| `podIdentity.aws.irsa.tokenExpiration`                     | Duration in seconds to automatically expire tokens for the service account. | `86400` |
-| `podIdentity.gcp.enabled` | Specifies whether [GCP Workload Identity](https://cloud.google.com/kubernetes-engine/docs/concepts/workload-identity) to be enabled or not. | `false` |
-| `podIdentity.gcp.gcpIAMServiceAccount` | GCP IAM Service Account Email which you would like to use for workload identity. | `` |
-| `grpcTLSCertsSecret`                                       | Name of the secret that will be mounted to the /grpccerts path on the Pod to communicate over TLS with external scaler(s) (recommended).  | ``|
-| `hashiCorpVaultTLS`                                        | Name of the secret that will be mounted to the /vault path on the Pod to communicate over TLS with HashiCorp Vault (recommended). | `` |
-| `logging.operator.level`                                   | Logging level for KEDA Operator. Allowed values are 'debug', 'info' & 'error'. | `info`                                        |
-| `logging.operator.format`                                  | Logging format for KEDA Operator. Allowed values are 'console' & 'json'. | `console`                                        |
-| `logging.operator.timeEncoding`                            | Logging time format for KEDA Operator. Allowed values are 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano'. | `rfc3339` |
-| `logging.metricServer.level`                               | Logging level for Metrics Server.Policy to use to pull Docker images. Allowed values are '0' for info, '4' for debug, or an integer value greater than 0, specified as string. You can find all allowed options [here](https://github.com/kubernetes/klog/blob/main/internal/severity/severity.go#L30). | `0` |
-| `logging.webhooks.level`                                   | Logging level for KEDA Admission webhooks. Allowed values are 'debug', 'info' & 'error'. | `info` |
-| `logging.webhooks.format`                                  | Logging format for KEDA Admission webhooks. Allowed values are 'console' & 'json'. | `console`                                        |
-| `logging.webhooks.timeEncoding`                            | Logging time format for KEDA Admission webhooks. Allowed values are 'epoch', 'millis', 'nano', 'iso8601', 'rfc3339' or 'rfc3339nano'. | `rfc3339` |
-| `securityContext`                                          | Security context for all containers ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
-| `securityContext.operator`                                 | Security context of the operator container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
-| `securityContext.metricServer`                             | Security context of the metricServer container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
-| `securityContext.webhooks`                             | Security context of the admission webhooks container ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container)) | [See below](#KEDA-is-secure-by-default) |
-| `podSecurityContext`                                       | Pod security context for all pods ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
-| `podSecurityContext.operator`                              | Pod security context of the KEDA operator pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
-| `podSecurityContext.metricServer`                          | Pod security context of the KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
-| `podSecurityContext.webhooks`                          | Pod security context of the KEDA admission webhooks pod ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)) | [See below](#KEDA-is-secure-by-default) |
-| `resources`                                                | Manage resource request & limits of all KEDA workloads ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `{}` |
-| `resources.operator`                                       | Manage resource request & limits of KEDA operator pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
-| `resources.metricServer`                                   | Manage resource request & limits of KEDA metrics apiserver pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
-| `resources.webhooks`                                   | Manage resource request & limits of KEDA admission webhooks pod ([docs](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)) | `` |
-| `nodeSelector`                                             | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) | `{}` |
-| `tolerations`                                              | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) | `[]` |
-| `topologySpreadConstraints.operator` | object | `{}` | Pod Topology Constraints of KEDA operator pod https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
-| `topologySpreadConstraints.metricsServer` | object | `{}` | Pod Topology Constraints of KEDA metrics apiserver pod https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
-| `topologySpreadConstraints.webhooks` | object | `{}` | Pod Topology Constraints of KEDA admission webhooks pod https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/ |
-| `affinity`                                                 | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for both KEDA operator and Metrics API Server | `{}` |
-| `priorityClassName`                                        | Pod priority for KEDA Operator and Metrics Adapter ([docs](https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/)) | `` |
-| `extraArgs.keda`                                           | Additional KEDA Operator container arguments| `{}` |
-| `extraArgs.metricsAdapter`                                 | Additional Metrics Adapter container arguments | `{}` |
-| `env`                                                      | Additional environment variables that will be passed onto KEDA operator and metrics api service | `` |
-| `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
-| `http.minTlsVersion` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) | `` |
-| `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}` |
-| `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443` |
-| `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443` |
-| `prometheus.metricServer.enabled`                          | Enable metric server Prometheus metrics expose | `false` |
-| `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `8088` |
-| `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics` |
-| `prometheus.metricServer.podMonitor.enabled`               | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false` |
-| `prometheus.metricServer.podMonitor.interval`              | Scraping interval for metric server using podMonitor crd (prometheus operator) | `` |
-| `prometheus.metricServer.podMonitor.scrapeTimeout`         | Scraping timeout for metric server using podMonitor crd (prometheus operator) | `` |
-| `prometheus.metricServer.podMonitor.namespace`             | Scraping namespace for metric server using podMonitor crd (prometheus operator) | `` |
-| `prometheus.metricServer.podMonitor.additionalLabels`      | Additional labels to add for metric server using podMonitor crd (prometheus operator) | `{}` |
-| `prometheus.metricServer.podMonitor.relabelings`           | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) | `[]` |
-| `prometheus.metricServer.serviceMonitor.enabled`           | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false` |
-| `prometheus.metricServer.serviceMonitor.jobLabel`         | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor) | `` |
-| `prometheus.metricServer.serviceMonitor.targetLabels`         | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics | `[]` |
-| `prometheus.metricServer.serviceMonitor.podTargetLabels`        | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics | `[]` |
-| `prometheus.metricServer.serviceMonitor.port`         | Name of the service port this endpoint refers to. Mutually exclusive with targetPort | `metrics` |
-| `prometheus.metricServer.serviceMonitor.targetPort`         | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port | `` |
-| `prometheus.metricServer.serviceMonitor.interval`         | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. | `` |
-| `prometheus.metricServer.serviceMonitor.scrapeTimeout`        | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used | `` |
-| `prometheus.metricServer.serviceMonitor.relabellings`         | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.metricServer.serviceMonitor.relabelings`         | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.metricServer.serviceMonitor.additionalLabels`         | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) | `{}` |
-| `prometheus.operator.enabled`                              | Enable KEDA Operator prometheus metrics expose | `false` |
-| `prometheus.operator.port`                                 | Port used for exposing KEDA Operator prometheus metrics | `8080` |
-| `prometheus.operator.podMonitor.enabled`                   | Enable monitoring for KEDA Operator using podMonitor crd (prometheus operator) | `false` |
-| `prometheus.operator.podMonitor.interval`                  | Scraping interval for KEDA Operator using podMonitor crd (prometheus operator) | `` |
-| `prometheus.operator.podMonitor.scrapeTimeout`             | Scraping timeout for KEDA Operator using podMonitor crd (prometheus operator) | `` |
-| `prometheus.operator.podMonitor.namespace`                 | Scraping namespace for KEDA Operator using podMonitor crd (prometheus operator) | `` |
-| `prometheus.operator.podMonitor.additionalLabels`          | Additional labels to add for KEDA Operator using podMonitor crd (prometheus operator) | `{}` |
-| `prometheus.operator.serviceMonitor.enabled`           | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false` |
-| `prometheus.operator.serviceMonitor.jobLabel`         | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor) | `` |
-| `prometheus.operator.serviceMonitor.targetLabels`         | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics | `[]` |
-| `prometheus.operator.serviceMonitor.podTargetLabels`        | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics | `[]` |
-| `prometheus.operator.serviceMonitor.port`         | Name of the service port this endpoint refers to. Mutually exclusive with targetPort | `metrics` |
-| `prometheus.operator.serviceMonitor.targetPort`         | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port | `` |
-| `prometheus.operator.serviceMonitor.interval`         | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. | `` |
-| `prometheus.operator.serviceMonitor.scrapeTimeout`        | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used | `` |
-| `prometheus.operator.serviceMonitor.relabellings`         | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.operator.serviceMonitor.relabelings`         | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.operator.serviceMonitor.additionalLabels`         | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) | `{}` |
-| `prometheus.operator.prometheusRules.enabled`              | Enable monitoring for KEDA Operator using prometheusRules crd (prometheus operator) | `false` |
-| `prometheus.operator.prometheusRules.namespace`            | Scraping namespace for KEDA Operator using prometheusRules crd (prometheus operator) | `` |
-| `prometheus.operator.prometheusRules.additionalLabels`     | Additional labels to add for KEDA Operator using prometheusRules crd (prometheus operator) | `{}` |
-| `prometheus.operator.prometheusRules.alerts`               | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) | `[]` |
-| `prometheus.operator.podMonitor.relabelings`               | List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator) | `[]` |
-| `prometheus.webhooks.enabled`                              | Enable KEDA admission webhooks prometheus metrics expose | `false` |
-| `prometheus.webhooks.port`                                 | Port used for exposing KEDA admission webhooks prometheus metrics | `8080` |
-| `prometheus.webhooks.serviceMonitor.enabled`           | Enable monitoring for metric server using serviceMonitor crd (prometheus operator) | `false` |
-| `prometheus.webhooks.serviceMonitor.jobLabel`         | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor) | `` |
-| `prometheus.webhooks.serviceMonitor.targetLabels`         | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics | `[]` |
-| `prometheus.webhooks.serviceMonitor.podTargetLabels`        | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics | `[]` |
-| `prometheus.webhooks.serviceMonitor.port`         | Name of the service port this endpoint refers to. Mutually exclusive with targetPort | `metrics` |
-| `prometheus.webhooks.serviceMonitor.targetPort`         | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port | `` |
-| `prometheus.webhooks.serviceMonitor.interval`         | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. | `` |
-| `prometheus.webhooks.serviceMonitor.scrapeTimeout`        | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used | `` |
-| `prometheus.webhooks.serviceMonitor.relabellings`         | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.webhooks.serviceMonitor.relabelings`         | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec](https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig) | `[]` |
-| `prometheus.webhooks.serviceMonitor.additionalLabels`         | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) | `{}` |
-| `prometheus.webhooks.prometheusRules.enabled`              | Enable monitoring for KEDA admission webhooks using prometheusRules crd (prometheus operator) | `false` |
-| `prometheus.webhooks.prometheusRules.namespace`            | Scraping namespace for KEDA admission webhooks using prometheusRules crd (prometheus operator) | `` |
-| `prometheus.webhooks.prometheusRules.additionalLabels`     | Additional labels to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) | `{}` |
-| `prometheus.webhooks.prometheusRules.alerts`               | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) | `[]` |
-| `volumes.keda.extraVolumes`                                | Extra volumes for KEDA deployment | `[]` |
-| `volumes.keda.extraVolumeMounts`                           | Extra volume mounts for KEDA deployment | `[]` |
-| `volumes.metricsApiServer.extraVolumes`                    | Extra volumes for metric server deployment | `[]` |
-| `volumes.metricsApiServer.extraVolumeMounts`               | Extra volume mounts for metric server deployment | `[]` |
-| `volumes.webhooks.extraVolumes`                            | Extra volumes for admission webhooks deployment | `[]` |
-| `volumes.webhooks.extraVolumeMounts`                       | Extra volume mounts for admission webhooks deployment | `[]` |
-| `certificates.autoGenerated`                               | Enables the self generation for KEDA TLS certificates inside KEDA operator | `true` |
-| `certificates.secretName`                                  | Secret name to be mounted with KEDA TLS certificates | `kedaorg-certs` |
-| `certificates.mountPath`                                   | Path where KEDA TLS certificates are mounted | `/certs` |
-| `certificates.certManager.enabled`                         | Enables Cert-manager for certificate management | `false` |
-| `certificates.certManager.generateCA`                      | Generates a self-signed CA with Cert-manager | `true` |
-| `certificates.certManager.caSecretName`                    | Secret name where the CA is stored (generatedby cert-manager or user given) | `kedaorg-ca` |
-| `certificates.certManager.secretTemplate`                  | [Labels or annotations to add to the secret generated](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources) by cert-manager | `{}` |
-| `extraObjects`                                             | Array of extra K8s manifests to deploy | `[]`|
+### General parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `additionalAnnotations` | object | `{}` | Custom annotations to add into metadata |
+| `additionalLabels` | object | `{}` | Custom labels to add into metadata |
+| `affinity` | object | `{}` | [Affinity] for pod scheduling for both KEDA operator and Metrics API Server |
+| `certificates.autoGenerated` | bool | `true` | Enables the self generation for KEDA TLS certificates inside KEDA operator |
+| `certificates.certManager.caSecretName` | string | `"kedaorg-ca"` | Secret name where the CA is stored (generatedby cert-manager or user given) |
+| `certificates.certManager.enabled` | bool | `false` | Enables Cert-manager for certificate management |
+| `certificates.certManager.generateCA` | bool | `true` | Generates a self-signed CA with Cert-manager. If generateCA is false, the secret with the CA has to be annotated with `cert-manager.io/allow-direct-injection: "true"` |
+| `certificates.certManager.secretTemplate` | object | `{}` | Add labels/annotations to secrets created by Certificate resources [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources) |
+| `certificates.mountPath` | string | `"/certs"` | Path where KEDA TLS certificates are mounted |
+| `certificates.secretName` | string | `"kedaorg-certs"` | Secret name to be mounted with KEDA TLS certificates |
+| `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
+| `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
+| `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
+| `extraObjects` | list | `[]` |  |
+| `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
+| `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
+| `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
+| `http.minTlsVersion` | string | `"TLS12"` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) |
+| `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
+| `image.pullPolicy` | string | `"Always"` | Image pullPolicy for all KEDA components |
+| `imagePullSecrets` | list | `[]` | Name of secret to use to pull images to use to pull Docker images |
+| `nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `podIdentity.activeDirectory.identity` | string | `""` | Identity in Azure Active Directory to use for Azure pod identity |
+| `podIdentity.aws.irsa.audience` | string | `"sts.amazonaws.com"` | Sets the token audience for IRSA. This will be set as an annotation on the KEDA service account. |
+| `podIdentity.aws.irsa.enabled` | bool | `false` | Specifies whether [AWS IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is to be enabled or not. |
+| `podIdentity.aws.irsa.roleArn` | string | `""` | Set to the value of the ARN of an IAM role with a web identity provider. This will be set as an annotation on the KEDA service account. |
+| `podIdentity.aws.irsa.stsRegionalEndpoints` | string | `"true"` | Sets the use of an STS regional endpoint instead of global. Recommended to use regional endpoint in almost all cases. This will be set as an annotation on the KEDA service account. |
+| `podIdentity.aws.irsa.tokenExpiration` | int | `86400` | Set to the value of the service account token expiration duration. This will be set as an annotation on the KEDA service account. |
+| `podIdentity.azureWorkload.clientId` | string | `""` | Id of Azure Active Directory Client to use for authentication with Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
+| `podIdentity.azureWorkload.enabled` | bool | `false` | Set to true to enable Azure Workload Identity usage. See https://keda.sh/docs/concepts/authentication/#azure-workload-identity This will be set as a label on the KEDA service account. |
+| `podIdentity.azureWorkload.tenantId` | string | `""` | Id Azure Active Directory Tenant to use for authentication with for Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
+| `podIdentity.azureWorkload.tokenExpiration` | int | `3600` | Duration in seconds to automatically expire tokens for the service account. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
+| `podIdentity.gcp.enabled` | bool | `false` | Set to true to enable GCP Workload Identity. See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/ This will be set as a annotation on the KEDA service account. |
+| `podIdentity.gcp.gcpIAMServiceAccount` | string | `""` | GCP IAM Service Account Email which you would like to use for workload identity. |
+| `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
+| `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
+| `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
+| `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
+| `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
+| `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
+
+### Operator
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
+| `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
+| `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
+| `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
+| `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
+| `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
+| `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
+| `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator |
+| `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
+| `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
+| `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
+| `podSecurityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
+| `prometheus.operator.enabled` | bool | `false` | Enable KEDA Operator prometheus metrics expose |
+| `prometheus.operator.podMonitor.additionalLabels` | object | `{}` | Additional labels to add for KEDA Operator using podMonitor crd (prometheus operator) |
+| `prometheus.operator.podMonitor.enabled` | bool | `false` | Enables PodMonitor creation for the Prometheus Operator |
+| `prometheus.operator.podMonitor.interval` | string | `""` | Scraping interval for KEDA Operator using podMonitor crd (prometheus operator) |
+| `prometheus.operator.podMonitor.namespace` | string | `""` | Scraping namespace for KEDA Operator using podMonitor crd (prometheus operator) |
+| `prometheus.operator.podMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator) |
+| `prometheus.operator.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for KEDA Operator using podMonitor crd (prometheus operator) |
+| `prometheus.operator.port` | int | `8080` | Port used for exposing KEDA Operator prometheus metrics |
+| `prometheus.operator.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA Operator using prometheusRules crd (prometheus operator) |
+| `prometheus.operator.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) |
+| `prometheus.operator.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
+| `prometheus.operator.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA Operator using prometheusRules crd (prometheus operator) |
+| `prometheus.operator.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
+| `prometheus.operator.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
+| `prometheus.operator.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
+| `prometheus.operator.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.operator.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
+| `prometheus.operator.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
+| `prometheus.operator.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.operator.serviceMonitor.relabellings` | list | `[]` | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.operator.serviceMonitor.scrapeTimeout` | string | `""` | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used |
+| `prometheus.operator.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
+| `prometheus.operator.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
+| `resources.operator` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA operator pod |
+| `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
+| `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
+| `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
+| `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
+| `volumes.keda.extraVolumes` | list | `[]` | Extra volumes for KEDA deployment |
+
+### Metrics server
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
+| `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
+| `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
+| `logging.metricServer.level` | int | `0` | Logging level for Metrics Server. allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
+| `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
+| `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
+| `metricsServer.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA metric server. While you can run more replicas of our metric server, only one instance will used and serve traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
+| `metricsServer.useHostNetwork` | bool | `false` | Enable metric server to use host network |
+| `permissions.metricServer.restrict.secret` | bool | `false` | Restrict Secret Access for Metrics Server |
+| `podAnnotations.metricsAdapter` | object | `{}` | Pod annotations for KEDA Metrics Adapter |
+| `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
+| `podLabels.metricsAdapter` | object | `{}` | Pod labels for KEDA Metrics Adapter |
+| `podSecurityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
+| `prometheus.metricServer.enabled` | bool | `false` | Enable metric server Prometheus metrics expose |
+| `prometheus.metricServer.podMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.podMonitor.enabled` | bool | `false` | Enables PodMonitor creation for the Prometheus Operator |
+| `prometheus.metricServer.podMonitor.interval` | string | `""` | Scraping interval for metric server using podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.podMonitor.namespace` | string | `""` | Scraping namespace for metric server using podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.podMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for metric server using podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.port` | int | `8080` | HTTP port used for exposing metrics server prometheus metrics |
+| `prometheus.metricServer.portName` | string | `"metrics"` | HTTP port name for exposing metrics server prometheus metrics |
+| `prometheus.metricServer.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
+| `prometheus.metricServer.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
+| `prometheus.metricServer.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
+| `prometheus.metricServer.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.metricServer.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
+| `prometheus.metricServer.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
+| `prometheus.metricServer.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.metricServer.serviceMonitor.relabellings` | list | `[]` | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.metricServer.serviceMonitor.scrapeTimeout` | string | `""` | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used |
+| `prometheus.metricServer.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
+| `prometheus.metricServer.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
+| `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
+| `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
+| `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
+| `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
+| `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
+| `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
+| `serviceAccount.annotations` | object | `{}` | Annotations to add to the service account |
+| `serviceAccount.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
+| `serviceAccount.create` | bool | `true` | Specifies whether a service account should be created |
+| `serviceAccount.name` | string | `"keda-operator"` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
+| `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
+| `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
+| `volumes.metricsApiServer.extraVolumes` | list | `[]` | Extra volumes for metric server deployment |
+
+### Admission Webhooks
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `image.webhooks.repository` | string | `"ghcr.io/kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
+| `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
+| `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
+| `logging.webhooks.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `podAnnotations.webhooks` | object | `{}` | Pod annotations for KEDA Admission webhooks |
+| `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
+| `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
+| `podSecurityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
+| `prometheus.webhooks.enabled` | bool | `false` | Enable KEDA admission webhooks prometheus metrics expose |
+| `prometheus.webhooks.port` | int | `8080` | Port used for exposing KEDA admission webhooks prometheus metrics |
+| `prometheus.webhooks.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
+| `prometheus.webhooks.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
+| `prometheus.webhooks.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
+| `prometheus.webhooks.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
+| `prometheus.webhooks.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
+| `prometheus.webhooks.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus webhooks |
+| `prometheus.webhooks.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
+| `prometheus.webhooks.serviceMonitor.jobLabel` | string | `""` | jobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.webhooks.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
+| `prometheus.webhooks.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
+| `prometheus.webhooks.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.webhooks.serviceMonitor.relabellings` | list | `[]` | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.webhooks.serviceMonitor.scrapeTimeout` | string | `""` | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used |
+| `prometheus.webhooks.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
+| `prometheus.webhooks.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
+| `resources.webhooks` | object | `{"limits":{"cpu":"50m","memory":"100Mi"},"requests":{"cpu":"10m","memory":"10Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
+| `securityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the admission webhooks container |
+| `topologySpreadConstraints.webhooks` | list | `[]` | [Pod Topology Constraints] of KEDA admission webhooks pod |
+| `upgradeStrategy.webhooks` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Admission webhooks |
+| `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
+| `volumes.webhooks.extraVolumes` | list | `[]` | Extra volumes for admission webhooks deployment |
+| `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
+| `webhooks.enabled` | bool | `true` | Enable admission webhooks (this feature option will be removed in v2.12) |
+| `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
+| `webhooks.name` | string | `"keda-admission-webhooks"` | Name of the KEDA admission webhooks |
+| `webhooks.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA admission webhooks |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
@@ -277,3 +298,17 @@ podSecurityContext:
   webhooks:
     runAsNonRoot: true
 ```
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/helm-docs)
+
+[Affinity]: https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+[Deployment upgrade strategy]: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+[GCP Workload Identity]: https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/
+[Pod Disruption Budget]: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+[Pod security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+[Security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+[Pod Topology Constraints]: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+[RelabelConfig Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig
+[resource request & limits]: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+[ServiceMonitor Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor

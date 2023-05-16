@@ -1,0 +1,167 @@
+<p align="center"><img src="https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-transparent.png" width="300"/></p>
+<p style="font-size: 25px" align="center"><b>Kubernetes-based Event Driven Autoscaling</b></p>
+
+KEDA allows for fine grained autoscaling (including to/from zero) for event driven Kubernetes workloads.  KEDA serves as a Kubernetes Metrics Server and allows users to define autoscaling rules using a dedicated Kubernetes custom resource definition.
+
+KEDA can run on both the cloud and the edge, integrates natively with Kubernetes components such as the Horizontal Pod Autoscaler, and has no external dependencies.
+
+---
+<p align="center">
+We are a Cloud Native Computing Foundation (CNCF) incubation project.
+
+<img src="https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg" height="75px">
+</p>
+
+---
+
+## TL;DR
+
+```console
+helm repo add kedacore https://kedacore.github.io/charts
+helm repo update
+
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda --version 2.10.2
+```
+
+## Introduction
+
+This chart bootstraps KEDA infrastructure on a Kubernetes cluster using the Helm package manager.
+
+As part of that, it will install all the required Custom Resource Definitions (CRD).
+
+## Installing the Chart
+
+To install the chart with the release name `keda`:
+
+```console
+$ kubectl create namespace keda
+$ helm install keda kedacore/keda --namespace keda --version 2.10.0
+```
+
+## Uninstalling the Chart
+
+To uninstall/delete the `keda` Helm chart:
+
+```console
+helm uninstall keda
+```
+
+The command removes all the Kubernetes components associated with the chart and deletes the release.
+
+## Configuration
+
+The following table lists the configurable parameters of the KEDA chart and
+their default values.
+
+### General parameters
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if not (or (contains "operator" .Key) (contains "keda" .Key) (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (contains "webhooks" .Key) (hasPrefix "service" .Key) ) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+
+### Operator
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if or (contains "operator" .Key) (contains "keda" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+### Metrics server
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+### Admission Webhooks
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if contains "webhooks" .Key }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+Specify each parameter using the `--set key=value[,key=value]` argument to
+`helm install`. For example:
+
+```console
+$ helm install keda kedacore/keda --namespace keda \
+               --set image.keda.tag=<different tag from app version> \
+               --set image.metricsApiServer.tag=<different tag from app version> \
+               --set image.webhooks.tag=<different tag from app version>
+```
+
+Alternatively, a YAML file that specifies the values for the above parameters can
+be provided while installing the chart. For example,
+
+```console
+helm install keda kedacore/keda --namespace keda -f values.yaml
+```
+
+## KEDA is secure by default
+
+Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default:
+```yaml
+securityContext:
+  operator:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+  metricServer:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    ## Metrics server needs to write the self-signed cert. See FAQ for discussion of options.
+    # readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+  webhooks:
+    capabilities:
+      drop:
+      - ALL
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    seccompProfile:
+      type: RuntimeDefault
+
+podSecurityContext:
+  operator:
+    runAsNonRoot: true
+  metricServer:
+    runAsNonRoot: true
+  webhooks:
+    runAsNonRoot: true
+```
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/helm-docs)
+
+[Affinity]: https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
+[Deployment upgrade strategy]: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
+[GCP Workload Identity]: https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/
+[Pod Disruption Budget]: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+[Pod security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+[Security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
+[Pod Topology Constraints]: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+[RelabelConfig Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig
+[resource request & limits]: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+[ServiceMonitor Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor
