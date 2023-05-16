@@ -58,6 +58,7 @@ metricsServer:
     #         values:
     #         - keda-operator-metrics-apiserver
     #     topologyKey: "kubernetes.io/hostname"
+    installApiService: true
 
 webhooks:
   enabled: true # This value will be removed in keda v2.12
@@ -174,12 +175,12 @@ podIdentity:
       tokenExpiration: 86400
   gcp:
     # Set to true to enable GCP Workload Identity.
-    # See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/ 
+    # See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/
     # This will be set as a annotation on the KEDA service account.
     enabled: false
     # GCP IAM Service Account Email which you would like to use for workload identity.
-    gcpIAMServiceAccount: ""      
-  
+    gcpIAMServiceAccount: ""
+
 # Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /grpccerts path on the Pod
