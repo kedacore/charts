@@ -1,21 +1,26 @@
-# Additional labels that should be applied to all resources.
+# -- Additional labels that should be applied to all resources
 additionalLabels: {}
 #  name: <value>
 
 # Docker image configuration.
 image:
+  # -- The Docker image repository to use for Azure Cosmos DB external scaler
   repository: ghcr.io/kedacore/external-scaler-azure-cosmos-db
+  # -- The Docker image tag to use for Azure Cosmos DB external scaler
   tag: 0.1.0
+  # -- The image pull policy for Azure Cosmos DB external scaler
   pullPolicy: Always
 
-# Service incoming port.
+# -- The incoming port for 'Azure Cosmos DB external scaler' service
 port: 4050
 
 # Container resource requests and limits.
 resources:
+  # -- The CPU/memory resource request for the 'Azure Cosmos DB external scaler' pod
   requests:
     cpu: 10m
     memory: 128Mi
+  # -- The CPU/memory resource limit for the 'Azure Cosmos DB external scaler' pod
   limits:
     cpu: 100m
     memory: 512Mi
