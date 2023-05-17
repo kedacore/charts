@@ -125,6 +125,8 @@ podLabels:
 
 rbac:
   create: true
+  # Specifies whether RBAC for CRDs should be aggregated to default roles (view, edit, admin)
+  aggregateToDefaultRoles: false
 
 serviceAccount:
   # Specifies whether a service account should be created
