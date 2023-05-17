@@ -1,45 +1,59 @@
-# Custom labels to add into metadata
+# -- Additional labels to be applied to installed resources. Note that not all resources will receive these labels.
 additionalLabels: ""
 
 crds:
-  # whether to install CRDs or not
+  # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
 # operator-specific configuration values
 operator:
-  # the image pull secrets for the operator
+  # -- The image pull secrets for the operator component
   imagePullSecrets: []
-  # the namespace to watch for new HTTPScaledObjects.
-  # leave this empty to tell the operator to watch in all
-  # namespaces
+  # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
   watchNamespace: ""
-  # the image pull policy of the operator
+  # -- The image pull policy for the operator component
   pullPolicy: Always
   # operator pod resource limits
   resources:
+    # -- The CPU/memory resource limit for the operator component
     limits:
       cpu: 0.5
       memory: 64Mi
+    # -- The CPU/memory resource request for the operator component
     requests:
       cpu: 250m
       memory: 20Mi
+  # -- The port for the operator main server to run on
   port: 8443
+  # -- The name of the [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/) for the operator's admin server
   adminService: operator-admin
+  # -- The port for the operator's admin server to run on
   adminPort: 9090
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
   tolerations: []
+  # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
 
 scaler:
-  # the image pull secrets for the scaler
+  # -- The image pull secrets for the scaler component
   imagePullSecrets: []
+  # -- The name of the Kubernetes `Service` for the scaler component
   service: external-scaler
+  # -- The image pull policy for the scaler component
   pullPolicy: Always
+  # -- The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to.
   grpcPort: 9090
+  # -- The port for the scaler's health check and admin server
   healthPort: 9091
+  # -- The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests.
   pendingRequestsInterceptor: 200
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
   tolerations: []
+  # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
   resources:
     limits:
@@ -50,90 +64,73 @@ scaler:
       memory: 20Mi
 
 interceptor:
-  # the image pull secrets for the interceptor
+  # -- The image pull secrets for the interceptor component
   imagePullSecrets: []
-  # the image pull policy of the interceptor
+  # -- The image pull policy for the interceptor component
   pullPolicy: Always
   # configurable values for the interceptor's admin
-  # service. the admin service is a cluster-internal 
+  # service. the admin service is a cluster-internal
   # HTTP interface for triggering debugging behavior
   admin:
-    # the name of the admin Service resource
+    # -- The name of the Kubernetes `Service` for the interceptor's admin service
     service: interceptor-admin
-    # the port that the admin Service listens on
+    # -- The port for the interceptor's admin server to run on
     port: 9090
   # configurable values for the interceptor's proxy
   # service. the proxy service is the publicly accessible
   # HTTP interface that production requests go to
   proxy:
-    # the name of the proxy Service resource
+    # -- The name of the Kubernetes `Service` for the interceptor's proxy service. This is the service that accepts live HTTP traffic.
     service: interceptor-proxy
-    # the port the proxy service listens on
+    # -- The port on which the interceptor's proxy service will listen for live HTTP traffic
     port: 8080
   replicas:
-    # the minimum number of interceptors that should be
-    # running at any given time
+    # -- The minimum number of interceptor replicas that should ever be running
     min: 3
-    # the maximum number of interceptors that should be 
-    # running at any given time
+    # -- The maximum number of interceptor replicas that should ever be running
     max: 50
-    # after the interceptor receives a request,
-    # this is the maximum amount of time it will
-    # wait for the backing deployment to reach 1
-    # or more replicas
+    # -- The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure
     waitTimeout: 20s
   
   # configuration for the ScaledObject resource for the
   # interceptor
   scaledObject:
-    # the polling interval (in milliseconds) for KEDA
-    # to issue scaling inquiries to the external scaler
-    # regarding the interceptor
+    # -- The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor
     pollingInterval: 1
 
-  # how often the interceptor does a full refresh of
-  # the routing table
+  # -- How often (in milliseconds) each interceptor replica should update its in-memory routing table from the central routing table copy. The interceptor will also use Kubernetes events to stay up-to-date with routing table changes. This duration is the maximum time it will take to get a routing table update
   routingTableUpdateDurationMS: 500
-  # how long the interceptor waits for a TCP connection
-  # to be established before failing the request
+  # -- How long the interceptor waits to establish TCP connections with backends before failing a request.
   tcpConnectTimeout: 500ms
-  # the interceptor's keep-alive timeout
+  # -- The interceptor's connection keep alive timeout
   keepAlive: 1s
-  # how long the interceptor waits for response headers
-  # from the backing application before failing the
-  # request
+  # -- How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request
   responseHeaderTimeout: 500ms
-  # how often the interceptor does a full refresh of
-  # its deployment cache
+  # -- How often (in milliseconds) the interceptor does a full refresh of its deployment cache. The interceptor will also use Kubernetes events to stay up-to-date with the deployment cache changes. This duration is the maximum time it will take to see changes to the deployment state.
   deploymentCachePollingIntervalMS: 250
-  # whether to force HTTP/2 on incoming requests. 
-  # corresponds to the "ForceAttemptHTTP2" field
-  # in https://pkg.go.dev/net/http#Transport
+  # -- Whether or not the interceptor should force requests to use HTTP/2
   forceHTTP2: false
-  # the maximum number of idle connections allowed in
-  # the interceptor's in-memory connection pool.
-  # set this to 0 to indicate no limit
+  # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
   maxIdleConns: 100
-  # the timeout after which any idle connection is closed
-  # and removed from the interceptor's in-memory connection
-  # pool
+  # -- The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool.
   idleConnTimeout: 90s
-  # the maximum amount of time the interceptor will wait
-  # for a TLS handshake. set to zero to indicate no timeout
+  # -- The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout.
   tlsHandshakeTimeout: 10s
-  # special handling for responses with "Expect: 100-continue"
-  # response headers. see https://pkg.go.dev/net/http#Transport
-  # under the 'ExpectContinueTimeout' field for more details
+  # -- Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details
   expectContinueTimeout: 1s
-
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
   tolerations: []
+  # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
   # interceptor pod resource limits
   resources:
+    # -- The CPU/memory resource limit for the operator component
     limits:
       cpu: 0.5
       memory: 64Mi
+    # -- The CPU/memory resource request for the operator component
     requests:
       cpu: 250m
       memory: 20Mi
@@ -147,19 +144,21 @@ images:
   # stable release in the official images, `canary` is 
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
-  tag: 
-  # the operator image to use. the default is the official build
+  # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
+  tag: ""
+  # -- Image name for the operator image component
   operator: ghcr.io/kedacore/http-add-on-operator
-  # the interceptor image to use. the default is the official build
+  # -- Image name for the interceptor image component
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
-  # the scaler image to use. the default is the official build
+  # -- Image name for the scaler image component
   scaler: ghcr.io/kedacore/http-add-on-scaler
   # the kube-rbac-proxy image to use
   kubeRbacProxy:
+    # -- Image name for the Kube RBAC Proxy image component
     name: gcr.io/kubebuilder/kube-rbac-proxy
+    # -- Image tag for the Kube RBAC Proxy image component
     tag: v0.13.0
 
 rbac:
-  # install aggregate roles for edit and view
+  # -- Install aggregate roles for edit and view
   aggregateToDefaultRoles: false
-
