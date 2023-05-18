@@ -153,4 +153,5 @@ images:
     tag: v0.13.0
 
 rbac:
+  # install aggregate roles for edit and view
   aggregateToDefaultRoles: false
