@@ -139,6 +139,7 @@ their default values.
 | `interceptor.resources.limits.memory`                         | The memory resource limit for the operator component | `64Mi` |
 | `interceptor.resources.requests.cpu`                          | The CPU resource request for the operator component | `250m` |
 | `interceptor.resources.requests.memory`                       | The memory resource request for the operator component | `20Mi` |
+| `rbac.aggregateToDefaultRoles`                                | Install aggregate roles for edit and view | `false`
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
