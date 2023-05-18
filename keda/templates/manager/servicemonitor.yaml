@@ -31,7 +31,6 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}
-    honorLabels: true
     path: /metrics
     {{- with .Values.prometheus.operator.serviceMonitor.interval }}
     interval: {{ . }}
