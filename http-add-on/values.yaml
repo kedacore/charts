@@ -151,3 +151,7 @@ images:
   kubeRbacProxy:
     name: gcr.io/kubebuilder/kube-rbac-proxy
     tag: v0.13.0
+
+rbac:
+  # install aggregate roles for edit and view
+  aggregateToDefaultRoles: false

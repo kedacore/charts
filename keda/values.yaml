@@ -60,7 +60,7 @@ metricsServer:
     #     topologyKey: "kubernetes.io/hostname"
 
 webhooks:
-  enabled: true # This value will be removed in keda v2.12
+  enabled: true
   name: keda-admission-webhooks
   replicaCount: 1
   # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for KEDA operator. Takes precedence over the `affinity` field
@@ -125,6 +125,8 @@ podLabels:
 
 rbac:
   create: true
+  # Specifies whether RBAC for CRDs should be aggregated to default roles (view, edit, admin)
+  aggregateToDefaultRoles: false
 
 serviceAccount:
   # Specifies whether a service account should be created

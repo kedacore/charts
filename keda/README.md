@@ -93,6 +93,7 @@ their default values.
 | `podLabels.metricsAdapter`                                 | Pod labels for KEDA Metrics Adapter | `{}` |
 | `podLabels.webhooks`                                       | Pod labels for KEDA Admission webhooks | `{}` |
 | `rbac.create`                                              | Specifies whether RBAC should be used | `true`                                        |
+| `rbac.aggregateToDefaultRoles`                             | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) | `false`                                        |
 | `serviceAccount.create`                                    | Specifies whether a service account should be created       | `true`                                        |
 | `serviceAccount.name`                                      | The name of the service account to use. If not set and create is true, a name is generated.      | `keda-operator` |
 | `serviceAccount.automountServiceAccountToken`              | Specifies whether created service account should automount API-Credentials | `true` |
