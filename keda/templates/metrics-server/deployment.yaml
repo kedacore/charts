@@ -114,7 +114,7 @@ spec:
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
-          - --cert-dir={{ .Values.certificates.mountPath }}          
+          - --cert-dir={{ .Values.certificates.mountPath }}
           - --v={{ .Values.logging.metricServer.level }}
           {{- range $key, $value := .Values.extraArgs.metricsAdapter }}
           - --{{ $key }}={{ $value }}
