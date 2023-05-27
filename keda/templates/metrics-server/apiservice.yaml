@@ -20,7 +20,6 @@ spec:
   service:
     name: {{ .Values.operator.name }}-metrics-apiserver
     namespace: {{ .Release.Namespace }}
-    port: {{ .Values.service.portHttps }}
   group: external.metrics.k8s.io
   version: v1beta1
   groupPriorityMinimum: 100
