@@ -32,7 +32,6 @@ spec:
     targetPort: {{ . }}
     {{- end }}
     path: {{ .Values.prometheus.metricServer.path }}
-    honorLabels: true
     {{- with .Values.prometheus.metricServer.serviceMonitor.interval }}
     interval: {{ . }}
     {{- end }}
