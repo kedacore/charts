@@ -72,7 +72,7 @@ their default values.
 | `metricsServer.dnsPolicy`                                  | Defined the DNS policy for the metric server | `ClusterFirst`
 | `metricsServer.useHostNetwork`                             | Enable metric server to use host network  | `false`
 | `metricsServer.affinity`                                   | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for Metrics API Server. Takes precedence over the `affinity` field | `{}` |
-| `webhooks.enable`                                           | Enable admission webhooks (this feature option will be removed in v2.12) | `true` |
+| `webhooks.enable`                                           | Enable admission webhooks | `true` |
 | `webhooks.name`                                             | Name of the KEDA admission webhooks | `keda-admission-webhooks` |
 | `webhooks.replicaCount`                                      | Capability to configure the number of replicas for KEDA admission webhooks | `1` |
 | `webhooks.affinity`                                        | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) for KEDA admission webhooks. Takes precedence over the `affinity` field | `{}` |
