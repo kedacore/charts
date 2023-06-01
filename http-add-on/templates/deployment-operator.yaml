@@ -73,7 +73,7 @@ spec:
         - containerPort: {{ .Values.operator.adminPort }}
           name: admin-http
         resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml .Values.operator.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10
       {{- with .Values.operator.nodeSelector }}
       nodeSelector:
