@@ -3,11 +3,13 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
     {{- range $key, $value := .Values.prometheus.metricServer.serviceMonitor.additionalLabels }}
     {{ $key }}: {{ $value | quote }}
     {{- end }}
@@ -20,11 +22,11 @@ spec:
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.targetLabels }}
   targetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.podTargetLabels }}
   podTargetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
   - port: {{ .Values.prometheus.metricServer.portName }}
@@ -40,7 +42,7 @@ spec:
     {{- end }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
     relabelings:
-    {{ toYaml . | indent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
   namespaceSelector:
     matchNames:

@@ -9,7 +9,7 @@ metadata:
     {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.labels" . | nindent 4 }}
   name: scaledjobs.keda.sh
 spec:
   group: keda.sh

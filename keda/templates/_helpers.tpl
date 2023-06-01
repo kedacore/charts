@@ -10,7 +10,7 @@ Create chart name and version as used by the chart label.
 {{/*
 Generate basic labels
 */}}
-{{- define "keda.labels" }}
+{{- define "keda.labels" -}}
 helm.sh/chart: {{ include "keda.chart" . }}
 app.kubernetes.io/component: operator
 app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -22,4 +22,4 @@ app.kubernetes.io/version: {{ .Chart.AppVersion }}
 {{- if .Values.additionalLabels }}
 {{ toYaml .Values.additionalLabels }}
 {{- end }}
-{{- end }}
+{{- end -}}

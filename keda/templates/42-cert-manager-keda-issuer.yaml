@@ -2,8 +2,10 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
+  {{- with $.Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   name: {{ .Values.operator.name }}-issuer
   namespace: {{ .Release.Namespace }}
 spec:

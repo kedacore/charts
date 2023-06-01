@@ -105,14 +105,12 @@ podDisruptionBudget: {}
   #   maxUnavailable: 1
 
 # -- Custom labels to add into metadata
-additionalLabels:
-  {}
-  # foo: bar
+# additionalLabels:
+#   foo: bar
 
 # -- Custom annotations to add into metadata
-additionalAnnotations:
-  {}
-  # foo: bar
+# additionalAnnotations:
+#   foo: bar
 
 podAnnotations:
   keda: {}
@@ -137,7 +135,8 @@ serviceAccount:
   # Specifies whether a service account should automount API-Credentials
   automountServiceAccountToken: true
   # Annotations to add to the service account
-  annotations: {}
+  # annotations:
+  #   foo: bar
 
 podIdentity:
   activeDirectory:
@@ -176,12 +175,12 @@ podIdentity:
       tokenExpiration: 86400
   gcp:
     # Set to true to enable GCP Workload Identity.
-    # See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/ 
+    # See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/
     # This will be set as a annotation on the KEDA service account.
     enabled: false
     # GCP IAM Service Account Email which you would like to use for workload identity.
-    gcpIAMServiceAccount: ""      
-  
+    gcpIAMServiceAccount: ""
+
 # Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /grpccerts path on the Pod
@@ -273,8 +272,8 @@ service:
   portHttpTarget: 8080
   portHttps: 443
   portHttpsTarget: 6443
-
-  annotations: {}
+  # annotations:
+  #   foo: bar
 
 # We provides the default values that we describe in our docs:
 # https://keda.sh/docs/latest/operate/cluster/
@@ -378,7 +377,7 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -401,7 +400,7 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
