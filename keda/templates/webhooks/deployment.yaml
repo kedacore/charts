@@ -37,7 +37,7 @@ spec:
         {{- if .Values.additionalAnnotations }}
         {{- toYaml .Values.additionalAnnotations | nindent 8 }}
         {{- end }}
-        {{- if and .Values.prometheus.webhooks.enabled ( not (or .Values.prometheus.webhooks.podMonitor.enabled .Values.prometheus.webhooks.serviceMonitor.enabled )) }}
+        {{- if and .Values.prometheus.webhooks.enabled }}
         prometheus.io/scrape: "true"
         prometheus.io/port: {{ .Values.prometheus.webhooks.port | quote }}
         prometheus.io/path: {{ .Values.prometheus.webhooks.path }}
