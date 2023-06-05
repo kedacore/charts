@@ -21,11 +21,11 @@ spec:
   {{- end }}
   {{- with .Values.prometheus.webhooks.serviceMonitor.targetLabels }}
   targetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.prometheus.webhooks.serviceMonitor.podTargetLabels }}
   podTargetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
   - port: {{ .Values.prometheus.webhooks.serviceMonitor.port }}
@@ -41,7 +41,7 @@ spec:
     {{- end }}
     {{- with .Values.prometheus.webhooks.serviceMonitor.relabellings }}
     relabelings:
-    {{ toYaml . | indent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
   namespaceSelector:
     matchNames:

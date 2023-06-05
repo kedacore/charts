@@ -20,11 +20,11 @@ spec:
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.targetLabels }}
   targetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.podTargetLabels }}
   podTargetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
   - port: {{ .Values.prometheus.metricServer.portName }}
@@ -40,7 +40,7 @@ spec:
     {{- end }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
     relabelings:
-    {{ toYaml . | indent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
   namespaceSelector:
     matchNames:
