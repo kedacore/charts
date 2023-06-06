@@ -269,8 +269,6 @@ podSecurityContext:
 
 service:
   type: ClusterIP
-  portHttp: 80
-  portHttpTarget: 8080
   portHttps: 443
   portHttpsTarget: 6443
 
@@ -365,9 +363,8 @@ volumes:
 prometheus:
   metricServer:
     enabled: false
-    port: 9022
+    port: 8080
     portName: metrics
-    path: /metrics
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false

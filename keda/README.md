@@ -144,14 +144,11 @@ their default values.
 | `http.timeout` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) | `` |
 | `http.minTlsVersion` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) | `` |
 | `service.annotations`                                      | Annotations to add the KEDA Metric Server service | `{}` |
-| `service.portHttp`                                         | Service HTTP port for KEDA Metric Server service | `80` |
-| `service.portHttpTarget`                                   | Service HTTP port for KEDA Metric Server container | `8080` |
 | `service.portHttps`                                        | HTTPS port for KEDA Metric Server service | `443` |
 | `service.portHttpsTarget`                                  | HTTPS port for KEDA Metric Server container | `6443` |
 | `prometheus.metricServer.enabled`                          | Enable metric server Prometheus metrics expose | `false` |
-| `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `9022` |
+| `prometheus.metricServer.port`                             | HTTP port used for exposing metrics server prometheus metrics | `8088` |
 | `prometheus.metricServer.portName`                         | HTTP port name for exposing metrics server prometheus metrics | `metrics` |
-| `prometheus.metricServer.path`                             | Path used for exposing metric server prometheus metrics | `/metrics` |
 | `prometheus.metricServer.podMonitor.enabled`               | Enable monitoring for metric server using podMonitor crd (prometheus operator) | `false` |
 | `prometheus.metricServer.podMonitor.interval`              | Scraping interval for metric server using podMonitor crd (prometheus operator) | `` |
 | `prometheus.metricServer.podMonitor.scrapeTimeout`         | Scraping timeout for metric server using podMonitor crd (prometheus operator) | `` |
