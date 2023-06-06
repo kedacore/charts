@@ -38,10 +38,17 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
-    {{- with .Values.prometheus.operator.serviceMonitor.relabellings }}
+  {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
+    {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
     relabelings:
     {{- toYaml . | nindent 6 }}
     {{- end }}
+  {{- else }}
+    {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
+    relabelings:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end}}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

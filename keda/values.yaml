@@ -375,7 +375,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -398,7 +399,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -435,7 +437,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     prometheusRules:
       # Enables PrometheusRules creation for the Prometheus Operator

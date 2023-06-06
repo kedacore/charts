@@ -111,21 +111,21 @@ jobs:
               enabled: true
             serviceMonitor:
               enabled: true
-              relabellings:
+              relabelings:
               - regex: (go_.*)
                 action: drop
           webhooks:
             enabled: true
             serviceMonitor:
               enabled: true
-              relabellings:
+              relabelings:
               - regex: (go_.*)
                 action: drop
           metricServer:
             enabled: true
             serviceMonitor:
               enabled: true
-              relabellings:
+              relabelings:
               - regex: (go_.*)
                 action: drop
         webhooks:
