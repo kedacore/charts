@@ -18,7 +18,6 @@ spec:
   podMetricsEndpoints:
   - port: {{ .Values.prometheus.metricServer.portName }}
     path: /metrics
-    honorLabels: true
     {{- with .Values.prometheus.metricServer.podMonitor.interval }}
     interval: {{ . }}
     {{- end }}
