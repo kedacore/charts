@@ -20,11 +20,11 @@ spec:
   {{- end }}
   {{- with .Values.prometheus.operator.serviceMonitor.targetLabels }}
   targetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.prometheus.operator.serviceMonitor.podTargetLabels }}
   podTargetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
   - port: {{ .Values.prometheus.operator.serviceMonitor.port }}
@@ -38,10 +38,17 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
-    {{- with .Values.prometheus.operator.serviceMonitor.relabellings }}
+  {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
+    {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
     relabelings:
-    {{ toYaml . | indent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
+  {{- else }}
+    {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
+    relabelings:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- end}}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

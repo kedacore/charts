@@ -64,7 +64,7 @@ jobs:
 
     - name: Helm install
       uses: Azure/setup-helm@v3
-      
+
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
       uses: helm/kind-action@main
       with:
@@ -88,9 +88,9 @@ jobs:
         image:
           keda:
             tag: main
-          metricsApiServer:   
+          metricsApiServer:
             tag: main
-          webhooks:   
+          webhooks:
             tag: main
         podIdentity:
           azureWorkload:
@@ -99,7 +99,7 @@ jobs:
             clientId: ${{ matrix.clientId }}
         podDisruptionBudget:
           operator:
-            maxUnavailable: 1 
+            maxUnavailable: 1
           metricServer:
             maxUnavailable: 1
           webhooks:
@@ -109,10 +109,25 @@ jobs:
             enabled: true
             podMonitor:
               enabled: true
+            serviceMonitor:
+              enabled: true
+              relabelings:
+              - regex: (go_.*)
+                action: drop
           webhooks:
             enabled: true
             serviceMonitor:
               enabled: true
+              relabelings:
+              - regex: (go_.*)
+                action: drop
+          metricServer:
+            enabled: true
+            serviceMonitor:
+              enabled: true
+              relabelings:
+              - regex: (go_.*)
+                action: drop
         webhooks:
           failurePolicy: Fail
         certificates:
