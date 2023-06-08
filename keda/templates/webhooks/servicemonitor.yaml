@@ -39,13 +39,13 @@ spec:
     {{- with .Values.prometheus.webhooks.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
-  {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
-    {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
+  {{- if .Values.prometheus.webhooks.serviceMonitor.relabelings}}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.relabelings }}
     relabelings:
     {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- else }}
-    {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.relabellings }}
     relabelings:
     {{- toYaml . | nindent 6 }}
     {{- end }}
