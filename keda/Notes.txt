@@ -18,7 +18,7 @@ Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behin
   kubectl get hpa [--all-namespaces] [--namespace <namespace>]
 
 {{- if .Values.prometheus.operator.serviceMonitor.relabellings}}
-WARNING - prometheus.metricServer.operator.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
+WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
 {{- else }}
 {{- if .Values.prometheus.metricServer.serviceMonitor.relabellings}}
 WARNING - prometheus.metricServer.serviceMonitor.relabellings is deprecated, please migrate to prometheus.metricServer.serviceMonitor.relabelings instead.
