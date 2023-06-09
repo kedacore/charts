@@ -24,29 +24,35 @@ spec:
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.targetLabels }}
   targetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with .Values.prometheus.metricServer.serviceMonitor.podTargetLabels }}
   podTargetLabels:
-  {{ toYaml . | indent 4 }}
+  {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
   - port: {{ .Values.prometheus.metricServer.portName }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}
-    path: {{ .Values.prometheus.metricServer.path }}
-    honorLabels: true
+    path: /metrics
     {{- with .Values.prometheus.metricServer.serviceMonitor.interval }}
     interval: {{ . }}
     {{- end }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
+  {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
+    {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
+    relabelings:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+  {{- else }}
     {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
     relabelings:
-    {{ toYaml . | indent 6 }}
+    {{- toYaml . | nindent 6 }}
     {{- end }}
+  {{- end}}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

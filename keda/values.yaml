@@ -60,7 +60,7 @@ metricsServer:
     #     topologyKey: "kubernetes.io/hostname"
 
 webhooks:
-  enabled: true # This value will be removed in keda v2.12
+  enabled: true
   name: keda-admission-webhooks
   replicaCount: 1
   # -- Affinity for pod scheduling https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/ for KEDA operator. Takes precedence over the `affinity` field
@@ -125,6 +125,8 @@ podLabels:
 
 rbac:
   create: true
+  # Specifies whether RBAC for CRDs should be aggregated to default roles (view, edit, admin)
+  aggregateToDefaultRoles: false
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -267,8 +269,6 @@ podSecurityContext:
 
 service:
   type: ClusterIP
-  portHttp: 80
-  portHttpTarget: 8080
   portHttps: 443
   portHttpsTarget: 6443
 
@@ -363,9 +363,8 @@ volumes:
 prometheus:
   metricServer:
     enabled: false
-    port: 9022
+    port: 8080
     portName: metrics
-    path: /metrics
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -377,7 +376,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -402,7 +402,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
@@ -441,7 +442,8 @@ prometheus:
       targetPort:
       interval:
       scrapeTimeout:
-      relabellings: []
+      relabellings: [] # DEPRECATED, use relabelings
+      relabelings: []
       additionalLabels: {}
     prometheusRules:
       # Enables PrometheusRules creation for the Prometheus Operator
@@ -476,3 +478,14 @@ permissions:
   operator:
     restrict:
       secret: false
+
+# Array of extra K8s manifests to deploy
+extraObjects: []
+  # - apiVersion: keda.sh/v1alpha1
+  #   kind: ClusterTriggerAuthentication
+  #   metadata:
+  #     name: aws-credentials
+  #     namespace: keda
+  #   spec:
+  #     podIdentity:
+  #       provider: aws-eks

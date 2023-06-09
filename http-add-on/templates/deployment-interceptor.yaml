@@ -82,7 +82,7 @@ spec:
         - containerPort: {{ .Values.interceptor.proxy.port }}
           name: inter-proxy
         resources:
-          {{- toYaml .Values.resources | nindent 12 }}
+          {{- toYaml .Values.interceptor.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10
       {{- with .Values.interceptor.nodeSelector }}
       nodeSelector:

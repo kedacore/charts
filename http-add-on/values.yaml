@@ -41,6 +41,13 @@ scaler:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  resources:
+    limits:
+      cpu: 0.5
+      memory: 64Mi
+    requests:
+      cpu: 250m
+      memory: 20Mi
 
 interceptor:
   # the image pull secrets for the interceptor
@@ -151,3 +158,8 @@ images:
   kubeRbacProxy:
     name: gcr.io/kubebuilder/kube-rbac-proxy
     tag: v0.13.0
+
+rbac:
+  # install aggregate roles for edit and view
+  aggregateToDefaultRoles: false
+
