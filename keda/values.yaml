@@ -368,6 +368,7 @@ prometheus:
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
+      # Annotations specific for the servicemonitor of the metricServer
       annotations: {}
       jobLabel:
       targetLabels: []
@@ -382,6 +383,7 @@ prometheus:
     podMonitor:
       # Enables PodMonitor creation for the Prometheus Operator
       enabled: false
+      # Annotations specific for the podmnitor of the metricServer
       annotations: {}
       interval:
       scrapeTimeout:
@@ -394,6 +396,7 @@ prometheus:
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
+      # Annotations specific for the servicemonitor of the operator
       annotations: {}
       jobLabel:
       targetLabels: []
@@ -434,6 +437,7 @@ prometheus:
     serviceMonitor:
       # Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
+      # Annotations specific for the servicemonitor of the webhooks
       annotations: {}
       jobLabel:
       targetLabels: []
