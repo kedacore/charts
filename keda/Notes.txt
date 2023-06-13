@@ -17,5 +17,15 @@ Get details about a deployed ScaledObject:
 Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
   kubectl get hpa [--all-namespaces] [--namespace <namespace>]
 
+{{- if .Values.prometheus.operator.serviceMonitor.relabellings}}
+WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
+{{- else }}
+{{- if .Values.prometheus.metricServer.serviceMonitor.relabellings}}
+WARNING - prometheus.metricServer.serviceMonitor.relabellings is deprecated, please migrate to prometheus.metricServer.serviceMonitor.relabelings instead.
+{{- else }}
+{{- if .Values.prometheus.webhooks.serviceMonitor.relabellings}}
+WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please migrate to prometheus.webhooks.serviceMonitor.relabelings instead.
+{{- else }}
+
 For more information on running KEDA, visit:
 https://github.com/kedacore/keda/

@@ -38,13 +38,13 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
-  {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
-    {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
+  {{- if .Values.prometheus.operator.serviceMonitor.relabelings}}
+    {{- with .Values.prometheus.operator.serviceMonitor.relabelings }}
     relabelings:
     {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- else }}
-    {{- with .Values.prometheus.metricServer.serviceMonitor.relabellings }}
+    {{- with .Values.prometheus.operator.serviceMonitor.relabellings }}
     relabelings:
     {{- toYaml . | nindent 6 }}
     {{- end }}
