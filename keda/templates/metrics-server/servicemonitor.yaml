@@ -3,8 +3,12 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ .Values.operator.name }}-metrics-apiserver
+  {{- with (mergeOverwrite (deepCopy .Values.additionalAnnotations) .Values.prometheus.metricServer.serviceMonitor.annotations) }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
