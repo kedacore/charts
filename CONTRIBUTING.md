@@ -117,3 +117,24 @@ git add -A
 git commit -sm "one commit on <branch-name>"
 git push --force
 ```
+
+## Documentation
+
+The documentation for each chart is generated with [helm-docs](https://github.com/norwoodj/helm-docs). This way we can ensure that values are consistent with the chart documentation.
+
+To update a charts documentation, please run the following command:
+
+```shell
+$ helm-docs
+INFO[2023-05-16T23:18:14+02:00] Found Chart directories [.]
+INFO[2023-05-16T23:18:14+02:00] Generating README Documentation for chart .
+
+# or with a docker command:
+
+$ docker run -v "$PWD:/helm-docs" -u $(id -u) jnorwood/helm-docs:latest
+time="2023-05-16T21:22:00Z" level=info msg="Found Chart directories [.]"
+time="2023-05-16T21:22:00Z" level=info msg="Generating README Documentation for chart ."
+```
+
+> **Note**
+> When creating your own `README.md.gotmpl`, don't forget to add it to your `.helmignore` file.
