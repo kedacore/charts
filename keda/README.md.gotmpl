@@ -59,7 +59,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if not (or (contains "operator" .Key) (contains "keda" .Key) (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (contains "webhooks" .Key) (hasPrefix "service" .Key) ) }}
+  {{- if not (or (contains "operator" .Key) (contains "keda" .Key) (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (contains "webhooks" .Key) (hasPrefix "service." .Key) ) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
@@ -80,7 +80,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service" .Key) }}
+  {{- if or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service." .Key) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}

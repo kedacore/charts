@@ -71,7 +71,7 @@ their default values.
 | `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
-| `extraObjects` | list | `[]` |  |
+| `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
 | `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
 | `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
 | `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
@@ -97,6 +97,10 @@ their default values.
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
+| `serviceAccount.annotations` | object | `{}` | Annotations to add to the service account |
+| `serviceAccount.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
+| `serviceAccount.create` | bool | `true` | Specifies whether a service account should be created |
+| `serviceAccount.name` | string | `"keda-operator"` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
 
@@ -191,10 +195,6 @@ their default values.
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
 | `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
 | `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
-| `serviceAccount.annotations` | object | `{}` | Annotations to add to the service account |
-| `serviceAccount.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
-| `serviceAccount.create` | bool | `true` | Specifies whether a service account should be created |
-| `serviceAccount.name` | string | `"keda-operator"` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
