@@ -613,7 +613,7 @@ permissions:
       # -- Restrict Secret Access for KEDA operator
       secret: false
 
-# Array of extra K8s manifests to deploy
+# -- Array of extra K8s manifests to deploy
 extraObjects: []
   # - apiVersion: keda.sh/v1alpha1
   #   kind: ClusterTriggerAuthentication
