@@ -1,26 +1,4 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-external-scaler
-    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
-    {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-external-scaler
-  namespace: {{ .Release.Namespace }}
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs:
-  - get
-  - list
-  - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   creationTimestamp: null
@@ -49,27 +27,14 @@ rules:
   - get
   - list
   - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-external-scaler
-    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
-    {{- include "keda-addons-http.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-external-scaler
-  namespace: {{ .Release.Namespace }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: {{ .Chart.Name }}-external-scaler
-subjects:
-- kind: ServiceAccount
-  name: {{ .Chart.Name }}-external-scaler
-  namespace: {{ .Release.Namespace }}
+- apiGroups:
+  - http.keda.sh
+  resources:
+  - httpscaledobjects
+  verbs:
+  - get
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
