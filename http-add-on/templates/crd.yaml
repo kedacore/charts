@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.10.0
+    controller-gen.kubebuilder.io/version: v0.12.0
   creationTimestamp: null
   name: httpscaledobjects.http.keda.sh
 spec:
@@ -42,6 +42,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
+        description: HTTPScaledObject is the Schema for the httpscaledobjects API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -59,10 +60,31 @@ spec:
             description: HTTPScaledObjectSpec defines the desired state of HTTPScaledObject
             properties:
               host:
-                description: The host to route. All requests with this host in the
-                  "Host" header will be routed to the Service and Port specified in
-                  the scaleTargetRef
+                description: (optional) (deprecated) The host to route. All requests
+                  which the "Host" header matches .spec.host and the Request Target
+                  matches any .spec.pathPrefixes will be routed to the Service and
+                  Port specified in the scaleTargetRef. The .spec.host field is mutually
+                  exclusive with the .spec.hosts field.
                 type: string
+              hosts:
+                description: (optional) The hosts to route. All requests which the
+                  "Host" header matches any .spec.hosts and the Request Target matches
+                  any .spec.pathPrefixes will be routed to the Service and Port specified
+                  in the scaleTargetRef. The .spec.hosts field is mutually exclusive
+                  with the .spec.host field.
+                items:
+                  type: string
+                type: array
+              pathPrefixes:
+                description: (optional) The paths to route. All requests which the
+                  Request Target matches any .spec.pathPrefixes and the "Host" header
+                  matches any .spec.hosts will be routed to the Service and Port specified
+                  in the scaleTargetRef. The .spec.hosts field is mutually exclusive
+                  with the .spec.host field. When this field is null, any path is
+                  matched.
+                items:
+                  type: string
+                type: array
               replicas:
                 description: (optional) Replica information
                 properties:
@@ -79,7 +101,7 @@ spec:
                 type: object
               scaleTargetRef:
                 description: The name of the deployment to route HTTP requests to
-                  (and to autoscale). Either this or Image must be set
+                  (and to autoscale).
                 properties:
                   deployment:
                     description: The name of the deployment to scale according to
@@ -106,23 +128,21 @@ spec:
                 format: int32
                 type: integer
             required:
-            - host
             - scaleTargetRef
             type: object
           status:
             description: HTTPScaledObjectStatus defines the observed state of HTTPScaledObject
             properties:
               conditions:
-                description: List of auditable conditions of the operator
+                description: Conditions of the operator
                 items:
-                  description: Condition to store the condition state
+                  description: HTTPScaledObjectCondition stores the condition state
                   properties:
                     message:
-                      description: A human readable message indicating details about
-                        the transition.
+                      description: Message indicating details about the transition.
                       type: string
                     reason:
-                      description: The reason for the condition's last transition.
+                      description: Reason for the condition's last transition.
                       enum:
                       - ErrorCreatingAppScaledObject
                       - AppScaledObjectCreated
@@ -142,11 +162,11 @@ spec:
                       description: Type of condition
                       enum:
                       - Created
+                      - Terminated
                       - Error
                       - Pending
-                      - Unknown
                       - Terminating
-                      - Terminated
+                      - Unknown
                       - Ready
                       type: string
                   required:
