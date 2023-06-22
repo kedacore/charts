@@ -80,6 +80,12 @@ metricsServer:
 webhooks:
   # -- Enable admission webhooks (this feature option will be removed in v2.12)
   enabled: true
+  # -- Port number to use for KEDA admission webhooks. Default is 9443.
+  port: ""
+  # -- Port number to use for KEDA admission webhooks health probe
+  healthProbePort: 8081
+  # -- Enable webhook to use host network, this is required on EKS with custom CNI
+  useHostNetwork: false
   # -- Name of the KEDA admission webhooks
   name: keda-admission-webhooks
   # -- Capability to configure the number of replicas for KEDA admission webhooks
@@ -224,8 +230,8 @@ podIdentity:
     # This will be set as a annotation on the KEDA service account.
     enabled: false
     # -- GCP IAM Service Account Email which you would like to use for workload identity.
-    gcpIAMServiceAccount: ""      
-  
+    gcpIAMServiceAccount: ""
+
 # -- Set this if you are using an external scaler and want to communicate
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /grpccerts path on the Pod
