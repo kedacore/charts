@@ -20,7 +20,7 @@ Get details about a deployed ScaledObject:
 Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
   kubectl get hpa [--all-namespaces] [--namespace <namespace>]
 
-------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 
 {{- if .Values.prometheus.operator.serviceMonitor.relabellings}}
 WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
