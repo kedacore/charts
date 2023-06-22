@@ -7,7 +7,8 @@ Thanks for helping making KEDA better!
 You can easily release a new Helm chart version:
 
 1. Update the version of the Helm chart in `Chart.yaml`.
-2. Package the Helm chart
+2. Re-generate the Helm chart docs ([learn more](#documentation))
+3. Package the Helm chart
     - For KEDA:
         ```shell
         $ helm package keda --destination docs
@@ -23,19 +24,19 @@ You can easily release a new Helm chart version:
         $ helm package external-scaler-azure-cosmos-db --destination docs
         Successfully packaged chart and saved it to: docs/external-scaler-azure-cosmos-db-0.1.0.tgz
         ```
-3. Re-index the Helm repo to add our new version:
+4. Re-index the Helm repo to add our new version:
     ```shell
     $ helm repo index docs --url https://kedacore.github.io/charts
     ```
-4. Update the version in the "Browse all our Helm charts" section of our README.md
-5. Commit changes:
+5. Update the version in the "Browse all our Helm charts" section of our README.md
+6. Commit changes:
     ```shell
     git add .
     git commit -sm "Packaged new Helm chart version"
     git push origin chart-release
     ```
-6. Create a pull request with our new Helm index.
-7. Create a GitHub release for your new Helm chart version by using the following template.
+7. Create a pull request with our new Helm index.
+8. Create a GitHub release for your new Helm chart version by using the following template.
     - Make sure to list the changes to our Helm chart which are tracked in the [KEDA Core vNext](https://github.com/kedacore/charts/milestone/10) milestone
     - Instead of listing all KEDA core changes, simply refer to our release notes on the other repo (see template)
 
@@ -69,8 +70,8 @@ You can easily release a new Helm chart version:
 >
 > - {{List removed features}}
 
-8. Create a new milestone called `KEDA Core v{version}`
-9. Move the closed items from `KEDA Core vNext` to the new milestone and close it
+9. Create a new milestone called `KEDA Core v{version}`
+10. Move the closed items from `KEDA Core vNext` to the new milestone and close it
 
 ## Developer Certificate of Origin: Signing your work
 

@@ -239,8 +239,11 @@ their default values.
 | `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
 | `webhooks.enabled` | bool | `true` | Enable admission webhooks (this feature option will be removed in v2.12) |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
+| `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
 | `webhooks.name` | string | `"keda-admission-webhooks"` | Name of the KEDA admission webhooks |
+| `webhooks.port` | string | `""` | Port number to use for KEDA admission webhooks. Default is 9443. |
 | `webhooks.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA admission webhooks |
+| `webhooks.useHostNetwork` | bool | `false` | Enable webhook to use host network, this is required on EKS with custom CNI |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
