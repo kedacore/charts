@@ -90,7 +90,6 @@ their default values.
   {{- end }}
 {{- end }}
 
-
 ### Operator
 
 | Parameter | Type | Default | Description |
@@ -117,6 +116,16 @@ their default values.
 |-----------|------|---------|-------------|
 {{- range .Values }}
   {{- if hasPrefix "interceptor" .Key }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
+### Webhooks
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if hasPrefix "webhooks" .Key }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
