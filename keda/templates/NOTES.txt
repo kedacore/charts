@@ -1,3 +1,6 @@
+KEDA - Kubernetes Event Driven Autoscaler
+------------------------------------------------------------------------------
+
 Get started by deploying Scaled Objects to your cluster:
     - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
     - Samples: https://github.com/kedacore/samples
@@ -17,7 +20,8 @@ Get details about a deployed ScaledObject:
 Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
   kubectl get hpa [--all-namespaces] [--namespace <namespace>]
 
-   
+------------------------------------------------------------------------------
+
 {{- if .Values.prometheus.operator.serviceMonitor.relabellings}}
 WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
 {{- end }}
@@ -35,3 +39,5 @@ WARNING - Running on unsupported Kubernetes version. KEDA 2.11 is supported and 
 
 For more information on running KEDA, visit: 
 https://github.com/kedacore/keda/
+
+------------------------------------------------------------------------------
