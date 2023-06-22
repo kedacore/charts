@@ -1,0 +1,42 @@
+=====================================================================================
+KEDA - Kubernetes Event Driven Autoscaling
+=====================================================================================
+Get started by deploying Scaled Objects to your cluster:
+    - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
+    - Samples: https://github.com/kedacore/samples
+
+Get information about the deployed ScaledObjects:
+  kubectl get scaledobject [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
+
+Get information about the deployed ScaledObjects:
+  kubectl get triggerauthentication [--namespace <namespace>]
+
+Get details about a deployed ScaledObject:
+  kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
+
+Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
+  kubectl get hpa [--all-namespaces] [--namespace <namespace>]
+
+-------------------------------------------------------------------------------------
+
+{{- if .Values.prometheus.operator.serviceMonitor.relabellings}}
+WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
+{{- end }}
+{{- if .Values.prometheus.metricServer.serviceMonitor.relabellings}}
+WARNING - prometheus.metricServer.serviceMonitor.relabellings is deprecated, please migrate to prometheus.metricServer.serviceMonitor.relabelings instead.
+{{- end }}
+{{- if .Values.prometheus.webhooks.serviceMonitor.relabellings}}
+WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please migrate to prometheus.webhooks.serviceMonitor.relabelings instead.
+{{- end }}
+
+
+{{- if lt .Capabilities.KubeVersion.Minor "25" }}
+WARNING - Running on unsupported Kubernetes version "1.{{.Capabilities.KubeVersion.Minor}}". KEDA 2.11 is supported and tested on Kubernetes "1.25" or higher. See https://keda.sh/docs/2.11/operate/cluster/ for details.
+{{- end }}
+
+For more information on running KEDA, visit: 
+https://github.com/kedacore/keda/
+=====================================================================================
