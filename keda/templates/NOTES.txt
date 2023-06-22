@@ -39,5 +39,4 @@ WARNING - Running on unsupported Kubernetes version. KEDA 2.11 is supported and 
 
 For more information on running KEDA, visit: 
 https://github.com/kedacore/keda/
-
 =====================================================================================
