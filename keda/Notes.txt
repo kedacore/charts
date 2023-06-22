@@ -27,5 +27,9 @@ WARNING - prometheus.metricServer.serviceMonitor.relabellings is deprecated, ple
 WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please migrate to prometheus.webhooks.serviceMonitor.relabelings instead.
 {{- else }}
 
+{{- if lt .Capabilities.KubeVersion.VersionNumber 125000 }}
+WARNING - Running on unsupported Kubernetes version. KEDA 2.11 is supported and tested on Kubernetes v1.25 - v1.27. See https://keda.sh/docs/2.11/operate/cluster/ for details.
+{{- end }}
+
 For more information on running KEDA, visit:
 https://github.com/kedacore/keda/
