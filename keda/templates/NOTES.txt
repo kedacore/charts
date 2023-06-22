@@ -1,6 +1,6 @@
+=====================================================================================
 KEDA - Kubernetes Event Driven Autoscaler
-------------------------------------------------------------------------------
-
+=====================================================================================
 Get started by deploying Scaled Objects to your cluster:
     - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
     - Samples: https://github.com/kedacore/samples
@@ -40,4 +40,4 @@ WARNING - Running on unsupported Kubernetes version. KEDA 2.11 is supported and 
 For more information on running KEDA, visit: 
 https://github.com/kedacore/keda/
 
-------------------------------------------------------------------------------
+=====================================================================================
