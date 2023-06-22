@@ -76,13 +76,6 @@ jobs:
       run: kubectl create ns keda
 
     - name: Install KEDA chart
-      if: matrix.kubernetesVersion == 'v1.23'
-      run: |
-        helm repo add kedacore https://kedacore.github.io/charts
-        helm install keda kedacore/keda --namespace keda --version ~2.8.4
-
-    - name: Install KEDA chart
-      if: matrix.kubernetesVersion != 'v1.23'
       run: helm install keda ./keda/ --namespace keda
 
     - name: Template Helm chart

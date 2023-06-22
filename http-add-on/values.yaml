@@ -98,8 +98,6 @@ interceptor:
     # -- The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor
     pollingInterval: 1
 
-  # -- How often (in milliseconds) each interceptor replica should update its in-memory routing table from the central routing table copy. The interceptor will also use Kubernetes events to stay up-to-date with routing table changes. This duration is the maximum time it will take to get a routing table update
-  routingTableUpdateDurationMS: 500
   # -- How long the interceptor waits to establish TCP connections with backends before failing a request.
   tcpConnectTimeout: 500ms
   # -- The interceptor's connection keep alive timeout

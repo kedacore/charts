@@ -121,6 +121,10 @@ their default values.
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
+| `scaler.resources.limits.cpu` | float | `0.5` |  |
+| `scaler.resources.limits.memory` | string | `"64Mi"` |  |
+| `scaler.resources.requests.cpu` | string | `"250m"` |  |
+| `scaler.resources.requests.memory` | string | `"20Mi"` |  |
 | `scaler.service` | string | `"external-scaler"` | The name of the Kubernetes `Service` for the scaler component |
 | `scaler.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 
@@ -148,7 +152,6 @@ their default values.
 | `interceptor.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the operator component |
 | `interceptor.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the operator component |
 | `interceptor.responseHeaderTimeout` | string | `"500ms"` | How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request |
-| `interceptor.routingTableUpdateDurationMS` | int | `500` | How often (in milliseconds) each interceptor replica should update its in-memory routing table from the central routing table copy. The interceptor will also use Kubernetes events to stay up-to-date with routing table changes. This duration is the maximum time it will take to get a routing table update |
 | `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
 | `interceptor.tcpConnectTimeout` | string | `"500ms"` | How long the interceptor waits to establish TCP connections with backends before failing a request. |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
