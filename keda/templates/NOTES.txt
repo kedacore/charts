@@ -1,5 +1,5 @@
 =====================================================================================
-KEDA - Kubernetes Event Driven Autoscaler
+KEDA - Kubernetes Event Driven Autoscaling
 =====================================================================================
 Get started by deploying Scaled Objects to your cluster:
     - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
