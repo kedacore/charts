@@ -120,16 +120,6 @@ their default values.
   {{- end }}
 {{- end }}
 
-### Webhooks
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-{{- range .Values }}
-  {{- if hasPrefix "webhooks" .Key }}
-| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
-  {{- end }}
-{{- end }}
-
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
 
