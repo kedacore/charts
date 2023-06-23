@@ -18,8 +18,6 @@
 
 Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
 
-# Getting Started
-
 Get started by deploying Scaled Objects to your cluster:
     - Information about Scaled Objects : https://keda.sh/docs/latest/concepts/
     - Samples: https://github.com/kedacore/samples
@@ -52,8 +50,6 @@ WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please 
 {{- if lt .Capabilities.KubeVersion.Minor "25" }}
 WARNING - Running on unsupported Kubernetes version "1.{{.Capabilities.KubeVersion.Minor}}". KEDA 2.11 is supported and tested on Kubernetes "1.25" or higher. See https://keda.sh/docs/2.11/operate/cluster/ for details.
 {{- end }}
-
-# Learn More
 
 Learn more about KEDA:
 - Documentation: https://keda.sh/
