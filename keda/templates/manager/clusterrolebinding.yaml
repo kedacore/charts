@@ -2,8 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
+  {{- with .Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}

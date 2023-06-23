@@ -7,6 +7,7 @@ metadata:
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
+  {{- if or .Values.additionalAnnotations .Values.service.annotations (and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )))}}
   annotations:
     {{- if and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )) }}
     prometheus.io/scrape: "true"
@@ -23,6 +24,7 @@ metadata:
     {{ $key }}: {{ $value | quote }}
       {{- end }}
     {{- end }}
+  {{- end }}
 spec:
   ports:
   - name: https
