@@ -65,8 +65,6 @@ spec:
           value: "{{ .Chart.Name }}-{{ .Values.interceptor.admin.service }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_PORT
           value: "{{ default 9091 .Values.interceptor.admin.port }}"
-        - name: KEDA_HTTP_SCALER_TARGET_PENDING_REQUESTS_INTERCEPTOR
-          value: "{{ default 200 .Values.scaler.pendingRequestsInterceptor }}"
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10

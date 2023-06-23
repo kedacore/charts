@@ -15,4 +15,4 @@ spec:
     - type: external
       metadata:
         scalerAddress: "{{ .Chart.Name }}-{{ .Values.scaler.service }}:{{ default 9091 .Values.scaler.grpcPort }}"
-        host: interceptor
+        interceptorTargetPendingRequests: "{{ default 200 .Values.scaler.pendingRequestsInterceptor }}"
