@@ -13,9 +13,13 @@ metadata:
     prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
     prometheus.io/path: "/metrics"
     {{- end }}
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
-    {{- range $key, $value := .Values.service.annotations }}
-      {{ $key }}: {{ $value | quote }}
+    {{- if .Values.additionalAnnotations }}
+      {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- end }}
+    {{- if .Values.service.annotations }}
+      {{- range $key, $value := .Values.service.annotations }}
+        {{ $key }}: {{ $value | quote }}
+      {{- end }}
     {{- end }}
 spec:
   ports:
