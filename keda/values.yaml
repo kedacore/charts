@@ -629,3 +629,6 @@ extraObjects: []
   #   spec:
   #     podIdentity:
   #       provider: aws-eks
+
+# -- Capability to turn on/off ASCII art in Helm installation notes
+asciiArt: true
