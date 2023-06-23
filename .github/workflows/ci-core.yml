@@ -148,6 +148,11 @@ jobs:
             spec:
               podIdentity:
                 provider: aws-eks
+        additionalAnnotations:
+          sample: "annotation"
+        service:
+          additionalAnnotations:
+            hello: "cloud-native world"
         EOF
 
     - name: Install deps
