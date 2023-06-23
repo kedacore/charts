@@ -1,3 +1,4 @@
+{{- if .Values.asciiArt }}
 :::^.     .::::^:     :::::::::::::::    .:::::::::.                   .^.                  
 7???~   .^7????~.     7??????????????.   :?????????77!^.              .7?7.                 
 7???~  ^7???7~.       ~!!!!!!!!!!!!!!.   :????!!!!7????7~.           .7???7.                
@@ -14,7 +15,8 @@
                                                                       P@B^                   
                                                                     :&G:                    
                                                                     !5.                     
-                                                                    .            
+                                                                    .        
+{{- end -}}    
 
 Kubernetes Event-driven Autoscaling (KEDA) - Application autoscaling made simple.
 
