@@ -4,8 +4,10 @@ kind: Deployment
 metadata:
   name: {{ .Values.webhooks.name }}
   namespace: {{ .Release.Namespace }}
+  {{- with .Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app: {{ .Values.webhooks.name }}
     name: {{ .Values.webhooks.name }}
@@ -30,6 +32,7 @@ spec:
         {{- if .Values.podLabels.webhooks }}
         {{- toYaml .Values.podLabels.webhooks | nindent 8 }}
         {{- end }}
+      {{- if or .Values.podAnnotations.webhooks .Values.additionalAnnotations }}
       annotations:
         {{- if .Values.podAnnotations.webhooks }}
         {{- toYaml .Values.podAnnotations.webhooks | nindent 8 }}
@@ -37,6 +40,7 @@ spec:
         {{- if .Values.additionalAnnotations }}
         {{- toYaml .Values.additionalAnnotations | nindent 8 }}
         {{- end }}
+      {{- end }}
     spec:
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}

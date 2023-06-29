@@ -1,6 +1,7 @@
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
 metadata:
+  {{- if or .Values.certificates.certManager.enabled .Values.additionalAnnotations }}
   annotations:
     {{- if .Values.certificates.certManager.enabled }}
     {{- if .Values.certificates.certManager.generateCA }}
@@ -12,6 +13,7 @@ metadata:
     {{- if .Values.additionalAnnotations }}
     {{- toYaml .Values.additionalAnnotations | nindent 4 }}
     {{- end }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: v1beta1.external.metrics.k8s.io
     {{- include "keda.labels" . | indent 4 }}

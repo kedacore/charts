@@ -2,8 +2,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  {{- with .Values.additionalAnnotations }}
   annotations:
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}-external-metrics-reader
     {{- include "keda.labels" . | indent 4 }}
