@@ -443,50 +443,7 @@ volumes:
     # -- Extra volume mounts for admission webhooks deployment
     extraVolumeMounts: []
 
-prometheus:
-  metricServer:
-    # -- Enable metric server Prometheus metrics expose
-    enabled: false
-    # -- HTTP port used for exposing metrics server prometheus metrics
-    port: 8080
-    # -- HTTP port name for exposing metrics server prometheus metrics
-    portName: metrics
-    serviceMonitor:
-      # -- Enables ServiceMonitor creation for the Prometheus Operator
-      enabled: false
-      # -- JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec]
-      jobLabel: ""
-      # -- TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics
-      targetLabels: []
-      # -- PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics
-      podTargetLabels: []
-      # -- Name of the service port this endpoint refers to. Mutually exclusive with targetPort
-      port: metrics
-      # -- Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port
-      targetPort: ""
-      # -- Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used.
-      interval: ""
-      # -- Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used
-      scrapeTimeout: ""
-      # -- DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
-      relabellings: []
-      # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
-      relabelings: []
-      # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
-      additionalLabels: {}
-    podMonitor:
-      # -- Enables PodMonitor creation for the Prometheus Operator
-      enabled: false
-      # -- Scraping interval for metric server using podMonitor crd (prometheus operator)
-      interval: ""
-      # -- Scraping timeout for metric server using podMonitor crd (prometheus operator)
-      scrapeTimeout: ""
-      # -- Scraping namespace for metric server using podMonitor crd (prometheus operator)
-      namespace: ""
-      # -- Additional labels to add for metric server using podMonitor crd (prometheus operator)
-      additionalLabels: {}
-      # -- List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator)
-      relabelings: []
+prometheus: 
   operator:
     # -- Enable KEDA Operator prometheus metrics expose
     enabled: false

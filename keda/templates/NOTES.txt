@@ -44,9 +44,6 @@ Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behin
 WARNING - prometheus.operator.serviceMonitor.relabellings is deprecated, please migrate to prometheus.operator.serviceMonitor.relabelings instead.
 -------------------------------------------------------------------------------------
 {{- end }}
-{{- if .Values.prometheus.metricServer.serviceMonitor.relabellings}}
-WARNING - prometheus.metricServer.serviceMonitor.relabellings is deprecated, please migrate to prometheus.metricServer.serviceMonitor.relabelings instead.
-{{- end }}
 {{- if .Values.prometheus.webhooks.serviceMonitor.relabellings}}
 -------------------------------------------------------------------------------------
 WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please migrate to prometheus.webhooks.serviceMonitor.relabelings instead.

@@ -7,13 +7,8 @@ metadata:
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-metrics-apiserver
   namespace: {{ .Release.Namespace }}
-  {{- if or .Values.additionalAnnotations .Values.service.annotations (and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )))}}
-  annotations:
-    {{- if and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )) }}
-    prometheus.io/scrape: "true"
-    prometheus.io/port: {{ .Values.prometheus.metricServer.port | quote }}
-    prometheus.io/path: "/metrics"
-    {{- end }}
+  {{- if or .Values.additionalAnnotations .Values.service.annotations }}
+  annotations: 
     {{- with .Values.additionalAnnotations }}
       {{- range $key, $value := . }}
     {{ $key }}: {{ $value | quote }}
@@ -30,10 +25,6 @@ spec:
   - name: https
     port: {{ .Values.service.portHttps }}
     targetPort: {{ .Values.service.portHttpsTarget }}
-    protocol: TCP
-  - name: {{ .Values.prometheus.metricServer.portName }}
-    port: {{ .Values.prometheus.metricServer.port }}
-    targetPort: {{ .Values.prometheus.metricServer.port }}
     protocol: TCP
   selector:
     app: {{ .Values.operator.name }}-metrics-apiserver
