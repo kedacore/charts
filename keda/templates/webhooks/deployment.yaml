@@ -138,7 +138,7 @@ spec:
       {{- if .Values.volumes.webhooks.extraVolumes }}
       {{- toYaml .Values.volumes.webhooks.extraVolumes | nindent 8 }}
       {{- end }}
-      hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
+      hostNetwork: {{ .Values.webhooks.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.nodeSelector }}
