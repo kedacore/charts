@@ -77,9 +77,7 @@ spec:
           {{- if .Values.webhooks.port }}
           - "--port={{ .Values.webhooks.port }}"
           {{- end }}
-          {{- if .Values.prometheus.webhooks.enabled }}
           - --metrics-bind-address=:{{ .Values.prometheus.webhooks.port }}
-          {{- end }}
           {{- range $key, $value := .Values.extraArgs.webhooks }}
           - --{{ $key }}={{ $value }}
           {{- end }}
