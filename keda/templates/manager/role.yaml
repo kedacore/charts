@@ -9,7 +9,6 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
-  creationTimestamp: null
   name: {{ .Values.operator.name }}
   namespace: {{ .Release.Namespace }}
 rules:
