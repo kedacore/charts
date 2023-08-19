@@ -135,7 +135,7 @@ spec:
             {{- end }}
           volumeMounts:         
           - mountPath: /tmp/kerberos
-            name: temp-vol
+            name: temp-kerberos-vol
             readOnly: false
           - mountPath: {{ .Values.certificates.mountPath }}
             name: certificates
@@ -158,7 +158,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
       volumes:
-      - name: temp-vol
+      - name: temp-kerberos-vol
         emptyDir:
           medium: Memory
       - name: certificates
