@@ -134,6 +134,9 @@ spec:
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
           volumeMounts:         
+          - mountPath: /tmp/kerberos
+            name: temp-vol
+            readOnly: false
           - mountPath: {{ .Values.certificates.mountPath }}
             name: certificates
             readOnly: true
@@ -155,6 +158,9 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
       volumes:
+      - name: temp-vol
+        emptyDir:
+          medium: Memory
       - name: certificates
         secret:
           defaultMode: 420
