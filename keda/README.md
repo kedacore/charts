@@ -7,7 +7,7 @@ KEDA can run on both the cloud and the edge, integrates natively with Kubernetes
 
 ---
 <p align="center">
-We are a Cloud Native Computing Foundation (CNCF) incubation project.
+We are a Cloud Native Computing Foundation (CNCF) graduated project.
 
 <img src="https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg" height="75px">
 </p>
