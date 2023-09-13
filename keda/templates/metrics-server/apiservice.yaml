@@ -27,3 +27,4 @@ spec:
   version: v1beta1
   groupPriorityMinimum: 100
   versionPriority: 100
+  insecureSkipTLSVerify: false
