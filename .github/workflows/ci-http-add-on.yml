@@ -88,10 +88,10 @@ jobs:
           EOF
 
       - name: Template Helm chart
-        run: helm template http-add-on ./http-add-on/ --namespace keda
+        run: helm template http-add-on ./http-add-on/ --namespace keda --values test-values.yaml
 
       - name: Install Helm chart
-        run: helm install http-add-on ./http-add-on/ --namespace keda
+        run: helm install http-add-on ./http-add-on/ --namespace keda --values test-values.yaml --wait
 
       - name: Show Kubernetes resources
         run: kubectl get all --namespace keda
