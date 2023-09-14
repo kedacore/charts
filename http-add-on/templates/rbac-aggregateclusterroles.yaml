@@ -5,12 +5,7 @@ kind: ClusterRole
 metadata:
   name: {{ .Chart.Name }}-edit
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-edit
-    app.kubernetes.io/name: {{ .Chart.Name }}-edit
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
 rules:
@@ -35,12 +30,7 @@ metadata:
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-view: "true"
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-view
-    app.kubernetes.io/name: {{ .Chart.Name }}-view
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
 rules:
 - apiGroups:
   - http.keda.sh

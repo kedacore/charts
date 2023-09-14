@@ -1,0 +1,9 @@
+additionalLabels:
+  random: value
+images:
+  tag: canary
+rbac:
+  aggregateToDefaultRoles: true
+interceptor:
+  replicas:
+    min: 1

@@ -80,11 +80,14 @@ jobs:
         run: |
           cat <<EOF > test-values.yaml
           additionalLabels:
-            hello: "cloud-native world"
+            random: value
           images:
             tag: canary
           rbac:
             aggregateToDefaultRoles: true
+          interceptor:
+            replicas:
+              min: 1
           EOF
 
       - name: Template Helm chart

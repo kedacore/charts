@@ -1,5 +1,5 @@
 # -- Additional labels to be applied to installed resources. Note that not all resources will receive these labels.
-additionalLabels: ""
+additionalLabels: {}
 
 crds:
   # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
@@ -25,10 +25,6 @@ operator:
       memory: 20Mi
   # -- The port for the operator main server to run on
   port: 8443
-  # -- The name of the [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/) for the operator's admin server
-  adminService: operator-admin
-  # -- The port for the operator's admin server to run on
-  adminPort: 9090
   # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
@@ -91,7 +87,7 @@ interceptor:
     max: 50
     # -- The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure
     waitTimeout: 20s
-  
+
   # configuration for the ScaledObject resource for the
   # interceptor
   scaledObject:
@@ -136,10 +132,10 @@ interceptor:
 # configuration for the images to use for each component
 images:
   # tag is the image tag to use for all images.
-  # for example, if the operator image is "myoperator" and 
+  # for example, if the operator image is "myoperator" and
   # tag is "mytag", the operator image used will be
   # "myoperator:mytag". `latest` is used to indicate the latest
-  # stable release in the official images, `canary` is 
+  # stable release in the official images, `canary` is
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
