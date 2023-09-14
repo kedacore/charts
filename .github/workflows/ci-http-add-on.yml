@@ -114,8 +114,13 @@ jobs:
 
       - name: Validate Interceptor ScaledObject
         run: |
-          READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
-          echo "ScaledObjet is ready: $READY"
-          if [[ "$READY" != "True" ]]; then            
-            exit 1
-          fi
+          for N in {1..3}
+          do
+            READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
+            echo "ScaledObjet is ready: $READY"
+            if [[ "$READY" == "True" ]]; then            
+              exit 0
+            fi
+            sleep 15s
+          done
+          exit 1
