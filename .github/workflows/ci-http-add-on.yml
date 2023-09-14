@@ -111,3 +111,11 @@ jobs:
 
       - name: Describe HTTPScaledObject CRD
         run: kubectl describe crds/httpscaledobjects.http.keda.sh
+
+      - name: Validate Interceptor ScaledObject
+        run: |
+          READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
+          echo "ScaledObjet is ready: $READY"
+          if [[ "$READY" != "True" ]]; then            
+            exit 1
+          fi
