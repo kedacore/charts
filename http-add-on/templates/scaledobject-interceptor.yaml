@@ -4,6 +4,8 @@ kind: ScaledObject
 metadata:
   name: "{{ .Chart.Name }}-interceptor"
   namespace: {{ .Release.Namespace }}
+  labels:    
+    {{- include "keda-addons-http.labels" . | indent 4 }}
 spec:
   minReplicaCount: {{ .Values.interceptor.replicas.min }}
   maxReplicaCount: {{ .Values.interceptor.replicas.max }}

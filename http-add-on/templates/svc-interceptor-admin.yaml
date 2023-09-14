@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
+    {{- include "keda-addons-http.labels" . | indent 4 }}
   name: "{{ .Chart.Name }}-{{ .Values.interceptor.admin.service }}"
   namespace: {{ .Release.Namespace }}
 spec:
