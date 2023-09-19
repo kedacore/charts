@@ -86,12 +86,20 @@ spec:
             httpGet:
               path: /healthz
               port: {{ .Values.webhooks.healthProbePort }}
-            initialDelaySeconds: 25
+            initialDelaySeconds: {{ .Values.webhooks.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.webhooks.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.webhooks.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.webhooks.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.webhooks.livenessProbe.successThreshold }}
           readinessProbe:
             httpGet:
               path: /readyz
               port: {{ .Values.webhooks.healthProbePort }}
-            initialDelaySeconds: 20
+            initialDelaySeconds: {{ .Values.webhooks.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.webhooks.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.webhooks.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.webhooks.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.webhooks.readinessProbe.successThreshold }}
           ports:
           - containerPort: {{ .Values.webhooks.port | default 9443 }}
             name: http

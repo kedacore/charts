@@ -53,6 +53,20 @@ operator:
     #         values:
     #         - keda-operator
     #     topologyKey: "kubernetes.io/hostname"
+  # -- Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
+  livenessProbe:
+    initialDelaySeconds: 25
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+  # -- Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes))
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 3
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
 
 metricsServer:
   # -- Capability to configure the number of replicas for KEDA metric server.
@@ -76,6 +90,20 @@ metricsServer:
     #         values:
     #         - keda-operator-metrics-apiserver
     #     topologyKey: "kubernetes.io/hostname"
+  # -- Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
+  livenessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+  # -- Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes))
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 3
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
 
 webhooks:
   # -- Enable admission webhooks (this feature option will be removed in v2.12)
@@ -84,6 +112,20 @@ webhooks:
   port: ""
   # -- Port number to use for KEDA admission webhooks health probe
   healthProbePort: 8081
+  # -- Liveness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
+  livenessProbe:
+    initialDelaySeconds: 25
+    periodSeconds: 10
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
+  # -- Readiness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes))
+  readinessProbe:
+    initialDelaySeconds: 20
+    periodSeconds: 3
+    timeoutSeconds: 1
+    failureThreshold: 3
+    successThreshold: 1
   # -- Enable webhook to use host network, this is required on EKS with custom CNI
   useHostNetwork: false
   # -- Name of the KEDA admission webhooks
