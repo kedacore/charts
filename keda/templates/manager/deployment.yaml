@@ -95,12 +95,20 @@ spec:
             httpGet:
               path: /healthz
               port: 8081
-            initialDelaySeconds: 25
+            initialDelaySeconds: {{ .Values.operator.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.operator.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.operator.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.operator.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.operator.livenessProbe.successThreshold }}
           readinessProbe:
             httpGet:
               path: /readyz
               port: 8081
-            initialDelaySeconds: 20
+            initialDelaySeconds: {{ .Values.operator.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.operator.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.operator.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.operator.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.operator.readinessProbe.successThreshold }}
           ports:
           - containerPort: 8080
             name: http
