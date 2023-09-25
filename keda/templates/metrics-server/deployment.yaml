@@ -79,13 +79,21 @@ spec:
               path: /healthz
               port: {{ .Values.service.portHttpsTarget }}
               scheme: HTTPS
-            initialDelaySeconds: 5
+            initialDelaySeconds: {{ .Values.metricsServer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metricsServer.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.metricsServer.livenessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.metricsServer.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.metricsServer.livenessProbe.successThreshold }}
           readinessProbe:
             httpGet:
               path: /readyz
               port: {{ .Values.service.portHttpsTarget }}
               scheme: HTTPS
-            initialDelaySeconds: 5
+            initialDelaySeconds: {{ .Values.metricsServer.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.metricsServer.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.metricsServer.readinessProbe.timeoutSeconds }}
+            failureThreshold: {{ .Values.metricsServer.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.metricsServer.readinessProbe.successThreshold }}
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
