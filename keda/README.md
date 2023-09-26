@@ -120,6 +120,7 @@ their default values.
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
+| `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator |
 | `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
@@ -168,6 +169,7 @@ their default values.
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `metricsServer.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA metric server. While you can run more replicas of our metric server, only one instance will used and serve traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
+| `metricsServer.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `metricsServer.useHostNetwork` | bool | `false` | Enable metric server to use host network |
 | `permissions.metricServer.restrict.secret` | bool | `false` | Restrict Secret Access for Metrics Server |
 | `podAnnotations.metricsAdapter` | object | `{}` | Pod annotations for KEDA Metrics Adapter |
@@ -250,6 +252,7 @@ their default values.
 | `webhooks.port` | string | `""` | Port number to use for KEDA admission webhooks. Default is 9443. |
 | `webhooks.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `webhooks.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA admission webhooks |
+| `webhooks.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `webhooks.useHostNetwork` | bool | `false` | Enable webhook to use host network, this is required on EKS with custom CNI |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to

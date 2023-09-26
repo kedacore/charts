@@ -12,6 +12,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     {{- include "keda.labels" . | indent 4 }}
 spec:
+  revisionHistoryLimit: {{ .Values.metricsServer.revisionHistoryLimit}}
   replicas: {{ .Values.metricsServer.replicaCount }}
   {{- with .Values.upgradeStrategy.metricsApiServer }}
   strategy:
