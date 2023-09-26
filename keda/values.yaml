@@ -37,6 +37,8 @@ imagePullSecrets: []
 operator:
   # -- Name of the KEDA operator
   name: keda-operator
+  # -- ReplicaSets for this Deployment you want to retain (Default: 10)
+  revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA operator.
   # While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic.
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
@@ -69,6 +71,8 @@ operator:
     successThreshold: 1
 
 metricsServer:
+  # -- ReplicaSets for this Deployment you want to retain (Default: 10)
+  revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA metric server.
   # While you can run more replicas of our metric server, only one instance will used and serve traffic.
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
@@ -130,6 +134,8 @@ webhooks:
   useHostNetwork: false
   # -- Name of the KEDA admission webhooks
   name: keda-admission-webhooks
+  # -- ReplicaSets for this Deployment you want to retain (Default: 10)
+  revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA admission webhooks
   replicaCount: 1
   # -- [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field
