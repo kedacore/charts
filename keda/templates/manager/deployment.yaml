@@ -87,6 +87,10 @@ spec:
           - "--webhooks-service-name={{ .Values.webhooks.name }}"
           {{- if .Values.prometheus.operator.enabled }}
           - --metrics-bind-address=:{{ .Values.prometheus.operator.port }}
+          - --enable-prometheus-metrics=:{{ .Values.prometheus.operator.enabled }}
+          {{- end }}
+          {{- if .Values.opentelemetry.operator.enabled }}
+          - --enable-opentelemetry-metrics=:{{ .Values.opentelemetry.operator.enabled }}
           {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - --{{ $key }}={{ $value }}
@@ -138,6 +142,10 @@ spec:
             {{- if .Values.permissions.operator.restrict.secret }}
             - name: KEDA_RESTRICT_SECRET_ACCESS
               value: {{ .Values.permissions.operator.restrict.secret | quote }}
+            {{- end }}
+            {{- if .Values.opentelemetry.operator.otlpHTTPEndpoint }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.opentelemetry.operator.otlpHTTPEndpoint }}
             {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}

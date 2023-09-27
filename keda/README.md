@@ -115,6 +115,8 @@ their default values.
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `opentelemetry.operator.enabled` | bool | `false` | Enable KEDA Operator opentelemetry metrics expose |
+| `opentelemetry.operator.otlpHTTPEndpoint` | string | `""` | Set OTEL_EXPORTER_OTLP_ENDPOINT for opentelemetry exporter |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
