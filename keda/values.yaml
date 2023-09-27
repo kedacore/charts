@@ -670,10 +670,13 @@ certificates:
     generateCA: true
     # -- Generates an Issuer resource with Cert-manager
     generateIssuer: true
-    # issuer:
-    #   name: foo-org-ca
-    #   kind: ClusterIssuer
-    #   group: cert-manager.io
+    # -- Reference to custom Issuer.
+    # If generateIssuer is false, the issuer reference below has to be provided
+    issuer:
+      {}
+      # name: foo-org-ca
+      # kind: ClusterIssuer
+      # group: cert-manager.io
     # -- Secret name where the CA is stored (generatedby cert-manager or user given)
     caSecretName: "kedaorg-ca"
     # -- Add labels/annotations to secrets created by Certificate resources
