@@ -84,7 +84,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `additionalLabels` | string | `""` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
+| `additionalLabels` | object | `{}` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
 | `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
 | `images.interceptor` | string | `"ghcr.io/kedacore/http-add-on-interceptor"` | Image name for the interceptor image component |
 | `images.kubeRbacProxy.name` | string | `"gcr.io/kubebuilder/kube-rbac-proxy"` | Image name for the Kube RBAC Proxy image component |
@@ -98,8 +98,6 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `operator.adminPort` | int | `9090` | The port for the operator's admin server to run on |
-| `operator.adminService` | string | `"operator-admin"` | The name of the [`Service`](https://kubernetes.io/docs/concepts/services-networking/service/) for the operator's admin server |
 | `operator.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `operator.imagePullSecrets` | list | `[]` | The image pull secrets for the operator component |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
