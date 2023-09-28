@@ -69,7 +69,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if or (contains "operator" .Key) (contains "keda" .Key) }}
+  {{- if and (or (contains "operator" .Key) (contains "keda" .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key))) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
@@ -79,7 +79,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service." .Key) }}
+  {{- if and (or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service." .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key)))}}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
