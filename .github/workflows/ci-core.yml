@@ -172,8 +172,12 @@ jobs:
     - name: Install Helm chart
       run: helm install keda ./keda/ --namespace ${{ matrix.namespace }} --values test-values.yaml --wait
 
-    - name: Show Kubernetes resources
+    - name: Show Kubernetes resources (KEDA)
       run: kubectl get all --namespace ${{ matrix.namespace }}
+      if: always()
+
+    - name: Show Kubernetes resources (Monitoring)
+      run: kubectl get all --namespace monitoring
       if: always()
 
     - name: Get all CRDs
