@@ -30,7 +30,7 @@ spec:
     port: 9666
     targetPort: 9666
   {{- if .Values.prometheus.operator.enabled }}
-  - name: metrics
+  - name: {{ .Values.prometheus.operator.portName }}
     port: {{ .Values.prometheus.operator.port }}
     targetPort: {{ .Values.prometheus.operator.port }}
   {{- end }}

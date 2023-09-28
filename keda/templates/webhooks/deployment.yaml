@@ -110,7 +110,7 @@ spec:
             protocol: TCP
           {{- if .Values.prometheus.webhooks.enabled }}
           - containerPort: {{ .Values.prometheus.webhooks.port }}
-            name: metrics
+            name: {{ .Values.prometheus.webhooks.portName }}
             protocol: TCP
           {{- end }}
           env:
