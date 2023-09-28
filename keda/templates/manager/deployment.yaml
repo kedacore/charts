@@ -75,7 +75,7 @@ spec:
           command:
           - "/keda"
           args:
-          - --leader-elect
+          - "--leader-elect"
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
@@ -87,14 +87,14 @@ spec:
           - "--webhooks-service-name={{ .Values.webhooks.name }}"
           - "--k8s-cluster-domain={{ .Values.clusterDomain }}"
           {{- if .Values.prometheus.operator.enabled }}
-          - --metrics-bind-address=:{{ .Values.prometheus.operator.port }}
-          - --enable-prometheus-metrics=:{{ .Values.prometheus.operator.enabled }}
+          - "--metrics-bind-address=:{{ .Values.prometheus.operator.port }}"
+          - "--enable-prometheus-metrics={{ .Values.prometheus.operator.enabled }}"
           {{- end }}
           {{- if .Values.opentelemetry.operator.enabled }}
           - "--enable-opentelemetry-metrics={{ .Values.opentelemetry.operator.enabled}}"
           {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
-          - --{{ $key }}={{ $value }}
+          - "--{{ $key }}={{ $value }}"
           {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
