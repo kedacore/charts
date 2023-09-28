@@ -634,7 +634,7 @@ prometheus:
 
 opentelemetry:
   operator:
-      # -- Enable KEDA Operator opentelemetry metrics expose
+      # -- Enable pushing metrics to an OpenTelemetry Collector
       enabled: false
       # -- Uri of OpenTelemetry Collector to push telemetry to
       otlpHTTPEndpoint: "" 
