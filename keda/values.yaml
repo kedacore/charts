@@ -636,7 +636,7 @@ opentelemetry:
   operator:
       # -- Enable KEDA Operator opentelemetry metrics expose
       enabled: false
-      # -- Set OTEL_EXPORTER_OTLP_ENDPOINT for opentelemetry exporter
+      # -- Uri of OpenTelemetry Collector to push telemetry to
       otlpHTTPEndpoint: "" 
 
 certificates:
