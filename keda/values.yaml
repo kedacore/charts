@@ -633,11 +633,12 @@ prometheus:
       alerts: []
 
 opentelemetry:
+  collector:
+    # -- Uri of OpenTelemetry Collector to push telemetry to
+    uri: ""
   operator:
-      # -- Enable pushing metrics to an OpenTelemetry Collector
+      # -- Enable pushing metrics to an OpenTelemetry Collector for operator
       enabled: false
-      # -- Uri of OpenTelemetry Collector to push telemetry to
-      otlpHTTPEndpoint: "" 
 
 certificates:
   # -- Enables the self generation for KEDA TLS certificates inside KEDA operator

@@ -91,7 +91,7 @@ spec:
           - --enable-prometheus-metrics=:{{ .Values.prometheus.operator.enabled }}
           {{- end }}
           {{- if .Values.opentelemetry.operator.enabled }}
-          - --enable-opentelemetry-metrics=:{{ .Values.opentelemetry.operator.enabled }}
+          - "--enable-opentelemetry-metrics={{ .Values.opentelemetry.operator.enabled}}"
           {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - --{{ $key }}={{ $value }}
@@ -144,9 +144,9 @@ spec:
             - name: KEDA_RESTRICT_SECRET_ACCESS
               value: {{ .Values.permissions.operator.restrict.secret | quote }}
             {{- end }}
-            {{- if .Values.opentelemetry.operator.otlpHTTPEndpoint }}
+            {{- if .Values.opentelemetry.collector.uri }}
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
-              value: {{ .Values.opentelemetry.operator.otlpHTTPEndpoint }}
+              value: {{ .Values.opentelemetry.collector.uri | quote }}
             {{- end }}
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
