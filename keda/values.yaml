@@ -668,15 +668,16 @@ certificates:
     # If generateCA is false, the secret with the CA
     # has to be annotated with `cert-manager.io/allow-direct-injection: "true"`
     generateCA: true
-    # -- Generates an Issuer resource with Cert-manager
-    generateIssuer: true
     # -- Reference to custom Issuer.
-    # If generateIssuer is false, the issuer reference below has to be provided
     issuer:
-      {}
-      # name: foo-org-ca
-      # kind: ClusterIssuer
-      # group: cert-manager.io
+      # -- Generates an Issuer resource with Cert-manager
+      generate: true
+      # -- Custom Issuer name. Required when generate: false
+      name: foo-org-ca
+      # -- Custom Issuer kind. Required when generate: false
+      kind: ClusterIssuer
+      # -- Custom Issuer group. Required when generate: false
+      group: cert-manager.io
     # -- Secret name where the CA is stored (generatedby cert-manager or user given)
     caSecretName: "kedaorg-ca"
     # -- Add labels/annotations to secrets created by Certificate resources

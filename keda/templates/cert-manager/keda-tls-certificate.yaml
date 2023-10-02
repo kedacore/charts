@@ -28,7 +28,7 @@ spec:
   duration: {{ .Values.certificates.certManager.duration }}
   renewBefore: {{ .Values.certificates.certManager.renewBefore }}
   issuerRef:
-    {{- if .Values.certificates.certManager.generateIssuer }}
+    {{- if .Values.certificates.certManager.issuer.generate }}
     name: {{ .Values.operator.name }}-issuer
     kind: Issuer
     group: cert-manager.io

@@ -6,7 +6,7 @@ metadata:
     {{- if .Values.certificates.certManager.enabled }}
     {{- if .Values.certificates.certManager.generateCA }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-ca
-    {{- else if not .Values.certificates.certManager.generateIssuer }}
+    {{- else if not .Values.certificates.certManager.issuer.generate }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-tls-certificates
     {{- else }}
     cert-manager.io/inject-ca-from-secret: {{ .Release.Namespace }}/{{ .Values.certificates.certManager.caSecretName }}

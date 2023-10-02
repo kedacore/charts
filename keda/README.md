@@ -35,8 +35,8 @@ As part of that, it will install all the required Custom Resource Definitions (C
 To install the chart with the release name `keda`:
 
 ```console
-$ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.12.0
+kubectl create namespace keda
+helm install keda kedacore/keda --namespace keda --version 2.12.0
 ```
 
 ## Uninstalling the Chart
@@ -67,8 +67,11 @@ their default values.
 | `certificates.certManager.duration` | string | `"8760h0m0s"` | Certificate duration |
 | `certificates.certManager.enabled` | bool | `false` | Enables Cert-manager for certificate management |
 | `certificates.certManager.generateCA` | bool | `true` | Generates a self-signed CA with Cert-manager. If generateCA is false, the secret with the CA has to be annotated with `cert-manager.io/allow-direct-injection: "true"` |
-| `certificates.certManager.generateIssuer` | bool | `true` | Generates an Issuer resource with Cert-manager |
-| `certificates.certManager.issuer` | object | `{}` | Reference to custom Issuer. If generateIssuer is false, the issuer reference below has to be provided |
+| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required |
+| `certificates.certManager.issuer.generate` | bool | `true` | Generates an Issuer resource with Cert-manager |
+| `certificates.certManager.issuer.group` | string | `"cert-manager.io"` | Custom Issuer group. Required when generate: false |
+| `certificates.certManager.issuer.kind` | string | `"ClusterIssuer"` | Custom Issuer kind. Required when generate: false |
+| `certificates.certManager.issuer.name` | string | `"foo-org-ca"` | Custom Issuer name. Required when generate: false |
 | `certificates.certManager.renewBefore` | string | `"5840h0m0s"` | Certificate renewal time before expiration |
 | `certificates.certManager.secretTemplate` | object | `{}` | Add labels/annotations to secrets created by Certificate resources [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources) |
 | `certificates.mountPath` | string | `"/certs"` | Path where KEDA TLS certificates are mounted |
@@ -92,16 +95,16 @@ their default values.
 | `podIdentity.aws.irsa.stsRegionalEndpoints` | string | `"true"` | Sets the use of an STS regional endpoint instead of global. Recommended to use regional endpoint in almost all cases. This will be set as an annotation on the KEDA service account. |
 | `podIdentity.aws.irsa.tokenExpiration` | int | `86400` | Set to the value of the service account token expiration duration. This will be set as an annotation on the KEDA service account. |
 | `podIdentity.azureWorkload.clientId` | string | `""` | Id of Azure Active Directory Client to use for authentication with Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
-| `podIdentity.azureWorkload.enabled` | bool | `false` | Set to true to enable Azure Workload Identity usage. See https://keda.sh/docs/concepts/authentication/#azure-workload-identity This will be set as a label on the KEDA service account. |
+| `podIdentity.azureWorkload.enabled` | bool | `false` | Set to true to enable Azure Workload Identity usage. See <https://keda.sh/docs/concepts/authentication/#azure-workload-identity> This will be set as a label on the KEDA service account. |
 | `podIdentity.azureWorkload.tenantId` | string | `""` | Id Azure Active Directory Tenant to use for authentication with for Azure Workload Identity. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
 | `podIdentity.azureWorkload.tokenExpiration` | int | `3600` | Duration in seconds to automatically expire tokens for the service account. ([docs](https://keda.sh/docs/concepts/authentication/#azure-workload-identity)) |
-| `podIdentity.gcp.enabled` | bool | `false` | Set to true to enable GCP Workload Identity. See https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/ This will be set as a annotation on the KEDA service account. |
+| `podIdentity.gcp.enabled` | bool | `false` | Set to true to enable GCP Workload Identity. See <https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/> This will be set as a annotation on the KEDA service account. |
 | `podIdentity.gcp.gcpIAMServiceAccount` | string | `""` | GCP IAM Service Account Email which you would like to use for workload identity. |
-| `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
+| `podSecurityContext` | object | [See below](#keda-is-secure-by-default) | [Pod security context] for all pods |
 | `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
-| `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
+| `securityContext` | object | [See below](#keda-is-secure-by-default) | [Security context] for all containers |
 | `serviceAccount.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.create` | bool | `true` | Specifies whether a service account should be created |
@@ -129,9 +132,9 @@ their default values.
 | `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
-| `podSecurityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
+| `podSecurityContext.operator` | object | [See below](#keda-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
 | `resources.operator` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA operator pod |
-| `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
+| `securityContext.operator` | object | [See below](#keda-is-secure-by-default) | [Security context] of the operator container |
 | `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
@@ -156,9 +159,9 @@ their default values.
 | `podAnnotations.metricsAdapter` | object | `{}` | Pod annotations for KEDA Metrics Adapter |
 | `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.metricsAdapter` | object | `{}` | Pod labels for KEDA Metrics Adapter |
-| `podSecurityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
+| `podSecurityContext.metricServer` | object | [See below](#keda-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
 | `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
-| `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
+| `securityContext.metricServer` | object | [See below](#keda-is-secure-by-default) | [Security context] of the metricServer container |
 | `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
 | `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
@@ -247,7 +250,7 @@ their default values.
 | `podAnnotations.webhooks` | object | `{}` | Pod annotations for KEDA Admission webhooks |
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
-| `podSecurityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
+| `podSecurityContext.webhooks` | object | [See below](#keda-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
 | `prometheus.webhooks.enabled` | bool | `false` | Enable KEDA admission webhooks prometheus metrics expose |
 | `prometheus.webhooks.port` | int | `8080` | Port used for exposing KEDA admission webhooks prometheus metrics |
 | `prometheus.webhooks.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
@@ -266,7 +269,7 @@ their default values.
 | `prometheus.webhooks.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
 | `prometheus.webhooks.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
 | `resources.webhooks` | object | `{"limits":{"cpu":"50m","memory":"100Mi"},"requests":{"cpu":"10m","memory":"10Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
-| `securityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the admission webhooks container |
+| `securityContext.webhooks` | object | [See below](#keda-is-secure-by-default) | [Security context] of the admission webhooks container |
 | `topologySpreadConstraints.webhooks` | list | `[]` | [Pod Topology Constraints] of KEDA admission webhooks pod |
 | `upgradeStrategy.webhooks` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Admission webhooks |
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
@@ -303,6 +306,7 @@ helm install keda kedacore/keda --namespace keda -f values.yaml
 ## KEDA is secure by default
 
 Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default:
+
 ```yaml
 securityContext:
   operator:
@@ -345,7 +349,6 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 
 [Affinity]: https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/
 [Deployment upgrade strategy]: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy
-[GCP Workload Identity]: https://keda.sh/docs/2.10/authentication-providers/gcp-workload-identity/
 [Pod Disruption Budget]: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
 [Pod security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 [Security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
