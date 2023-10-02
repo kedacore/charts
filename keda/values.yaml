@@ -45,8 +45,7 @@ operator:
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
-  affinity:
-    {}
+  affinity: {}
     # podAntiAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #   - labelSelector:
@@ -85,8 +84,7 @@ metricsServer:
   # -- Enable metric server to use host network
   useHostNetwork: false
   # -- [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field
-  affinity:
-    {}
+  affinity: {}
     # podAntiAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #   - labelSelector:
@@ -141,8 +139,7 @@ webhooks:
   # -- Capability to configure the number of replicas for KEDA admission webhooks
   replicaCount: 1
   # -- [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field
-  affinity:
-    {}
+  affinity: {}
     # podAntiAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #   - labelSelector:
@@ -158,24 +155,21 @@ webhooks:
 
 upgradeStrategy:
   # -- Capability to configure [Deployment upgrade strategy] for operator
-  operator:
-    {}
+  operator: {}
     # type: RollingUpdate
     # rollingUpdate:
     #   maxUnavailable: 1
     #   maxSurge: 1
 
   # -- Capability to configure [Deployment upgrade strategy] for Metrics Api Server
-  metricsApiServer:
-    {}
+  metricsApiServer: {}
     # type: RollingUpdate
     # rollingUpdate:
     #   maxUnavailable: 1
     #   maxSurge: 1
 
   # -- Capability to configure [Deployment upgrade strategy] for Admission webhooks
-  webhooks:
-    {}
+  webhooks: {}
     # type: RollingUpdate
     # rollingUpdate:
     #   maxUnavailable: 1
@@ -183,20 +177,17 @@ upgradeStrategy:
 
 podDisruptionBudget:
   # -- Capability to configure [Pod Disruption Budget]
-  operator:
-    {}
+  operator: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
 
   # -- Capability to configure [Pod Disruption Budget]
-  metricServer:
-    {}
+  metricServer: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
 
   # -- Capability to configure [Pod Disruption Budget]
-  webhooks:
-    {}
+  webhooks: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
 
@@ -334,7 +325,7 @@ securityContext:
   operator:
     capabilities:
       drop:
-        - ALL
+      - ALL
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     seccompProfile:
@@ -344,7 +335,7 @@ securityContext:
   metricServer:
     capabilities:
       drop:
-        - ALL
+      - ALL
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     seccompProfile:
@@ -354,7 +345,7 @@ securityContext:
   webhooks:
     capabilities:
       drop:
-        - ALL
+      - ALL
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     seccompProfile:
@@ -441,8 +432,7 @@ topologySpreadConstraints:
   webhooks: []
 
 # -- [Affinity] for pod scheduling for both KEDA operator and Metrics API Server
-affinity:
-  {}
+affinity: {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
   #   - labelSelector:
@@ -682,8 +672,7 @@ certificates:
     caSecretName: "kedaorg-ca"
     # -- Add labels/annotations to secrets created by Certificate resources
     # [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources)
-    secretTemplate:
-      {}
+    secretTemplate: {}
       # annotations:
       #   my-secret-annotation-1: "foo"
       #   my-secret-annotation-2: "bar"
@@ -701,8 +690,7 @@ permissions:
       secret: false
 
 # -- Array of extra K8s manifests to deploy
-extraObjects:
-  []
+extraObjects: []
   # - apiVersion: keda.sh/v1alpha1
   #   kind: ClusterTriggerAuthentication
   #   metadata:
