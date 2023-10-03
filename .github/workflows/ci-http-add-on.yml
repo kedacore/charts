@@ -15,6 +15,10 @@ on:
       - '.github/workflows/ci-http-add-on.yml'
       - 'http-add-on/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   lint-helm-3-x:
     name: Lint Helm Chart
