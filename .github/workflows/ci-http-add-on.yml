@@ -6,14 +6,14 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/ci-http-add-on.yml'
-      - 'http-add-on/**'
+      - ".github/workflows/ci-http-add-on.yml"
+      - "http-add-on/**"
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/ci-http-add-on.yml'
-      - 'http-add-on/**'
+      - ".github/workflows/ci-http-add-on.yml"
+      - "http-add-on/**"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -24,14 +24,14 @@ jobs:
     name: Lint Helm Chart
     runs-on: ubuntu-latest
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Helm install
-      uses: Azure/setup-helm@v3
+      - name: Helm install
+        uses: Azure/setup-helm@v3
 
-    - name: Lint 'http-add-on' Helm chart
-      run: helm lint http-add-on
+      - name: Lint 'http-add-on' Helm chart
+        run: helm lint http-add-on
 
   deploy-helm-3-x:
     name: Deploy to Kubernetes ${{ matrix.kubernetesVersion }}
@@ -42,62 +42,89 @@ jobs:
       matrix:
         kubernetesVersion: [v1.28, v1.27, v1.26, v1.25]
         include:
-        - kubernetesVersion: v1.28
-          kindImage: kindest/node:v1.28.0@sha256:b7a4cad12c197af3ba43202d3efe03246b3f0793f162afb40a33c923952d5b31
-        - kubernetesVersion: v1.27
-          kindImage: kindest/node:v1.27.3@sha256:3966ac761ae0136263ffdb6cfd4db23ef8a83cba8a463690e98317add2c9ba72
-        - kubernetesVersion: v1.26
-          kindImage: kindest/node:v1.26.6@sha256:6e2d8b28a5b601defe327b98bd1c2d1930b49e5d8c512e1895099e4504007adb
-        - kubernetesVersion: v1.25
-          kindImage: kindest/node:v1.25.11@sha256:227fa11ce74ea76a0474eeefb84cb75d8dad1b08638371ecf0e86259b35be0c8
+          - kubernetesVersion: v1.28
+            kindImage: kindest/node:v1.28.0@sha256:b7a4cad12c197af3ba43202d3efe03246b3f0793f162afb40a33c923952d5b31
+          - kubernetesVersion: v1.27
+            kindImage: kindest/node:v1.27.3@sha256:3966ac761ae0136263ffdb6cfd4db23ef8a83cba8a463690e98317add2c9ba72
+          - kubernetesVersion: v1.26
+            kindImage: kindest/node:v1.26.6@sha256:6e2d8b28a5b601defe327b98bd1c2d1930b49e5d8c512e1895099e4504007adb
+          - kubernetesVersion: v1.25
+            kindImage: kindest/node:v1.25.11@sha256:227fa11ce74ea76a0474eeefb84cb75d8dad1b08638371ecf0e86259b35be0c8
     steps:
-    - name: Check out code
-      uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Helm install
-      uses: Azure/setup-helm@v3
+      - name: Helm install
+        uses: Azure/setup-helm@v3
 
-    - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
-      uses: helm/kind-action@main
-      with:
-        node_image: ${{ matrix.kindImage }}
+      - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
+        uses: helm/kind-action@main
+        with:
+          node_image: ${{ matrix.kindImage }}
 
-    - name: Show Kubernetes version
-      run: |
-        kubectl version
+      - name: Show Kubernetes version
+        run: |
+          kubectl version
 
-    - name: Show Kubernetes nodes
-      run: |
-        kubectl get nodes -o wide
+      - name: Show Kubernetes nodes
+        run: |
+          kubectl get nodes -o wide
 
-    - name: Show Helm version
-      run: |
-        helm version
+      - name: Show Helm version
+        run: |
+          helm version
 
-    - name: Create KEDA namespace
-      run: kubectl create ns keda
+      - name: Create KEDA namespace
+        run: kubectl create ns keda
 
-    - name: Install KEDA chart
-      run: helm install keda ./keda/ --namespace keda
+      - name: Install KEDA chart
+        run: helm install keda ./keda/ --namespace keda
 
-    - name: Template Helm chart
-      run: helm template http-add-on ./http-add-on/ --namespace keda
+      - name: Generate values
+        run: |
+          cat <<EOF > test-values.yaml
+          additionalLabels:
+            random: value
+          images:
+            tag: canary
+          rbac:
+            aggregateToDefaultRoles: true
+          interceptor:
+            replicas:
+              min: 1
+          EOF
 
-    - name: Install Helm chart
-      run: helm install http-add-on ./http-add-on/ --namespace keda
+      - name: Template Helm chart
+        run: helm template http-add-on ./http-add-on/ --namespace keda --values test-values.yaml
 
-    - name: Show Kubernetes resources
-      run: kubectl get all --namespace keda
-      if: always()
+      - name: Install Helm chart
+        run: helm install http-add-on ./http-add-on/ --namespace keda --values test-values.yaml --wait
 
-    - name: Get all HTTPScaledObjects
-      run: kubectl get httpscaledobjects
+      - name: Show Kubernetes resources
+        run: kubectl get all --namespace keda
+        if: always()
 
-    - name: Get all CRDs
-      run: kubectl get crds
+      - name: Get all HTTPScaledObjects
+        run: kubectl get httpscaledobjects
 
-    - name: Get HTTPScaledObject CRD
-      run: kubectl get crds/httpscaledobjects.http.keda.sh
+      - name: Get all CRDs
+        run: kubectl get crds
 
-    - name: Describe HTTPScaledObject CRD
-      run: kubectl describe crds/httpscaledobjects.http.keda.sh
+      - name: Get HTTPScaledObject CRD
+        run: kubectl get crds/httpscaledobjects.http.keda.sh
+
+      - name: Describe HTTPScaledObject CRD
+        run: kubectl describe crds/httpscaledobjects.http.keda.sh
+
+      - name: Validate Interceptor ScaledObject
+        run: |
+          for N in {1..3}
+          do
+            READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
+            echo "ScaledObjet is ready: $READY"
+            if [[ "$READY" == "True" ]]; then            
+              exit 0
+            fi
+            sleep 15s
+          done
+          exit 1

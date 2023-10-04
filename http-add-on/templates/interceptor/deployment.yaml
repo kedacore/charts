@@ -2,42 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    control-plane: interceptor
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-interceptor
-    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
-    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     app.kubernetes.io/component: interceptor
-    app.kubernetes.io/part-of: {{ .Chart.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: {{ .Values.interceptor.replicas.min }}
   selector:
     matchLabels:
-      control-plane: interceptor
-      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-      keda.sh/addon: {{ .Chart.Name }}
+      app.kubernetes.io/component: interceptor
+      {{- include "keda-http-add-on.labels" . | indent 6 }}
   template:
     metadata:
       labels:
-        control-plane: interceptor
-        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-        keda.sh/addon: {{ .Chart.Name }}
-        app: {{ .Chart.Name }}
-        name: {{ .Chart.Name }}-interceptor
-        app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
-        app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
         app.kubernetes.io/component: interceptor
-        app.kubernetes.io/part-of: {{ .Chart.Name }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    {{ tpl .Values.additionalLabels . | indent 4}}
+        {{- include "keda-http-add-on.labels" . | indent 8 }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}

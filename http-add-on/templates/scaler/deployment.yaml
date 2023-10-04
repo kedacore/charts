@@ -2,42 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    control-plane: external-scaler
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-external-scaler
-    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
-    app.kubernetes.io/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    app.kubernetes.io/component: external-scaler
-    app.kubernetes.io/part-of: {{ .Chart.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-{{ tpl .Values.additionalLabels . | indent 4}}
+    app.kubernetes.io/component: scaler
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-external-scaler
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      control-plane: external-scaler
-      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-      keda.sh/addon: {{ .Chart.Name }}
+      app.kubernetes.io/component: scaler
+      {{- include "keda-http-add-on.labels" . | indent 6 }}
   template:
     metadata:
       labels:
-        control-plane: external-scaler
-        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-        keda.sh/addon: {{ .Chart.Name }}
-        app: {{ .Chart.Name }}
-        name: "{{ .Chart.Name }}-external-scaler"
-        app.kubernetes.io/name: "{{ .Chart.Name }}-external-scaler"
-        app.kubernetes.io/version: "{{ .Values.images.tag | default .Chart.AppVersion }}"
-        app.kubernetes.io/component: external-scaler
-        app.kubernetes.io/part-of: {{ .Chart.Name }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-    {{ tpl .Values.additionalLabels . | indent 4}}
+        app.kubernetes.io/component: scaler
+        {{- include "keda-http-add-on.labels" . | indent 8 }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.scaler.imagePullSecrets | nindent 8 }}

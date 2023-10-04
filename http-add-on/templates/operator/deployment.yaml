@@ -2,32 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    control-plane: controller-manager
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-controller-manager
-    app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    app.kubernetes.io/component: operator
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      control-plane: controller-manager
-      httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-      keda.sh/addon: {{ .Chart.Name }}
+      app.kubernetes.io/component: operator
+      {{- include "keda-http-add-on.labels" . | indent 6 }}
   template:
     metadata:
       labels:
-        control-plane: controller-manager
-        httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-        keda.sh/addon: {{ .Chart.Name }}
-        app: {{ .Chart.Name }}
-        name: {{ .Chart.Name }}-controller-manager
-        app.kubernetes.io/name: {{ .Chart.Name }}-controller-manager
-        {{- include "keda-addons-http.labels" . | indent 8 }}
+        app.kubernetes.io/component: operator
+        {{- include "keda-http-add-on.labels" . | indent 8 }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.operator.imagePullSecrets | nindent 8 }}
@@ -50,28 +39,31 @@ spec:
       - args:
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
-        - --admin-port={{ .Values.operator.adminPort }}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-operator"
         env:
-        - name: KEDAHTTP_INTERCEPTOR_SERVICE
-          value: "{{.Chart.Name}}-{{ .Values.interceptor.admin.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
           value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
         - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
           value: "{{ default 9090 .Values.scaler.grpcPort }}"
-        - name: KEDAHTTP_INTERCEPTOR_ADMIN_PORT
-          value: "{{ .Values.interceptor.admin.port }}"
-        - name: KEDAHTTP_INTERCEPTOR_PROXY_PORT
-          value: "{{ .Values.interceptor.proxy.port }}"
         - name: KEDA_HTTP_OPERATOR_NAMESPACE
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_OPERATOR_WATCH_NAMESPACE
           value: "{{ .Values.operator.watchNamespace }}"
-        ports: 
-        - containerPort: {{ .Values.operator.adminPort }}
-          name: admin-http
+        ports:
+        - name: metrics
+          containerPort: 8080
+        - name: probes
+          containerPort: 8081
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: probes
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: probes
         resources:
           {{- toYaml .Values.operator.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10

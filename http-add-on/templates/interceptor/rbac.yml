@@ -2,12 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-interceptor
-    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
 rules:
 - apiGroups:
@@ -36,7 +31,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-interceptor
     app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
 roleRef:
   apiGroup: rbac.authorization.k8s.io
