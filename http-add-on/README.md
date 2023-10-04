@@ -124,6 +124,7 @@ their default values.
 | `scaler.resources.requests.cpu` | string | `"250m"` |  |
 | `scaler.resources.requests.memory` | string | `"20Mi"` |  |
 | `scaler.service` | string | `"external-scaler"` | The name of the Kubernetes `Service` for the scaler component |
+| `scaler.streamInterval` | int | `200` | Interval in ms for communicating IsActive to KEDA |
 | `scaler.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 
 ### Interceptor

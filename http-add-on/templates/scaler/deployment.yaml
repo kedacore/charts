@@ -44,6 +44,8 @@ spec:
           value: "{{ .Chart.Name }}-{{ .Values.interceptor.admin.service }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_PORT
           value: "{{ default 9091 .Values.interceptor.admin.port }}"
+        - name: KEDA_HTTP_SCALER_STREAM_INTERVAL_MS
+          value: "{{ .Values.scaler.streamInterval }}"
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10
