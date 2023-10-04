@@ -2,12 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-role
-    app.kubernetes.io/name: {{ .Chart.Name }}-role
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-role
   namespace: {{ .Release.Namespace }}
 rules:
@@ -40,7 +35,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-role
     app.kubernetes.io/name: {{ .Chart.Name }}-role
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-role
 rules:
 - apiGroups:
@@ -91,7 +86,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-proxy-role
     app.kubernetes.io/name: {{ .Chart.Name }}-proxy-role
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-role
 rules:
 - apiGroups: ["authentication.k8s.io"]
@@ -112,7 +107,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-metrics-reader
     app.kubernetes.io/name: {{ .Chart.Name }}-metrics-reader
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-metrics-reader
 rules:
 - nonResourceURLs:
@@ -129,7 +124,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-role-binding
     app.kubernetes.io/name: {{ .Chart.Name }}-role-binding
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-role-rolebinding
   namespace: {{ .Release.Namespace }}
 roleRef:
@@ -150,7 +145,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-rolebinding
     app.kubernetes.io/name: {{ .Chart.Name }}-rolebinding
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -170,7 +165,7 @@ metadata:
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-rolebinding
     app.kubernetes.io/name: {{ .Chart.Name }}-rolebinding
-    {{- include "keda-addons-http.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-proxy-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
