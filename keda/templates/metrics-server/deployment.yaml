@@ -50,6 +50,8 @@ spec:
         {{- end }}
       {{- end }}
     spec:
+      nodeSelector:
+        kubernetes.io/os: linux
       {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName | quote }}
       {{- end }}
