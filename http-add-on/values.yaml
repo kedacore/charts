@@ -45,6 +45,8 @@ scaler:
   healthPort: 9091
   # -- The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests.
   pendingRequestsInterceptor: 200
+  # -- Interval in ms for communicating IsActive to KEDA
+  streamInterval: 200
   # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
