@@ -11,12 +11,12 @@ kubeVersion: ">=v1.23.0-0"
 # to the chart and its templates, including the app version. This is incremented at chart release time and does not need
 # to be included in any PRs to main.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.5.3
+version: 0.6.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 0.5.0
+appVersion: 0.6.0
 home: https://github.com/kedacore/http-add-on
 sources:
   - https://github.com/kedacore/http-add-on
@@ -28,4 +28,4 @@ maintainers:
   - name: Tom Kerkhove
     email: kerkhove.tom@gmail.com
   - name: Zbynek Roubalik
-    email: zroubali@redhat.com
+    email: zbynek@kedify.io
