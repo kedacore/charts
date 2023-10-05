@@ -61,8 +61,9 @@ spec:
         resources:
           {{- toYaml .Values.interceptor.resources | nindent 10 }}
       terminationGracePeriodSeconds: 10
-      {{- with .Values.interceptor.nodeSelector }}
       nodeSelector:
+        kubernetes.io/os: linux
+      {{- with .Values.interceptor.nodeSelector }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.interceptor.affinity }}
