@@ -48,7 +48,7 @@ spec:
           value: "{{ .Values.scaler.streamInterval }}"
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
-      terminationGracePeriodSeconds: 10      
+      terminationGracePeriodSeconds: 10
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.scaler.nodeSelector }}
