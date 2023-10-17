@@ -128,6 +128,9 @@ spec:
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
           - --cert-dir={{ .Values.certificates.mountPath }}
           - --v={{ .Values.logging.metricServer.level }}
+          {{- if .Values.profiling.metricsApiServer.enabled }}
+          - "--profiling-bind-address=:{{ .Values.profiling.metricsApiServer.port }}"
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.metricsAdapter }}
           - --{{ $key }}={{ $value }}
           {{- end }}

@@ -36,6 +36,11 @@ spec:
     port: {{ .Values.prometheus.webhooks.port }}
     targetPort: {{ .Values.prometheus.webhooks.port }}
   {{- end }}
+  {{- if .Values.profiling.webhooks.enabled }}
+  - name: profiling
+    port: {{ .Values.profiling.webhooks.port }}
+    targetPort: {{ .Values.profiling.webhooks.port }}
+  {{- end }}
   selector:
     app: {{ .Values.webhooks.name }}
 {{- end }}

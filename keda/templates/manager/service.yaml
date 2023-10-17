@@ -34,5 +34,10 @@ spec:
     port: {{ .Values.prometheus.operator.port }}
     targetPort: {{ .Values.prometheus.operator.port }}
   {{- end }}
+  {{- if .Values.profiling.keda.enabled }}
+  - name: profiling
+    port: {{ .Values.profiling.keda.port }}
+    targetPort: {{ .Values.profiling.keda.port }}
+  {{- end }}
   selector:
     app: {{ .Values.operator.name }}
