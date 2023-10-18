@@ -464,13 +464,19 @@ http:
 ## This setting is disabled by default
 profiling:
   operator:
+    # -- Enable profiling for keda operator
     enabled: false
+    # -- Expose profiling on specific port
     port: 8082
   metricsServer:
+    # -- Enable profiling for keda metrics server
     enabled: false
+    # -- Expose profiling on specific port
     port: 8083
   webhooks:
+    # -- Enable profiling for keda admission webhook
     enabled: false
+    # -- Expose profiling on specific port
     port: 8084
 
 

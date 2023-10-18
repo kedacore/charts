@@ -126,8 +126,8 @@ their default values.
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
 | `podSecurityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
-| `profiling.keda.enabled` | bool | `false` | Enable profiling for keda operator |
-| `profiling.keda.port` | int | `8082` | Expose profiling on specific port |
+| `profiling.operator.enabled` | bool | `false` | Enable profiling for keda operator |
+| `profiling.operator.port` | int | `8082` | Expose profiling on specific port |
 | `resources.operator` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA operator pod |
 | `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
 | `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
@@ -155,8 +155,8 @@ their default values.
 | `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.metricsAdapter` | object | `{}` | Pod labels for KEDA Metrics Adapter |
 | `podSecurityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
-| `profiling.metricsApiServer.enabled` | bool | `false` | Enable profiling for keda metrics server |
-| `profiling.metricsApiServer.port` | int | `8083` | Expose profiling on specific port  |
+| `profiling.metricsServer.enabled` | bool | `false` | Enable profiling for keda metrics server |
+| `profiling.metricsServer.port` | int | `8083` | Expose profiling on specific port |
 | `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
 | `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
 | `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
@@ -234,6 +234,17 @@ their default values.
 | `prometheus.webhooks.serviceMonitor.scrapeTimeout` | string | `""` | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used |
 | `prometheus.webhooks.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
 | `prometheus.webhooks.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
+
+### Troubleshooting
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `profiling.metricsServer.enabled` | bool | `false` | Enable profiling for keda metrics server |
+| `profiling.metricsServer.port` | int | `8083` | Expose profiling on specific port |
+| `profiling.operator.enabled` | bool | `false` | Enable profiling for keda operator |
+| `profiling.operator.port` | int | `8082` | Expose profiling on specific port |
+| `profiling.webhooks.enabled` | bool | `false` | Enable profiling for keda admission webhook |
+| `profiling.webhooks.port` | int | `8084` | Expose profiling on specific port |
 
 ### Admission Webhooks
 
