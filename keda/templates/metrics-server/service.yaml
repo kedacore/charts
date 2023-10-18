@@ -35,10 +35,10 @@ spec:
     port: {{ .Values.prometheus.metricServer.port }}
     targetPort: {{ .Values.prometheus.metricServer.port }}
     protocol: TCP
-  {{- if .Values.profiling.metricsApiServer.enabled }}
+  {{- if .Values.profiling.metricsServer.enabled }}
   - name: profiling
-    port: {{ .Values.profiling.metricsApiServer.port }}
-    targetPort: {{ .Values.profiling.metricsApiServer.port }}
+    port: {{ .Values.profiling.metricsServer.port }}
+    targetPort: {{ .Values.profiling.metricsServer.port }}
     protocol: TCP
   {{- end }}
   selector:

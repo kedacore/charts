@@ -93,8 +93,8 @@ spec:
           {{- if .Values.opentelemetry.operator.enabled }}
           - "--enable-opentelemetry-metrics={{ .Values.opentelemetry.operator.enabled}}"
           {{- end }}
-          {{- if .Values.profiling.keda.enabled }}
-          - "--profiling-bind-address=:{{ .Values.profiling.keda.port }}"
+          {{- if .Values.profiling.operator.enabled }}
+          - "--profiling-bind-address=:{{ .Values.profiling.operator.port }}"
           {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - "--{{ $key }}={{ $value }}"

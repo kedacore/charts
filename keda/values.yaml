@@ -463,10 +463,10 @@ http:
 ## This can be useful when trying to investigate errors like memory leak or cpu or even look at goroutines to understand better
 ## This setting is disabled by default
 profiling:
-  keda:
+  operator:
     enabled: false
     port: 8082
-  metricsApiServer:
+  metricsServer:
     enabled: false
     port: 8083
   webhooks:
