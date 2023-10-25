@@ -27,7 +27,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - name: http
+  - name: https
     port: 443
     protocol: TCP
     targetPort: {{ .Values.webhooks.port | default 9443 }}
