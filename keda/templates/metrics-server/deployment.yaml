@@ -122,6 +122,7 @@ spec:
           - --port={{ .Values.prometheus.metricServer.port }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
+          - --stderrthreshold={{ .Values.logging.metricServer.stderrthreshold }}
           - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9666
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
