@@ -305,7 +305,9 @@ logging:
     # -- Logging level for Metrics Server.
     # allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string
     level: 0
-
+    # -- Logging stderrthreshold for Metrics Server
+    # allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG'
+    stderrthreshold: ERROR
   webhooks:
     # -- Logging level for KEDA Operator.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
