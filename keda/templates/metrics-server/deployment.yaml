@@ -73,7 +73,7 @@ spec:
             {{- else }}
             {{- toYaml .Values.securityContext | nindent 12 }}
             {{- end }}
-          image: "{{ .Values.image.metricsApiServer.repository }}:{{ .Values.image.metricsApiServer.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.global.image.registry | default .Values.image.metricsApiServer.registry }}/{{ .Values.image.metricsApiServer.repository }}:{{ .Values.image.metricsApiServer.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:

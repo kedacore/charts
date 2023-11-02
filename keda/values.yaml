@@ -2,20 +2,31 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  image:
+    # -- Global image registry of KEDA components
+    registry: null
+
 image:
   keda:
+    # -- Image registry of KEDA operator
+    registry: ghcr.io
     # -- Image name of KEDA operator
-    repository: ghcr.io/kedacore/keda
+    repository: kedacore/keda
     # -- Image tag of KEDA operator. Optional, given app version of Helm chart is used by default
     tag: ""
   metricsApiServer:
+    # -- Image registry of KEDA Metrics API Server
+    registry: ghcr.io
     # -- Image name of KEDA Metrics API Server
-    repository: ghcr.io/kedacore/keda-metrics-apiserver
+    repository: kedacore/keda-metrics-apiserver
     # -- Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default
     tag: ""
   webhooks:
+    # -- Image registry of KEDA admission-webhooks
+    registry: ghcr.io
     # -- Image name of KEDA admission-webhooks
-    repository: ghcr.io/kedacore/keda-admission-webhooks
+    repository: kedacore/keda-admission-webhooks
     # -- Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default
     tag: ""
   # -- Image pullPolicy for all KEDA components

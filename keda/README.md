@@ -110,7 +110,8 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
-| `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
+| `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
+| `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
@@ -138,7 +139,8 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
-| `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
+| `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
+| `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
 | `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
 | `logging.metricServer.level` | int | `0` | Logging level for Metrics Server. allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
 | `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
@@ -247,7 +249,8 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `image.webhooks.repository` | string | `"ghcr.io/kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
+| `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
+| `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
 | `logging.webhooks.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
