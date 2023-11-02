@@ -69,7 +69,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if and (or (contains "operator" .Key) (contains "keda" .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key))) }}
+  {{- if and (or (contains "operator" .Key) (contains "keda" .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "profiling" .Key))) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
@@ -79,7 +79,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if and (or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service." .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key)))}}
+  {{- if and (or (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (hasPrefix "service." .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "profiling" .Key)))}}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
@@ -94,12 +94,22 @@ their default values.
   {{- end }}
 {{- end }}
 
+### Troubleshooting
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+{{- range .Values }}
+  {{- if (contains "profiling" .Key) }}
+| `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
+  {{- end }}
+{{- end }}
+
 ### Admission Webhooks
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if contains "webhooks" .Key }}
+  {{- if and (contains "webhooks" .Key) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "profiling" .Key))) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}

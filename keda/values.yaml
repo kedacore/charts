@@ -461,6 +461,27 @@ http:
   # -- The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them)
   minTlsVersion: TLS12
 
+## This setting lets you enable profiling for all of the components of KEDA and in the specific port you choose
+## This can be useful when trying to investigate errors like memory leaks or CPU or even look at goroutines to understand better
+## This setting is disabled by default
+profiling:
+  operator:
+    # -- Enable profiling for KEDA operator
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8082
+  metricsServer:
+    # -- Enable profiling for KEDA metrics server
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8083
+  webhooks:
+    # -- Enable profiling for KEDA admission webhook
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8084
+
+
 ## Extra KEDA Operator and Metrics Adapter container arguments
 extraArgs:
   # -- Additional KEDA Operator container arguments
