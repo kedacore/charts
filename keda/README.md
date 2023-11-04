@@ -80,6 +80,8 @@ their default values.
 | `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
 | `image.pullPolicy` | string | `"Always"` | Image pullPolicy for all KEDA components |
 | `imagePullSecrets` | list | `[]` | Name of secret to use to pull images to use to pull Docker images |
+| `networkPolicy.enabled` | bool | `false` | Enable network policies |
+| `networkPolicy.flavor` | string | `"cilium"` | Flavor of the network policies (cilium) |
 | `nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `podIdentity.activeDirectory.identity` | string | `""` | Identity in Azure Active Directory to use for Azure pod identity |
 | `podIdentity.aws.irsa.audience` | string | `"sts.amazonaws.com"` | Sets the token audience for IRSA. This will be set as an annotation on the KEDA service account. |
