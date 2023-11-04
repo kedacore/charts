@@ -122,6 +122,9 @@ spec:
           - containerPort: 8080
             name: http
             protocol: TCP
+          - containerPort: 9666
+            name: metricsservice
+            protocol: TCP
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
