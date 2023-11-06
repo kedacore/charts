@@ -10,7 +10,7 @@ spec:
   ports:
   - name: https
     port: {{ default 8443 .Values.operator.port }}
-    targetPort: https
+    targetPort: metrics
   selector:
     app.kubernetes.io/component: operator
     {{- include "keda-http-add-on.labels" . | indent 4 }}
