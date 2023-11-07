@@ -92,7 +92,9 @@ their default values.
 | `images.operator` | string | `"ghcr.io/kedacore/http-add-on-operator"` | Image name for the operator image component |
 | `images.scaler` | string | `"ghcr.io/kedacore/http-add-on-scaler"` | Image name for the scaler image component |
 | `images.tag` | string | `""` | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default |
+| `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Install aggregate roles for edit and view |
+| `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
 
 ### Operator
 
@@ -169,6 +171,59 @@ be provided while installing the chart. For example,
 
 ```console
 helm install http-add-on kedacore/keda-add-ons-http --namespace keda -f values.yaml
+```
+
+## KEDA is secure by default
+
+Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default. You can define global securityContext for all components or switch to granular mode and define securityContext for operator, kuberbacproxy, scaler, and interceptor:
+```yaml
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  # operator:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # kuberbacproxy:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # scaler:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # interceptor:
+    # capabilities:
+    #  drop:
+    #  - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+podSecurityContext:
+  fsGroup: 1000
+  supplementalGroups:
+  - 1000
+  # operator:
+    # runAsNonRoot: true
 ```
 
 ----------------------------------------------
