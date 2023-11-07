@@ -170,13 +170,6 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsUser: 1000
   runAsGroup: 1000
-
-podSecurityContext:
-  fsGroup: 1000
-  supplementalGroups:
-  - 1000
-  # -- [Security context] of the operator container
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # operator:
     # capabilities:
     #   drop:
@@ -185,8 +178,6 @@ podSecurityContext:
     # readOnlyRootFilesystem: true
     # seccompProfile:
     #   type: RuntimeDefault
-  # -- [Security context] of the kuberbacproxy container
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # kuberbacproxy:
     # capabilities:
     #   drop:
@@ -195,8 +186,6 @@ podSecurityContext:
     # readOnlyRootFilesystem: true
     # seccompProfile:
     #   type: RuntimeDefault
-  # -- [Security context] of the scaler container
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # scaler:
     # capabilities:
     #   drop:
@@ -205,8 +194,6 @@ podSecurityContext:
     # readOnlyRootFilesystem: true
     # seccompProfile:
     #   type: RuntimeDefault
-  # -- [Security context] of the interceptor container
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # interceptor:
     # capabilities:
     #  drop:
@@ -222,24 +209,16 @@ podSecurityContext:
   fsGroup: 1000
   supplementalGroups:
   - 1000
-  # -- [Pod security context] of the KEDA operator pod
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # operator:
     # runAsNonRoot: true
     # runAsUser: 1000
     # runAsGroup: 1000
     # fsGroup: 1000
-
-  # -- [Pod security context] of the KEDA scaler pod
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # scaler:
     # runAsNonRoot: true
     # runAsUser: 1000
     # runAsGroup: 1000
     # fsGroup: 1000
-
-  # -- [Pod security context] of the KEDA interceptor pod
-  # @default -- [See below](#KEDA-is-secure-by-default)
   # interceptor:
     # runAsNonRoot: true
     # runAsUser: 1000
