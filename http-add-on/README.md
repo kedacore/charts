@@ -224,6 +224,19 @@ podSecurityContext:
   - 1000
   # operator:
     # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # scaler:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # interceptor:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
 ```
 
 ----------------------------------------------
