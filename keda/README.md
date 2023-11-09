@@ -132,7 +132,7 @@ their default values.
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `verticalPodAutoscaler.keda.cpu.maxAllowed` | int | `2` |  |
 | `verticalPodAutoscaler.keda.cpu.minAllowed` | string | `"20m"` |  |
-| `verticalPodAutoscaler.keda.enabled` | bool | `true` | Enables the creation of a vpa for the keda-operator |
+| `verticalPodAutoscaler.keda.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator |
 | `verticalPodAutoscaler.keda.memory.maxAllowed` | string | `"2Gi"` |  |
 | `verticalPodAutoscaler.keda.memory.minAllowed` | string | `"200Mi"` |  |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
@@ -169,7 +169,7 @@ their default values.
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed` | int | `2` |  |
 | `verticalPodAutoscaler.metricsApiServer.cpu.minAllowed` | string | `"20m"` |  |
-| `verticalPodAutoscaler.metricsApiServer.enabled` | bool | `true` | Enables the creation of a vpa for the keda-operator-metrics-apiserver |
+| `verticalPodAutoscaler.metricsApiServer.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator-metrics-apiserver |
 | `verticalPodAutoscaler.metricsApiServer.memory.maxAllowed` | string | `"2Gi"` |  |
 | `verticalPodAutoscaler.metricsApiServer.memory.minAllowed` | string | `"200Mi"` |  |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |

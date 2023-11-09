@@ -27,7 +27,7 @@ clusterDomain: cluster.local
 verticalPodAutoscaler:
   keda:
     # -- Enables the creation of a vpa for the keda-operator
-    enabled: true
+    enabled: false
     cpu:
       minAllowed: 20m
       maxAllowed: 2
@@ -36,7 +36,7 @@ verticalPodAutoscaler:
       maxAllowed: 2Gi
   metricsApiServer:
     # -- Enables the creation of a vpa for the keda-operator-metrics-apiserver
-    enabled: true
+    enabled: false
     cpu:
       minAllowed: 20m
       maxAllowed: 2
