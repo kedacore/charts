@@ -109,6 +109,11 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `autoscaling.verticalPodAutoscaler.keda.cpu.maxAllowed` | int | `2` |  |
+| `autoscaling.verticalPodAutoscaler.keda.cpu.minAllowed` | string | `"20m"` |  |
+| `autoscaling.verticalPodAutoscaler.keda.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator |
+| `autoscaling.verticalPodAutoscaler.keda.memory.maxAllowed` | string | `"2Gi"` |  |
+| `autoscaling.verticalPodAutoscaler.keda.memory.minAllowed` | string | `"200Mi"` |  |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
@@ -130,11 +135,6 @@ their default values.
 | `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
 | `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
-| `verticalPodAutoscaler.keda.cpu.maxAllowed` | int | `2` |  |
-| `verticalPodAutoscaler.keda.cpu.minAllowed` | string | `"20m"` |  |
-| `verticalPodAutoscaler.keda.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator |
-| `verticalPodAutoscaler.keda.memory.maxAllowed` | string | `"2Gi"` |  |
-| `verticalPodAutoscaler.keda.memory.minAllowed` | string | `"200Mi"` |  |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
 | `volumes.keda.extraVolumes` | list | `[]` | Extra volumes for KEDA deployment |
 
@@ -142,6 +142,11 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed` | int | `2` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.minAllowed` | string | `"20m"` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator-metrics-apiserver |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.memory.maxAllowed` | string | `"2Gi"` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.memory.minAllowed` | string | `"200Mi"` |  |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
 | `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
@@ -167,11 +172,6 @@ their default values.
 | `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
-| `verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed` | int | `2` |  |
-| `verticalPodAutoscaler.metricsApiServer.cpu.minAllowed` | string | `"20m"` |  |
-| `verticalPodAutoscaler.metricsApiServer.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator-metrics-apiserver |
-| `verticalPodAutoscaler.metricsApiServer.memory.maxAllowed` | string | `"2Gi"` |  |
-| `verticalPodAutoscaler.metricsApiServer.memory.minAllowed` | string | `"200Mi"` |  |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
 | `volumes.metricsApiServer.extraVolumes` | list | `[]` | Extra volumes for metric server deployment |
 

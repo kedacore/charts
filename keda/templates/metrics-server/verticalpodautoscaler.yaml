@@ -1,4 +1,4 @@
-{{- if .Values.verticalPodAutoscaler.metricsApiServer.enabled }}
+{{- if .Values.autoscaling.verticalPodAutoscaler.metricsApiServer.enabled }}
 apiVersion: autoscaling.k8s.io/v1
 kind: VerticalPodAutoscaler
 metadata:
@@ -20,11 +20,11 @@ spec:
           - cpu
           - memory
         maxAllowed:
-          cpu: {{ .Values.verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed }}
-          memory: {{ .Values.verticalPodAutoscaler.metricsApiServer.memory.maxAllowed }}
+          cpu: {{ .Values.autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed }}
+          memory: {{ .Values.autoscaling.verticalPodAutoscaler.metricsApiServer.memory.maxAllowed }}
         minAllowed:
-          cpu: {{ .Values.verticalPodAutoscaler.metricsApiServer.cpu.minAllowed }}
-          memory: {{ .Values.verticalPodAutoscaler.metricsApiServer.memory.minAllowed }}
+          cpu: {{ .Values.autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.minAllowed }}
+          memory: {{ .Values.autoscaling.verticalPodAutoscaler.metricsApiServer.memory.minAllowed }}
   updatePolicy:
     updateMode: "Auto"
 {{- end }}
