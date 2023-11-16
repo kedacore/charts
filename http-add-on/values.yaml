@@ -32,6 +32,17 @@ operator:
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
 
+  kubeRbacProxy:
+    resources:
+      # -- The CPU/memory resource limit for the operator component's kube rbac proxy
+      limits:
+        cpu: 300m
+        memory: 200Mi
+      # -- The CPU/memory resource request for the operator component's kube rbac proxy
+      requests:
+        cpu: 10m
+        memory: 20Mi
+
 scaler:
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
