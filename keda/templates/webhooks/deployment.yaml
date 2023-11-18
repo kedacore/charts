@@ -66,7 +66,12 @@ spec:
             {{- else }}
             {{- toYaml .Values.securityContext | nindent 12 }}
             {{- end }}
+          {{- $registry := .Values.global.image.registry | default .Values.image.webhooks.registry | default "" }}
+          {{- if $registry }}
+          image: "{{ $registry }}/{{ .Values.image.webhooks.repository }}:{{ .Values.image.webhooks.tag | default .Chart.AppVersion }}"
+          {{- else }}
           image: "{{ .Values.image.webhooks.repository }}:{{ .Values.image.webhooks.tag | default .Chart.AppVersion }}"
+          {{- end }}
           command:
           - /keda-admission-webhooks
           args:
