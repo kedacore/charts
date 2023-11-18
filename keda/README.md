@@ -80,6 +80,7 @@ their default values.
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
+| `global.image.registry` | string | `nil` | Global image registry of KEDA components |
 | `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
 | `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
 | `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
@@ -117,6 +118,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
+| `image.keda.registry` | string | `nil` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
@@ -145,6 +147,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
+| `image.metricsApiServer.registry` | string | `nil` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
 | `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
 | `logging.metricServer.level` | int | `0` | Logging level for Metrics Server. allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
@@ -254,6 +257,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `image.webhooks.registry` | string | `nil` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"ghcr.io/kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
