@@ -221,8 +221,6 @@ spec:
                       type: object
                     type: array
                 required:
-                - address
-                - authentication
                 - secrets
                 type: object
               podIdentity:
