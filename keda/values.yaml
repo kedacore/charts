@@ -32,7 +32,7 @@ image:
   # -- Image pullPolicy for all KEDA components
   pullPolicy: Always
 
-# -- Kubernetes cluster name
+# -- Kubernetes cluster name. Used in features such as emitting CloudEvents
 clusterName: kubernetes-default
 
 # -- Kubernetes cluster domain
