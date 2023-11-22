@@ -197,6 +197,9 @@ jobs:
 
     - name: Verify scaledobjects.keda.sh CRD is installed
       run: kubectl get crd/scaledobjects.keda.sh -o wide
+    
+    - name: Verify cloudeventsources.eventing.keda.sh CRD is installed
+      run: kubectl get crd/cloudeventsources.eventing.keda.sh -o wide
 
     - name: Get all ScaledObjects
       run: kubectl get scaledobjects -o wide
@@ -209,6 +212,9 @@ jobs:
 
     - name: Get all ClusterTriggerAuthentication
       run: kubectl get clustertriggerauth -o wide
+
+    - name: Get all CloudEventSource
+      run: kubectl get cloudeventsource -o wide
 
     - name: Deploy Nginx with autoscaling
       run: kubectl apply -f ./samples/nginx-scaledobject.yml
