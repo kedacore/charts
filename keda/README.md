@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.13.0
+helm install keda kedacore/keda --namespace keda --version 2.12.0
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.13.0
+$ helm install keda kedacore/keda --namespace keda --version 2.12.0
 ```
 
 ## Uninstalling the Chart
