@@ -55,6 +55,9 @@ operator:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
+  # --Disable response compression for k8s restAPI in client-go. 
+  # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
+  disableCompression: true 
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -89,6 +92,9 @@ metricsServer:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
+  # --Disable response compression for k8s restAPI in client-go.
+  # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
+  disableCompression: true
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   # -- Defined the DNS policy for the metric server
   dnsPolicy: ClusterFirst
