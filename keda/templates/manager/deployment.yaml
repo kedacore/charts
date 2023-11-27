@@ -81,6 +81,7 @@ spec:
           - "/keda"
           args:
           - "--leader-elect"
+          - "--disable-compression={{ .Values.operator.disableCompression}}"
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
