@@ -7,9 +7,20 @@ crds:
 
 logging:
   operator:
-    # -- Logging level for Metrics Server.
-    # allowed values: `0` for info, `4` for debug, or an integer value greater than 0
-    level: 0
+    # -- Logging level for KEDA http-add-on operator.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on operator.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on operator.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+
+    kubeRbacProxy:
+      # -- Logging level for KEDA http-add-on operator rbac proxy
+      # allowed values: `0` for info, `4` for debug, or an integer value greater than 0
+      level: 10
   scaler:
     # -- Logging level for KEDA http-add-on Scaler.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
