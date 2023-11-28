@@ -77,6 +77,7 @@ their default values.
 | `certificates.mountPath` | string | `"/certs"` | Path where KEDA TLS certificates are mounted |
 | `certificates.secretName` | string | `"kedaorg-certs"` | Secret name to be mounted with KEDA TLS certificates |
 | `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
+| `clusterName` | string | `"kubernetes-default"` | Kubernetes cluster name. Used in features such as emitting CloudEvents |
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
