@@ -4,6 +4,8 @@ Thanks for helping making KEDA better!
 
 ## Shipping a new version
 
+> ⚠️ New Helm chart versions are only released in conjunction with KEDA Core or hotfixes, individual PRs do not have to perform these steps
+
 You can easily release a new Helm chart version:
 
 1. Update the version of the Helm chart in [Chart.yaml](keda/Chart.yaml).
