@@ -21,6 +21,13 @@ spec:
       imagePullSecrets: 
         {{- toYaml .Values.operator.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ .Chart.Name }}
+      {{- if .Values.podSecurityContext.operator }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
+      {{- else }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
       - args:
         - --secure-listen-address=0.0.0.0:{{ .Values.operator.port | default 8443 }}
@@ -28,6 +35,7 @@ spec:
         - --logtostderr=true
         - --v=10
         image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
+        name: kube-rbac-proxy
         resources:
             limits:
               cpu: 300m
@@ -35,7 +43,13 @@ spec:
             requests:
               cpu: 10m
               memory: 20Mi
-        name: kube-rbac-proxy
+        {{- if .Values.securityContext.kuberbacproxy }}
+        securityContext:
+        {{- toYaml .Values.securityContext.kuberbacproxy | nindent 10 }}
+        {{- else }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
       - args:
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
@@ -66,6 +80,13 @@ spec:
             port: probes
         resources:
           {{- toYaml .Values.operator.resources | nindent 10 }}
+        {{- if .Values.securityContext.operator }}
+        securityContext:
+        {{- toYaml .Values.securityContext.operator | nindent 10 }}
+        {{- else }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
       terminationGracePeriodSeconds: 10
       nodeSelector:
         kubernetes.io/os: linux
