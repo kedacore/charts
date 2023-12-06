@@ -37,12 +37,7 @@ spec:
         image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
         name: kube-rbac-proxy
         resources:
-            limits:
-              cpu: 300m
-              memory: 200Mi
-            requests:
-              cpu: 10m
-              memory: 20Mi
+          {{- toYaml .Values.operator.kubeRbacProxy.resources | nindent 10 }}
         {{- if .Values.securityContext.kuberbacproxy }}
         securityContext:
         {{- toYaml .Values.securityContext.kuberbacproxy | nindent 10 }}
