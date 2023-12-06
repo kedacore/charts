@@ -102,6 +102,8 @@ their default values.
 |-----------|------|---------|-------------|
 | `operator.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `operator.imagePullSecrets` | list | `[]` | The image pull secrets for the operator component |
+| `operator.kubeRbacProxy.resources.limits` | object | `{"cpu":"300m","memory":"200Mi"}` | The CPU/memory resource limit for the operator component's kube rbac proxy |
+| `operator.kubeRbacProxy.resources.requests` | object | `{"cpu":"10m","memory":"20Mi"}` | The CPU/memory resource request for the operator component's kube rbac proxy |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
