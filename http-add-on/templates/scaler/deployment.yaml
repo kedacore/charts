@@ -30,6 +30,9 @@ spec:
       {{- end }}
       containers:
       - args:
+          - "--zap-log-level={{ .Values.logging.scaler.level }}"
+          - "--zap-encoder={{ .Values.logging.scaler.format }}"
+          - "--zap-time-encoding={{ .Values.logging.scaler.timeEncoding }}"
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
         name: "{{ .Chart.Name }}-external-scaler"
