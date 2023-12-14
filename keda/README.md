@@ -72,6 +72,7 @@ their default values.
 | `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
 | `clusterName` | string | `"kubernetes-default"` | Kubernetes cluster name. Used in features such as emitting CloudEvents |
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
+| `crds.additionalAnnotations` | object | `{}` | Custom annotations to add specifically to CRD resources |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
 | `global.image.registry` | string | `nil` | Global image registry of KEDA components |
