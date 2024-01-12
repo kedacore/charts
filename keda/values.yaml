@@ -591,8 +591,6 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA Operator prometheus metrics
     port: 8080
-    # -- HTTP port name for exposing KEDA Operator prometheus metrics
-    portName: metrics
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -660,8 +658,6 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA admission webhooks prometheus metrics
     port: 8080
-    # -- HTTP port name for KEDA admission webhooks prometheus metrics
-    portName: metrics
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
