@@ -207,7 +207,6 @@ their default values.
 | `prometheus.operator.podMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator) |
 | `prometheus.operator.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for KEDA Operator using podMonitor crd (prometheus operator) |
 | `prometheus.operator.port` | int | `8080` | Port used for exposing KEDA Operator prometheus metrics |
-| `prometheus.operator.portName` | string | `"metrics"` | HTTP port name for exposing KEDA Operator prometheus metrics |
 | `prometheus.operator.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA Operator using prometheusRules crd (prometheus operator) |
 | `prometheus.operator.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) |
 | `prometheus.operator.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
@@ -227,7 +226,6 @@ their default values.
 | `prometheus.operator.serviceMonitor.tlsConfig` | object | `{}` | TLS configuration for scraping metrics |
 | `prometheus.webhooks.enabled` | bool | `false` | Enable KEDA admission webhooks prometheus metrics expose |
 | `prometheus.webhooks.port` | int | `8080` | Port used for exposing KEDA admission webhooks prometheus metrics |
-| `prometheus.webhooks.portName` | string | `"metrics"` | HTTP port name for KEDA admission webhooks prometheus metrics |
 | `prometheus.webhooks.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
 | `prometheus.webhooks.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
 | `prometheus.webhooks.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
