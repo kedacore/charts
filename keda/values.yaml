@@ -570,6 +570,14 @@ prometheus:
       relabelings: []
       # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -612,6 +620,14 @@ prometheus:
       relabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -670,6 +686,14 @@ prometheus:
       relabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     prometheusRules:
       # -- Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
