@@ -570,6 +570,14 @@ prometheus:
       relabelings: []
       # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -583,14 +591,6 @@ prometheus:
       additionalLabels: {}
       # -- List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator)
       relabelings: []
-      # -- HTTP scheme used for scraping. Defaults to `http`
-      scheme: http
-      # -- TLS configuration for scraping metrics
-      tlsConfig: {}
-        # caFile: /etc/prom-certs/root-cert.pem
-        # certFile: /etc/prom-certs/cert-chain.pem
-        # insecureSkipVerify: true
-        # keyFile: /etc/prom-certs/key.pem
   operator:
     # -- Enable KEDA Operator prometheus metrics expose
     enabled: false
