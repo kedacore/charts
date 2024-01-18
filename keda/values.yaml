@@ -42,6 +42,11 @@ crds:
   # -- Defines whether the KEDA CRDs have to be installed or not.
   install: true
 
+  # -- Custom annotations specifically for CRDs
+  additionalAnnotations:
+    {}
+    # foo: bar
+
 # -- Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces
 watchNamespace: ""
 
