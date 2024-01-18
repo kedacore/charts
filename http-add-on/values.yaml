@@ -5,6 +5,43 @@ crds:
   # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
+logging:
+  operator:
+    # -- Logging level for KEDA http-add-on operator.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on operator.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on operator.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+
+    kubeRbacProxy:
+      # -- Logging level for KEDA http-add-on operator rbac proxy
+      # allowed values: `0` for info, `4` for debug, or an integer value greater than 0
+      level: 10
+  scaler:
+    # -- Logging level for KEDA http-add-on Scaler.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on Scaler.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on Scaler.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+  interceptor:
+    # -- Logging level for KEDA http-add-on Interceptor.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on Interceptor.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on Interceptor.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+
 # operator-specific configuration values
 operator:
   # -- The image pull secrets for the operator component
@@ -31,6 +68,17 @@ operator:
   tolerations: []
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
+
+  kubeRbacProxy:
+    resources:
+      # -- The CPU/memory resource limit for the operator component's kube rbac proxy
+      limits:
+        cpu: 300m
+        memory: 200Mi
+      # -- The CPU/memory resource request for the operator component's kube rbac proxy
+      requests:
+        cpu: 10m
+        memory: 20Mi
 
 scaler:
   # -- The image pull secrets for the scaler component
@@ -158,3 +206,69 @@ images:
 rbac:
   # -- Install aggregate roles for edit and view
   aggregateToDefaultRoles: false
+
+# -- [Security context] for all containers
+# @default -- [See below](#KEDA-is-secure-by-default)
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  # runAsUser: 1000
+  # runAsGroup: 1000
+  # operator:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # kuberbacproxy:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # scaler:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # interceptor:
+    # capabilities:
+    #  drop:
+    #  - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+
+# --  [Pod security context] for all pods
+# @default -- [See below](#KEDA-is-secure-by-default)
+podSecurityContext:
+  fsGroup: 1000
+  supplementalGroups:
+  - 1000
+  # operator:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # scaler:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # interceptor:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000

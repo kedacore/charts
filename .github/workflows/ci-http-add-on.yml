@@ -77,8 +77,19 @@ jobs:
       - name: Create KEDA namespace
         run: kubectl create ns keda
 
+      - name: Generate values
+        run: |
+          cat <<EOF > keda-values.yaml
+          image:
+            keda:
+              tag: main
+            metricsApiServer:
+              tag: main
+            webhooks:
+              tag: main
+
       - name: Install KEDA chart
-        run: helm install keda ./keda/ --namespace keda
+        run: helm install keda ./keda/ --namespace keda --values keda-values.yaml
 
       - name: Generate values
         run: |

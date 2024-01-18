@@ -73,7 +73,12 @@ spec:
             {{- else }}
             {{- toYaml .Values.securityContext | nindent 12 }}
             {{- end }}
+          {{- $registry := .Values.global.image.registry | default .Values.image.metricsApiServer.registry | default "" }}
+          {{- if $registry }}
+          image: "{{ $registry }}/{{ .Values.image.metricsApiServer.repository }}:{{ .Values.image.metricsApiServer.tag | default .Chart.AppVersion }}"
+          {{- else }}
           image: "{{ .Values.image.metricsApiServer.repository }}:{{ .Values.image.metricsApiServer.tag | default .Chart.AppVersion }}"
+          {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             httpGet:
@@ -123,12 +128,16 @@ spec:
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
           - --stderrthreshold={{ .Values.logging.metricServer.stderrthreshold }}
+          - --disable-compression={{ .Values.metricsServer.disableCompression}}
           - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9666
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
           - --cert-dir={{ .Values.certificates.mountPath }}
           - --v={{ .Values.logging.metricServer.level }}
+          {{- if .Values.profiling.metricsServer.enabled }}
+          - "--profiling-bind-address=:{{ .Values.profiling.metricsServer.port }}"
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.metricsAdapter }}
           - --{{ $key }}={{ $value }}
           {{- end }}

@@ -21,24 +21,36 @@ spec:
       imagePullSecrets: 
         {{- toYaml .Values.operator.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ .Chart.Name }}
+      {{- if .Values.podSecurityContext.operator }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
+      {{- else }}
+      securityContext:
+      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
       - args:
         - --secure-listen-address=0.0.0.0:{{ .Values.operator.port | default 8443 }}
         - --upstream=http://127.0.0.1:8080/
         - --logtostderr=true
-        - --v=10
+        - --v={{ .Values.logging.operator.kubeRbacProxy.level }}
         image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
-        resources:
-            limits:
-              cpu: 300m
-              memory: 200Mi
-            requests:
-              cpu: 10m
-              memory: 20Mi
         name: kube-rbac-proxy
+        resources:
+          {{- toYaml .Values.operator.kubeRbacProxy.resources | nindent 10 }}
+        {{- if .Values.securityContext.kuberbacproxy }}
+        securityContext:
+        {{- toYaml .Values.securityContext.kuberbacproxy | nindent 10 }}
+        {{- else }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
       - args:
         - --metrics-bind-address=127.0.0.1:8080
         - --leader-elect
+        - --zap-log-level={{ .Values.logging.operator.level }}
+        - --zap-time-encoding={{ .Values.logging.operator.timeEncoding }}
+        - --zap-encoder={{ .Values.logging.operator.format }}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-operator"
@@ -66,6 +78,13 @@ spec:
             port: probes
         resources:
           {{- toYaml .Values.operator.resources | nindent 10 }}
+        {{- if .Values.securityContext.operator }}
+        securityContext:
+        {{- toYaml .Values.securityContext.operator | nindent 10 }}
+        {{- else }}
+        securityContext:
+        {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- end }}
       terminationGracePeriodSeconds: 10
       nodeSelector:
         kubernetes.io/os: linux

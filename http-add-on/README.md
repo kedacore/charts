@@ -92,7 +92,19 @@ their default values.
 | `images.operator` | string | `"ghcr.io/kedacore/http-add-on-operator"` | Image name for the operator image component |
 | `images.scaler` | string | `"ghcr.io/kedacore/http-add-on-scaler"` | Image name for the scaler image component |
 | `images.tag` | string | `""` | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default |
+| `logging.interceptor.format` | string | `"console"` | Logging format for KEDA http-add-on Interceptor. allowed values: `json` or `console` |
+| `logging.interceptor.level` | string | `"info"` | Logging level for KEDA http-add-on Interceptor. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.interceptor.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Interceptor. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.operator.format` | string | `"console"` | Logging format for KEDA http-add-on operator. allowed values: `json` or `console` |
+| `logging.operator.kubeRbacProxy.level` | int | `10` | Logging level for KEDA http-add-on operator rbac proxy allowed values: `0` for info, `4` for debug, or an integer value greater than 0 |
+| `logging.operator.level` | string | `"info"` | Logging level for KEDA http-add-on operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.scaler.format` | string | `"console"` | Logging format for KEDA http-add-on Scaler. allowed values: `json` or `console` |
+| `logging.scaler.level` | string | `"info"` | Logging level for KEDA http-add-on Scaler. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.scaler.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Scaler. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Install aggregate roles for edit and view |
+| `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
 
 ### Operator
 
@@ -100,6 +112,8 @@ their default values.
 |-----------|------|---------|-------------|
 | `operator.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `operator.imagePullSecrets` | list | `[]` | The image pull secrets for the operator component |
+| `operator.kubeRbacProxy.resources.limits` | object | `{"cpu":"300m","memory":"200Mi"}` | The CPU/memory resource limit for the operator component's kube rbac proxy |
+| `operator.kubeRbacProxy.resources.requests` | object | `{"cpu":"10m","memory":"20Mi"}` | The CPU/memory resource request for the operator component's kube rbac proxy |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
@@ -169,6 +183,72 @@ be provided while installing the chart. For example,
 
 ```console
 helm install http-add-on kedacore/keda-add-ons-http --namespace keda -f values.yaml
+```
+
+## KEDA is secure by default
+
+Our default configuration strives to be as secure as possible. Because of that, KEDA will run as non-root and be secure-by-default. You can define global securityContext for all components or switch to granular mode and define securityContext for operator, kuberbacproxy, scaler, and interceptor:
+```yaml
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  # runAsUser: 1000
+  # runAsGroup: 1000
+  # operator:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # kuberbacproxy:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # scaler:
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+  # interceptor:
+    # capabilities:
+    #  drop:
+    #  - ALL
+    # allowPrivilegeEscalation: false
+    # readOnlyRootFilesystem: true
+    # seccompProfile:
+    #   type: RuntimeDefault
+podSecurityContext:
+  fsGroup: 1000
+  supplementalGroups:
+  - 1000
+  # operator:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # scaler:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
+  # interceptor:
+    # runAsNonRoot: true
+    # runAsUser: 1000
+    # runAsGroup: 1000
+    # fsGroup: 1000
 ```
 
 ----------------------------------------------

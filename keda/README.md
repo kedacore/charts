@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.12.0
+helm install keda kedacore/keda --namespace keda --version 2.12.1
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.12.0
+$ helm install keda kedacore/keda --namespace keda --version 2.12.1
 ```
 
 ## Uninstalling the Chart
@@ -70,9 +70,11 @@ their default values.
 | `certificates.mountPath` | string | `"/certs"` | Path where KEDA TLS certificates are mounted |
 | `certificates.secretName` | string | `"kedaorg-certs"` | Secret name to be mounted with KEDA TLS certificates |
 | `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
+| `clusterName` | string | `"kubernetes-default"` | Kubernetes cluster name. Used in features such as emitting CloudEvents |
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
+| `global.image.registry` | string | `nil` | Global image registry of KEDA components |
 | `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
 | `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
 | `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
@@ -110,12 +112,14 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
+| `image.keda.registry` | string | `nil` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
+| `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go.  Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
@@ -138,11 +142,13 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
+| `image.metricsApiServer.registry` | string | `nil` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
 | `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
 | `logging.metricServer.level` | int | `0` | Logging level for Metrics Server. allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
 | `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
+| `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
@@ -232,10 +238,22 @@ their default values.
 | `prometheus.webhooks.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
 | `prometheus.webhooks.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
 
+### Troubleshooting
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `profiling.metricsServer.enabled` | bool | `false` | Enable profiling for KEDA metrics server |
+| `profiling.metricsServer.port` | int | `8083` | Expose profiling on a specific port |
+| `profiling.operator.enabled` | bool | `false` | Enable profiling for KEDA operator |
+| `profiling.operator.port` | int | `8082` | Expose profiling on a specific port |
+| `profiling.webhooks.enabled` | bool | `false` | Enable profiling for KEDA admission webhook |
+| `profiling.webhooks.port` | int | `8084` | Expose profiling on a specific port |
+
 ### Admission Webhooks
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `image.webhooks.registry` | string | `nil` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"ghcr.io/kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
@@ -245,23 +263,6 @@ their default values.
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
 | `podSecurityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
-| `prometheus.webhooks.enabled` | bool | `false` | Enable KEDA admission webhooks prometheus metrics expose |
-| `prometheus.webhooks.port` | int | `8080` | Port used for exposing KEDA admission webhooks prometheus metrics |
-| `prometheus.webhooks.prometheusRules.additionalLabels` | object | `{}` | Additional labels to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
-| `prometheus.webhooks.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
-| `prometheus.webhooks.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
-| `prometheus.webhooks.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
-| `prometheus.webhooks.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
-| `prometheus.webhooks.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus webhooks |
-| `prometheus.webhooks.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
-| `prometheus.webhooks.serviceMonitor.jobLabel` | string | `""` | jobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
-| `prometheus.webhooks.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
-| `prometheus.webhooks.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
-| `prometheus.webhooks.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
-| `prometheus.webhooks.serviceMonitor.relabellings` | list | `[]` | DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
-| `prometheus.webhooks.serviceMonitor.scrapeTimeout` | string | `""` | Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used |
-| `prometheus.webhooks.serviceMonitor.targetLabels` | list | `[]` | TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics |
-| `prometheus.webhooks.serviceMonitor.targetPort` | string | `""` | Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port |
 | `resources.webhooks` | object | `{"limits":{"cpu":"50m","memory":"100Mi"},"requests":{"cpu":"10m","memory":"10Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
 | `securityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the admission webhooks container |
 | `topologySpreadConstraints.webhooks` | list | `[]` | [Pod Topology Constraints] of KEDA admission webhooks pod |
