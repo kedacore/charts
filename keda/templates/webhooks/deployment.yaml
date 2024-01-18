@@ -137,7 +137,7 @@ spec:
             name: certificates
             readOnly: true
           {{- if .Values.volumes.webhooks.extraVolumeMounts }}
-          {{- toYaml .Values.volumes.webhooks.extraVolumeMounts | nindent 12 }}
+          {{- toYaml .Values.volumes.webhooks.extraVolumeMounts | nindent 10 }}
           {{- end }}
           resources:
             {{- if .Values.resources.webhooks }}
@@ -151,7 +151,7 @@ spec:
           defaultMode: 420
           secretName: {{ .Values.certificates.secretName }}
       {{- if .Values.volumes.webhooks.extraVolumes }}
-      {{- toYaml .Values.volumes.webhooks.extraVolumes | nindent 8 }}
+      {{- toYaml .Values.volumes.webhooks.extraVolumes | nindent 6 }}
       {{- end }}
       hostNetwork: {{ .Values.webhooks.useHostNetwork }}
       nodeSelector:
