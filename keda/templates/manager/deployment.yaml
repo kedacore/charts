@@ -93,9 +93,9 @@ spec:
           - "--webhooks-service-name={{ .Values.webhooks.name }}"
           - "--k8s-cluster-name={{ .Values.clusterName }}"
           - "--k8s-cluster-domain={{ .Values.clusterDomain }}"
+          - "--enable-prometheus-metrics={{ .Values.prometheus.operator.enabled }}"
           {{- if .Values.prometheus.operator.enabled }}
           - "--metrics-bind-address=:{{ .Values.prometheus.operator.port }}"
-          - "--enable-prometheus-metrics={{ .Values.prometheus.operator.enabled }}"
           {{- end }}
           {{- if .Values.opentelemetry.operator.enabled }}
           - "--enable-opentelemetry-metrics={{ .Values.opentelemetry.operator.enabled}}"
@@ -126,9 +126,11 @@ spec:
             failureThreshold: {{ .Values.operator.readinessProbe.failureThreshold }}
             successThreshold: {{ .Values.operator.readinessProbe.successThreshold }}
           ports:
-          - containerPort: 8080
-            name: http
+          {{- if .Values.prometheus.operator.enabled }}
+          - containerPort: {{ .Values.prometheus.operator.port }}
+            name: metrics
             protocol: TCP
+          {{- end }}
           - containerPort: 9666
             name: metricsservice
             protocol: TCP
