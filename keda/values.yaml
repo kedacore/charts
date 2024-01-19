@@ -53,6 +53,12 @@ watchNamespace: ""
 # -- Name of secret to use to pull images to use to pull Docker images
 imagePullSecrets: []
 
+networkPolicy:
+  # -- Enable network policies
+  enabled: false
+  # -- Flavor of the network policies (cilium)
+  flavor: "cilium"
+
 operator:
   # -- Name of the KEDA operator
   name: keda-operator
