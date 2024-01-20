@@ -64,9 +64,17 @@ spec:
           value: "{{ .Values.interceptor.expectContinueTimeout }}"
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
-          name: inter-admin
+          name: admin
         - containerPort: {{ .Values.interceptor.proxy.port }}
-          name: inter-proxy
+          name: proxy
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: proxy
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: proxy
         resources:
           {{- toYaml .Values.interceptor.resources | nindent 10 }}
         {{- if .Values.securityContext.interceptor }}
