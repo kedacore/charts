@@ -51,6 +51,11 @@ spec:
     {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- end}}
+    scheme: {{ .Values.prometheus.operator.serviceMonitor.scheme }}
+    {{- with .Values.prometheus.operator.serviceMonitor.tlsConfig }}
+    tlsConfig:
+    {{ toYaml . | nindent 6}}
+    {{- end }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

@@ -2,24 +2,38 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  image:
+    # -- Global image registry of KEDA components
+    registry: null
+
 image:
   keda:
+    # -- Image registry of KEDA operator
+    registry: null
     # -- Image name of KEDA operator
     repository: ghcr.io/kedacore/keda
     # -- Image tag of KEDA operator. Optional, given app version of Helm chart is used by default
     tag: ""
   metricsApiServer:
+    # -- Image registry of KEDA Metrics API Server
+    registry: null
     # -- Image name of KEDA Metrics API Server
     repository: ghcr.io/kedacore/keda-metrics-apiserver
     # -- Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default
     tag: ""
   webhooks:
+    # -- Image registry of KEDA admission-webhooks
+    registry: null
     # -- Image name of KEDA admission-webhooks
     repository: ghcr.io/kedacore/keda-admission-webhooks
     # -- Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default
     tag: ""
   # -- Image pullPolicy for all KEDA components
   pullPolicy: Always
+
+# -- Kubernetes cluster name. Used in features such as emitting CloudEvents
+clusterName: kubernetes-default
 
 # -- Kubernetes cluster domain
 clusterDomain: cluster.local
@@ -28,11 +42,22 @@ crds:
   # -- Defines whether the KEDA CRDs have to be installed or not.
   install: true
 
+  # -- Custom annotations specifically for CRDs
+  additionalAnnotations:
+    {}
+    # foo: bar
+
 # -- Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces
 watchNamespace: ""
 
 # -- Name of secret to use to pull images to use to pull Docker images
 imagePullSecrets: []
+
+networkPolicy:
+  # -- Enable network policies
+  enabled: false
+  # -- Flavor of the network policies (cilium)
+  flavor: "cilium"
 
 operator:
   # -- Name of the KEDA operator
@@ -44,6 +69,9 @@ operator:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
+  # --Disable response compression for k8s restAPI in client-go. 
+  # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
+  disableCompression: true 
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -78,6 +106,9 @@ metricsServer:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
+  # --Disable response compression for k8s restAPI in client-go.
+  # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
+  disableCompression: true
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   # -- Defined the DNS policy for the metric server
   dnsPolicy: ClusterFirst
@@ -545,6 +576,14 @@ prometheus:
       relabelings: []
       # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -587,6 +626,14 @@ prometheus:
       relabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -645,6 +692,14 @@ prometheus:
       relabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     prometheusRules:
       # -- Enables PrometheusRules creation for the Prometheus Operator
       enabled: false

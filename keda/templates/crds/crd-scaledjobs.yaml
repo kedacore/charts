@@ -4,12 +4,12 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    {{- if .Values.additionalAnnotations }}
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- if (or .Values.crds.additionalAnnotations .Values.additionalAnnotations) }}
+    {{- toYaml (merge .Values.crds.additionalAnnotations .Values.additionalAnnotations) | nindent 4 }}
     {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.crd-labels" . | indent 4 }}
   name: scaledjobs.keda.sh
 spec:
   group: keda.sh

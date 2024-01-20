@@ -4,12 +4,12 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.13.0
-    {{- if .Values.additionalAnnotations }}
-    {{- toYaml .Values.additionalAnnotations | nindent 4 }}
+    {{- if (or .Values.crds.additionalAnnotations .Values.additionalAnnotations) }}
+    {{- toYaml (merge .Values.crds.additionalAnnotations .Values.additionalAnnotations) | nindent 4 }}
     {{- end }}
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.crd-labels" . | indent 4 }}
   name: clustertriggerauthentications.keda.sh
 spec:
   group: keda.sh
@@ -65,6 +65,127 @@ spec:
           spec:
             description: TriggerAuthenticationSpec defines the various ways to authenticate
             properties:
+              awsSecretManager:
+                description: AwsSecretManager is used to authenticate using AwsSecretManager
+                properties:
+                  credentials:
+                    properties:
+                      accessKey:
+                        properties:
+                          valueFrom:
+                            properties:
+                              secretKeyRef:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            required:
+                            - secretKeyRef
+                            type: object
+                        required:
+                        - valueFrom
+                        type: object
+                      accessSecretKey:
+                        properties:
+                          valueFrom:
+                            properties:
+                              secretKeyRef:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            required:
+                            - secretKeyRef
+                            type: object
+                        required:
+                        - valueFrom
+                        type: object
+                      accessToken:
+                        properties:
+                          valueFrom:
+                            properties:
+                              secretKeyRef:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            required:
+                            - secretKeyRef
+                            type: object
+                        required:
+                        - valueFrom
+                        type: object
+                    required:
+                    - accessKey
+                    - accessSecretKey
+                    type: object
+                  podIdentity:
+                    description: AuthPodIdentity allows users to select the platform
+                      native identity mechanism
+                    properties:
+                      identityId:
+                        type: string
+                      identityOwner:
+                        description: IdentityOwner configures which identity has to
+                          be used during auto discovery, keda or the scaled workload.
+                          Mutually exclusive with roleArn
+                        enum:
+                        - keda
+                        - workload
+                        type: string
+                      provider:
+                        description: PodIdentityProvider contains the list of providers
+                        enum:
+                        - azure
+                        - azure-workload
+                        - gcp
+                        - aws
+                        - aws-eks
+                        - aws-kiam
+                        type: string
+                      roleArn:
+                        description: RoleArn sets the AWS RoleArn to be used. Mutually
+                          exclusive with IdentityOwner
+                        type: string
+                    required:
+                    - provider
+                    type: object
+                  region:
+                    type: string
+                  secrets:
+                    items:
+                      properties:
+                        name:
+                          type: string
+                        parameter:
+                          type: string
+                        versionId:
+                          type: string
+                        versionStage:
+                          type: string
+                      required:
+                      - name
+                      - parameter
+                      type: object
+                    type: array
+                required:
+                - secrets
+                type: object
               azureKeyVault:
                 description: AzureKeyVault is used to authenticate using Azure Key
                   Vault
@@ -117,8 +238,27 @@ spec:
                     properties:
                       identityId:
                         type: string
+                      identityOwner:
+                        description: IdentityOwner configures which identity has to
+                          be used during auto discovery, keda or the scaled workload.
+                          Mutually exclusive with roleArn
+                        enum:
+                        - keda
+                        - workload
+                        type: string
                       provider:
                         description: PodIdentityProvider contains the list of providers
+                        enum:
+                        - azure
+                        - azure-workload
+                        - gcp
+                        - aws
+                        - aws-eks
+                        - aws-kiam
+                        type: string
+                      roleArn:
+                        description: RoleArn sets the AWS RoleArn to be used. Mutually
+                          exclusive with IdentityOwner
                         type: string
                     required:
                     - provider
@@ -143,6 +283,23 @@ spec:
                 - secrets
                 - vaultUri
                 type: object
+              configMapTargetRef:
+                items:
+                  description: AuthConfigMapTargetRef is used to authenticate using
+                    a reference to a config map
+                  properties:
+                    key:
+                      type: string
+                    name:
+                      type: string
+                    parameter:
+                      type: string
+                  required:
+                  - key
+                  - name
+                  - parameter
+                  type: object
+                type: array
               env:
                 items:
                   description: AuthEnvironment is used to authenticate using environment
@@ -159,6 +316,81 @@ spec:
                   - parameter
                   type: object
                 type: array
+              gcpSecretManager:
+                properties:
+                  credentials:
+                    properties:
+                      clientSecret:
+                        properties:
+                          valueFrom:
+                            properties:
+                              secretKeyRef:
+                                properties:
+                                  key:
+                                    type: string
+                                  name:
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                type: object
+                            required:
+                            - secretKeyRef
+                            type: object
+                        required:
+                        - valueFrom
+                        type: object
+                    required:
+                    - clientSecret
+                    type: object
+                  podIdentity:
+                    description: AuthPodIdentity allows users to select the platform
+                      native identity mechanism
+                    properties:
+                      identityId:
+                        type: string
+                      identityOwner:
+                        description: IdentityOwner configures which identity has to
+                          be used during auto discovery, keda or the scaled workload.
+                          Mutually exclusive with roleArn
+                        enum:
+                        - keda
+                        - workload
+                        type: string
+                      provider:
+                        description: PodIdentityProvider contains the list of providers
+                        enum:
+                        - azure
+                        - azure-workload
+                        - gcp
+                        - aws
+                        - aws-eks
+                        - aws-kiam
+                        type: string
+                      roleArn:
+                        description: RoleArn sets the AWS RoleArn to be used. Mutually
+                          exclusive with IdentityOwner
+                        type: string
+                    required:
+                    - provider
+                    type: object
+                  secrets:
+                    items:
+                      properties:
+                        id:
+                          type: string
+                        parameter:
+                          type: string
+                        version:
+                          type: string
+                      required:
+                      - id
+                      - parameter
+                      type: object
+                    type: array
+                required:
+                - secrets
+                type: object
               hashiCorpVault:
                 description: HashiCorpVault is used to authenticate using Hashicorp
                   Vault
@@ -232,8 +464,27 @@ spec:
                 properties:
                   identityId:
                     type: string
+                  identityOwner:
+                    description: IdentityOwner configures which identity has to be
+                      used during auto discovery, keda or the scaled workload. Mutually
+                      exclusive with roleArn
+                    enum:
+                    - keda
+                    - workload
+                    type: string
                   provider:
                     description: PodIdentityProvider contains the list of providers
+                    enum:
+                    - azure
+                    - azure-workload
+                    - gcp
+                    - aws
+                    - aws-eks
+                    - aws-kiam
+                    type: string
+                  roleArn:
+                    description: RoleArn sets the AWS RoleArn to be used. Mutually
+                      exclusive with IdentityOwner
                     type: string
                 required:
                 - provider
