@@ -7,7 +7,6 @@ metadata:
   name: {{ .Chart.Name }}-interceptor
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.interceptor.replicas.min }}
   selector:
     matchLabels:
       app.kubernetes.io/component: interceptor
@@ -51,8 +50,8 @@ spec:
           value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
           value: "{{ .Values.interceptor.replicas.waitTimeout }}"
-        - name: KEDA_HTTP_DEPLOYMENT_CACHE_POLLING_INTERVAL_MS
-          value: "{{ .Values.interceptor.deploymentCachePollingIntervalMS }}"
+        - name: KEDA_HTTP_ENDPOINTS_CACHE_POLLING_INTERVAL_MS
+          value: "{{ .Values.interceptor.endpointsCachePollingIntervalMS }}"
         - name: KEDA_HTTP_FORCE_HTTP2
           value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS

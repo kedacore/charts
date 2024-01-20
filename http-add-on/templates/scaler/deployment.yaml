@@ -7,7 +7,7 @@ metadata:
   name: {{ .Chart.Name }}-external-scaler
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.scaler.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/component: scaler
@@ -37,17 +37,13 @@ spec:
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
         name: "{{ .Chart.Name }}-external-scaler"
         ports:
-        - containerPort: {{ .Values.scaler.healthPort }}
-          name: scaler-health
         - containerPort: {{ .Values.scaler.grpcPort }}
-          name: scaler-grpc
+          name: grpc
         env:
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_DEPLOYMENT
           value: "{{ .Chart.Name }}-interceptor"
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
-        - name: KEDA_HTTP_HEALTH_PORT
-          value: "{{ .Values.scaler.healthPort }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_SERVICE
@@ -58,6 +54,22 @@ spec:
           value: "{{ .Values.scaler.streamInterval }}"
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
+        livenessProbe:
+          grpc:
+            port: grpc
+            service: liveness
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          grpc:
+            port: grpc
+            service: readiness
+          timeoutSeconds: 1
+          periodSeconds: 1
+          successThreshold: 1
+          failureThreshold: 3
         {{- if .Values.securityContext.scaler }}
         securityContext:
         {{- toYaml .Values.securityContext.scaler | nindent 10 }}
