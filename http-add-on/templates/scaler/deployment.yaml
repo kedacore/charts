@@ -56,18 +56,18 @@ spec:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
         livenessProbe:
           grpc:
-            port: grpc
+            port: "{{ .Values.scaler.grpcPort }}"
             service: liveness
-          timeoutSeconds: 1
+          timeoutSeconds: 5
           periodSeconds: 5
           successThreshold: 1
-          failureThreshold: 3
+          failureThreshold: 6
         readinessProbe:
           grpc:
-            port: grpc
+            port: "{{ .Values.scaler.grpcPort }}"
             service: readiness
           timeoutSeconds: 1
-          periodSeconds: 1
+          periodSeconds: 5
           successThreshold: 1
           failureThreshold: 3
         {{- if .Values.securityContext.scaler }}
