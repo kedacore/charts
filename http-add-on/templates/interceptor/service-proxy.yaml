@@ -8,8 +8,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - name: http
+  - name: proxy
     port: {{ default 9091 .Values.interceptor.proxy.port }}
-    targetPort: inter-proxy
+    targetPort: proxy
   selector:
     app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
