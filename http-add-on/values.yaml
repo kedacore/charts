@@ -81,6 +81,8 @@ operator:
         memory: 20Mi
 
 scaler:
+  # -- Number of replicas 
+  replicas: 3
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
   # -- The name of the Kubernetes `Service` for the scaler component
@@ -89,8 +91,6 @@ scaler:
   pullPolicy: Always
   # -- The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to.
   grpcPort: 9090
-  # -- The port for the scaler's health check and admin server
-  healthPort: 9091
   # -- The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests.
   pendingRequestsInterceptor: 200
   # -- Interval in ms for communicating IsActive to KEDA
@@ -150,8 +150,8 @@ interceptor:
   keepAlive: 1s
   # -- How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request
   responseHeaderTimeout: 500ms
-  # -- How often (in milliseconds) the interceptor does a full refresh of its deployment cache. The interceptor will also use Kubernetes events to stay up-to-date with the deployment cache changes. This duration is the maximum time it will take to see changes to the deployment state.
-  deploymentCachePollingIntervalMS: 250
+  # -- How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints.
+  endpointsCachePollingIntervalMS: 250
   # -- Whether or not the interceptor should force requests to use HTTP/2
   forceHTTP2: false
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit

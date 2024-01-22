@@ -128,11 +128,11 @@ their default values.
 |-----------|------|---------|-------------|
 | `scaler.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `scaler.grpcPort` | int | `9090` | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. |
-| `scaler.healthPort` | int | `9091` | The port for the scaler's health check and admin server |
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
+| `scaler.replicas` | int | `3` | Number of replicas  |
 | `scaler.resources.limits.cpu` | float | `0.5` |  |
 | `scaler.resources.limits.memory` | string | `"64Mi"` |  |
 | `scaler.resources.requests.cpu` | string | `"250m"` |  |
@@ -148,7 +148,7 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
-| `interceptor.deploymentCachePollingIntervalMS` | int | `250` | How often (in milliseconds) the interceptor does a full refresh of its deployment cache. The interceptor will also use Kubernetes events to stay up-to-date with the deployment cache changes. This duration is the maximum time it will take to see changes to the deployment state. |
+| `interceptor.endpointsCachePollingIntervalMS` | int | `250` | How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints. |
 | `interceptor.expectContinueTimeout` | string | `"1s"` | Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details |
 | `interceptor.forceHTTP2` | bool | `false` | Whether or not the interceptor should force requests to use HTTP/2 |
 | `interceptor.idleConnTimeout` | string | `"90s"` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. |

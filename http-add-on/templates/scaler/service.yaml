@@ -10,10 +10,7 @@ spec:
   ports:
   - name: grpc
     port: {{ default 9090 .Values.scaler.grpcPort }}
-    targetPort: scaler-grpc
-  - name: health
-    port: {{ default 9091 .Values.scaler.healthPort }}
-    targetPort: scaler-health
+    targetPort: grpc
   selector:
     app.kubernetes.io/component: scaler
     {{- include "keda-http-add-on.labels" . | indent 4 }}
