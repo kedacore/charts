@@ -8,8 +8,9 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
-  - name: https
+  - name: admin
     port: {{ default 9091 .Values.interceptor.admin.port }}
-    targetPort: inter-admin
+    targetPort: admin
   selector:
     app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
