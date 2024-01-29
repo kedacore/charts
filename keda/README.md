@@ -122,7 +122,7 @@ their default values.
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
-| `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go.  Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
+| `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
@@ -184,6 +184,7 @@ their default values.
 | `prometheus.metricServer.podMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using podMonitor crd (prometheus operator) |
 | `prometheus.metricServer.podMonitor.enabled` | bool | `false` | Enables PodMonitor creation for the Prometheus Operator |
 | `prometheus.metricServer.podMonitor.interval` | string | `""` | Scraping interval for metric server using podMonitor crd (prometheus operator) |
+| `prometheus.metricServer.podMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
 | `prometheus.metricServer.podMonitor.namespace` | string | `""` | Scraping namespace for metric server using podMonitor crd (prometheus operator) |
 | `prometheus.metricServer.podMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator) |
 | `prometheus.metricServer.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for metric server using podMonitor crd (prometheus operator) |
@@ -193,6 +194,7 @@ their default values.
 | `prometheus.metricServer.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.metricServer.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.metricServer.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.metricServer.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
 | `prometheus.metricServer.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.metricServer.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.metricServer.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
@@ -206,6 +208,7 @@ their default values.
 | `prometheus.operator.podMonitor.additionalLabels` | object | `{}` | Additional labels to add for KEDA Operator using podMonitor crd (prometheus operator) |
 | `prometheus.operator.podMonitor.enabled` | bool | `false` | Enables PodMonitor creation for the Prometheus Operator |
 | `prometheus.operator.podMonitor.interval` | string | `""` | Scraping interval for KEDA Operator using podMonitor crd (prometheus operator) |
+| `prometheus.operator.podMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
 | `prometheus.operator.podMonitor.namespace` | string | `""` | Scraping namespace for KEDA Operator using podMonitor crd (prometheus operator) |
 | `prometheus.operator.podMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator) |
 | `prometheus.operator.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for KEDA Operator using podMonitor crd (prometheus operator) |
@@ -218,6 +221,7 @@ their default values.
 | `prometheus.operator.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.operator.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.operator.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.operator.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
 | `prometheus.operator.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.operator.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.operator.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
@@ -237,6 +241,7 @@ their default values.
 | `prometheus.webhooks.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus webhooks |
 | `prometheus.webhooks.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.webhooks.serviceMonitor.jobLabel` | string | `""` | jobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
+| `prometheus.webhooks.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
 | `prometheus.webhooks.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.webhooks.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.webhooks.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
