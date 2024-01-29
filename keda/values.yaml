@@ -69,9 +69,9 @@ operator:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
-  # --Disable response compression for k8s restAPI in client-go. 
+  # --Disable response compression for k8s restAPI in client-go.
   # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
-  disableCompression: true 
+  disableCompression: true
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -574,6 +574,8 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
       # -- HTTP scheme used for scraping. Defaults to `http`
@@ -597,6 +599,8 @@ prometheus:
       additionalLabels: {}
       # -- List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator)
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
   operator:
     # -- Enable KEDA Operator prometheus metrics expose
     enabled: false
@@ -624,6 +628,8 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
       # -- HTTP scheme used for scraping. Defaults to `http`
@@ -647,6 +653,8 @@ prometheus:
       additionalLabels: {}
       # --  List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator)
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
     prometheusRules:
       # -- Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
@@ -690,6 +698,8 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
       # -- HTTP scheme used for scraping. Defaults to `http`

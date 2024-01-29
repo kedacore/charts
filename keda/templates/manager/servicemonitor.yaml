@@ -51,6 +51,10 @@ spec:
     {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- end}}
+    {{- with .Values.prometheus.operator.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
     scheme: {{ .Values.prometheus.operator.serviceMonitor.scheme }}
     {{- with .Values.prometheus.operator.serviceMonitor.tlsConfig }}
     tlsConfig:
