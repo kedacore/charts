@@ -4,10 +4,10 @@ metadata:
   {{- if or .Values.certificates.certManager.enabled .Values.additionalAnnotations }}
   annotations:
     {{- if .Values.certificates.certManager.enabled }}
-    {{- if .Values.certificates.certManager.generateCA }}
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-ca
-    {{- else }}
+    {{- if and (not .Values.certificates.certManager.generateCA) .Values.certificates.certManager.issuer.generate }}
     cert-manager.io/inject-ca-from-secret: {{ .Release.Namespace }}/{{ .Values.certificates.certManager.caSecretName }}
+    {{- else }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ .Values.operator.name }}-tls-certificates
     {{- end }}
     {{- end }}
     {{- if .Values.additionalAnnotations }}

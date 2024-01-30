@@ -1,4 +1,4 @@
-{{- if and .Values.certificates.certManager.enabled .Values.certificates.certManager.generateCA }}
+{{- if and .Values.certificates.certManager.enabled .Values.certificates.certManager.generateCA .Values.certificates.certManager.issuer.generate }}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
