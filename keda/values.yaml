@@ -125,6 +125,9 @@ metricsServer:
     #         values:
     #         - keda-operator-metrics-apiserver
     #     topologyKey: "kubernetes.io/hostname"
+  # -- Register the Metrics API Server as External Metrics Provider / APIService.
+  # Useful when you already have an API registered for external metrics and want to do a smooth transition.
+  registerAPIService: true
   # -- Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
   livenessProbe:
     initialDelaySeconds: 5
