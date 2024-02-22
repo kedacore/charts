@@ -21,6 +21,9 @@ spec:
     - toEntities:
         - kube-apiserver
         - cluster
+    {{- if and .Values.networkPolicy.cilium.operator.extraEgressRules }}
+    {{ toYaml .Values.networkPolicy.cilium.operator.extraEgressRules | nindent 4 }}
+    {{- end }}
   ingress:
     - fromEntities:
         - cluster
