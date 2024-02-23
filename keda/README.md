@@ -67,7 +67,7 @@ their default values.
 | `certificates.certManager.duration` | string | `"8760h0m0s"` | Certificate duration |
 | `certificates.certManager.enabled` | bool | `false` | Enables Cert-manager for certificate management |
 | `certificates.certManager.generateCA` | bool | `true` | Generates a self-signed CA with Cert-manager. If generateCA is false, the secret with the CA has to be annotated with `cert-manager.io/allow-direct-injection: "true"` |
-| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required |
+| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. |
 | `certificates.certManager.issuer.generate` | bool | `true` | Generates an Issuer resource with Cert-manager |
 | `certificates.certManager.issuer.group` | string | `"cert-manager.io"` | Custom Issuer group. Required when generate: false |
 | `certificates.certManager.issuer.kind` | string | `"ClusterIssuer"` | Custom Issuer kind. Required when generate: false |
@@ -90,6 +90,7 @@ their default values.
 | `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
 | `image.pullPolicy` | string | `"Always"` | Image pullPolicy for all KEDA components |
 | `imagePullSecrets` | list | `[]` | Name of secret to use to pull images to use to pull Docker images |
+| `networkPolicy.cilium` | object | `{"operator":{"extraEgressRules":[]}}` | Allow use of extra egress rules for cilium network policies |
 | `networkPolicy.enabled` | bool | `false` | Enable network policies |
 | `networkPolicy.flavor` | string | `"cilium"` | Flavor of the network policies (cilium) |
 | `nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |

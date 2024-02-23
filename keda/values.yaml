@@ -58,6 +58,10 @@ networkPolicy:
   enabled: false
   # -- Flavor of the network policies (cilium)
   flavor: "cilium"
+  # -- Allow use of extra egress rules for cilium network policies
+  cilium:
+    operator:
+      extraEgressRules: []
 
 operator:
   # -- Name of the KEDA operator
