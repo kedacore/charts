@@ -67,7 +67,7 @@ their default values.
 | `certificates.certManager.duration` | string | `"8760h0m0s"` | Certificate duration |
 | `certificates.certManager.enabled` | bool | `false` | Enables Cert-manager for certificate management |
 | `certificates.certManager.generateCA` | bool | `true` | Generates a self-signed CA with Cert-manager. If generateCA is false, the secret with the CA has to be annotated with `cert-manager.io/allow-direct-injection: "true"` |
-| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. |
+| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required |
 | `certificates.certManager.issuer.generate` | bool | `true` | Generates an Issuer resource with Cert-manager |
 | `certificates.certManager.issuer.group` | string | `"cert-manager.io"` | Custom Issuer group. Required when generate: false |
 | `certificates.certManager.issuer.kind` | string | `"ClusterIssuer"` | Custom Issuer kind. Required when generate: false |

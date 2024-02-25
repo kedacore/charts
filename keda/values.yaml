@@ -760,7 +760,7 @@ certificates:
       #   my-secret-annotation-2: "bar"
       # labels:
       #   my-secret-label: foo
-    # -- Reference to custom Issuer.
+    # -- Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required
     issuer:
       # -- Generates an Issuer resource with Cert-manager
       generate: true
