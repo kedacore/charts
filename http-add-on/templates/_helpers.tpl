@@ -9,6 +9,8 @@ Create chart name and version as used by the chart label.
 
 {{/*
 Generate match labels
+IMPORTANT: Any change of these labels will block
+future upgrades
 */}}
 {{- define "keda-http-add-on.matchLabels" }}
 app.kubernetes.io/part-of: {{ .Chart.Name }}
