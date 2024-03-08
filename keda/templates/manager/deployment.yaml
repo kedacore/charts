@@ -91,7 +91,7 @@ spec:
           - "--operator-service-name={{ .Values.operator.name }}"
           - "--metrics-server-service-name={{ .Values.operator.name }}-metrics-apiserver"
           - "--webhooks-service-name={{ .Values.webhooks.name }}"
-          - "--k8s-cluster-name={{ .Values.clusterName }}"
+          - "--k8s-cluster-name={{ tpl .Values.clusterName . }}"
           - "--k8s-cluster-domain={{ .Values.clusterDomain }}"
           - "--enable-prometheus-metrics={{ .Values.prometheus.operator.enabled }}"
           {{- if .Values.prometheus.operator.enabled }}
