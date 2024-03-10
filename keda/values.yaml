@@ -87,6 +87,24 @@ operator:
     #         values:
     #         - keda-operator
     #     topologyKey: "kubernetes.io/hostname"
+  # -- Additional containers to run as part of the operator deployment
+  extraContainers: []
+    # - name: hello-many
+    # args:
+    #   - -c
+    #   - "while true; do echo hi; sleep 300; done"
+    # command:
+    #   - /bin/sh
+    # image: 'busybox:glibc'
+  # -- Additional init containers to run as part of the operator deployment
+  extraInitContainers: []
+    # - name: hello-once
+    # args:
+    #   - -c
+    #   - "echo 'Hello World!'"
+    # command:
+    #   - /bin/sh
+    # image: 'busybox:glibc'
   # -- Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
   livenessProbe:
     initialDelaySeconds: 25

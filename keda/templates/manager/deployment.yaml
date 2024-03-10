@@ -187,6 +187,13 @@ spec:
             {{- else }}
             {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
+        {{- if .Values.operator.extraContainers }}
+        {{- toYaml .Values.operator.extraContainers | nindent 8 }}
+        {{- end }}
+      {{- if .Values.operator.extraInitContainers }}
+      initContainers:
+      {{- toYaml .Values.operator.extraInitContainers | nindent 8 }}
+      {{- end }}
       volumes:
       - name: certificates
         secret:

@@ -140,6 +140,22 @@ jobs:
           certManager:
             enabled: ${{ matrix.enableCertManager }}
             generateCA: true
+        extraInitContainers:
+          - name: hello-once
+            args:
+              - -c
+              - "echo 'Hello World!'"
+            command:
+              - /bin/sh
+            image: 'busybox:glibc'
+        extraContainers:
+          - name: hello-many
+            args:
+              - -c
+              - "while true; do echo hi; sleep 300; done"
+            command:
+              - /bin/sh
+            image: 'busybox:glibc'
         extraObjects:
           - apiVersion: keda.sh/v1alpha1
             kind: ClusterTriggerAuthentication
