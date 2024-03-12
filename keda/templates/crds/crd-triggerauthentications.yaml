@@ -474,6 +474,7 @@ spec:
                   provider:
                     description: PodIdentityProvider contains the list of providers
                     enum:
+                    - none
                     - azure
                     - azure-workload
                     - gcp
