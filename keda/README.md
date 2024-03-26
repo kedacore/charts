@@ -80,6 +80,7 @@ their default values.
 | `clusterName` | string | `"kubernetes-default"` | Kubernetes cluster name. Used in features such as emitting CloudEvents |
 | `crds.additionalAnnotations` | object | `{}` | Custom annotations specifically for CRDs |
 | `crds.install` | bool | `true` | Defines whether the KEDA CRDs have to be installed or not. |
+| `customManagedBy` | string | `""` | When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution. |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
 | `global.image.registry` | string | `nil` | Global image registry of KEDA components |

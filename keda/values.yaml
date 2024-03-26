@@ -812,3 +812,6 @@ extraObjects: []
 
 # -- Capability to turn on/off ASCII art in Helm installation notes
 asciiArt: true
+
+# -- When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution.
+customManagedBy: ""
