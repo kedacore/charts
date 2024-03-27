@@ -13,4 +13,4 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: interceptor
-    {{- include "keda-http-add-on.labels" . | indent 4 }}
+    {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
