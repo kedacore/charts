@@ -38,6 +38,27 @@ clusterName: kubernetes-default
 # -- Kubernetes cluster domain
 clusterDomain: cluster.local
 
+autoscaling:
+  verticalPodAutoscaler:
+    keda:
+      # -- Enables the creation of a vpa for the keda-operator
+      enabled: false
+      cpu:
+        minAllowed: 20m
+        maxAllowed: 2
+      memory:
+        minAllowed: 200Mi
+        maxAllowed: 2Gi
+    metricsApiServer:
+      # -- Enables the creation of a vpa for the keda-operator-metrics-apiserver
+      enabled: false
+      cpu:
+        minAllowed: 20m
+        maxAllowed: 2
+      memory:
+        minAllowed: 200Mi
+        maxAllowed: 2Gi
+
 crds:
   # -- Defines whether the KEDA CRDs have to be installed or not.
   install: true

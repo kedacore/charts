@@ -123,6 +123,11 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `autoscaling.verticalPodAutoscaler.keda.cpu.maxAllowed` | int | `2` |  |
+| `autoscaling.verticalPodAutoscaler.keda.cpu.minAllowed` | string | `"20m"` |  |
+| `autoscaling.verticalPodAutoscaler.keda.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator |
+| `autoscaling.verticalPodAutoscaler.keda.memory.maxAllowed` | string | `"2Gi"` |  |
+| `autoscaling.verticalPodAutoscaler.keda.memory.minAllowed` | string | `"200Mi"` |  |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `nil` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
@@ -155,6 +160,11 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.maxAllowed` | int | `2` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.cpu.minAllowed` | string | `"20m"` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.enabled` | bool | `false` | Enables the creation of a vpa for the keda-operator-metrics-apiserver |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.memory.maxAllowed` | string | `"2Gi"` |  |
+| `autoscaling.verticalPodAutoscaler.metricsApiServer.memory.minAllowed` | string | `"200Mi"` |  |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `nil` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"ghcr.io/kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
