@@ -275,6 +275,9 @@ rbac:
   # -- Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin)
   aggregateToDefaultRoles: false
 
+# -- Automount API credentials for the Service Account into the pod.
+automountServiceAccountToken: true
+
 serviceAccount:
   # -- Specifies whether a service account should be created
   create: true
