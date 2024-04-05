@@ -57,7 +57,6 @@ spec:
         livenessProbe:
           grpc:
             port: {{ .Values.scaler.grpcPort }}
-            service: liveness
           timeoutSeconds: 5
           periodSeconds: 5
           successThreshold: 1
@@ -65,7 +64,6 @@ spec:
         readinessProbe:
           grpc:
             port: {{ .Values.scaler.grpcPort }}
-            service: readiness
           timeoutSeconds: 1
           periodSeconds: 5
           successThreshold: 1
