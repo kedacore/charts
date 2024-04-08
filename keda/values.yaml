@@ -275,16 +275,44 @@ rbac:
   # -- Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin)
   aggregateToDefaultRoles: false
 
+  # -- Whether rbac for unseen crds that can have a scale subresource should be created
+  enabledCustomScaledRefKinds: true
+  # -- List of custom resources that support the scale subresource that can be referenced by `scaledobject.spec.scaleTargetRef`
+  # the feature needs to be also enabled by `enabledCustomScaledRefKinds`
+  # If left empty, rbac for `apiGroups: *` & `resources: */scale` will be created
+  # note: Deployments and StatefulSets are supported out of the box
+  scaledRefKinds:
+  # - apiGroup: argoproj.io
+  #   kind: Rollout
+
 serviceAccount:
-  # -- Specifies whether a service account should be created
-  create: true
-  # -- The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: keda-operator
-  # -- Specifies whether a service account should automount API-Credentials
-  automountServiceAccountToken: true
-  # -- Annotations to add to the service account
-  annotations: {}
+  operator:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-operator
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
+  metricServer:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-metrics-server
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
+  webhooks:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-webhook
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
 
 podIdentity:
   activeDirectory:
@@ -797,7 +825,12 @@ permissions:
   operator:
     restrict:
       # -- Restrict Secret Access for KEDA operator
+      # if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace
       secret: false
+      # -- Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account
+      # also the configured `watchNamespace`.
+      # the default is an empty array -> no restriction on the secret name
+      namesAllowList: []
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []

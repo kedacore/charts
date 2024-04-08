@@ -55,7 +55,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccount.name }}
+      serviceAccountName: {{ (.Values.serviceAccount.operator).name | default .Values.serviceAccount.name }}
       automountServiceAccountToken: true
       securityContext:
         {{- if .Values.podSecurityContext.operator }}

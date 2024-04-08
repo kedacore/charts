@@ -16,9 +16,10 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceAccount.name }}
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
+# https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#extension-apiserver-authenticates-the-request
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -37,9 +38,10 @@ roleRef:
   name: extension-apiserver-authentication-reader
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceAccount.name }}
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
+# todo this
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -57,6 +59,6 @@ roleRef:
   name: {{ .Values.operator.name }}-external-metrics-reader
 subjects:
 - kind: ServiceAccount
-  name: horizontal-pod-autoscaler
-  namespace: kube-system
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
 {{- end -}}
