@@ -496,11 +496,11 @@ resources:
   # -- Manage [resource request & limits] of KEDA admission webhooks pod
   webhooks:
     limits:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 1
+      memory: 1000Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 100m
+      memory: 100Mi
 # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
 nodeSelector: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
@@ -845,3 +845,6 @@ extraObjects: []
 
 # -- Capability to turn on/off ASCII art in Helm installation notes
 asciiArt: true
+
+# -- When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution.
+customManagedBy: ""
