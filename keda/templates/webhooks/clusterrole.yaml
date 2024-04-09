@@ -17,12 +17,14 @@ rules:
   - horizontalpodautoscalers
   verbs:
   - list
+  - watch
 - apiGroups:
   - keda.sh
   resources:
   - scaledobjects
   verbs:
   - list
+  - watch
 - apiGroups:
   - apps
   resources:
@@ -30,6 +32,8 @@ rules:
   - statefulsets
   verbs:
   - get
+  - list
+  - watch
 - apiGroups:
   - ""
   resources:
