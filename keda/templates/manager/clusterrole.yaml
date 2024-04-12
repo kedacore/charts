@@ -56,7 +56,11 @@ rules:
   resources:
   - '*/scale'
   verbs:
-  - '*'
+  - get
+  - list
+  - patch
+  - update
+  - watch
 {{- else }}
 - apiGroups:
   - apps
@@ -64,7 +68,11 @@ rules:
   - deployments/scale
   - statefulsets/scale
   verbs:
-  - '*'
+  - get
+  - list
+  - patch
+  - update
+  - watch
   {{- range .Values.rbac.scaledRefKinds }}
 - apiGroups:
   - {{ .apiGroup | quote }}
@@ -72,7 +80,11 @@ rules:
   - {{ .kind | quote }}
   - {{ printf "%s/scale" .kind | quote }}
   verbs:
-  - '*'
+  - get
+  - list
+  - patch
+  - update
+  - watch
   {{- end }}   
 {{- end }}
 {{- end }}
@@ -107,8 +119,6 @@ rules:
 - apiGroups:
   - keda.sh
   resources:
-  - clustertriggerauthentications
-  - clustertriggerauthentications/status
   - scaledjobs
   - scaledjobs/finalizers
   - scaledjobs/status
