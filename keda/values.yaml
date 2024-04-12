@@ -277,9 +277,9 @@ rbac:
 
   # -- Whether RBAC for configured CRDs that can have a `scale` subresource should be created
   enabledCustomScaledRefKinds: true
-  # -- List of custom resources that support the scale subresource that can be referenced by `scaledobject.spec.scaleTargetRef`
-  # the feature needs to be also enabled by `enabledCustomScaledRefKinds`
-  # If left empty, rbac for `apiGroups: *` & `resources: */scale` will be created
+  # -- List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`.
+  # The feature needs to be also enabled by `enabledCustomScaledRefKinds`.
+  # If left empty, RBAC for `apiGroups: *` and `resources: */scale` will be created
   # note: Deployments and StatefulSets are supported out of the box
   scaledRefKinds:
   # - apiGroup: argoproj.io
