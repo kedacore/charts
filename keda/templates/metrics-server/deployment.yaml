@@ -58,7 +58,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
-      automountServiceAccountToken: true
+      automountServiceAccountToken: {{ (.Values.serviceAccount.metricServer).automountServiceAccountToken | default .Values.serviceAccount.automountServiceAccountToken }}
       securityContext:
         {{- if .Values.podSecurityContext.metricServer }}
         {{- toYaml .Values.podSecurityContext.metricServer | nindent 8 }}
