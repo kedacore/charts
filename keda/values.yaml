@@ -275,7 +275,7 @@ rbac:
   # -- Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin)
   aggregateToDefaultRoles: false
 
-  # -- Whether rbac for unseen crds that can have a scale subresource should be created
+  # -- Whether RBAC for configured CRDs that can have a `scale` subresource should be created
   enabledCustomScaledRefKinds: true
   # -- List of custom resources that support the scale subresource that can be referenced by `scaledobject.spec.scaleTargetRef`
   # the feature needs to be also enabled by `enabledCustomScaledRefKinds`
