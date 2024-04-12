@@ -111,7 +111,7 @@ their default values.
 | `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
-| `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether rbac for unseen crds that can have a scale subresource should be created |
+| `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
 | `rbac.scaledRefKinds` | string | `nil` | List of custom resources that support the scale subresource that can be referenced by `scaledobject.spec.scaleTargetRef` the feature needs to be also enabled by `enabledCustomScaledRefKinds` If left empty, rbac for `apiGroups: *` & `resources: */scale` will be created note: Deployments and StatefulSets are supported out of the box |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
