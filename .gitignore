@@ -1,0 +1,8 @@
+# IDE specific files
+.vscode
+.idea
+*.swp
+*.swo
+
+# Mac
+.DS_Store

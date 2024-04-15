@@ -59,6 +59,13 @@ WARNING - Running on unsupported Kubernetes version "1.{{.Capabilities.KubeVersi
 -------------------------------------------------------------------------------------
 {{- end }}
 
+{{- if .Values.serviceAccount.name }}
+-------------------------------------------------------------------------------------
+WARNING - .serviceAccount.name has been deprecated, please migrate to newest version of the Helm Chart values that allows overriding the service account name for each KEDA component.
+          New version: serviceAccount.{operator,metricServer,webhooks}.{create,name,automountServiceAccountToken,annotations}
+-------------------------------------------------------------------------------------
+{{- end }}
+
 Learn more about KEDA:
 - Documentation: https://keda.sh/
 - Support: https://keda.sh/support/

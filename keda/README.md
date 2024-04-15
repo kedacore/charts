@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.13.0
+helm install keda kedacore/keda --namespace keda --version 2.13.1
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.13.0
+$ helm install keda kedacore/keda --namespace keda --version 2.13.1
 ```
 
 ## Uninstalling the Chart
@@ -111,11 +111,10 @@ their default values.
 | `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
+| `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
+| `rbac.scaledRefKinds` | string | `nil` | List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`. The feature needs to be also enabled by `enabledCustomScaledRefKinds`. If left empty, RBAC for `apiGroups: *` and `resources: */scale` will be created.
+note: `Deployments` and `StatefulSets` are always enabled |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
-| `serviceAccount.annotations` | object | `{}` | Annotations to add to the service account |
-| `serviceAccount.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
-| `serviceAccount.create` | bool | `true` | Specifies whether a service account should be created |
-| `serviceAccount.name` | string | `"keda-operator"` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
 
@@ -129,6 +128,7 @@ their default values.
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.operator.stackTracesEnabled` | bool | `false` | If enabled, the stack traces will be also printed |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
@@ -139,13 +139,18 @@ their default values.
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
-| `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator |
+| `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
+| `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
 | `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
 | `podSecurityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
 | `resources.operator` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA operator pod |
 | `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
+| `serviceAccount.operator.annotations` | object | `{}` | Annotations to add to the service account |
+| `serviceAccount.operator.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
+| `serviceAccount.operator.create` | bool | `true` | Specifies whether a service account should be created |
+| `serviceAccount.operator.name` | string | `"keda-operator"` | The name of the service account to use. |
 | `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
@@ -180,6 +185,10 @@ their default values.
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
 | `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
 | `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
+| `serviceAccount.metricServer.annotations` | object | `{}` | Annotations to add to the service account |
+| `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
+| `serviceAccount.metricServer.create` | bool | `true` | Specifies whether a service account should be created |
+| `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
@@ -288,8 +297,12 @@ their default values.
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
 | `podSecurityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
-| `resources.webhooks` | object | `{"limits":{"cpu":"50m","memory":"100Mi"},"requests":{"cpu":"10m","memory":"10Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
+| `resources.webhooks` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
 | `securityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the admission webhooks container |
+| `serviceAccount.webhooks.annotations` | object | `{}` | Annotations to add to the service account |
+| `serviceAccount.webhooks.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
+| `serviceAccount.webhooks.create` | bool | `true` | Specifies whether a service account should be created |
+| `serviceAccount.webhooks.name` | string | `"keda-webhook"` | The name of the service account to use. |
 | `topologySpreadConstraints.webhooks` | list | `[]` | [Pod Topology Constraints] of KEDA admission webhooks pod |
 | `upgradeStrategy.webhooks` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Admission webhooks |
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
