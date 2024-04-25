@@ -10,7 +10,8 @@ metadata:
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.crd-labels" . | indent 4 }}
-  name: scaledobjects.keda.shspec:
+  name: scaledobjects.keda.sh
+spec:
   group: keda.sh
   names:
     kind: ScaledObject
