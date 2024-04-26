@@ -1,0 +1,578 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "schema for values.yaml for KEDA http-add-on helm chart",
+  "type": "object",
+  "allOf": [
+    {"$ref": "#/$defs/Top-lvl"}
+  ],
+  "$defs": {
+		"Top-lvl": {
+			"properties": {
+				"additionalLabels": {
+					"type": "object",
+					"description": "Additional labels to be applied to installed resources.\n Note that not all resources will receive these labels.",
+					"required": [],
+					"properties": {}
+				},
+				"crds": {
+					"type": "object",
+					"description": "Whether to install the HTTPScaledObject CustomResourceDefinition",
+					"required": [],
+					"properties": {
+						"install": {
+							"type": "boolean"
+						}
+					}
+				},
+				"logging": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"operator": {
+							"description": "Logging level for KEDA http-add-on operator.",
+							"required": [],
+							"allOf": [
+								{
+									"$ref": "#/$defs/LoggingOptions"
+								}
+							],
+							"properties": {
+								"kubeRbacProxy": {
+									"type": "object",
+									"description": "Logging level for KEDA http-add-on operator rbac proxy.\n  allowed values: \n - '0' for info\n - '4' for debug'n - or an integer value greater than 0",
+									"required": [],
+									"properties": {
+										"level": {
+											"type": "number",
+											"minimum": 0
+										}
+									}
+								}
+							}
+						},
+						"scaler": {
+							"description": "Logging level for KEDA http-add-on Scaler.",
+							"$ref": "#/$defs/LoggingOptions"
+						},
+						"interceptor": {
+							"description": "Logging level for KEDA http-add-on Interceptor.",
+							"$ref": "#/$defs/LoggingOptions"
+						}
+					}
+				},
+				"operator": {
+					"type": "object",
+					"description": "operator-specific configuration values",
+					"required": [],
+					"properties": {
+						"imagePullSecrets": {
+							"type": "array",
+							"description": "The image pull secrets for the operator component",
+							"items": {
+								"type": "string"
+							}
+						},
+						"watchNamespace": {
+							"description": "The namespace to watch for new 'HTTPScaledObject's.\nLeave this blank (i.e. '') to tell the operator to watch all namespaces.",
+							"type": "string"
+						},
+						"pullPolicy": {
+							"description": "The image pull policy for the operator component",
+							"default": "Always",
+							"enum": [
+								"Always",
+								"IfNotPresent",
+								"Never"
+							]
+						},
+						"resources": {
+							"$ref": "#/$defs/ResourcesType"
+						},
+						"port": {
+							"description": "The port for the operator main server to run on",
+							"type": "number",
+							"minimum": 1,
+							"maximum": 65535,
+							"default": 8443
+						},
+						"nodeSelector": {
+							"description": "Node selector for pod scheduling",
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"tolerations": {
+							"description": "Tolerations for pod scheduling",
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"affinity": {
+							"description": "Affinity for pod scheduling",
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"kubeRbacProxy": {
+							"type": "object",
+							"required": [],
+							"properties": {
+								"resources": {
+									"$ref": "#/$defs/ResourcesType"
+								}
+							}
+						}
+					}
+				},
+				"scaler": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"replicas": {
+							"type": "number",
+							"description": "Number of replicas of scaler deployment."
+						},
+						"imagePullSecrets": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"service": {
+							"type": "string"
+						},
+						"pullPolicy": {
+							"description": "The image pull policy for the scaler component",
+							"default": "Always",
+							"enum": [
+								"Always",
+								"IfNotPresent",
+								"Never"
+							]
+						},
+						"grpcPort": {
+							"type": "number",
+							"minimum": 1,
+							"maximum": 65535,
+							"default": 9090
+						},
+						"pendingRequestsInterceptor": {
+							"description": "The number of 'target requests' that the external scaler\n will report to KEDA for the interceptor's scaling metrics.\nSee the KEDA external scaler documentation: \n - https://keda.sh/docs/2.4/concepts/external-scalers/ for details on target requests",
+							"default": 200,
+							"type": "number"
+						},
+						"streamInterval": {
+							"description": "Interval in ms for communicating IsActive to KEDA",
+							"default": 200,
+							"type": "number"
+						},
+						"nodeSelector": {
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"tolerations": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"affinity": {
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"resources": {
+							"$ref": "#/$defs/ResourcesType"
+						}
+					}
+				},
+				"interceptor": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"imagePullSecrets": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"pullPolicy": {
+							"description": "The image pull policy for the interceptor component",
+							"default": "Always",
+							"enum": [
+								"Always",
+								"IfNotPresent",
+								"Never"
+							]
+						},
+						"admin": {
+							"type": "object",
+							"description": "configurable values for the interceptor's admin service.\n The admin service is a cluster-internal HTTP interface for triggering debugging behavior.",
+							"required": [],
+							"properties": {
+								"service": {
+									"type": "string"
+								},
+								"port": {
+									"type": "number",
+									"minimum": 1,
+									"maximum": 65535,
+									"default": 9090
+								}
+							}
+						},
+						"proxy": {
+							"type": "object",
+							"description": "configurable values for the interceptor's proxy service.\n The proxy service is the publicly accessible HTTP interface\n that production requests go to",
+							"required": [],
+							"properties": {
+								"service": {
+									"type": "string"
+								},
+								"port": {
+									"type": "number",
+									"minimum": 1,
+									"maximum": 65535,
+									"default": 8080
+								}
+							}
+						},
+						"replicas": {
+							"type": "object",
+							"required": [],
+							"properties": {
+								"min": {
+									"type": "number",
+									"description": "The minimum number of interceptor replicas that should ever be running",
+									"minimum": 0,
+									"default": 3
+								},
+								"max": {
+									"type": "number",
+									"description": "The maximum number of interceptor replicas that should ever be running",
+									"minimum": 0,
+									"default": 50
+								},
+								"waitTimeout": {
+									"type": "string",
+									"description": "The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure",
+									"default": "20s"
+								}
+							}
+						},
+						"scaledObject": {
+							"type": "object",
+							"required": [],
+							"properties": {
+								"pollingInterval": {
+									"type": "number",
+									"minimum": 0,
+									"default": 1
+								}
+							}
+						},
+						"tcpConnectTimeout": {
+							"description": "How long the interceptor waits to establish TCP connections with backends before failing a request.",
+							"type": "string",
+							"default": "500ms"
+						},
+						"keepAlive": {
+							"description": "The interceptor's connection keep alive timeout",
+							"type": "string",
+							"default": "1s"
+						},
+						"responseHeaderTimeout": {
+							"description": "ow long the interceptor will wait between forwarding a request to a backend\n and receiving response headers back before failing the request",
+							"type": "string",
+							"default": "500ms"
+						},
+						"endpointsCachePollingIntervalMS": {
+							"description": "How often (in milliseconds) the interceptor does a full refresh of its endpoints cache.\nThe interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes.\nThis duration is the maximum time it will take to see changes to the endpoints.",
+							"type": "number",
+							"minimum": 0,
+							"default": "250"
+						},
+						"forceHTTP2": {
+							"description": "Whether or not the interceptor should force requests to use HTTP/2",
+							"type": "boolean",
+							"default": false
+						},
+						"maxIdleConns": {
+							"description": "The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit",
+							"type": "number",
+							"minimum": 0,
+							"default": "100"
+						},
+						"idleConnTimeout": {
+							"description": "The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool.",
+							"type": "string",
+							"default": "90s"
+						},
+						"tlsHandshakeTimeout": {
+							"description": "The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout.",
+							"type": "string",
+							"default": "10s"
+						},
+						"expectContinueTimeout": {
+							"description": "Special handling for responses with 'Expect: 100-continue' response headers.\nsee https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout field for more details",
+							"type": "string",
+							"default": "1s"
+						},
+						"nodeSelector": {
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"tolerations": {
+							"type": "array",
+							"items": {
+								"type": "string"
+							}
+						},
+						"affinity": {
+							"type": "object",
+							"required": [],
+							"properties": {}
+						},
+						"resources": {
+							"$ref": "#/$defs/ResourcesType"
+						},
+						"tls": {
+							"type": "object",
+							"description": "configuration of tls for the interceptor",
+							"required": [],
+							"properties": {
+								"enabled": {
+									"description": "Whether a TLS server should be started on the interceptor proxy",
+									"type": "boolean",
+									"default": false
+								},
+								"cert_path": {
+									"description": "Mount path of the certificate file to use with the interceptor proxy TLS server",
+									"type": "string"
+								},
+								"key_path": {
+									"description": "Mount path of the certificate key file to use with the interceptor proxy TLS server",
+									"type": "string"
+								},
+								"cert_secret": {
+									"description": "Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server",
+									"type": "string"
+								},
+								"port": {
+									"description": "Port that the interceptor proxy TLS server should be started on",
+									"type": "number",
+									"minimum": 1,
+									"maximum": 65535,
+									"default": 8443
+								}
+							}
+						}
+					}
+				},
+				"images": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"tag": {
+							"description": "tag is the image tag to use for all images.\nfor example, if the operator image is 'myoperator' and\ntag is 'mytag', the operator image used will bed\n'myoperator:mytag'. 'latest' is used to indicate the latestd\nstable release in the official images, 'canary' isd\nthe build for the latest commit to the 'main' branch,d\nand you can target any other commit with 'sha-<GIT_SHA[0:7]>'d\n-- Image tag for the http add on. This tag is applied to the images listed in 'images.operator',d\n 'images.interceptor', and 'images.scaler'. d\nOptional, given app version of Helm chart is used by default",
+							"type": "string"
+						},
+						"operator": {
+							"description": "Image name for the operator image component",
+							"type": "string",
+							"default": "ghcr.io/kedacore/http-add-on-operator"
+						},
+						"interceptor": {
+							"description": "Image name for the interceptor image component",
+							"type": "string",
+							"default": "ghcr.io/kedacore/http-add-on-interceptor"
+						},
+						"scaler": {
+							"description": "Image name for the scaler image component",
+							"type": "string",
+							"default": "ghcr.io/kedacore/http-add-on-scaler"
+						},
+						"kubeRbacProxy": {
+							"description": "the kube-rbac-proxy image to use",
+							"type": "object",
+							"required": [],
+							"properties": {
+								"name": {
+									"type": "string",
+									"default": "gcr.io/kubebuilder/kube-rbac-proxy"
+								},
+								"tag": {
+									"type": "string",
+									"default": "v0.13.0"
+								}
+							}
+						}
+					}
+				},
+				"rbac": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"aggregateToDefaultRoles": {
+							"description": "Install aggregate roles for edit and view",
+							"default": false,
+							"type": "boolean"
+						}
+					}
+				},
+				"securityContext": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"allowPrivilegeEscalation": {
+							"type": "boolean",
+							"default": false
+						},
+						"capabilities": {
+							"type": "object",
+							"required": [],
+							"properties": {
+								"drop": {
+									"type": "array",
+									"items": {
+										"type": "string",
+										"default": "ALL"
+									}
+								}
+							}
+						},
+						"privileged": {
+							"type": "boolean",
+							"default": false
+						},
+						"readOnlyRootFilesystem": {
+							"type": "boolean",
+							"default": true
+						}
+					}
+				},
+				"podSecurityContext": {
+					"type": "object",
+					"required": [],
+					"properties": {
+						"fsGroup": {
+							"type": "number"
+						},
+						"supplementalGroups": {
+							"type": "array",
+							"items": {
+								"type": "number"
+							}
+						}
+					}
+				}
+			}
+		},
+		"TimeEncodingType": {
+			"timeEncoding": {
+				"default": "rfc3339",
+				"description": "allowed values are:\n -'epoch',\n - 'millis',\n - 'nano',\n - 'iso8601',\n - 'rfc3339'\n - 'rfc3339nano'",
+				"enum": [
+					"epoch",
+					"millis",
+					"nano",
+					"iso8601",
+					"rfc3339",
+					"rfc3339nano"
+				]
+			}
+		},
+		"LoggingLevelType": {
+			"default": "info",
+			"description": "allowed values are:\n -'debug',\n - 'info',\n - 'error',\n - or any integer greater than 0",
+			"anyOf": [
+				{
+					"enum": [
+						"debug",
+						"info",
+						"error"
+					]
+				},
+				{
+					"type": "integer",
+					"minimum": 0
+				}
+			]
+		},
+		"LoggingOptions": {
+			"type": "object",
+			"properties": {
+				"level": {
+					"$ref": "#/$defs/LoggingLevelType"
+				},
+				"format": {
+					"enum": [
+						"console",
+						"json"
+					],
+					"default": "console",
+					"description": "allowed values:\n - 'json'\n - 'console'"
+				},
+				"timeEncoding": {
+					"$ref": "#/$defs/TimeEncodingType"
+				}
+			}
+		},
+		"ResourcesType": {
+			"type": "object",
+			"properties": {
+				"limits": {
+					"type": "object",
+					"description": "The CPU/memory resource limit for the operator component.\nHard limit, anything above will be OOMKilled (for memory).",
+					"properties": {
+						"cpu": {
+							"anyOf": [
+								{
+									"type": "string",
+									"pattern": "^[1-9]([0-9]*)?m$"
+								},
+								{
+									"type": "number",
+									"minimum": 0,
+									"maximum": 128
+								}
+							]
+						},
+						"memory": {
+							"type": "string",
+							"pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+						}
+					},
+					"required": [
+						"cpu",
+						"memory"
+					]
+				},
+				"requests": {
+					"type": "object",
+					"description": "The CPU/memory resource request for the operator component.\n This value is used by k8s scheduler to select a node.",
+					"properties": {
+						"cpu": {
+							"type": "string"
+						},
+						"memory": {
+							"type": "string",
+							"minLength": 1
+						}
+					},
+					"required": [
+						"cpu",
+						"memory"
+					]
+				}
+			},
+			"required": [
+				"limits",
+				"requests"
+			]
+		}
+	}
+}

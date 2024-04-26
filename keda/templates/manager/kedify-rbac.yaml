@@ -1,0 +1,64 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: "kedify-{{ .Values.operator.name }}-http-admin"
+    {{- include "keda.labels" . | indent 4 }}
+  name: kedify-{{ .Values.operator.name }}-http-admin
+rules:
+- apiGroups: ["http.keda.sh"]
+  resources: ["httpscaledobjects"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+---
+{{- if not .Values.watchNamespace }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: kedify-{{ .Values.operator.name }}-http-admin
+    {{- include "keda.labels" . | indent 4 }}
+  name: "kedify-{{ .Values.operator.name }}-http-admin"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: "kedify-{{ .Values.operator.name }}-http-admin"
+subjects:
+- kind: ServiceAccount
+  name: {{ (.Values.serviceAccount.operator).name | default .Values.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+{{- else }}
+  {{- range ( split "," .Values.watchNamespace ) }}
+# Role binding for namespace '{{ . }}'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: "kedify-{{ $.Values.operator.name }}-http-admin"
+    {{- include "keda.labels" $ | indent 4 }}
+  name: "kedify-{{ $.Values.operator.name }}-http-admin"
+  namespace: {{ . | trim }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: "kedify-{{ $.Values.operator.name }}-http-admin"
+subjects:
+- kind: ServiceAccount
+  name: {{ ($.Values.serviceAccount.operator).name | default $.Values.serviceAccount.name }}
+  namespace: {{ $.Release.Namespace }}
+---
+  {{- end }}
+{{- end }}
+{{- end }}

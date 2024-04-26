@@ -36,6 +36,8 @@ spec:
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"
         env:
+        - name: KEDA_HTTP_CLUSTER_DOMAIN 
+          value: "{{ .Values.interceptor.clusterDomain }}"
         - name: KEDA_HTTP_CURRENT_NAMESPACE
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_PROXY_PORT

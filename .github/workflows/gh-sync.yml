@@ -1,0 +1,97 @@
+name: Sync with upstream
+on:
+  schedule:
+          # ┌───────────── minute (0 - 59)
+          # │ ┌───────────── hour (0 - 23)
+          # │ │ ┌───────────── day of the month (1 - 31)
+          # │ │ │ ┌───────────── month (1 - 12)
+          # │ │ │ │ ┌───────────── day of the week (0 - 6)
+          # │ │ │ │ │
+          # │ │ │ │ │
+          # │ │ │ │ │
+  - cron:  "* 7 * * *"
+  workflow_dispatch:
+    inputs:
+      upstreamRepo:
+        description: "Upstream Repo - Where we should get the changes from. If not specified, it's 'kedacore/charts'"
+        default: "kedacore/charts"
+        required: false
+        type: string
+      downstreamRepo:
+        description: "Downstream Repo - To what repo we are syncying. If not specified, it's 'kedify/charts' (this repo)"
+        default: "kedify/charts"
+        required: false
+        type: string
+
+env:
+  UPSTREAM_REPO: ${{ github.event.inputs.upstreamRepo || 'kedacore/charts' }}
+  DOWNSTREAM_REPO: ${{ github.event.inputs.downstreamRepo || 'kedify/charts' }}
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          fetch-depth: 0
+      - run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "Kedify Bot"
+          git remote add upstream https://github.com/${{ env.UPSTREAM_REPO }}.git
+          git pull -s recursive --rebase -X ours upstream main
+          git push origin +main
+      # - name: Open Pull Request
+      #   id: cpr
+      #   uses: peter-evans/create-pull-request@v6
+      #   with:
+      #     token: ${{ secrets.PAT_TOKEN }}
+      #     push-to-fork: ${{ env.DOWNSTREAM_REPO }}
+      #     commit-message: Syncing upstream helm charts
+      #     title: Syncing upstream helm charts
+      #     body: |
+      #       :package: Syncing upstream helm chart :package:
+
+      #       ### :shipit: Release?
+
+      #       The sync mechanism doesn't deal with releases.
+
+      #       ### :thinking: Rebase or merge?
+
+      #       Although merging is obviously better :trollface:, let's use rebasing for this sync.
+      #       This way we will see our custom tweaks nicely on the tip of the `main`.
+
+      #       ### :hospital: Conflict?
+
+      #       This could have happened only if the PR was opened for a long time and meanwhile there
+      #       was a change to this repo. :adhesive_bandage: Just close this PR and wait for the next one.
+
+      #       #### :bulb: Tip
+
+      #       Ideally, this repo has only one commits with all the necessary tweaks in it (like this gh action for instance).
+      #       So that we can keep adding the changes to this commit by `g commit --ammend` and ideally the changes should be in
+      #       new files so that the risk of conflict with the upstream repo is minimal.
+
+      #       ### :wrench: Important
+
+      #       Once this is merged, please don't forget to run this command if our 'All our tweaks should go here' commit is not on
+      #       top:
+              
+      #       ```
+      #       GIT_SEQUENCE_EDITOR=\"sed -i -n 'h;1n;2p;g;p'\" git rebase -i HEAD~2
+      #       ```
+
+      #       To reorder last two commits.
+
+      #       This automated PR was created by [this action][1].
+
+      #       [1]: https://github.com/kedify/charts/actions/runs/${{ github.run_id }}
+      #     branch: upstream-sync
+      #     delete-branch: true
+      #     signoff: true
+
+      # - name: Check PR
+      #   run: |
+      #     echo ":rocket:"
+      #     echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}" | tee -a "${GITHUB_STEP_SUMMARY}"
+      #     echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}" | tee -a "${GITHUB_STEP_SUMMARY}"

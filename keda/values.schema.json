@@ -1,0 +1,1602 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "schema for values.yaml for KEDA helm chart",
+    "$ref": "#/definitions/Top-lvl",
+    "definitions": {
+        "Top-lvl": {
+            "properties": {
+                "global": {
+                    "$ref": "#/definitions/Global"
+                },
+                "image": {
+                    "$ref": "#/definitions/Images"
+                },
+                "clusterName": {
+                    "type": "string"
+                },
+                "clusterDomain": {
+                    "type": "string"
+                },
+                "crds": {
+                    "$ref": "#/definitions/Crds"
+                },
+                "watchNamespace": {
+                    "$ref": "#/definitions/WatchNamespace"
+                },
+                "imagePullSecrets": {
+                    "$ref": "#/definitions/ImagePullSecrets"
+                },
+                "networkPolicy": {
+                    "$ref": "#/definitions/NetworkPolicy"
+                },
+                "operator": {
+                    "$ref": "#/definitions/Operator"
+                },
+                "metricsServer": {
+                    "$ref": "#/definitions/MetricsServer"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/Webhooks"
+                },
+                "upgradeStrategy": {
+                    "$ref": "#/definitions/UpgradeStrategy"
+                },
+                "podDisruptionBudget": {
+                    "$ref": "#/definitions/PodDisruptionBudget"
+                },
+                "additionalLabels": {
+                    "$ref": "#/definitions/AdditionalLabels"
+                },
+                "podAnnotations": {
+                    "$ref": "#/definitions/PodAnnotations"
+                },
+                "podLabels": {
+                    "$ref": "#/definitions/PodLabels"
+                },
+                "rbac": {
+                    "$ref": "#/definitions/Rbac"
+                },
+                "serviceAccount": {
+                    "$ref": "#/definitions/ServiceAccount"
+                },
+                "podIdentity": {
+                    "$ref": "#/definitions/PodIdentity"
+                },
+                "grpcTLSCertsSecret": {
+                    "type": "string"
+                },
+                "hashiCorpVaultTLS": {
+                    "type": "string"
+                },
+                "logging": {
+                    "$ref": "#/definitions/Logging"
+                },
+                "securityContext": {
+                    "$ref": "#/definitions/SecurityContext"
+                },
+                "podSecurityContext": {
+                    "$ref": "#/definitions/PodSecurityContext"
+                },
+                "service": {
+                    "$ref": "#/definitions/Service"
+                },
+                "resources": {
+                    "$ref": "#/definitions/Resources"
+                },
+                "nodeSelector": {
+                    "$ref": "#/definitions/NodeSelector"
+                },
+                "tolerations": {
+                    "$ref": "#/definitions/Tolerations"
+                },
+                "topologySpreadConstraints": {
+                    "$ref": "#/definitions/TopologySpreadConstraints"
+                },
+                "affinity": {
+                    "$ref": "#/definitions/Affinity"
+                },
+                "priorityClassName": {
+                    "type": "string"
+                },
+                "http": {
+                    "$ref": "#/definitions/Http"
+                },
+                "profiling": {
+                    "$ref": "#/definitions/Profiling"
+                },
+                "extraArgs": {
+                    "$ref": "#/definitions/ExtraArgs"
+                },
+                "env": {
+                    "$ref": "#/definitions/Env"
+                },
+                "volumes": {
+                    "$ref": "#/definitions/Volumes"
+                },
+                "prometheus": {
+                    "$ref": "#/definitions/Prometheus"
+                },
+                "opentelemetry": {
+                    "$ref": "#/definitions/Opentelemetry"
+                },
+                "certificates": {
+                    "$ref": "#/definitions/Certificates"
+                },
+                "permissions": {
+                    "$ref": "#/definitions/Permissions"
+                },
+                "extraObjects": {
+                    "$ref": "#/definitions/ExtraObjects"
+                },
+                "asciiArt": {
+                    "type": "boolean"
+                },
+                "customManagedBy": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "global",
+                "image",
+                "clusterName",
+                "clusterDomain",
+                "crds",
+                "watchNamespace",
+                "imagePullSecrets",
+                "networkPolicy",
+                "operator",
+                "metricsServer",
+                "webhooks",
+                "upgradeStrategy",
+                "podDisruptionBudget",
+                "additionalLabels",
+                "additionalAnnotations",
+                "podAnnotations",
+                "podLabels",
+                "rbac",
+                "serviceAccount",
+                "podIdentity",
+                "logging",
+                "securityContext",
+                "podSecurityContext",
+                "service",
+                "resources",
+                "nodeSelector",
+                "tolerations",
+                "topologySpreadConstraints",
+                "affinity",
+                "priorityClassName",
+                "http",
+                "profiling",
+                "extraArgs",
+                "env",
+                "volumes",
+                "prometheus",
+                "opentelemetry",
+                "certificates",
+                "permissions",
+                "extraObjects",
+                "asciiArt",
+                "customManagedBy"
+            ]
+        },
+        "Global": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "type": "object",
+                    "properties": {
+                        "registry": {
+                            "type": ["string", "null"]
+                        }
+                    }
+                }
+            }
+        },
+        "Images": {
+            "type": "object",
+            "properties": {
+                "keda": {
+                    "$ref": "#/definitions/Image"
+                },
+                "metricsApiServer": {
+                    "$ref": "#/definitions/Image"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/Image"
+                },
+                "pullPolicy": {
+                    "enum": [
+                        "Always",
+                        "IfNotPresent",
+                        "Never"
+                    ]
+                }
+            },
+            "required": [
+                "keda",
+                "metricsApiServer",
+                "webhooks",
+                "pullPolicy"
+            ]
+        },
+        "Image": {
+            "type": "object",
+            "properties": {
+                "registry": {
+                    "type": ["string", "null"]
+                },
+                "repository": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "tag": {
+                    "type": "string",
+                    "minLength": 0
+                }
+            },
+            "required": [
+                "repository",
+                "tag"
+            ]
+        },
+        "Crds": {
+            "type": "object",
+            "properties": {
+                "install": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "additionalAnnotations": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "install",
+                "additionalAnnotations"
+            ]
+        },
+        "WatchNamespace": {
+            "type": "string",
+            "description": "Either empty string denoting all the namespaces or comma separated list of k8s namespaces",
+            "examples": [
+                "",
+                "keda",
+                "keda,default,kube-system"
+            ],
+            "anyOf": [
+                {
+                    "maxLength": 0
+                },
+                {
+                    "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?(,[a-z0-9]([-a-z0-9]*[a-z0-9])?)*$"
+                }
+            ]
+        },
+        "ImagePullSecrets": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "NetworkPolicy": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "flavor": {
+                    "type": "string"
+                },
+                "cilium": {
+                    "type": "object",
+                    "properties": {
+                        "operator": {
+                            "type": "object",
+                            "properties": {
+                                "extraEgressRules": {
+                                    "type": "array",
+                                    "items": {}
+                                }
+                            },
+                            "required": [
+                                "extraEgressRules"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "operator"
+                    ]
+                }
+            },
+            "required": [
+                "enabled",
+                "flavor",
+                "cilium"
+            ]
+        },
+        "Probe": {
+            "type": "object",
+            "properties": {
+                "initialDelaySeconds": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "periodSeconds": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "timeoutSeconds": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "failureThreshold": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "successThreshold": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "initialDelaySeconds",
+                "periodSeconds",
+                "timeoutSeconds",
+                "failureThreshold",
+                "successThreshold"
+            ]
+        },
+        "Operator": {
+            "allOf": [{ "$ref": "#/definitions/Component" }],
+            "properties": {
+                "extraContainers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "extraInitContainers": {
+                    "type": "array",
+                    "items": {}
+                },
+                "disableCompression": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "name": {
+                    "type": "string",
+                    "default": "keda-operator"
+                }
+            },
+            "required": [
+                "extraContainers",
+                "extraInitContainers",
+                "disableCompression",
+                "name"
+            ]
+        },
+        "MetricsServer": {
+            "allOf": [{ "$ref": "#/definitions/Component" }],
+            "properties": {
+                "disableCompression": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "dnsPolicy": {
+                    "enum": [
+                        "Default",
+                        "ClusterFirst",
+                        "ClusterFirstWithHostNet"
+                    ]
+                },
+                "useHostNetwork": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "disableCompression",
+                "dnsPolicy",
+                "useHostNetwork"
+            ]
+        },
+        "Webhooks": {
+            "allOf": [{ "$ref": "#/definitions/Component" }],
+            "properties": {
+                "useHostNetwork": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "default": "keda-admission-webhooks"
+                }
+            },
+            "required": [
+                "useHostNetwork",
+                "name"
+            ]
+        },
+        "Component": {
+            "type": "object",
+            "properties": {
+                "revisionHistoryLimit": {
+                    "type": "integer"
+                },
+                "replicaCount": {
+                    "type": "integer",
+                    "default": 1,
+                    "minimum": 0
+                },
+                "affinity": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "livenessProbe": {
+                    "$ref": "#/definitions/Probe"
+                },
+                "readinessProbe": {
+                    "$ref": "#/definitions/Probe"
+                }
+            },
+            "required": [
+                "revisionHistoryLimit",
+                "replicaCount",
+                "affinity",
+                "livenessProbe",
+                "readinessProbe"
+            ]
+        },
+        "UpgradeStrategyType": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [
+                        "RollingUpdate",
+                        "Recreate"
+                    ]
+                },
+                "rollingUpdate": {
+                    "type": "object",
+                    "properties": {
+                        "maxSurge": {
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "maxUnavailable": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    }
+                }
+            },
+            "required": [
+                "type",
+                "rollingUpdate"
+            ]
+        },
+        "UpgradeStrategy": {
+            "type": "object",
+            "upgradeStrategy": {
+                "type": "object",
+                "properties": {
+                    "operator": {
+                        "$ref": "#/definitions/UpgradeStrategyType"
+                    },
+                    "metricsApiServer": {
+                        "$ref": "#/definitions/UpgradeStrategyType"
+                    },
+                    "webhooks": {
+                        "$ref": "#/definitions/UpgradeStrategyType"
+                    }
+                },
+                "required": [
+                    "operator",
+                    "metricsApiServer",
+                    "webhooks"
+                ]
+            }
+        },
+        "PodDisruptionBudgetType": {
+            "type": "object",
+            "properties": {
+                "maxUnavailable": {
+                    "type": ["integer", "null"],
+                    "minimum": 0
+                },
+                "minAvailable": {
+                    "type": ["integer", "null"],
+                    "minimum": 0
+                }
+            }
+        },
+        "PodDisruptionBudget": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/PodDisruptionBudgetType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/PodDisruptionBudgetType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/PodDisruptionBudgetType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "AdditionalLabels": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "AdditionalAnnotations": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "PodAnnotations": {
+            "type": "object",
+            "properties": {
+                "keda": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "metricsAdapter": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "webhooks": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "keda",
+                "metricsAdapter",
+                "webhooks"
+            ]
+        },
+        "PodLabels": {
+            "type": "object",
+            "properties": {
+                "keda": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "metricsAdapter": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "webhooks": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "keda",
+                "metricsAdapter",
+                "webhooks"
+            ]
+        },
+        "Rbac": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "aggregateToDefaultRoles": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "enabledCustomScaledRefKinds": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "scaledRefKinds": {
+                    "type": ["array", "null"],
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "apiGroup": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "kind": {
+                                "type": "string",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "apiGroup",
+                            "kind"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "create",
+                "aggregateToDefaultRoles",
+                "enabledCustomScaledRefKinds"
+            ]
+        },
+        "ServiceAccountType": {
+            "type": "object",
+            "properties": {
+                "create": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "automountServiceAccountToken": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "annotations": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "create",
+                "name",
+                "automountServiceAccountToken",
+                "annotations"
+            ]
+        },
+        "ServiceAccount": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/ServiceAccountType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/ServiceAccountType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/ServiceAccountType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "PodIdentity": {
+            "type": "object",
+            "properties": {
+                "activeDirectory": {
+                    "type": "object",
+                    "properties": {
+                        "identity": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "azureWorkload": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "clientId": {
+                            "type": "string"
+                        },
+                        "tenantId": {
+                            "type": "string"
+                        },
+                        "tokenExpiration": {
+                            "type": "integer",
+                            "minimum": 0
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "tokenExpiration"
+                    ]
+                },
+                "aws": {
+                    "type": "object",
+                    "properties": {
+                        "irsa": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "audience": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "roleArn": {
+                                    "type": "string"
+                                },
+                                "stsRegionalEndpoints": {
+                                    "type": "string"
+                                },
+                                "tokenExpiration": {
+                                    "type": "integer"
+                                }
+                            },
+                            "required": [
+                                "enabled",
+                                "audience",
+                                "stsRegionalEndpoints",
+                                "tokenExpiration"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "irsa"
+                    ]
+                },
+                "gcp": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "gcpIAMServiceAccount": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "enabled"
+                    ]
+                }
+            }
+        },
+        "TimeEncodingType": {
+            "timeEncoding": {
+                "default": "rfc3339",
+                "enum": [
+                    "epoch",
+                    "millis",
+                    "nano",
+                    "iso8601",
+                    "rfc3339",
+                    "rfc3339nano"
+                ]
+            }
+        },
+        "LoggingLevelType": {
+            "default": "info",
+            "anyOf": [
+                { 
+                    "enum": [
+                        "debug",
+                        "info",
+                        "error"
+                    ]
+                },
+                {
+                    "type": "integer",
+                    "minimum": 0 
+                }
+            ]
+        },
+        "Logging": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                            "$ref": "#/definitions/LoggingLevelType"
+                        },
+                        "format": {
+                            "enum": [
+                                "console",
+                                "json"
+                            ],
+                            "default": "console"
+                        },
+                        "timeEncoding": {
+                            "$ref": "#/definitions/TimeEncodingType"
+                        },
+                        "stackTracesEnabled": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    "required": [
+                        "level",
+                        "format",
+                        "timeEncoding",
+                        "stackTracesEnabled"
+                    ]
+                },
+                "metricServer": {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                            "type": "integer",
+                            "minimum": 0 
+                        },
+                        "stderrthreshold": {
+                            "enum": [
+                                "ERROR",
+                                "DEBUG",
+                                "WARN",
+                                "ALERT",
+                                "EMERG",
+                                "INFO"
+                            ],
+                            "default": "ERROR"
+                        }
+                    },
+                    "required": [
+                        "level",
+                        "stderrthreshold"
+                    ]
+                },
+                "webhooks": {
+                    "type": "object",
+                    "properties": {
+                        "level": {
+                            "$ref": "#/definitions/LoggingLevelType"
+                        },
+                        "format": {
+                            "enum": [
+                                "console",
+                                "json"
+                            ],
+                            "default": "console"
+                        },
+                        "timeEncoding": {
+                            "$ref": "#/definitions/TimeEncodingType"
+                        }
+                    },
+                    "required": [
+                        "level",
+                        "format",
+                        "timeEncoding"
+                    ]
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "SecurityContextType": {
+            "type": "object",
+            "properties": {
+                "capabilities": {
+                    "type": "object",
+                    "properties": {
+                        "drop": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "default": "ALL"
+                            }
+                        }
+                    },
+                    "required": [
+                        "drop"
+                    ]
+                },
+                "allowPrivilegeEscalation": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "readOnlyRootFilesystem": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "seccompProfile": {
+                    "type": "object",
+                    "properties": {
+                        "type": {
+                            "type": "string",
+                            "default": "RuntimeDefault"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ]
+                }
+            },
+            "required": [
+                "capabilities",
+                "allowPrivilegeEscalation",
+                "readOnlyRootFilesystem",
+                "seccompProfile"
+            ]
+        },
+        "SecurityContext": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/SecurityContextType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/SecurityContextType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/SecurityContextType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "PodSecurityContextType": {
+            "type": "object",
+            "properties": {
+                "runAsNonRoot": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "runAsUser": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "runAsGroup": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "fsGroup": {
+                    "type": "integer",
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "runAsNonRoot"
+            ]
+        },
+        "PodSecurityContext": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/PodSecurityContextType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/PodSecurityContextType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/PodSecurityContextType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "Service": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "enum": [
+                        "ClusterIP",
+                        "NodePort",
+                        "LoadBalancer",
+                        "ExternalName"
+                    ],
+                    "default": "ClusterIP"
+                },
+                "portHttps": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "portHttpsTarget": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "annotations": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "type",
+                "portHttps",
+                "portHttpsTarget",
+                "annotations"
+            ]
+        },
+        "Resources": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/ResourcesType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/ResourcesType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/ResourcesType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "ResourcesType": {
+            "type": "object",
+            "properties": {
+                "limits": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "anyOf": [
+                                { 
+                                    "type": "string",
+                                    "pattern": "^[1-9]([0-9]*)?m$"
+                                },
+                                {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 128
+                                }
+                            ]
+                        },
+                        "memory": {
+                            "type": "string",
+                            "pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+                        }
+                    },
+                    "required": [
+                        "cpu",
+                        "memory"
+                    ]
+                },
+                "requests": {
+                    "type": "object",
+                    "properties": {
+                        "cpu": {
+                            "type": "string"
+                        },
+                        "memory": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "cpu",
+                        "memory"
+                    ]
+                }
+            },
+            "required": [
+                "limits",
+                "requests"
+            ]
+        },
+        "NodeSelector": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "Tolerations": {
+            "type": "array",
+            "items": {}
+        },
+        "TopologySpreadConstraints": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "type": "array",
+                    "items": {}
+                },
+                "metricsServer": {
+                    "type": "array",
+                    "items": {}
+                },
+                "webhooks": {
+                    "type": "array",
+                    "items": {}
+                }
+            },
+            "required": [
+                "operator",
+                "metricsServer",
+                "webhooks"
+            ]
+        },
+        "Affinity": {
+            "type": "object",
+            "properties": {},
+            "required": []
+        },
+        "Http": {
+            "type": "object",
+            "properties": {
+                "timeout": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "keepAlive": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    },
+                    "required": [
+                        "enabled"
+                    ]
+                },
+                "minTlsVersion": {
+                    "type": "string",
+                    "default": "TLS12",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "timeout",
+                "keepAlive",
+                "minTlsVersion"
+            ]
+        },
+        "ProfilingType": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "port": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 65535
+                }
+            },
+            "required": [
+                "enabled",
+                "port"
+            ]
+        },
+        "Profiling": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/ProfilingType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/ProfilingType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/ProfilingType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricsServer",
+                "webhooks"
+            ]
+        },
+        "ExtraArgs": {
+            "type": "object",
+            "properties": {
+                "keda": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                },
+                "metricsAdapter": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
+            },
+            "required": [
+                "keda",
+                "metricsAdapter"
+            ]
+        },
+        "Env": {
+            "type": "array",
+            "items": {}
+        },
+        "VolumesType": {
+            "type": "object",
+            "properties": {
+                "extraVolumes": {
+                    "type": "array",
+                    "items": {}
+                },
+                "extraVolumeMounts": {
+                    "type": "array",
+                    "items": {}
+                }
+            },
+            "required": [
+                "extraVolumes",
+                "extraVolumeMounts"
+            ]
+        },
+        "Volumes": {
+            "type": "object",
+            "properties": {
+                "keda": {
+                    "$ref": "#/definitions/VolumesType"
+                },
+                "metricsApiServer": {
+                    "$ref": "#/definitions/VolumesType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/VolumesType"
+                }
+            },
+            "required": [
+                "keda",
+                "metricsApiServer",
+                "webhooks"
+            ]
+        },
+        "PrometheusType": {
+            "type": "object",
+            "properties": {
+                "enabled": {
+                    "type": "boolean",
+                    "default": false
+                },
+                "port": {
+                    "type": "integer",
+                    "default": 8080,
+                    "minimum": 1,
+                    "maximum": 65535
+                },
+                "portName": {
+                    "type": "string"
+                },
+                "serviceMonitor": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "jobLabel": {
+                            "type": "string"
+                        },
+                        "targetLabels": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "podTargetLabels": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "port": {
+                            "type": "string"
+                        },
+                        "targetPort": {
+                            "type": "string"
+                        },
+                        "interval": {
+                            "type": "string"
+                        },
+                        "scrapeTimeout": {
+                            "type": "string"
+                        },
+                        "relabellings": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "relabelings": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "metricRelabelings": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "additionalLabels": {
+                            "type": "object",
+                            "properties": {},
+                            "required": []
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "default": "http",
+                            "minLength": 1
+                        },
+                        "tlsConfig": {
+                            "type": "object",
+                            "properties": {},
+                            "required": []
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "jobLabel",
+                        "targetLabels",
+                        "podTargetLabels",
+                        "port",
+                        "targetPort",
+                        "interval",
+                        "scrapeTimeout",
+                        "relabellings",
+                        "relabelings",
+                        "metricRelabelings",
+                        "additionalLabels",
+                        "scheme",
+                        "tlsConfig"
+                    ]
+                },
+                "podMonitor": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean"
+                        },
+                        "interval": {
+                            "type": "string"
+                        },
+                        "scrapeTimeout": {
+                            "type": "string"
+                        },
+                        "namespace": {
+                            "type": "string"
+                        },
+                        "additionalLabels": {
+                            "type": "object",
+                            "properties": {},
+                            "required": []
+                        },
+                        "relabelings": {
+                            "type": "array",
+                            "items": {}
+                        },
+                        "metricRelabelings": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "interval",
+                        "scrapeTimeout",
+                        "namespace",
+                        "additionalLabels",
+                        "relabelings",
+                        "metricRelabelings"
+                    ]
+                }
+            },
+            "required": [
+                "enabled",
+                "port",
+                "serviceMonitor"
+            ]
+        },
+        "Prometheus": {
+            "type": "object",
+            "properties": {
+                "operator": {
+                    "$ref": "#/definitions/PrometheusType"
+                },
+                "metricServer": {
+                    "$ref": "#/definitions/PrometheusType"
+                },
+                "webhooks": {
+                    "$ref": "#/definitions/PrometheusType"
+                }
+            },
+            "required": [
+                "operator",
+                "metricServer",
+                "webhooks"
+            ]
+        },
+        "Opentelemetry": {
+            "type": "object",
+            "properties": {
+                "collector": {
+                    "type": "object",
+                    "properties": {
+                        "uri": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "uri"
+                    ]
+                },
+                "operator": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    "required": [
+                        "enabled"
+                    ]
+                }
+            },
+            "required": [
+                "collector",
+                "operator"
+            ]
+        },
+
+        "Certificates": {
+            "type": "object",
+            "properties": {
+                "autoGenerated": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "secretName": {
+                    "type": "string",
+                    "default": "kedaorg-certs",
+                    "minLength": 1
+                },
+                "mountPath": {
+                    "type": "string",
+                    "default": "/certs",
+                    "minLength": 1
+                },
+                "certManager": {
+                    "type": "object",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "duration": {
+                            "type": "string",
+                            "default": "8760h0m0s",
+                            "minLength": 1
+                        },
+                        "renewBefore": {
+                            "type": "string",
+                            "default": "5840h0m0s",
+                            "minLength": 1
+                        },
+                        "generateCA": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "caSecretName": {
+                            "type": "string"
+                        },
+                        "secretTemplate": {
+                            "type": "object",
+                            "properties": {},
+                            "required": []
+                        },
+                        "issuer": {
+                            "type": "object",
+                            "properties": {
+                                "generate": {
+                                    "type": "boolean",
+                                    "default": true
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "default": "foo-org-ca",
+                                    "minLength": 1
+                                },
+                                "kind": {
+                                    "type": "string",
+                                    "default": "ClusterIssuer",
+                                    "minLength": 1
+                                },
+                                "group": {
+                                    "type": "string",
+                                    "default": "cert-manager.io",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "generate",
+                                "name",
+                                "kind",
+                                "group"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "enabled",
+                        "duration",
+                        "renewBefore",
+                        "generateCA",
+                        "caSecretName",
+                        "secretTemplate",
+                        "issuer"
+                    ]
+                }
+            },
+            "required": [
+                "autoGenerated",
+                "secretName",
+                "mountPath",
+                "certManager"
+            ]
+        },
+        "Permissions": {
+            "type": "object",
+            "properties": {
+                "metricServer": {
+                    "type": "object",
+                    "properties": {
+                        "restrict": {
+                            "type": "object",
+                            "properties": {
+                                "secret": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            },
+                            "required": [
+                                "secret"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "restrict"
+                    ]
+                },
+                "operator": {
+                    "type": "object",
+                    "properties": {
+                        "restrict": {
+                            "type": "object",
+                            "properties": {
+                                "secret": {
+                                    "type": "boolean",
+                                    "default": false
+                                },
+                                "namesAllowList": {
+                                    "type": "array",
+                                    "items": {}
+                                }
+                            },
+                            "required": [
+                                "secret",
+                                "namesAllowList"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "restrict"
+                    ]
+                }
+            },
+            "required": [
+                "metricServer",
+                "operator"
+            ]
+        },
+        "ExtraObjects": {
+            "type": "array",
+            "items": {}
+        }
+    }
+}

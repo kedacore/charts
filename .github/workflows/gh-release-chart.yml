@@ -1,0 +1,141 @@
+name: Helm Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "target version of either keda (~v2.14.2-1) or http-add-on (v0.8.0-1) helm chart"
+        required: false
+        default: 'v2.14.2-2'
+        type: string
+      keda:
+        description: "set this to false if you want to release http-add-on helm chart"
+        required: false
+        default: 'true'
+        type: string
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create k3s cluster
+        uses: AbsaOSS/k3d-action@v2
+        with:
+          cluster-name: "test-cluster"
+          k3d-version: v5.6.0
+          args: >-
+            --no-lb
+            --k3s-arg "--disable=traefik,servicelb,local-storage@server:*"
+      - name: Smoke test helm rendering and deployability (keda chart)
+        if: inputs.keda == 'true'
+        run: |
+          helm template ./keda \
+            -n keda \
+            --create-namespace \
+            --set customManagedBy=kedify | kubectl apply --server-side --force-conflicts -f -
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-admission-webhooks
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator-metrics-apiserver
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator
+          echo -e "\n\n\n   pods:\n\n"
+          kubectl get pods -A
+
+      - name: Smoke test helm rendering and deployability (addon chart)
+        if: inputs.keda != 'true'
+        run: |
+          kubectl create ns keda
+          # addon depends on ScaledObject CRD that is not part of the helm chart so we install also KEDA first
+          helm template ./keda -nkeda | kubectl apply --server-side --force-conflicts -f -
+          kubectl scale deploy -nkeda keda-admission-webhooks --replicas=0
+          kubectl scale deploy -nkeda keda-operator-metrics-apiserver --replicas=0
+          kubectl scale deploy -nkeda keda-operator --replicas=0
+
+          helm template ./http-add-on \
+            -n keda \
+            --set interceptor.replicas.min=1 \
+            --set scaler.replicas=1 \
+            --set operator.replicas=1 \
+            --set crds.install=true | kubectl apply --server-side --force-conflicts -f -
+          sleep 10
+          kubectl get pods -A
+          kubectl wait --timeout=600s -nkeda --for=condition=ready pod -lapp.kubernetes.io/component=operator,app.kubernetes.io/part-of=keda-add-ons-http
+          kubectl wait --timeout=600s -nkeda --for=condition=ready pod -lapp.kubernetes.io/component=scaler,app.kubernetes.io/part-of=keda-add-ons-http
+          kubectl wait --timeout=600s -nkeda --for=condition=ready pod -lapp.kubernetes.io/component=interceptor,app.kubernetes.io/part-of=keda-add-ons-http
+          echo -e "\n\n\n   pods:\n\n"
+          kubectl get pods -A
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add the -N suffix to chart's version (keda)
+        if: inputs.keda == 'true'
+        run: |
+          sed -i keda/Chart.yaml -e 's;^version:.*;version: ${{ inputs.version }};'
+      - name: Add the -N suffix to chart's version (addon)
+        if: inputs.keda != 'true'
+        run: |
+          sed -i http-add-on/Chart.yaml -e 's;^version:.*;version: ${{ inputs.version }};'
+      - name: Publish Helm chart
+        if: inputs.keda != 'true'
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          charts_dir: "."
+      - name: Create k3s cluster
+        if: inputs.keda == 'true'
+        uses: AbsaOSS/k3d-action@v2
+        with:
+          cluster-name: "test-cluster"
+          k3d-version: v5.6.0
+          args: >-
+            --no-lb
+            --k3s-arg "--disable=traefik,servicelb,local-storage@server:*"
+      - name: Smoke test helm installation
+        if: inputs.keda == 'true'
+        run: |
+          # exp-backoff - we wait for pages to become available here
+          for i in $(seq 16)
+          do
+            _sec=$(echo "1.5^$i" | bc)
+            echo "Waiting ${_sec} seconds.."
+            sleep ${_sec}
+            helm repo add kedify https://kedify.github.io/charts || continue
+            helm repo update
+            set -x
+            helm upgrade -i keda kedify/keda \
+              -n keda \
+              --create-namespace \
+              --timeout 300s \
+              --wait \
+              --version ${{ inputs.version }} \
+              --set customManagedBy=kedify && break
+            set +x
+            [ "$i" = "16" ] && exit 1
+          done
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-admission-webhooks
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator-metrics-apiserver
+          kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator
+
+          echo -e "\n\n\n   pods:\n\n"
+          kubectl get pods -A
+
+          echo "::group::values.yaml"
+          helm get values -n keda keda
+          echo "::endgroup::"
+
+          echo "::group::resulting YAML manifests"
+          helm get manifest -n keda keda
+          echo "::endgroup::"
+
+          echo -e "\n\nthe following command is supposed to fail:\n\n"
+          helm template keda kedify/keda \
+            --version $${{ inputs.version }} \
+            --set crds.install=f4lse || true

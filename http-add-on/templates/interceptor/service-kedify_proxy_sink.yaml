@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: interceptor-proxy
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
+  name: "{{ .Chart.Name }}-interceptor-kedify-proxy-metric-sink"
+  namespace: {{ .Release.Namespace }}
+spec:
+  type: ClusterIP
+  ports:
+  - name: proxy
+    port: {{ default 9901 .Values.interceptor.proxy.kedifyMetricsSinkPort }}
+    protocol: TCP
+    targetPort: {{ default 9901 .Values.interceptor.proxy.kedifyMetricsSinkPort }}
+  - name: control-plane
+    port: {{ default 5678 .Values.interceptor.proxy.kedifyEnvoyControlPlanePort }}
+    protocol: TCP
+    targetPort: {{ default 5678 .Values.interceptor.proxy.kedifyEnvoyControlPlanePort }}
+  selector:
+    app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
