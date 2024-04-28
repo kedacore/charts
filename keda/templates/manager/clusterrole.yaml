@@ -49,24 +49,6 @@ rules:
   {{- end }}
 {{- end }}
 {{- if .Values.rbac.enabledCustomScaledRefKinds }}
-{{- if not .Values.rbac.scaledRefKinds }}
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - get
-- apiGroups:
-  - '*'
-  resources:
-  - '*/scale'
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
-{{- else }}
   {{- range .Values.rbac.scaledRefKinds }}
 - apiGroups:
   - {{ .apiGroup | quote }}
@@ -85,7 +67,6 @@ rules:
   verbs:
   - get
   {{- end }}   
-{{- end }}
 {{- end }}
 - apiGroups:
   - apps
