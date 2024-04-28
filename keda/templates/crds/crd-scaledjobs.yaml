@@ -386,6 +386,7 @@ spec:
                           Standard object's metadata.
                           More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       spec:
                         description: |-
                           Specification of the desired behavior of the pod.
@@ -1815,6 +1816,7 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
+                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -3211,6 +3213,7 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
+                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -4625,6 +4628,7 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
+                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -7723,11 +7727,6 @@ spec:
                       additionalProperties:
                         type: string
                       type: object
-                    metricType:
-                      description: |-
-                        MetricTargetType specifies the type of metric being targeted, and should be either
-                        "Value", "AverageValue", or "Utilization"
-                      type: string
                     name:
                       type: string
                     type:

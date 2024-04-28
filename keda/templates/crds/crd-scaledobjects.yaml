@@ -145,6 +145,8 @@ spec:
                                   - For scale up: 0 (i.e. no stabilization is done).
                                   - For scale down: 300 (i.e. the stabilization window is 300 seconds long).
                                 format: int32
+                                maximum: 3600
+                                minimum: 0
                                 type: integer
                             type: object
                           scaleUp:
@@ -200,6 +202,8 @@ spec:
                                   - For scale up: 0 (i.e. no stabilization is done).
                                   - For scale down: 300 (i.e. the stabilization window is 300 seconds long).
                                 format: int32
+                                maximum: 3600
+                                minimum: 0
                                 type: integer
                             type: object
                         type: object
