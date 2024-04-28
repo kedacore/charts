@@ -48,9 +48,14 @@ rules:
   resourceNames: {{ toYaml . | nindent 4 }}
   {{- end }}
 {{- end }}
-
 {{- if .Values.rbac.enabledCustomScaledRefKinds }}
 {{- if not .Values.rbac.scaledRefKinds }}
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - get
 - apiGroups:
   - '*'
   resources:
@@ -62,6 +67,26 @@ rules:
   - update
   - watch
 {{- else }}
+  {{- range .Values.rbac.scaledRefKinds }}
+- apiGroups:
+  - {{ .apiGroup | quote }}
+  resources:
+  - {{ printf "%s/scale" .kind | quote }}
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - {{ .apiGroup | quote }}
+  resources:
+  - {{ .kind | quote }}
+  verbs:
+  - get
+  {{- end }}   
+{{- end }}
+{{- end }}
 - apiGroups:
   - apps
   resources:
@@ -73,21 +98,6 @@ rules:
   - patch
   - update
   - watch
-  {{- range .Values.rbac.scaledRefKinds }}
-- apiGroups:
-  - {{ .apiGroup | quote }}
-  resources:
-  - {{ .kind | quote }}
-  - {{ printf "%s/scale" .kind | quote }}
-  verbs:
-  - get
-  - list
-  - patch
-  - update
-  - watch
-  {{- end }}   
-{{- end }}
-{{- end }}
 - apiGroups:
   - apps
   resources:
