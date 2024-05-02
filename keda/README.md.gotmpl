@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version {{ template "chart.appVersion" . }}
+$ helm install keda kedacore/keda --namespace keda --version {{ template "chart.version" . }}
 ```
 
 ## Uninstalling the Chart
