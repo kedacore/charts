@@ -29,9 +29,6 @@ spec:
         name: {{ .Values.operator.name }}
         app.kubernetes.io/name: {{ .Values.operator.name }}
         {{- include "keda.labels" . | indent 8 }}
-        {{- if .Values.podIdentity.activeDirectory.identity }}
-        aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
-        {{- end }}
         {{- if .Values.podLabels.keda }}
         {{- toYaml .Values.podLabels.keda | nindent 8 }}
         {{- end }}
