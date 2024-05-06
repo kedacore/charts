@@ -317,12 +317,6 @@ serviceAccount:
     annotations: {}
 
 podIdentity:
-  activeDirectory:
-    # Set to the value of the Azure Active Directory Pod Identity
-    # See https://keda.sh/docs/concepts/authentication/#azure-pod-identity
-    # This will be set as a label on the KEDA Pod(s)
-    # -- Identity in Azure Active Directory to use for Azure pod identity
-    identity: ""
   azureWorkload:
     # -- Set to true to enable Azure Workload Identity usage.
     # See https://keda.sh/docs/concepts/authentication/#azure-workload-identity
