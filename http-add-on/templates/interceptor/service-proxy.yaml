@@ -11,6 +11,11 @@ spec:
   - name: proxy
     port: {{ default 9091 .Values.interceptor.proxy.port }}
     targetPort: proxy
+  {{- if .Values.interceptor.tls.enabled }}
+  - name: proxy-tls
+    port: {{ default 8443 .Values.interceptor.tls.port }}
+    targetPort: proxy-tls
+  {{- end }}
   selector:
     app.kubernetes.io/component: interceptor
     {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
