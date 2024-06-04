@@ -121,6 +121,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `certificates.operator.caDirs` | list | `["/custom/ca"]` | Location(s) of CA files for authentication of external TLS connections such as TLS-enabled metrics sources |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `nil` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"ghcr.io/kedacore/keda"` | Image name of KEDA operator |
