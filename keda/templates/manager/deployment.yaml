@@ -103,6 +103,9 @@ spec:
           {{- if .Values.profiling.operator.enabled }}
           - "--profiling-bind-address=:{{ .Values.profiling.operator.port }}"
           {{- end }}
+          {{- range .Values.certificates.operator.caDirs }}
+          - "--ca-dir={{ . }}"
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - "--{{ $key }}={{ $value }}"
           {{- end }}
