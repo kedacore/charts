@@ -178,6 +178,18 @@ interceptor:
     requests:
       cpu: 250m
       memory: 20Mi
+  # configuration of tls for the interceptor
+  tls:
+    # -- Whether a TLS server should be started on the interceptor proxy
+    enabled: false
+    # -- Mount path of the certificate file to use with the interceptor proxy TLS server
+    cert_path: /certs/tls.crt
+    # -- Mount path of the certificate key file to use with the interceptor proxy TLS server
+    key_path: /certs/tls.key
+    # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server
+    cert_secret: keda-tls-certs
+    # -- Port that the interceptor proxy TLS server should be started on
+    port: 8443
 
 # configuration for the images to use for each component
 images:
