@@ -6,7 +6,7 @@ metadata:
     controller-gen.kubebuilder.io/version: v0.13.0
   labels:
     app.kubernetes.io/name: {{ .Values.operator.name }}
-    {{- include "keda.labels" . | indent 4 }}
+    {{- include "keda.crd-labels" . | indent 4 }}
   name: cloudeventsources.eventing.keda.sh
 spec:
   group: eventing.keda.sh
