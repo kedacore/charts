@@ -167,6 +167,11 @@ their default values.
 | `interceptor.responseHeaderTimeout` | string | `"500ms"` | How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request |
 | `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
 | `interceptor.tcpConnectTimeout` | string | `"500ms"` | How long the interceptor waits to establish TCP connections with backends before failing a request. |
+| `interceptor.tls.cert_path` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server |
+| `interceptor.tls.cert_secret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server |
+| `interceptor.tls.enabled` | bool | `false` | Whether a TLS server should be started on the interceptor proxy |
+| `interceptor.tls.key_path` | string | `"/certs/tls.key"` | Mount path of the certificate key file to use with the interceptor proxy TLS server |
+| `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 

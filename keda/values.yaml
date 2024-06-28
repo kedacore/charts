@@ -200,7 +200,7 @@ webhooks:
     #       - key: app
     #         operator: In
     #         values:
-    #         - keda-operator
+    #         - keda-admission-webhooks
     #     topologyKey: "kubernetes.io/hostname"
 
   # -- [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks
@@ -512,7 +512,7 @@ topologySpreadConstraints:
   # -- [Pod Topology Constraints] of KEDA admission webhooks pod
   webhooks: []
 
-# -- [Affinity] for pod scheduling for both KEDA operator and Metrics API Server
+# -- [Affinity] for pod scheduling for KEDA operator, Metrics API Server and KEDA admission webhooks.
 affinity: {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
@@ -523,6 +523,7 @@ affinity: {}
   #         values:
   #         - keda-operator
   #         - keda-operator-metrics-apiserver
+  #         - keda-admission-webhooks
   #     topologyKey: "kubernetes.io/hostname"
 
 # -- priorityClassName for all KEDA components

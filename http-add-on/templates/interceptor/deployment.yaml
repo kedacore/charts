@@ -62,11 +62,29 @@ spec:
           value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
         - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
           value: "{{ .Values.interceptor.expectContinueTimeout }}"
+        {{- if .Values.interceptor.tls.enabled }}
+        - name: KEDA_HTTP_PROXY_TLS_ENABLED
+          value: "true"
+        - name: KEDA_HTTP_PROXY_TLS_CERT_PATH
+          value: {{ .Values.interceptor.tls.cert_path }}
+        - name: KEDA_HTTP_PROXY_TLS_KEY_PATH
+          value: {{ .Values.interceptor.tls.key_path }}
+        - name: KEDA_HTTP_PROXY_TLS_PORT
+          value: {{ .Values.interceptor.tls.port }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
           name: admin
         - containerPort: {{ .Values.interceptor.proxy.port }}
           name: proxy
+        {{- if .Values.interceptor.tls.enabled }}
+        - containerPort: {{ .Values.interceptor.tls.port }}
+          name: proxy-tls
+        volumeMounts:
+          - readOnly: true
+            mountPath: "/certs"
+            name: certs
+        {{- end }}
         livenessProbe:
           httpGet:
             path: /livez
@@ -85,6 +103,12 @@ spec:
         {{- toYaml .Values.securityContext | nindent 10 }}
         {{- end }}
       terminationGracePeriodSeconds: 10
+      {{- if .Values.interceptor.tls.enabled }}
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ .Values.interceptor.tls.cert_secret }}
+      {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.interceptor.nodeSelector }}
