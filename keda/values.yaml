@@ -277,6 +277,8 @@ rbac:
 
   # -- Whether RBAC for configured CRDs that can have a `scale` subresource should be created
   enabledCustomScaledRefKinds: true
+  # -- Customize the namespace for metrics-server
+  metricsServerNamespace: kube-system
   # -- List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`.
   # The feature needs to be also enabled by `enabledCustomScaledRefKinds`.
   # If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created
