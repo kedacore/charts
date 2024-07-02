@@ -217,6 +217,9 @@ jobs:
     - name: Verify cloudeventsources.eventing.keda.sh CRD is installed
       run: kubectl get crd/cloudeventsources.eventing.keda.sh -o wide
 
+    - name: Verify clustercloudeventsources.eventing.keda.sh CRD is installed
+      run: kubectl get crd/clustercloudeventsources.eventing.keda.sh -o wide
+
     - name: Get all ScaledObjects
       run: kubectl get scaledobjects -o wide
 

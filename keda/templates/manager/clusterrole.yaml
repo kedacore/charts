@@ -105,6 +105,8 @@ rules:
   resources:
   - cloudeventsources
   - cloudeventsources/status
+  - clustercloudeventsources
+  - clustercloudeventsources/status
   verbs:
   - '*'
 - apiGroups:
@@ -148,6 +150,7 @@ rules:
   - eventing.keda.sh
   resources:
   - cloudeventsources
+  - clustercloudeventsources
   verbs:
   - create
   - delete
@@ -180,6 +183,7 @@ rules:
   - eventing.keda.sh
   resources:
   - cloudeventsources
+  - clustercloudeventsources
   verbs:
   - get
   - list
