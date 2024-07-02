@@ -817,8 +817,8 @@ certificates:
       group: cert-manager.io
   operator:
     # -- Location(s) of CA files for authentication of external TLS connections such as TLS-enabled metrics sources
-    caDirs:
-    - /custom/ca
+    # caDirs:
+    # - /custom/ca
 
 permissions:
   metricServer:
