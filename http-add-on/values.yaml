@@ -44,6 +44,8 @@ logging:
 
 # operator-specific configuration values
 operator:
+  # -- Number of replicas, oerator k8s resources will not be installed if this is set to 0
+  replicas: 1
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
   # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
