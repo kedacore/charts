@@ -117,6 +117,7 @@ their default values.
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
+| `operator.replicas` | int | `1` | Number of replicas, oerator k8s resources will not be installed if this is set to 0 |
 | `operator.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the operator component |
 | `operator.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the operator component |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |

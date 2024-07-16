@@ -1,3 +1,4 @@
+{{- if gt (int .Values.operator.replicas) 0 }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,3 +15,4 @@ spec:
   selector:
     app.kubernetes.io/component: operator
     {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
+{{- end }}
