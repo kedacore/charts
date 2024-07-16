@@ -66,11 +66,11 @@ spec:
         - name: KEDA_HTTP_PROXY_TLS_ENABLED
           value: "true"
         - name: KEDA_HTTP_PROXY_TLS_CERT_PATH
-          value: {{ .Values.interceptor.tls.cert_path }}
+          value: "{{ .Values.interceptor.tls.cert_path }}"
         - name: KEDA_HTTP_PROXY_TLS_KEY_PATH
-          value: {{ .Values.interceptor.tls.key_path }}
+          value: "{{ .Values.interceptor.tls.key_path }}"
         - name: KEDA_HTTP_PROXY_TLS_PORT
-          value: {{ .Values.interceptor.tls.port }}
+          value: "{{ .Values.interceptor.tls.port }}"
         {{- end }}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
