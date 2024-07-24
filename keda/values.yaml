@@ -611,7 +611,7 @@ prometheus:
       targetLabels: []
       # -- PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics
       podTargetLabels: []
-      # -- Name of the service port this endpoint refers to. Mutually exclusive with targetPort
+      # -- DEPRECATED. ServiceMonitor port name will be the same as `metricServer.portName`
       port: metrics
       # -- Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port
       targetPort: ""
@@ -655,6 +655,8 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA Operator prometheus metrics
     port: 8080
+    # -- HTTP port name for exposing KEDA operator prometheus metrics
+    portName: metrics
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -664,7 +666,7 @@ prometheus:
       targetLabels: []
       # -- PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics
       podTargetLabels: []
-      # -- Name of the service port this endpoint refers to. Mutually exclusive with targetPort
+      # -- DEPRECATED. ServiceMonitor port name will be the same as `operator.portName`
       port: metrics
       # -- Name or number of the target port of the Pod behind the Service,
       # the port must be specified with container port property. Mutually exclusive with port
@@ -726,6 +728,8 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA admission webhooks prometheus metrics
     port: 8080
+    # -- HTTP port name for exposing webhooks prometheus metrics
+    portName: metrics
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
@@ -735,7 +739,7 @@ prometheus:
       targetLabels: []
       # -- PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics
       podTargetLabels: []
-      # -- Name of the service port this endpoint refers to. Mutually exclusive with targetPort
+      # -- DEPRECATED. ServiceMonitor port name will be the same as `webhooks.portName`
       port: metrics
       # -- Name or number of the target port of the Pod behind the Service, the port must be specified with container port property. Mutually exclusive with port
       targetPort: ""
