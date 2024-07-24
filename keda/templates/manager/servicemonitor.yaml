@@ -29,7 +29,7 @@ spec:
   {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
-  - port: {{ .Values.prometheus.operator.serviceMonitor.port }}
+  - port: {{ .Values.prometheus.operator.portName }}
     {{- with .Values.prometheus.operator.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}

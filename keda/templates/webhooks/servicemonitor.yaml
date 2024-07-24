@@ -30,7 +30,7 @@ spec:
   {{- toYaml . | nindent 4 }}
   {{- end }}
   endpoints:
-  - port: {{ .Values.prometheus.webhooks.serviceMonitor.port }}
+  - port: {{ .Values.prometheus.webhooks.portName }}
     {{- with .Values.prometheus.webhooks.serviceMonitor.targetPort }}
     targetPort: {{ . }}
     {{- end }}

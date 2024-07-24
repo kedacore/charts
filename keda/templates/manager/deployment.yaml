@@ -133,7 +133,7 @@ spec:
           ports:
           {{- if .Values.prometheus.operator.enabled }}
           - containerPort: {{ .Values.prometheus.operator.port }}
-            name: metrics
+            name: {{ .Values.prometheus.operator.portName }}
             protocol: TCP
           {{- end }}
           - containerPort: 9666
