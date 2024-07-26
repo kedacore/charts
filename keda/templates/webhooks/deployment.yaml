@@ -51,7 +51,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ (.Values.serviceAccount.webhooks).name | default .Values.serviceAccount.name }}
-      automountServiceAccountToken: {{ (.Values.serviceAccount.webhooks).automountServiceAccountToken | default .Values.serviceAccount.automountServiceAccountToken }}
+      automountServiceAccountToken: {{ kindIs "invalid" (.Values.serviceAccount.webhooks).automountServiceAccountToken | ternary .Values.serviceAccount.automountServiceAccountToken (.Values.serviceAccount.webhooks).automountServiceAccountToken }}
       securityContext:
         {{- if .Values.podSecurityContext.webhooks }}
         {{- toYaml .Values.podSecurityContext.webhooks | nindent 8 }}
