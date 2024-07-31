@@ -26,6 +26,7 @@ metadata:
     {{- end }}
   {{- end }}
 spec:
+  type: {{ .Values.service.type }}
   ports:
   - name: https
     port: {{ .Values.service.portHttps }}
