@@ -56,7 +56,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ (.Values.serviceAccount.operator).name | default .Values.serviceAccount.name }}
-      automountServiceAccountToken: {{ (.Values.serviceAccount.operator).automountServiceAccountToken | default .Values.serviceAccount.automountServiceAccountToken }}
+      automountServiceAccountToken: {{ kindIs "invalid" (.Values.serviceAccount.operator).automountServiceAccountToken | ternary .Values.serviceAccount.automountServiceAccountToken (.Values.serviceAccount.operator).automountServiceAccountToken }}
       securityContext:
         {{- if .Values.podSecurityContext.operator }}
         {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
