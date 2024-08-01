@@ -6,7 +6,7 @@ on:
       version:
         description: "target version of either keda (~v2.14.2-1) or http-add-on (v0.8.0-1) helm chart"
         required: false
-        default: 'v2.14.2-2'
+        default: 'v2.14.3-1'
         type: string
       keda:
         description: "set this to false if you want to release http-add-on helm chart"
@@ -34,9 +34,9 @@ jobs:
       - name: Smoke test helm rendering and deployability (keda chart)
         if: inputs.keda == 'true'
         run: |
+          kubectl create ns keda --dry-run=client -o yaml | kubectl apply -f -
           helm template ./keda \
             -n keda \
-            --create-namespace \
             --set customManagedBy=kedify | kubectl apply --server-side --force-conflicts -f -
           kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-admission-webhooks
           kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator-metrics-apiserver
@@ -47,7 +47,7 @@ jobs:
       - name: Smoke test helm rendering and deployability (addon chart)
         if: inputs.keda != 'true'
         run: |
-          kubectl create ns keda
+          kubectl create ns keda --dry-run=client -o yaml | kubectl apply -f -
           # addon depends on ScaledObject CRD that is not part of the helm chart so we install also KEDA first
           helm template ./keda -nkeda | kubectl apply --server-side --force-conflicts -f -
           kubectl scale deploy -nkeda keda-admission-webhooks --replicas=0
