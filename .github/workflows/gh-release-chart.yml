@@ -87,7 +87,6 @@ jobs:
         run: |
           sed -i http-add-on/Chart.yaml -e 's;^version:.*;version: ${{ inputs.version }};'
       - name: Publish Helm chart
-        if: inputs.keda != 'true'
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT_TOKEN }}
