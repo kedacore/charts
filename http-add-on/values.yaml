@@ -83,7 +83,7 @@ operator:
         memory: 20Mi
 
 scaler:
-  # -- Number of replicas 
+  # -- Number of replicas
   replicas: 3
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
@@ -192,6 +192,15 @@ interceptor:
     cert_secret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
+
+  # configuration of pdb for the interceptor
+  pdb:
+    # -- Whether to install the `PodDisruptionBudget` for the interceptor
+    enabled: true
+    # -- The minimum number of replicas that should be available for the interceptor
+    minAvailable: 0
+    # -- The maximum number of replicas that can be unavailable for the interceptor
+    maxUnavailable: 1
 
 # configuration for the images to use for each component
 images:

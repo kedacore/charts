@@ -1,0 +1,21 @@
+{{- if .Values.interceptor.pdb.enabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-interceptor
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: interceptor
+      {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
+  {{- if .Values.interceptor.pdb.minAvailable }}
+  minAvailable: {{ .Values.interceptor.pdb.minAvailable }}
+  {{- end }}
+  {{- if .Values.interceptor.pdb.maxUnavailable }}
+  maxUnavailable: {{ .Values.interceptor.pdb.maxUnavailable }}
+  {{- end }}
+{{- end -}}
