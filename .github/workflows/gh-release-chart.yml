@@ -38,6 +38,9 @@ jobs:
           helm template ./keda \
             -n keda \
             --set customManagedBy=kedify | kubectl apply --server-side --force-conflicts -f -
+          kubectl wait --timeout=300s --for=condition=Available deployment/keda-operator
+          kubectl wait --timeout=300s --for=condition=Available deployment/keda-admission-webhooks
+          kubectl wait --timeout=300s --for=condition=Available deployment/keda-operator-metrics-apiserver
           kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-admission-webhooks
           kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator-metrics-apiserver
           kubectl wait --timeout=300s -nkeda --for=condition=ready pod -lapp.kubernetes.io/name=keda-operator
