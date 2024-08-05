@@ -1,0 +1,12 @@
+crds:
+  # -- Defines whether the KEDA CRDs have to be installed or not.
+  install: true
+
+  # -- Custom annotations specifically for CRDs
+  additionalAnnotations:
+    {}
+    # foo: bar
+
+operator:
+  # -- Name of the KEDA operator
+  name: keda-operator
