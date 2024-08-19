@@ -163,7 +163,6 @@ metricsServer:
     successThreshold: 1
 
 webhooks:
-  # -- Enable admission webhooks (this feature option will be removed in v2.12)
   enabled: true
   # -- Port number to use for KEDA admission webhooks. Default is 9443.
   port: ""
