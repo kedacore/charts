@@ -187,13 +187,13 @@ interceptor:
   # configuration of tls for the interceptor
   tls:
     # -- Whether a TLS server should be started on the interceptor proxy
-    enabled: false
+    enabled: true
     # -- Mount path of the certificate file to use with the interceptor proxy TLS server
-    cert_path: /certs/tls.crt
+    cert_path: ""
     # -- Mount path of the certificate key file to use with the interceptor proxy TLS server
-    key_path: /certs/tls.key
+    key_path: ""
     # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server
-    cert_secret: keda-tls-certs
+    cert_secret: ""
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
     # -- Allowing RBAC for Secrets for dynamic TLS certificates
@@ -218,13 +218,13 @@ images:
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
-  tag: ""
+  tag: v0.8.0-12
   # -- Image name for the operator image component
-  operator: ghcr.io/kedacore/http-add-on-operator
+  operator: ghcr.io/kedify/http-add-on-operator
   # -- Image name for the interceptor image component
-  interceptor: ghcr.io/kedacore/http-add-on-interceptor
+  interceptor: ghcr.io/kedify/http-add-on-interceptor
   # -- Image name for the scaler image component
-  scaler: ghcr.io/kedacore/http-add-on-scaler
+  scaler: ghcr.io/kedify/http-add-on-scaler
   # the kube-rbac-proxy image to use
   kubeRbacProxy:
     # -- Image name for the Kube RBAC Proxy image component

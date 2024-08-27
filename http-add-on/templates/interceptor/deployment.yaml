@@ -82,10 +82,12 @@ spec:
         {{- if .Values.interceptor.tls.enabled }}
         - containerPort: {{ .Values.interceptor.tls.port }}
           name: proxy-tls
+        {{- if .Values.interceptor.tls.cert_secret }}
         volumeMounts:
           - readOnly: true
             mountPath: "/certs"
             name: certs
+        {{- end }}
         {{- end }}
         livenessProbe:
           httpGet:
@@ -106,10 +108,12 @@ spec:
         {{- end }}
       terminationGracePeriodSeconds: 10
       {{- if .Values.interceptor.tls.enabled }}
+      {{- if .Values.interceptor.tls.cert_secret }}
       volumes:
         - name: certs
           secret:
             secretName: {{ .Values.interceptor.tls.cert_secret }}
+      {{- end }}
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
