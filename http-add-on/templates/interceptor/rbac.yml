@@ -9,6 +9,9 @@ rules:
   - ""
   resources:
   - endpoints
+  {{- if .Values.interceptor.tls.allowCertsFromSecrets}}
+  - secrets
+  {{- end}}
   verbs:
   - get
   - list

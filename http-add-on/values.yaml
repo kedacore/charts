@@ -196,6 +196,8 @@ interceptor:
     cert_secret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
+    # -- Allowing RBAC for Secrets for dynamic TLS certificates
+    allowCertsFromSecrets: true
 
   # configuration of pdb for the interceptor
   pdb:
