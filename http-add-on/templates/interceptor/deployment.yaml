@@ -20,12 +20,14 @@ spec:
       imagePullSecrets: 
         {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ .Chart.Name }}-interceptor
+      {{- if .Values.podSecurityContext }}
       {{- if .Values.podSecurityContext.interceptor }}
       securityContext:
       {{- toYaml .Values.podSecurityContext.interceptor | nindent 8 }}
       {{- else }}
       securityContext:
       {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       {{- end }}
       containers:
       - args:

@@ -245,6 +245,8 @@ securityContext:
     - ALL
   privileged: false
   readOnlyRootFilesystem: true
+  seccompProfile:
+    type: RuntimeDefault
   # runAsUser: 1000
   # runAsGroup: 1000
   # operator:
@@ -282,10 +284,10 @@ securityContext:
 
 # --  [Pod security context] for all pods
 # @default -- [See below](#KEDA-is-secure-by-default)
-podSecurityContext:
-  fsGroup: 1000
-  supplementalGroups:
-  - 1000
+# podSecurityContext:
+#   fsGroup: 1000
+#   supplementalGroups:
+#   - 1000
   # operator:
     # runAsNonRoot: true
     # runAsUser: 1000
