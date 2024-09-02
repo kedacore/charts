@@ -20,7 +20,8 @@ subjects:
   name: {{ (.Values.serviceAccount.operator).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 {{- else }}
-  {{- range ( split "," .Values.watchNamespace ) }}
+  {{- $namespaces := append (splitList "," .Values.watchNamespace) .Release.Namespace -}}
+  {{- range $namespaces }}
 ---
 # Role binding for namespace '{{ . }}'
 apiVersion: rbac.authorization.k8s.io/v1
