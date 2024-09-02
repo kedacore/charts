@@ -29,11 +29,12 @@ rules:
   resources:
   - events
   verbs:
-  - '*'
+  - create
+  - patch
 {{- if not .Values.permissions.operator.restrict.secret }}
 - apiGroups:
   - ""
-  resources:    
+  resources:
   - secrets
   verbs:
   - list
@@ -66,7 +67,7 @@ rules:
   - {{ .kind | quote }}
   verbs:
   - get
-  {{- end }}   
+  {{- end }}
 {{- end }}
 - apiGroups:
   - apps
@@ -93,13 +94,25 @@ rules:
   resources:
   - horizontalpodautoscalers
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - batch
   resources:
   - jobs
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - eventing.keda.sh
   resources:
@@ -108,7 +121,13 @@ rules:
   - clustercloudeventsources
   - clustercloudeventsources/status
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - keda.sh
   resources:
@@ -121,7 +140,13 @@ rules:
   - triggerauthentications
   - triggerauthentications/status
   verbs:
-  - '*'
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 {{- if .Values.rbac.aggregateToDefaultRoles }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
