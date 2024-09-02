@@ -86,13 +86,13 @@ jobs:
           version=${{ inputs.version }}
           if [[ $version == "" ]]; then
             name=$(cat ${{ inputs.chart }}/Chart.yaml | yq '.name')
-            last_versions=$(curl -s https://kedify.github.io/charts/index.yaml | \
+            last_version=$(curl -s https://kedify.github.io/charts/index.yaml | \
               yq '.entries.'"$name"'[].version | select( match("^v[0-9]+\.[0-9]+\.[0-9]+-[0-9]+$") )' | \
-              sed 's/-/./' \
+              sed 's/-/./' | \
               sort -t "." -k1,1n -k2,2n -k3,3n -k4,4n | \
               tail -n 1 | \
               sed 's/\.\([0-9]\+\)$/-\1/')
-            version=$(echo "$last_version | awk -F'-' '{print $1 "-" $2+1}')
+            version=$(echo "$last_version" | awk -F'-' '{print $1 "-" $2+1}')
           fi
           sed -i ${{ inputs.chart }}/Chart.yaml -e 's;^version:.*;version: ${version};'
       - name: Publish Helm chart
