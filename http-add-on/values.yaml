@@ -230,7 +230,7 @@ images:
     # -- Image name for the Kube RBAC Proxy image component
     name: gcr.io/kubebuilder/kube-rbac-proxy
     # -- Image tag for the Kube RBAC Proxy image component
-    tag: v0.13.0
+    tag: v0.16.0
 
 rbac:
   # -- Install aggregate roles for edit and view
