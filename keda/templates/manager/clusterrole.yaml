@@ -121,8 +121,6 @@ rules:
   - clustercloudeventsources
   - clustercloudeventsources/status
   verbs:
-  - create
-  - delete
   - get
   - list
   - patch
@@ -140,8 +138,6 @@ rules:
   - triggerauthentications
   - triggerauthentications/status
   verbs:
-  - create
-  - delete
   - get
   - list
   - patch

@@ -85,8 +85,6 @@ rules:
   - clustertriggerauthentications
   - clustertriggerauthentications/status
   verbs:
-  - create
-  - delete
   - get
   - list
   - patch
