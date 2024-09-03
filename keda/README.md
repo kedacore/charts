@@ -178,7 +178,7 @@ their default values.
 | `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.metricsAdapter` | object | `{}` | Pod labels for KEDA Metrics Adapter |
 | `podSecurityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
-| `rbac.metricsServerNamespace` | string | `"kube-system"` | Customize the namespace for metrics-server |
+| `rbac.controlPlaneServiceAccountsNamespace` | string | `"kube-system"` | Customize the namespace for metrics-server |
 | `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
 | `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
 | `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
