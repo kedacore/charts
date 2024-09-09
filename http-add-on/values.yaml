@@ -170,7 +170,7 @@ interceptor:
   tolerations: []
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
-  # Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/))
+  # -- Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/))
   topologySpreadConstraints: []
   # interceptor pod resource limits
   resources:
