@@ -157,7 +157,7 @@ interceptor:
   # -- How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints.
   endpointsCachePollingIntervalMS: 250
   # -- Whether or not the interceptor should force requests to use HTTP/2
-  forceHTTP2: false
+  forceHTTP2: true
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
   maxIdleConns: 100
   # -- The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool.
