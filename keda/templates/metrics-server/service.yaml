@@ -32,6 +32,7 @@ spec:
     port: {{ .Values.service.portHttps }}
     targetPort: {{ .Values.service.portHttpsTarget }}
     protocol: TCP
+    appProtocol: https
   - name: {{ .Values.prometheus.metricServer.portName }}
     port: {{ .Values.prometheus.metricServer.port }}
     targetPort: {{ .Values.prometheus.metricServer.port }}
