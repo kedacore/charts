@@ -277,8 +277,8 @@ rbac:
   # -- Whether RBAC for configured CRDs that can have a `scale` subresource should be created
   enabledCustomScaledRefKinds: true
   # -- Customize the namespace of k8s metrics-server deployment
-  # -- This could also be achieved by the Kubernetes control plane manager flag --use-service-account-credentials:
-  # -- [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/)
+  # This could also be achieved by the Kubernetes control plane manager flag --use-service-account-credentials:
+  # [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/)
   controlPlaneServiceAccountsNamespace: kube-system
   # -- List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`.
   # The feature needs to be also enabled by `enabledCustomScaledRefKinds`.
