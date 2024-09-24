@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.14.0
+helm install keda kedacore/keda --namespace keda --version 2.15.1
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.14.2
+$ helm install keda kedacore/keda --namespace keda --version 2.15.1
 ```
 
 ## Uninstalling the Chart
@@ -109,7 +109,7 @@ their default values.
 | `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
-| `rbac.controlPlaneServiceAccountsNamespace` | string | `"kube-system"` | Customize the namespace of k8s metrics-server deployment |
+| `rbac.controlPlaneServiceAccountsNamespace` | string | `"kube-system"` | [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
 | `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
 | `rbac.scaledRefKinds` | list | `[{"apiGroup":"*","kind":"*"}]` | List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`. The feature needs to be also enabled by `enabledCustomScaledRefKinds`. If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created note: Deployments and StatefulSets are supported out of the box |
@@ -121,7 +121,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `certificates.operator.caDirs` | list | `["/custom/ca"]` | Location(s) of CA files for authentication of external TLS connections such as TLS-enabled metrics sources |
+| `certificates.operator` | string | `nil` |  |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -308,7 +308,7 @@ their default values.
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
 | `volumes.webhooks.extraVolumes` | list | `[]` | Extra volumes for admission webhooks deployment |
 | `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
-| `webhooks.enabled` | bool | `true` | Enable admission webhooks (this feature option will be removed in v2.12) |
+| `webhooks.enabled` | bool | `true` |  |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
 | `webhooks.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
