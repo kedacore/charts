@@ -36,6 +36,9 @@ spec:
   - name: {{ .Values.prometheus.webhooks.serviceMonitor.port }}
     port: {{ .Values.prometheus.webhooks.port }}
     targetPort: {{ .Values.prometheus.webhooks.port }}
+        {{- with .Values.prometheus.webhooks.appProtocol }}
+    appProtocol: {{ . }}
+    {{- end }}
   {{- end }}
   {{- if .Values.profiling.webhooks.enabled }}
   - name: profiling
