@@ -133,7 +133,7 @@ their default values.
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
-| `scaler.replicas` | int | `3` | Number of replicas  |
+| `scaler.replicas` | int | `3` | Number of replicas |
 | `scaler.resources.limits.cpu` | float | `0.5` |  |
 | `scaler.resources.limits.memory` | string | `"64Mi"` |  |
 | `scaler.resources.requests.cpu` | string | `"250m"` |  |
@@ -157,6 +157,9 @@ their default values.
 | `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
 | `interceptor.maxIdleConns` | int | `100` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
 | `interceptor.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `interceptor.pdb.enabled` | bool | `true` | Whether to install the `PodDisruptionBudget` for the interceptor |
+| `interceptor.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the interceptor |
+| `interceptor.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the interceptor |
 | `interceptor.proxy.port` | int | `8080` | The port on which the interceptor's proxy service will listen for live HTTP traffic |
 | `interceptor.proxy.service` | string | `"interceptor-proxy"` | The name of the Kubernetes `Service` for the interceptor's proxy service. This is the service that accepts live HTTP traffic. |
 | `interceptor.pullPolicy` | string | `"Always"` | The image pull policy for the interceptor component |
@@ -175,6 +178,7 @@ their default values.
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
