@@ -1,0 +1,18 @@
+{{- if .Values.interceptor.metrics.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:    
+    app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
+  name: "{{ .Chart.Name }}-{{ .Values.interceptor.metrics.service }}"
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+  - name: metrics
+    port: {{ default 2223 .Values.interceptor.metrics.port }}
+    targetPort: {{ default 2223 .Values.interceptor.metrics.port }}
+  selector:
+    app.kubernetes.io/component: interceptor
+    {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
+{{- end }}

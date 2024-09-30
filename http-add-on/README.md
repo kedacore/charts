@@ -156,6 +156,8 @@ their default values.
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
 | `interceptor.maxIdleConns` | int | `100` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
+| `interceptor.metrics.port` | int | `2223` | The port to host metrics. |
+| `interceptor.metrics.service` | string | `"interceptor-metrics"` | The name of the Kubernetes `Service` for the metrics. |
 | `interceptor.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `interceptor.pdb.enabled` | bool | `true` | Whether to install the `PodDisruptionBudget` for the interceptor |
 | `interceptor.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the interceptor |

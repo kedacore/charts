@@ -134,6 +134,11 @@ interceptor:
     service: interceptor-proxy
     # -- The port on which the interceptor's proxy service will listen for live HTTP traffic
     port: 8080
+  metrics:
+    # -- The name of the Kubernetes `Service` for the metrics.
+    service: interceptor-metrics
+    # -- The port to host metrics.
+    port: 2223
   replicas:
     # -- The minimum number of interceptor replicas that should ever be running
     min: 3
