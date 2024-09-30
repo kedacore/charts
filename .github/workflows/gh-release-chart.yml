@@ -94,7 +94,7 @@ jobs:
               sed 's/\.\([0-9]\+\)$/-\1/')
             version=$(echo "$last_version" | awk -F'-' '{print $1 "-" $2+1}')
           fi
-          sed -i ${{ inputs.chart }}/Chart.yaml -e 's;^version:.*;version: ${version};'
+          sed -i ${{ inputs.chart }}/Chart.yaml -e "s;^version:.*;version: ${version};"
       - name: Publish Helm chart
         uses: stefanprodan/helm-gh-pages@master
         with:
