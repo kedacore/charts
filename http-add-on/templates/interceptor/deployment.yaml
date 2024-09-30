@@ -76,6 +76,10 @@ spec:
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
         {{- end }}
+        {{- range .Values.interceptor.additionalEnvVars }}
+        - name: "{{ .name }}"
+          value: "{{ .value }}"
+        {{- end }}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
           name: admin

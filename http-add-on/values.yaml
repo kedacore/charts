@@ -198,6 +198,18 @@ interceptor:
     port: 8443
     # -- Allowing RBAC for Secrets for dynamic TLS certificates
     allowCertsFromSecrets: true
+  # configure prometheus and otel collectors
+  # additionalEnvVars:
+  #  - name: OTEL_PROM_EXPORTER_ENABLED
+  #    value: true
+  #  - name: OTEL_PROM_EXPORTER_PORT
+  #    value: 2223
+  #  - name: OTEL_EXPORTER_OTLP_METRICS_ENABLED
+  #    value: true
+  #  - name: OTEL_EXPORTER_OTLP_ENDPOINT
+  #    value: http://opentelemetry-collector.open-telemetry-system:4318
+  #  - name: OTEL_METRIC_EXPORT_INTERVAL
+  #    value: 1
 
   # configuration of pdb for the interceptor
   pdb:

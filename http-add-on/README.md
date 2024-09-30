@@ -86,12 +86,12 @@ their default values.
 |-----------|------|---------|-------------|
 | `additionalLabels` | object | `{}` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
 | `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
-| `images.interceptor` | string | `"ghcr.io/kedacore/http-add-on-interceptor"` | Image name for the interceptor image component |
+| `images.interceptor` | string | `"ghcr.io/kedify/http-add-on-interceptor"` | Image name for the interceptor image component |
 | `images.kubeRbacProxy.name` | string | `"gcr.io/kubebuilder/kube-rbac-proxy"` | Image name for the Kube RBAC Proxy image component |
-| `images.kubeRbacProxy.tag` | string | `"v0.13.0"` | Image tag for the Kube RBAC Proxy image component |
-| `images.operator` | string | `"ghcr.io/kedacore/http-add-on-operator"` | Image name for the operator image component |
-| `images.scaler` | string | `"ghcr.io/kedacore/http-add-on-scaler"` | Image name for the scaler image component |
-| `images.tag` | string | `""` | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default |
+| `images.kubeRbacProxy.tag` | string | `"v0.16.0"` | Image tag for the Kube RBAC Proxy image component |
+| `images.operator` | string | `"ghcr.io/kedify/http-add-on-operator"` | Image name for the operator image component |
+| `images.scaler` | string | `"ghcr.io/kedify/http-add-on-scaler"` | Image name for the scaler image component |
+| `images.tag` | string | `"v0.8.0-12"` | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default |
 | `logging.interceptor.format` | string | `"console"` | Logging format for KEDA http-add-on Interceptor. allowed values: `json` or `console` |
 | `logging.interceptor.level` | string | `"info"` | Logging level for KEDA http-add-on Interceptor. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.interceptor.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Interceptor. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
@@ -102,7 +102,6 @@ their default values.
 | `logging.scaler.format` | string | `"console"` | Logging format for KEDA http-add-on Scaler. allowed values: `json` or `console` |
 | `logging.scaler.level` | string | `"info"` | Logging level for KEDA http-add-on Scaler. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.scaler.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Scaler. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
-| `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Install aggregate roles for edit and view |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
 
@@ -149,9 +148,10 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
+| `interceptor.clusterDomain` | string | `"cluster.local"` | The cluster domain used for in cluster routing with envoy fleet |
 | `interceptor.endpointsCachePollingIntervalMS` | int | `250` | How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints. |
 | `interceptor.expectContinueTimeout` | string | `"1s"` | Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details |
-| `interceptor.forceHTTP2` | bool | `false` | Whether or not the interceptor should force requests to use HTTP/2 |
+| `interceptor.forceHTTP2` | bool | `true` | Whether or not the interceptor should force requests to use HTTP/2 |
 | `interceptor.idleConnTimeout` | string | `"90s"` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
@@ -171,10 +171,11 @@ their default values.
 | `interceptor.responseHeaderTimeout` | string | `"500ms"` | How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request |
 | `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
 | `interceptor.tcpConnectTimeout` | string | `"500ms"` | How long the interceptor waits to establish TCP connections with backends before failing a request. |
-| `interceptor.tls.cert_path` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server |
-| `interceptor.tls.cert_secret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server |
-| `interceptor.tls.enabled` | bool | `false` | Whether a TLS server should be started on the interceptor proxy |
-| `interceptor.tls.key_path` | string | `"/certs/tls.key"` | Mount path of the certificate key file to use with the interceptor proxy TLS server |
+| `interceptor.tls.allowCertsFromSecrets` | bool | `true` | Allowing RBAC for Secrets for dynamic TLS certificates |
+| `interceptor.tls.cert_path` | string | `""` | Mount path of the certificate file to use with the interceptor proxy TLS server |
+| `interceptor.tls.cert_secret` | string | `""` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server |
+| `interceptor.tls.enabled` | bool | `true` | Whether a TLS server should be started on the interceptor proxy |
+| `interceptor.tls.key_path` | string | `""` | Mount path of the certificate key file to use with the interceptor proxy TLS server |
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
