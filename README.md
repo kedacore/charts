@@ -21,7 +21,7 @@ $ helm repo add kedacore https://kedacore.github.io/charts
 $ helm search repo kedacore
 NAME                                            CHART VERSION   APP VERSION     DESCRIPTION
 kedacore/external-scaler-azure-cosmos-db        0.1.0           0.1.0           Event-based autoscaler for Azure Cosmos DB chan...
-kedacore/keda                                   2.15.1          2.15.1          Event-based autoscaler for workloads on Kubernetes
+kedacore/keda                                   2.15.2          2.15.1          Event-based autoscaler for workloads on Kubernetes
 kedacore/keda-add-ons-http                      0.8.0           0.8.0           Event-based autoscaler for HTTP workloads on Ku...
 ```
 

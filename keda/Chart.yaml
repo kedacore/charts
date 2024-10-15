@@ -8,7 +8,7 @@ kubeVersion: ">=v1.23.0-0"
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 2.15.1
+version: 2.15.2
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -21,7 +21,7 @@ sources:
 maintainers:
   - name: Jorge Turrado
     email: jorge_turrado@hotmail.es
-  - name: Tom Kerkhove
-    email: kerkhove.tom@gmail.com
   - name: Zbynek Roubalik
     email: zbynek@kedify.io
+  - name: Jan Wozniak
+    email: jan@kedify.io
