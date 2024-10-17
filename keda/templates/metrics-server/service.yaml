@@ -37,6 +37,9 @@ spec:
     port: {{ .Values.prometheus.metricServer.port }}
     targetPort: {{ .Values.prometheus.metricServer.port }}
     protocol: TCP
+    {{- with .Values.prometheus.metricServer.appProtocol }}
+    appProtocol: {{ . }}
+    {{- end }}
   {{- if .Values.profiling.metricsServer.enabled }}
   - name: profiling
     port: {{ .Values.profiling.metricsServer.port }}

@@ -605,6 +605,8 @@ prometheus:
     port: 8080
     # -- HTTP port name for exposing metrics server prometheus metrics
     portName: metrics
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -658,6 +660,8 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA Operator prometheus metrics
     port: 8080
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -729,6 +733,8 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA admission webhooks prometheus metrics
     port: 8080
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
