@@ -14,7 +14,7 @@ rules:
 - apiGroups:
   - external.metrics.k8s.io
   resources:
-  - '*'
+  - 'externalmetrics'
   verbs:
-  - '*'
+  - 'get'
 {{- end -}}
