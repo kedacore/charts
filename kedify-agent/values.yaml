@@ -1,0 +1,111 @@
+clusterName: "cluster-1"
+
+agent:
+  replicas: 1
+
+  # you should already have this
+  orgId: ""
+  # you should already have this
+  apiKey: ""
+# agentId: abcd1234-ab34-..
+  kedifyServer: service.kedify.io:443
+
+  # Can be one of 'debug', 'info', 'error', or any integer value > 0
+  # which corresponds to custom debug levels of increasing verbosity
+  logLevel: info
+
+  # should the KedifyConfiguration and ScalingPolicy CRDs be also part of the release
+  createCrds: true
+  createKedifyConfiguration: true
+
+  image:
+    tag: "v0.1.0"
+    repository: ghcr.io/kedify/agent
+    pullPolicy: IfNotPresent
+  imagePullSecrets: []
+
+  # if anything else than 'false', the log will not print the ascii logo
+  noBanner: false
+  # if anything else than 'false', the log will not contain colors
+  noColor: false
+  nameOverride: ""
+  fullnameOverride: ""
+
+  rbac:
+    # create the necessary RBAC for kedify agent
+    create: true
+    # set this to true if the agent should be able to install the KEDA
+    shouldBeAbleToInstallKeda: false
+    # set this to true if the agent should be able to install the KEDA http addon
+    shouldBeAbleToInstallHttpAddon: false
+    # if true, rbac necessary for self-updates is added
+    selfUpdates: false
+    # if true, rbac necessary for metrics collection is added
+    readMetrics: true
+    # if true, rbac necessary for reading stateful sets is added
+    readStatefulSets: false
+    # if true, rbac necessary for reading HPAs (horizontal pod autoscalers) is added
+    readHpas: false
+    # if true, rbac necessary for reading Nodes is added
+    readNodes: false
+    # if true, rbac necessary for reading Pods is added
+    readPods: true
+    # if true, rbac necessary for reading Deployments is added
+    readDeploymentsClusterwide: true
+    # if true, rbac necessary for reading Services is added
+    readServices: true
+    # if true, ingress auto-wire capability with fallback is enabled
+    ingressAutoWire: true
+    # if true, enables sync of KedifyConfiguration between cluster and the dashboard
+    kedifyConfig: false
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Automatically mount a ServiceAccount's API credentials?
+    automount: true
+    # Annotations to add to the service account
+    annotations: {} 
+
+  podAnnotations:
+    kubectl.kubernetes.io/default-container: manager
+  podLabels: {}
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 200Mi
+
+  # Additional volumes on the output agent's Deployment definition.
+  volumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
+
+  volumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+
+  podSecurityContext: {}
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+# dependent helm charts
+keda:
+  # for all available values, check: https://github.com/kedify/charts/blob/main/keda/values.yaml
+  enabled: false
+
+kedaAddOnsHttp:
+  # for all available values, check: https://github.com/kedify/charts/blob/main/http-add-on/values.yaml
+  enabled: false

@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/instance: kedify-agent
+    control-plane: kedify-agent
+    {{- include "kedify-agent.labels" . | nindent 4 }}
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.agent.replicas }}
+  selector:
+    matchLabels:
+      control-plane: kedify-agent
+  template:
+    metadata:
+      {{- with .Values.agent.volumeMounts }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        control-plane: kedify-agent
+        {{- with .Values.agent.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - args:
+            - --leader-elect
+            - --zap-log-level={{ .Values.agent.logLevel }}
+          command:
+            - /manager
+          env:
+            - name: KEDIFY_SERVER
+              value: {{ .Values.agent.kedifyServer }}
+            # - name: KEDIFY_AGENT_ID
+            #   value: {{ .Values.agentId }}
+            - name: KEDIFY_ORGANIZATION_ID
+              value: {{ .Values.agent.orgId }}
+            - name: KEDIFY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kedify-agent
+                  key: apikey
+            - name: HELM_REPOSITORY_CONFIG
+              value: /helm/repository/repositories.yaml
+            - name: HELM_REPOSITORY_CACHE
+              value: /helm/charts
+      {{- if .Values.agent.noColor }}
+            - name: NO_COLOR
+              value: {{ .Values.agent.noColor | quote }}
+      {{- end }}
+      {{- if .Values.agent.noBanner }}
+            - name: NO_BANNER
+              value: {{ .Values.agent.noBanner | quote }}
+      {{- end }}
+            - name: RBAC_READ_NODES
+              value: {{ .Values.agent.rbac.readNodes | quote }}
+            - name: RBAC_READ_PODS
+              value: {{ .Values.agent.rbac.readPods | quote }}
+            - name: RBAC_READ_DEPLOYMENTS_CLUSTERWIDE
+              value: {{ .Values.agent.rbac.readDeploymentsClusterwide | quote }}
+            - name: RBAC_READ_SERVICES
+              value: {{ .Values.agent.rbac.readServices | quote }}
+            - name: RBAC_READ_HPAS
+              value: {{ .Values.agent.rbac.readHpas | quote }}
+            - name: RBAC_READ_STATEFUL_SETS
+              value: {{ .Values.agent.rbac.readStatefulSets | quote }}
+            - name: RBAC_MANAGE_KUBE_RESOURCES
+              value: {{ .Values.agent.rbac.selfUpdates | quote }}
+            - name: RBAC_MANAGE_CUSTOM_RESOURCE_DEFINITIONS
+              value: {{ or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon | quote }}
+            - name: RBAC_MANAGE_HELM
+              value: {{ or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon | quote }}
+            - name: RBAC_MANAGE_INGRESS_AUTOWIRE
+              value: {{ .Values.agent.rbac.ingressAutoWire | quote }}
+            - name: RBAC_MANAGE_KEDIFY_CONFIG
+              value: {{ .Values.agent.rbac.kedifyConfig | quote }}
+          image: "{{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.agent.pullPolicy }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          name: manager
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- with .Values.agent.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.agent.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /helm/charts
+              name: helm-charts
+            {{- with .Values.agent.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        {{- with .Values.agent.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.agent.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: kedify-agent
+      terminationGracePeriodSeconds: 10
+      volumes:
+        - name: helm-charts
+          emptyDir:
+            sizeLimit: 50Mi
+      {{- with .Values.agent.volumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.agent.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.agent.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.agent.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

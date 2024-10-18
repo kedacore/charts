@@ -1,0 +1,74 @@
+{{- if .Values.agent.createKedifyConfiguration }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: create-default-kedifyconfig
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: create-default-kedifyconfig
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: "-1"
+    helm.sh/hook-delete-policy: "before-hook-creation,hook-succeeded"
+spec:
+  ttlSecondsAfterFinished: 43200 # 12h
+  backoffLimit: 4
+  template:
+    metadata:
+      labels:
+        app: create-default-kedifyconfig
+    spec:
+      restartPolicy: Never
+      serviceAccountName: install-crs
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 2000
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      volumes:
+      - name: default-kedifyconfig
+        configMap:
+          name: default-kedifyconfig
+          items:
+          - key: content
+            path: default-kedifyconfig.yaml
+      initContainers:
+      - name: wait-crds
+        image: "quay.io/giantswarm/docker-kubectl:1.29.2"
+        imagePullPolicy: IfNotPresent
+        command:
+        - sh
+        args:
+        - -c
+        - |
+          while ! kubectl get crd kedifyconfigurations.install.kedify.io
+          do
+            echo "Waiting for CRD kedifyconfigurations.install.kedify.io to exist"
+            sleep 5
+          done
+      containers:
+      - name: create-default-kedifyconfig
+        image: "quay.io/giantswarm/docker-kubectl:1.29.2"
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - name: default-kedifyconfig
+          mountPath: /data/default-kedifyconfig.yaml
+          subPath: default-kedifyconfig.yaml
+        command:
+        - sh
+        args:
+        - -c
+        - |
+          set -o nounset
+          for i in $(seq 20)
+          do
+            kubectl apply -f /data/ 2>&1 && exit 0
+            _sec=$(echo "1.5^$i" | bc)
+            echo "Waiting ${_sec} seconds.."
+            sleep ${_sec}
+          done
+          exit 1
+{{- end }}

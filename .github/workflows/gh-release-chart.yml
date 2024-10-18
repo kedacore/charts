@@ -15,6 +15,7 @@ on:
         options:
           - keda
           - http-add-on
+          - kedify-agent
 permissions:
   contents: read
 
@@ -72,6 +73,20 @@ jobs:
           kubectl wait --timeout=600s -nkeda --for=condition=ready pod -lapp.kubernetes.io/component=interceptor,app.kubernetes.io/part-of=keda-add-ons-http
           echo -e "\n\n\n   pods:\n\n"
           kubectl get pods -A
+      - name: Smoke test helm rendering and deployability (kedify agent chart)
+        if: inputs.chart == 'kedify-agent'
+        run: |
+          set -o pipefail
+          kubectl create ns keda --dry-run=client -o yaml | kubectl apply -f -
+          helm dependency build kedify-agent
+          helm template ./kedify-agent -nkeda \
+           --set agent.apiKey=kfy_facefaceface424242d0f7e1963c7d542aee9d62b66c4c705ec70108655b3c000 \
+           --set agent.orgId=9151f21f-42ab-42ab-42ab-f4af67cddf54 | kubectl apply -f -
+          sleep 10
+          kubectl rollout status --timeout=300s -nkeda deploy/kedify-agent
+          sleep 5
+          echo -e "\n\n\n   pods:\n\n"
+          kubectl get pods -A
 
   publish:
     runs-on: ubuntu-latest
@@ -81,6 +96,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Add the -N suffix to chart's version
+        id: version
         run: |
           set -xeuo pipefail
           version=${{ inputs.version }}
@@ -94,12 +110,20 @@ jobs:
               sed 's/\.\([0-9]\+\)$/-\1/')
             version=$(echo "$last_version" | awk -F'-' '{print $1 "-" $2+1}')
           fi
+          echo "newVersion=${version}" >> ${GITHUB_OUTPUT}
           sed -i ${{ inputs.chart }}/Chart.yaml -e "s;^version:.*;version: ${version};"
       - name: Publish Helm chart
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT_TOKEN }}
           charts_dir: "."
+      - name: Push Tag
+        uses: mathieudutour/github-tag-action@v6.2
+        with:
+          github_token: ${{ secrets.PAT_TOKEN }}
+          create_annotated_tag: true
+          tag_prefix: ""
+          custom_tag: ${{ inputs.chart }}-${{ steps.version.outputs.newVersion }}
       - name: Create k3s cluster
         if: inputs.chart == 'keda'
         uses: AbsaOSS/k3d-action@v2
@@ -126,7 +150,7 @@ jobs:
               --create-namespace \
               --timeout 300s \
               --wait \
-              --version ${{ inputs.version }} \
+              --version ${{ steps.version.outputs.newVersion }} \
               --set customManagedBy=kedify && break
             set +x
             [ "$i" = "16" ] && exit 1
@@ -148,5 +172,46 @@ jobs:
 
           echo -e "\n\nthe following command is supposed to fail:\n\n"
           helm template keda kedify/keda \
-            --version $${{ inputs.version }} \
+            --version ${{ steps.version.outputs.newVersion }} \
             --set crds.install=f4lse || true
+
+      - name: Smoke test helm installation
+        if: inputs.chart == 'kedify-agent'
+        run: |
+          # exp-backoff - we wait for pages to become available here
+          for i in $(seq 16)
+          do
+            _sec=$(echo "1.5^$i" | bc)
+            echo "Waiting ${_sec} seconds.."
+            sleep ${_sec}
+            helm repo add kedify https://kedify.github.io/charts || continue
+            helm repo update
+            set -x
+            helm upgrade -i agent kedify/kedify-agent \
+              -n keda \
+              --create-namespace \
+              --set agent.apiKey=kfy_facefaceface424242d0f7e1963c7d542aee9d62b66c4c705ec70108655b3c000 \
+              --set agent.orgId=9151f21f-42ab-42ab-42ab-f4af67cddf54 \
+              --timeout 300s \
+              --wait \
+              --version ${{ steps.version.outputs.newVersion }} && break
+            set +x
+            [ "$i" = "16" ] && exit 1
+          done
+          kubectl rollout status --timeout=300s -nkeda deploy/kedify-agent
+
+          echo -e "\n\n\n   pods:\n\n"
+          kubectl get pods -A
+
+          sleep 5
+          echo "::group::logs"
+          kubectl logs -lcontrol-plane=kedify-agent --tail=-1
+          echo "::endgroup::"
+
+          echo "::group::values.yaml"
+          helm get values -n keda agent
+          echo "::endgroup::"
+
+          echo "::group::resulting YAML manifests"
+          helm get manifest -n keda agent
+          echo "::endgroup::"

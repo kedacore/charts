@@ -1,0 +1,17 @@
+{{ if not .Values.agent.noBanner }}
+>    _         _ _ ___       _
+    | |_ ___ _| |_|  _|_ _  |_|___
+    | '_| -_| . | |  _| | |_| | . |
+    |_,_|___|___|_|_| |_  |_|_|___|
+                      |___|
+
+{{- end }}
+
+You have successfully installed the:
+ - agent
+{{- if .Values.keda.enabled }}
+ - keda
+{{- end}}
+{{- if .Values.kedaAddOnsHttp.enabled }}
+ - keda-add-ons-http
+{{- end}}

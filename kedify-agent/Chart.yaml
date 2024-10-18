@@ -1,0 +1,20 @@
+apiVersion: v2
+name: kedify-agent
+description: Kedify agent - Helm Chart
+kubeVersion: ">=v1.23.0-0"
+type: application
+version: "v0.0.54"
+appVersion: "v0.0.54"
+dependencies:
+  - name: keda
+    repository: https://kedify.github.io/charts
+    version: v2.15.1-0
+    condition: keda.enabled
+  - name: keda-add-ons-http
+    repository: https://kedify.github.io/charts
+    version: v0.8.0-8
+    condition: kedaAddOnsHttp.enabled
+home: https://github.com/kedify/charts
+sources:
+  - https://github.com/kedify/agent
+  - https://github.com/kedify/charts

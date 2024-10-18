@@ -1,0 +1,458 @@
+{{- if .Values.agent.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kedify-leader-election
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: kedify-agent
+rules:
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kedify-leader-election
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: kedify-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kedify-leader-election
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kedify-manager-role
+  namespace: {{ .Release.Namespace }}
+rules:
+
+{{- if .Values.agent.rbac.selfUpdates }}
+# Kedify agent needs to be able to update its own container image
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+  - update
+  - patch
+{{- end }}
+
+#  Cruding own CRD that holds the helm chart values for Keda installation, but also enabling disabling telemetry
+- apiGroups:
+  - install.kedify.io
+  resources:
+  - KedifyConfiguration
+  verbs:
+  - "*"
+
+{{- if or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon }}
+# Save/load state of each installed resource and its version
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - kedify-state
+  - kedify-http-addon-state
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - list
+  - watch
+{{- end }}
+
+{{- if .Values.agent.rbac.selfUpdates }}
+# Kedify needs to be able to uninstall itself
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  - update
+  resourceNames:
+  - keda
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  - rolebindings
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-leader-election
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-agent
+{{- end }}
+
+# kedify-agent reads API key from here and stores agent_id from fleet install initialization
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-agent
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kedify-manager-rolebinding
+  namespace: {{ .Release.Namespace }}
+  labels:
+    control-plane: kedify-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kedify-manager-role
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kedify-manager-role
+rules:
+# to get kube-system UUID for self-registration in fleet installation
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - get
+  resourceNames:
+  - kube-system
+# for reporting status about KEDA installation to dashboard
+- apiGroups:
+  - apiregistration.k8s.io
+  resources:
+  - apiservices
+  verbs:
+  - get
+  - list
+  - watch
+{{- if .Values.agent.rbac.readNodes }}
+# for metrics and metered billing
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+{{- if .Values.agent.rbac.readPods }}
+# for metrics
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+{{- if .Values.agent.rbac.readMetrics }}
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - list
+  - watch
+  - get
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+{{- end }}
+{{- if .Values.agent.rbac.readDeploymentsClusterwide }}
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+{{- end }}
+{{- if .Values.agent.rbac.readHpas }}
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+{{- if .Values.agent.rbac.readStatefulSets }}
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+{{- if or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon }}
+# required by Kedify to be able to crud CR(D)s related to KEDA
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - kedifyconfigurations.install.kedify.io
+  - scalingpolicies.keda.kedify.io
+  - clustertriggerauthentications.keda.sh
+  - cloudeventsources.eventing.keda.sh
+  - clustercloudeventsources.eventing.keda.sh
+  - httpscaledobjects.http.keda.sh
+  - scaledjobs.keda.sh
+  - scaledobjects.keda.sh
+  - triggerauthentications.keda.sh
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - create
+{{- end }}
+- apiGroups:
+  - keda.sh
+  - http.keda.sh
+  - eventing.keda.sh
+  - install.kedify.io
+  - keda.kedify.io
+  resources:
+  - "*"
+  verbs:
+  - "*"
+
+{{- if .Values.agent.rbac.ingressAutoWire }}
+# Kedify needs to configure envoy proxy also in other namespaces & deploy it
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - list
+  - watch
+  - create
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-proxy
+{{- end }}
+
+{{- if .Values.agent.rbac.uninstall }}
+# Kedify needs to be able to uninstall itself
+- apiGroups:
+    - rbac.authorization.k8s.io
+  resources:
+    - roles
+  verbs:
+    - list
+    - watch
+    - delete
+{{- end }}
+
+{{- if .Values.agent.rbac.ingressAutoWire }}
+# required by Kedify agent to be able to do the auto-wiring of communication from {VirtualService, Service, HttpRoute, Ingress, Route}'s original workload to Interceptor
+# Interceptor then forwards the traffic to the original workload (used for activation phase when there is no replicas)
+- apiGroups:
+  - networking.istio.io
+  resources:
+  - virtualservices
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+{{- if .Values.agent.rbac.readServices }}
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - list
+  - create
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - get
+  - patch
+  - update
+  resourceNames:
+  - kedify-proxy
+  - keda-add-ons-http-interceptor-proxy
+{{- end }}
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - httproutes
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - referencegrants
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - route.openshift.io
+  resources:
+  - routes
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+{{- end }}
+
+{{- if or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon }}
+# Kedify needs to be able to uninstall itself
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  - rolebindings
+  - clusterroles
+  - clusterrolebindings
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-manager-role
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  verbs:
+  - get
+  - delete
+  - update
+  resourceNames:
+  - kedify-manager-rolebinding
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kedify-manager-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kedify-manager-role
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+{{- end }}

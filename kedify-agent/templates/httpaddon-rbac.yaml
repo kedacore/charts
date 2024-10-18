@@ -1,0 +1,244 @@
+{{- if .Values.agent.rbac.create }}
+{{- if .Values.agent.rbac.shouldBeAbleToInstallHttpAddon }}
+# Following rbac is needed for kedify agent to be able to install also the HTTP addon
+
+# these rules are namespaced for resources present in the installation namespace (keda)
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: http-addon-installer
+  {{ .Release.Namespace }}
+  labels:
+    control-plane: kedify-agent
+rules:
+
+# When installing http addon create its rbac
+# serviceaccounts
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - '*'
+  resourceNames:
+  - keda-add-ons-http-interceptor
+  - keda-add-ons-http
+  - keda-add-ons-http-external-scaler
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts
+  verbs:
+  - create
+
+# roles
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  verbs:
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - keda-add-ons-http-role
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - roles
+  verbs:
+  - create
+
+# rolebindings
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - rolebindings
+  verbs:
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - keda-add-ons-http-role-rolebinding
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - rolebindings
+  verbs:
+  - create
+
+# When installing http addon create certain Services and Deployments
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - '*'
+  resourceNames:
+  - keda-add-ons-http-interceptor-admin
+  - keda-add-ons-http-interceptor-proxy
+  - keda-add-ons-http-controller-manager-metrics-service
+  - keda-add-ons-http-external-scaler
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - '*'
+  resourceNames:
+  - keda-add-ons-http-interceptor
+  - keda-add-ons-http-controller-manager
+  - keda-add-ons-http-external-scaler
+- apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: http-addon-installer
+  {{ .Release.Namespace }}
+  labels:
+    control-plane: kedify-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: http-addon-installer
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  {{ .Release.Namespace }}
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: http-addon-installer
+rules:
+
+# we need to have the same rules to prevent privilege escalation issue - https://kubernetes.io/docs/reference/access-authn-authz/rbac/#restrictions-on-role-binding-creation-or-update
+# additional content of keda-add-ons-http-interceptor cluster role
+- apiGroups:
+  - ""
+  resources:
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+
+# additional content of keda-add-ons-http-proxy-role cluster role
+- apiGroups: ["authentication.k8s.io"]
+  resources:
+  - tokenreviews
+  verbs: ["create"]
+- apiGroups: ["authorization.k8s.io"]
+  resources:
+  - subjectaccessreviews
+  verbs: ["create"]
+
+# clusterroles
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  verbs:
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - keda-add-ons-http-interceptor
+  - keda-add-ons-http-role
+  - keda-add-ons-http-external-scaler
+  - keda-add-ons-http-proxy-role
+  - keda-add-ons-http-metrics-reader
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterroles
+  verbs:
+  - create
+
+# clusterrolebindings
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  verbs:
+  - delete
+  - get
+  - patch
+  - update
+  resourceNames:
+  - keda-add-ons-http-interceptor
+  - keda-add-ons-http-rolebinding
+  - keda-add-ons-http-proxy-rolebinding
+  - keda-add-ons-http-external-scaler
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - clusterrolebindings
+  verbs:
+  - create
+
+# events for the interceptor
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: http-addon-installer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: http-addon-installer
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  {{ .Release.Namespace }}
+
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: http-addon-metrics-reader-installer
+rules:
+# content of keda-add-ons-http-metrics-reader cluster role
+- nonResourceURLs:
+  - /metrics
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: http-addon-metrics-reader-installer
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: http-addon-metrics-reader-installer
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  {{ .Release.Namespace }}
+{{- end }}
+{{- end }}

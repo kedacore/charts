@@ -1,0 +1,304 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+  name: kedifyconfigurations.install.kedify.io
+spec:
+  group: install.kedify.io
+  names:
+    kind: KedifyConfiguration
+    listKind: KedifyConfigurationList
+    plural: kedifyconfigurations
+    shortNames:
+    - kedify
+    - kedifyconfig
+    singular: kedifyconfiguration
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: KEDA version
+      jsonPath: .status.installations.keda.kedaVersion
+      name: Version
+      type: string
+    - description: Installation mode
+      jsonPath: .spec.kedaInstallations[].mode
+      name: Mode
+      type: string
+    - description: HTTTP Addon version
+      jsonPath: .status.installations.keda.httpAddonVersion
+      name: HTTP-Addon
+      priority: 20
+      type: string
+    - description: Health of Kedify Agent
+      jsonPath: .status.agent.phase
+      name: Agent
+      type: string
+    - description: Health of KEDA Operator
+      jsonPath: .status.installations.keda.deployments.keda-operator.phase
+      name: KEDA
+      type: string
+    - description: Health of aggregated API Service (v1beta1.external.metrics.k8s.io)
+      jsonPath: .status.apiService.phase
+      name: API Service
+      type: string
+    - description: Health of KEDA's internal Metric Server
+      jsonPath: .status.installations.keda.deployments.keda-operator-metrics-apiserver.phase
+      name: Metric Server
+      priority: 20
+      type: string
+    - description: Health of KEDA's Admission controller
+      jsonPath: .status.installations.keda.deployments.keda-admission-webhooks.phase
+      name: Admission
+      priority: 20
+      type: string
+    - description: Health of KEDA's HTTP Addon interceptor
+      jsonPath: .status.installations.keda.deployments.keda-add-ons-http-interceptor.phase
+      name: Interceptor
+      priority: 20
+      type: string
+    - description: When the resources was created
+      jsonPath: .metadata.creationTimestamp
+      name: Created
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: KedifyConfiguration is the Schema for the KedifyConfiguration
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: KedifyConfigurationSpec defines the desired state of KedifyConfiguration
+            properties:
+              clusterName:
+                description: ClusterName is the name of this k8s cluster in the Kedify
+                  Dashboard
+                type: string
+              kedaInstallations:
+                description: KEDAInstallations defines the KEDA installations options
+                items:
+                  description: KEDAInstallation defines the desired state of a KEDA
+                    installation
+                  properties:
+                    agentAutoUpdate:
+                      description: AutoUpdate controls whether the agent should be
+                        auto updated to latest released version
+                      type: boolean
+                    httpAddonHelm:
+                      description: HTTPAddonHelm defines the http-addon Helm values
+                        and chart version for HTTP Addon installation
+                      properties:
+                        appVersion:
+                          description: AppVersion defines the actual version of the
+                            application that will be installed (KEDA or HttpAddon,
+                            this should correspond with the container image tags)
+                          type: string
+                        autoUpdate:
+                          description: AutoUpdate controls what strategy should be
+                            used for updating the AppVersion when new releases are
+                            available
+                          enum:
+                          - LatestReleased
+                          - BuildsOnly
+                          - PatchesOnly
+                          - Disabled
+                          type: string
+                        chartVersion:
+                          description: ChartVersion defines the Helm chart version
+                          type: string
+                        enabled:
+                          description: Enabled determines whether the helm chart should
+                            be installed or not (for KEDA helm chart ManagementMode
+                            needs to also allow this)
+                          type: boolean
+                        values:
+                          description: Values defines the Helm values
+                          type: string
+                      type: object
+                    kedaHelm:
+                      description: KedaHelm defines the Helm values and chart version
+                        for KEDA installation
+                      properties:
+                        appVersion:
+                          description: AppVersion defines the actual version of the
+                            application that will be installed (KEDA or HttpAddon,
+                            this should correspond with the container image tags)
+                          type: string
+                        autoUpdate:
+                          description: AutoUpdate controls what strategy should be
+                            used for updating the AppVersion when new releases are
+                            available
+                          enum:
+                          - LatestReleased
+                          - BuildsOnly
+                          - PatchesOnly
+                          - Disabled
+                          type: string
+                        chartVersion:
+                          description: ChartVersion defines the Helm chart version
+                          type: string
+                        enabled:
+                          description: Enabled determines whether the helm chart should
+                            be installed or not (for KEDA helm chart ManagementMode
+                            needs to also allow this)
+                          type: boolean
+                        values:
+                          description: Values defines the Helm values
+                          type: string
+                      type: object
+                    mode:
+                      description: |-
+                        Mode defines how Agent should manage the KEDA installation
+                        Managed: Agent will manage KEDA throughout its lifecycle
+                        InstallOnly: Agent will install KEDA but not manage it
+                        Adopt: Agent will adopt an existing KEDA installation
+                      enum:
+                      - Managed
+                      - InstallOnly
+                      - Adopt
+                      - Auto
+                      - Disabled
+                      type: string
+                    name:
+                      description: Name of the KEDA installation
+                      type: string
+                    namespace:
+                      description: Namespace where KEDA should be installed
+                      type: string
+                    telemetry:
+                      description: Telemetry defines the telemetry configuration
+                      properties:
+                        controlPlane:
+                          description: ControlPlane defines the telemetry configuration
+                            for the control plane
+                          properties:
+                            disabled:
+                              description: Disabled defines if telemetry should be
+                                disabled, enabled by default
+                              type: boolean
+                            interval:
+                              description: Interval defines the interval for telemetry
+                                in seconds, 30 by default
+                              format: int32
+                              type: integer
+                          type: object
+                        kedaResources:
+                          description: KedaResources defines the telemetry configuration
+                            for the KEDA resources
+                          properties:
+                            disabled:
+                              description: Disabled defines if telemetry should be
+                                disabled, enabled by default
+                              type: boolean
+                            interval:
+                              description: Interval defines the interval for telemetry
+                                in seconds, 30 by default
+                              format: int32
+                              type: integer
+                          type: object
+                        kubernetesResources:
+                          description: KubernetesResources defines the telemetry configuration
+                            for the Kubernetes resources
+                          properties:
+                            disabled:
+                              description: Disabled defines if telemetry should be
+                                disabled, enabled by default
+                              type: boolean
+                            interval:
+                              description: Interval defines the interval for telemetry
+                                in seconds, 30 by default
+                              format: int32
+                              type: integer
+                          type: object
+                      type: object
+                  required:
+                  - agentAutoUpdate
+                  - mode
+                  type: object
+                type: array
+            type: object
+          status:
+            description: KedifyConfigurationStatus defines the observed state of KedifyConfiguration
+            properties:
+              agent:
+                description: KedifyConfigurationAgentStatus defines the observed state
+                  of a KedifyConfiguration agent
+                properties:
+                  phase:
+                    type: string
+                  reason:
+                    type: string
+                  uninstallationStartedAt:
+                    format: date-time
+                    type: string
+                  version:
+                    type: string
+                type: object
+              apiService:
+                description: KedifyConfigurationResourceStatus defines the observed
+                  state of a KedifyConfiguration owned resources
+                properties:
+                  phase:
+                    type: string
+                  reason:
+                    type: string
+                type: object
+              configSHA256:
+                type: string
+              installations:
+                additionalProperties:
+                  description: KedifyInstallationStatus defines the observed state
+                    of a KedifyInstallation
+                  properties:
+                    adoptedAt:
+                      format: date-time
+                      type: string
+                    controlPlaneMetrics:
+                      type: string
+                    deployments:
+                      additionalProperties:
+                        description: KedifyConfigurationResourceStatus defines the
+                          observed state of a KedifyConfiguration owned resources
+                        properties:
+                          phase:
+                            type: string
+                          reason:
+                            type: string
+                        type: object
+                      type: object
+                    firstHealthyAt:
+                      format: date-time
+                      type: string
+                    httpAddonVersion:
+                      type: string
+                    k8sResourcesMetrics:
+                      type: string
+                    kedaResourcesMetrics:
+                      type: string
+                    kedaVersion:
+                      type: string
+                  type: object
+                type: object
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
