@@ -78,6 +78,8 @@ jobs:
         run: |
           set -o pipefail
           kubectl create ns keda --dry-run=client -o yaml | kubectl apply -f -
+          helm repo add kedify https://kedify.github.io/charts
+          helm repo update
           helm dependency build kedify-agent
           helm template ./kedify-agent -nkeda \
            --set agent.apiKey=kfy_facefaceface424242d0f7e1963c7d542aee9d62b66c4c705ec70108655b3c000 \
