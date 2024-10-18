@@ -9,7 +9,7 @@ on:
         default: ''
         type: string
       chart:
-        description: "select the chart you want to release, either keda or http-add-on"
+        description: "select the chart you want to release ({keda,http-add-on}: vx.y.z-0, kedify-agent: vx.y.z)"
         required: true
         type: choice
         options:
@@ -118,6 +118,8 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT_TOKEN }}
+          linting: "off"
+          dependencies: "kedify,https://kedify.github.io/charts"
           charts_dir: "."
       - name: Push Tag
         uses: mathieudutour/github-tag-action@v6.2
