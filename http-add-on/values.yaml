@@ -50,6 +50,8 @@ operator:
   imagePullSecrets: []
   # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
   watchNamespace: ""
+  # -- label to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to watch HTTPScaledObjects in all labels.
+  watchLabel: ""
   # -- The image pull policy for the operator component
   pullPolicy: Always
   # operator pod resource limits
