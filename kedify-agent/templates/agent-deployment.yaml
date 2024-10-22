@@ -47,14 +47,14 @@ spec:
               value: /helm/repository/repositories.yaml
             - name: HELM_REPOSITORY_CACHE
               value: /helm/charts
-      {{- if .Values.agent.noColor }}
+            {{- if .Values.agent.noColor }}
             - name: NO_COLOR
               value: {{ .Values.agent.noColor | quote }}
-      {{- end }}
-      {{- if .Values.agent.noBanner }}
+            {{- end }}
+            {{- if .Values.agent.noBanner }}
             - name: NO_BANNER
               value: {{ .Values.agent.noBanner | quote }}
-      {{- end }}
+            {{- end }}
             - name: RBAC_READ_NODES
               value: {{ .Values.agent.rbac.readNodes | quote }}
             - name: RBAC_READ_PODS
@@ -73,7 +73,7 @@ spec:
               value: {{ or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon | quote }}
             - name: RBAC_MANAGE_HELM
               value: {{ or .Values.agent.rbac.shouldBeAbleToInstallKeda .Values.agent.rbac.shouldBeAbleToInstallHttpAddon | quote }}
-            - name: RBAC_MANAGE_INGRESS_AUTOWIRE
+            - name: RBAC_MANAGE_INGRESS_AUTO_WIRE
               value: {{ .Values.agent.rbac.ingressAutoWire | quote }}
             - name: RBAC_MANAGE_KEDIFY_CONFIG
               value: {{ .Values.agent.rbac.kedifyConfig | quote }}
