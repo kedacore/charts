@@ -47,11 +47,11 @@ spec:
     - jsonPath: .status.conditions[?(@.type=="Paused")].status
       name: Paused
       type: string
-    - jsonPath: .status.triggersNames
-      name: TriggersNames
+    - jsonPath: .status.triggersTypes
+      name: Triggers
       type: string
-    - jsonPath: .status.authenticationsNames
-      name: AuthenticationsNames
+    - jsonPath: .status.authenticationsTypes
+      name: Authentications
       type: string
     - jsonPath: .metadata.creationTimestamp
       name: Age
