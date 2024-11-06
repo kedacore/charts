@@ -179,7 +179,7 @@ jobs:
         helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
         helm repo add jetstack https://charts.jetstack.io
         helm repo update
-        helm install prometheus-stack prometheus-community/kube-prometheus-stack --namespace monitoring --create-namespace --wait
+        helm install prometheus-stack prometheus-community/prometheus-operator-crds --namespace monitoring --create-namespace --wait
         helm install cert-manager jetstack/cert-manager --namespace cert-manager --create-namespace --set installCRDs=true
 
     - name: Create KEDA's namespace (${{ matrix.namespace }})
