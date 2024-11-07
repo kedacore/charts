@@ -116,8 +116,9 @@ spec:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
+          command:
+           - /keda-adapter
           args:
-          - /usr/local/bin/keda-adapter
           - --port={{ .Values.prometheus.metricServer.port }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true
