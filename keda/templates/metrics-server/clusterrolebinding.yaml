@@ -59,5 +59,5 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: horizontal-pod-autoscaler
-  namespace: {{ .Values.rbac.controlPlaneServiceAccountsNamespace }}
+  namespace: kube-system
 {{- end -}}
