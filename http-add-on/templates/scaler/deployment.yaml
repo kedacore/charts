@@ -18,7 +18,7 @@ spec:
         app.kubernetes.io/component: scaler
         {{- include "keda-http-add-on.labels" . | indent 8 }}
     spec:
-      imagePullSecrets: 
+      imagePullSecrets:
         {{- toYaml .Values.scaler.imagePullSecrets | nindent 8 }}
       serviceAccountName: {{ .Chart.Name }}-external-scaler
       {{- if .Values.podSecurityContext.scaler }}
@@ -40,8 +40,6 @@ spec:
         - containerPort: {{ .Values.scaler.grpcPort }}
           name: grpc
         env:
-        - name: KEDA_HTTP_SCALER_TARGET_ADMIN_DEPLOYMENT
-          value: "{{ .Chart.Name }}-interceptor"
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
