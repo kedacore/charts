@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.14.0
+helm install keda kedacore/keda --namespace keda --version 2.16.0
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.14.2
+$ helm install keda kedacore/keda --namespace keda --version 2.16.0
 ```
 
 ## Uninstalling the Chart
@@ -121,7 +121,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `certificates.operator.caDirs` | list | `["/custom/ca"]` | Location(s) of CA files for authentication of external TLS connections such as TLS-enabled metrics sources |
+| `certificates.operator` | string | `nil` |  |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -210,6 +210,7 @@ their default values.
 | `prometheus.metricServer.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for metric server using podMonitor crd (prometheus operator) |
 | `prometheus.metricServer.port` | int | `8080` | HTTP port used for exposing metrics server prometheus metrics |
 | `prometheus.metricServer.portName` | string | `"metrics"` | HTTP port name for exposing metrics server prometheus metrics |
+| `prometheus.metricServer.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.metricServer.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.metricServer.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.metricServer.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
@@ -237,6 +238,7 @@ their default values.
 | `prometheus.operator.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) |
 | `prometheus.operator.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
 | `prometheus.operator.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA Operator using prometheusRules crd (prometheus operator) |
+| `prometheus.operator.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.operator.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.operator.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.operator.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
@@ -257,6 +259,7 @@ their default values.
 | `prometheus.webhooks.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
 | `prometheus.webhooks.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
 | `prometheus.webhooks.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
+| `prometheus.webhooks.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.webhooks.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.webhooks.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus webhooks |
 | `prometheus.webhooks.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
@@ -308,7 +311,7 @@ their default values.
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
 | `volumes.webhooks.extraVolumes` | list | `[]` | Extra volumes for admission webhooks deployment |
 | `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
-| `webhooks.enabled` | bool | `true` | Enable admission webhooks (this feature option will be removed in v2.12) |
+| `webhooks.enabled` | bool | `true` |  |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
 | `webhooks.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
