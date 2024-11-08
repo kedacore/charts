@@ -55,6 +55,12 @@ spec:
             - name: NO_BANNER
               value: {{ .Values.agent.noBanner | quote }}
             {{- end }}
+            {{- if (.Values.agent.features).podResourceProfilesEnabled }}
+            - name: PRP_ENABLED
+              value: {{ .Values.agent.features.podResourceProfilesEnabled | quote }}
+            - name: PRP_REQUIRES_ANNOTATED_PODS
+              value: {{ .Values.agent.features.prpRequiresAnnotatedPods | quote }}
+            {{- end }}
             - name: RBAC_READ_NODES
               value: {{ .Values.agent.rbac.readNodes | quote }}
             - name: RBAC_READ_PODS

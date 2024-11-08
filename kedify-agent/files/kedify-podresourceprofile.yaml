@@ -1,0 +1,372 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.15.0
+  name: podresourceprofiles.keda.kedify.io
+spec:
+  group: keda.kedify.io
+  names:
+    kind: PodResourceProfile
+    listKind: PodResourceProfileList
+    plural: podresourceprofiles
+    shortNames:
+    - prp
+    singular: podresourceprofile
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - description: The readiness of the PodResourceProfile
+      jsonPath: .status.conditions[?(.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: When paused, it is ignored
+      jsonPath: .spec.paused
+      name: Paused
+      type: string
+    - description: Is the profile triggered and waiting for the pod?
+      jsonPath: .status.triggered
+      name: Triggered
+      type: boolean
+    - description: Time necessary for new resources to kick in
+      jsonPath: .spec.trigger.delay
+      name: Delay
+      type: string
+    - description: When the last update was scheduled
+      jsonPath: .status.triggeredAt
+      name: Triggered ago
+      priority: 10
+      type: date
+    - description: When a pod was updated
+      jsonPath: .status.lastResourceUpdate
+      name: Last Apply
+      priority: 15
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: PodResourceProfile is the Schema for the PodResourceProfile API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: PodResourceProfileSpec defines the desired state of PodResourceProfile
+            properties:
+              containerName:
+                description: ContainerName what container in the pod should be updated
+                minLength: 1
+                type: string
+              newResources:
+                description: NewResources contains the new resource settings that
+                  should be applied
+                properties:
+                  limits:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    type: object
+                  requests:
+                    additionalProperties:
+                      anyOf:
+                      - type: integer
+                      - type: string
+                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                      x-kubernetes-int-or-string: true
+                    type: object
+                type: object
+                x-kubernetes-validations:
+                - rule: has(self.limits) || has(self.requests)
+              paused:
+                default: false
+                description: Paused if set to true, can make the controller ignore
+                  this CR
+                type: boolean
+              priority:
+                default: 0
+                description: |-
+                  Priority in case multiple (unpaused) PodResourceProfile CRs matches, only the one with
+                  the highest priority will be applied. If not specified, it is 0 and if multiple
+                  PodResourceProfile with the same priority matches the pod's label selector, then
+                  lexicographically smaller is picked
+                type: integer
+              selector:
+                description: |-
+                  Selector is the general label selector spec that identifies one or multiple Pods
+                  if selector is specified, don't use the target
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements.
+                      The requirements are ANDed.
+                    items:
+                      description: |-
+                        A label selector requirement is a selector that contains values, a key, and an operator that
+                        relates the key and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies
+                            to.
+                          type: string
+                        operator:
+                          description: |-
+                            operator represents a key's relationship to a set of values.
+                            Valid operators are In, NotIn, Exists and DoesNotExist.
+                          type: string
+                        values:
+                          description: |-
+                            values is an array of string values. If the operator is In or NotIn,
+                            the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                            the values array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                      map is equivalent to an element of matchExpressions, whose key field is "key", the
+                      operator is "In", and the values array contains only "value". The requirements are ANDed.
+                    type: object
+                type: object
+                x-kubernetes-map-type: atomic
+              target:
+                description: |-
+                  Target is the reference to a workload whose pods should be modified
+                  if target is specified, don't use the selector
+                properties:
+                  kind:
+                    enum:
+                    - deployment
+                    - daemonset
+                    - statefulset
+                    type: string
+                  name:
+                    minLength: 1
+                    type: string
+                required:
+                - kind
+                - name
+                type: object
+              trigger:
+                description: Trigger is condition or event that triggers the resource
+                  change
+                properties:
+                  after:
+                    default: containerReady
+                    description: "After specifies the event or the state pod/container
+                      needs to be in when we start counting (see Delay)\n\n\nAllowed
+                      values are:\n- 'containerReady': specifies whether the container
+                      is currently passing its\n  readiness check. The value will
+                      change as readiness probes keep executing.\n  If no readiness
+                      probes are specified, this field defaults to true once the\n
+                      \ container is fully started.\n   field: pod.status.containerStatuses.ready\n
+                      \   time: pod.status.containerStatuses.state.running.startedAt\n\n\n-
+                      'containerStarted': indicates whether the container has finished
+                      its\n  postStart  lifecycle hook and passed its startup probe.
+                      Initialized as\n  false, becomes true after startupProbe is
+                      considered successful. Resets\n  to false when the container
+                      is restarted, or if kubelet loses state\n  temporarily. In both
+                      cases, startup probes will run again. Is always\n  true when
+                      no startupProbe is defined and container is running and has\n
+                      \ passed the postStart lifecycle hook. The null value must be
+                      treated the\n  same as false.\n\t  field: pod.status.containerStatuses.started\n\t
+                      \  time: pod.status.containerStatuses.state.running.startedAt)\n\n\n-
+                      'podReady': means the pod is able to service requests and should
+                      be added\n  to the load balancing pools of all matching services\n
+                      \  field: pod.status.conditions[?(.type=='Ready')].status\n
+                      \   time: pod.status.conditions[?(.type=='Ready')].lastTransitionTime\n\n\n-
+                      'podScheduled': represents status of the scheduling process
+                      for this pod\n   field: pod.status.conditions[?(.type=='PodScheduled')].status\n
+                      \   time: pod.status.conditions[?(.type=='PodScheduled')].lastTransitionTime\n\n\n-
+                      'podRunning' means the pod has been bound to a node and all
+                      the\n  containers have been started. At least one container
+                      is still running\n  or is in the process of being restarted.\n
+                      \   field: pod.status.phase\n     time: pod.status.startTime.time"
+                    enum:
+                    - containerReady
+                    - containerStarted
+                    - podReady
+                    - podScheduled
+                    - podRunning
+                    type: string
+                  delay:
+                    description: |-
+                      Delay denotes how long the controller should wait before applying the new resources to the pod
+                      example values: 30s, 1m, 2m30s, 90s, 2h
+                    format: duration
+                    minLength: 1
+                    type: string
+                required:
+                - delay
+                type: object
+            required:
+            - newResources
+            - trigger
+            type: object
+            x-kubernetes-validations:
+            - rule: has(self.target) != has(self.selector)
+          status:
+            description: PodResourceProfileStatus defines the observed state of PodResourceProfile
+            properties:
+              conditions:
+                items:
+                  description: "Condition contains details for one aspect of the current
+                    state of this API Resource.\n---\nThis struct is intended for
+                    direct use as an array at the field path .status.conditions.  For
+                    example,\n\n\n\ttype FooStatus struct{\n\t    // Represents the
+                    observations of a foo's current state.\n\t    // Known .status.conditions.type
+                    are: \"Available\", \"Progressing\", and \"Degraded\"\n\t    //
+                    +patchMergeKey=type\n\t    // +patchStrategy=merge\n\t    // +listType=map\n\t
+                    \   // +listMapKey=type\n\t    Conditions []metav1.Condition `json:\"conditions,omitempty\"
+                    patchStrategy:\"merge\" patchMergeKey:\"type\" protobuf:\"bytes,1,rep,name=conditions\"`\n\n\n\t
+                    \   // other fields\n\t}"
+                  properties:
+                    lastTransitionTime:
+                      description: |-
+                        lastTransitionTime is the last time the condition transitioned from one status to another.
+                        This should be when the underlying condition changed.  If that is not known, then using the time when the API field changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: |-
+                        message is a human readable message indicating details about the transition.
+                        This may be an empty string.
+                      maxLength: 32768
+                      type: string
+                    observedGeneration:
+                      description: |-
+                        observedGeneration represents the .metadata.generation that the condition was set based upon.
+                        For instance, if .metadata.generation is currently 12, but the .status.conditions[x].observedGeneration is 9, the condition is out of date
+                        with respect to the current state of the instance.
+                      format: int64
+                      minimum: 0
+                      type: integer
+                    reason:
+                      description: |-
+                        reason contains a programmatic identifier indicating the reason for the condition's last transition.
+                        Producers of specific condition types may define expected values and meanings for this field,
+                        and whether the values are considered a guaranteed API.
+                        The value should be a CamelCase string.
+                        This field may not be empty.
+                      maxLength: 1024
+                      minLength: 1
+                      pattern: ^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$
+                      type: string
+                    status:
+                      description: status of the condition, one of True, False, Unknown.
+                      enum:
+                      - "True"
+                      - "False"
+                      - Unknown
+                      type: string
+                    type:
+                      description: |-
+                        type of condition in CamelCase or in foo.example.com/CamelCase.
+                        ---
+                        Many .condition.type values are consistent across resources like Available, but because arbitrary conditions can be
+                        useful (see .node.status.conditions), the ability to deconflict is important.
+                        The regex it matches is (dns1123SubdomainFmt/)?(qualifiedNameFmt)
+                      maxLength: 316
+                      pattern: ^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              effectiveSelector:
+                description: |-
+                  A label selector is a label query over a set of resources. The result of matchLabels and
+                  matchExpressions are ANDed. An empty label selector matches all objects. A null
+                  label selector matches no objects.
+                properties:
+                  matchExpressions:
+                    description: matchExpressions is a list of label selector requirements.
+                      The requirements are ANDed.
+                    items:
+                      description: |-
+                        A label selector requirement is a selector that contains values, a key, and an operator that
+                        relates the key and values.
+                      properties:
+                        key:
+                          description: key is the label key that the selector applies
+                            to.
+                          type: string
+                        operator:
+                          description: |-
+                            operator represents a key's relationship to a set of values.
+                            Valid operators are In, NotIn, Exists and DoesNotExist.
+                          type: string
+                        values:
+                          description: |-
+                            values is an array of string values. If the operator is In or NotIn,
+                            the values array must be non-empty. If the operator is Exists or DoesNotExist,
+                            the values array must be empty. This array is replaced during a strategic
+                            merge patch.
+                          items:
+                            type: string
+                          type: array
+                          x-kubernetes-list-type: atomic
+                      required:
+                      - key
+                      - operator
+                      type: object
+                    type: array
+                    x-kubernetes-list-type: atomic
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    description: |-
+                      matchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
+                      map is equivalent to an element of matchExpressions, whose key field is "key", the
+                      operator is "In", and the values array contains only "value". The requirements are ANDed.
+                    type: object
+                type: object
+                x-kubernetes-map-type: atomic
+              lastResourceUpdate:
+                format: date-time
+                type: string
+              observedGeneration:
+                format: int64
+                type: integer
+              triggered:
+                type: boolean
+              triggeredAt:
+                format: date-time
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

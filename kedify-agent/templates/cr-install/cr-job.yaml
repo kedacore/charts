@@ -15,6 +15,8 @@ spec:
   backoffLimit: 4
   template:
     metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
       labels:
         app: create-default-kedifyconfig
     spec:

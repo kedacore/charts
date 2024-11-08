@@ -30,6 +30,9 @@ agent:
   noColor: false
   nameOverride: ""
   fullnameOverride: ""
+  features:
+    podResourceProfilesEnabled: false
+    prpRequiresAnnotatedPods: true
 
   rbac:
     # create the necessary RBAC for kedify agent
