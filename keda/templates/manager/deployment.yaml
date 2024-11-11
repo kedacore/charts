@@ -156,6 +156,8 @@ spec:
               value: {{ .Values.http.timeout | quote }}
             - name: KEDA_HTTP_MIN_TLS_VERSION
               value: {{ .Values.http.minTlsVersion }}
+            - name: KEDA_GRPC_MIN_TLS_VERSION
+              value: {{ .Values.grpc.minTlsVersion }}            
             {{- if ( not .Values.http.keepAlive.enabled ) }}
             - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
               value: "true"
