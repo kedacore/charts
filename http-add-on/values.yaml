@@ -45,7 +45,7 @@ logging:
 # operator-specific configuration values
 operator:
   # -- Number of replicas, oerator k8s resources will not be installed if this is set to 0
-  replicas: 1
+  replicas: 0
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
   # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
@@ -84,7 +84,7 @@ operator:
 
 scaler:
   # -- Number of replicas
-  replicas: 3
+  replicas: 1
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
   # -- The name of the Kubernetes `Service` for the scaler component
@@ -141,7 +141,7 @@ interceptor:
     port: 2223
   replicas:
     # -- The minimum number of interceptor replicas that should ever be running
-    min: 3
+    min: 1
     # -- The maximum number of interceptor replicas that should ever be running
     max: 50
     # -- The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure
@@ -235,7 +235,7 @@ images:
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
-  tag: v0.8.1-0
+  tag: v0.8.1-7
   # -- Image name for the operator image component
   operator: ghcr.io/kedify/http-add-on-operator
   # -- Image name for the interceptor image component

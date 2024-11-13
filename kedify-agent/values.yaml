@@ -22,7 +22,7 @@ agent:
   createKedifyConfiguration: true
 
   image:
-    tag: "v0.1.0"
+    tag: "v0.1.4"
     repository: ghcr.io/kedify/agent
     pullPolicy: IfNotPresent
   imagePullSecrets: []

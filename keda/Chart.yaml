@@ -19,8 +19,6 @@ icon: https://raw.githubusercontent.com/kedacore/keda/main/images/keda-logo-500x
 sources:
   - https://github.com/kedacore/keda
 maintainers:
-  - name: Jorge Turrado
-    email: jorge_turrado@hotmail.es
   - name: Zbynek Roubalik
     email: zbynek@kedify.io
   - name: Jan Wozniak

@@ -77,32 +77,16 @@ jobs:
       - name: Create KEDA namespace
         run: kubectl create ns keda
 
-      - name: Generate values
-        run: |
-          cat <<EOF > keda-values.yaml
-          image:
-            keda:
-              tag: main
-            metricsApiServer:
-              tag: main
-            webhooks:
-              tag: main
-
       - name: Install KEDA chart
-        run: helm install keda ./keda/ --namespace keda --values keda-values.yaml
+        run: helm install keda ./keda/ --namespace keda
 
       - name: Generate values
         run: |
           cat <<EOF > test-values.yaml
           additionalLabels:
             random: value
-          images:
-            tag: canary
           rbac:
             aggregateToDefaultRoles: true
-          interceptor:
-            replicas:
-              min: 1
           EOF
 
       - name: Template Helm chart
