@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: manager
-    app.kubernetes.io/instance: kedify-agent
     control-plane: kedify-agent
     {{- include "kedify-agent.labels" . | nindent 4 }}
   name: kedify-agent

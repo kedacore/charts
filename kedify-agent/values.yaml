@@ -112,6 +112,6 @@ keda:
   # for all available values, check: https://github.com/kedify/charts/blob/main/keda/values.yaml
   enabled: false
 
-kedaAddOnsHttp:
+keda-add-ons-http:
   # for all available values, check: https://github.com/kedify/charts/blob/main/http-add-on/values.yaml
   enabled: false

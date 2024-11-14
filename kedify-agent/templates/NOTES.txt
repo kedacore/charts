@@ -12,6 +12,6 @@ You have successfully installed the:
 {{- if .Values.keda.enabled }}
  - keda
 {{- end}}
-{{- if .Values.kedaAddOnsHttp.enabled }}
+{{- if (or (and .Values.kedaAddOnsHttp .Values.kedaAddOnsHttp.enabled) (and (index .Values "keda-add-ons-http") (index .Values "keda-add-ons-http").enabled)) }}
  - keda-add-ons-http
 {{- end}}

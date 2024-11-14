@@ -14,7 +14,7 @@ dependencies:
   - name: keda-add-ons-http
     repository: https://kedify.github.io/charts
     version: v0.8.1-1
-    condition: kedaAddOnsHttp.enabled
+    condition: kedaAddOnsHttp.enabled,keda-add-ons-http.enabled
 home: https://github.com/kedify/charts
 sources:
   - https://github.com/kedify/agent
