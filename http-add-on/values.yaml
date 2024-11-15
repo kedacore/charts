@@ -164,6 +164,8 @@ interceptor:
   tlsHandshakeTimeout: 10s
   # -- Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details
   expectContinueTimeout: 1s
+  # -- Header-based routing enables you to target a different service for each request by specifying an HTTP header in the HTTP request, e.g. 'additionalHttpRoutingHeader: X-Service-Name' and in the request 'X-Service-Name: service-a'
+  additionalHttpRoutingHeader: ""
   # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
