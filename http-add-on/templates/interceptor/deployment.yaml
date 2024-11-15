@@ -62,6 +62,8 @@ spec:
           value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
         - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
           value: "{{ .Values.interceptor.expectContinueTimeout }}"
+        - name: KEDA_HTTP_ROUTING_HEADER
+          value: "{{ .Values.interceptor.additionalHttpRoutingHeader }}"
         {{- if .Values.interceptor.tls.enabled }}
         - name: KEDA_HTTP_PROXY_TLS_ENABLED
           value: "true"
