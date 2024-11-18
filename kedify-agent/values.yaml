@@ -7,15 +7,19 @@ agent:
   orgId: ""
   # you should already have this
   apiKey: ""
-# agentId: abcd1234-ab34-..
+  # agentId: abcd1234-ab34-..
   kedifyServer: service.kedify.io:443
 
   # Can be one of 'debug', 'info', 'error', or any integer value > 0
   # which corresponds to custom debug levels of increasing verbosity
   logLevel: info
 
-  # Log format for kedify-proxy
-  # kedifyProxyLogFormat: json
+  kedifyProxy:
+    # Log format for kedify-proxy
+    logFormat: plaintext # plaintext or json
+    # enable to set cluster wide deployment (supported only for istio VirtualService and Gatewa API HTTPRoute)
+    # otherwise it will be dynamically deployed in each namespace with HTTPScaledObject
+    clusterWide: false
 
   # should the KedifyConfiguration and ScalingPolicy CRDs be also part of the release
   createCrds: true

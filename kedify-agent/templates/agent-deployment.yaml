@@ -42,10 +42,12 @@ spec:
                 secretKeyRef:
                   name: kedify-agent
                   key: apikey
-            {{- if .Values.agent.kedifyProxyLogFormat }}
+            {{- if or .Values.agent.kedifyProxyLogFormat .Values.agent.kedifyProxy.logFormat }}
             - name: KEDIFY_PROXY_LOG_FORMAT
-              value: {{ .Values.agent.kedifyProxyLogFormat | quote }}
+              value: {{ (default .Values.agent.kedifyProxy.logFormat .Values.agent.kedifyProxyLogFormat) | quote }}
             {{- end }}
+            - name: KEDIFY_PROXY_CLUSTER_WIDE
+              value: {{ .Values.agent.kedifyProxy.clusterWide | quote }}
             - name: HELM_REPOSITORY_CONFIG
               value: /helm/repository/repositories.yaml
             - name: HELM_REPOSITORY_CACHE
