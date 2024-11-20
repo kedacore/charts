@@ -109,7 +109,7 @@ jobs:
         run: helm template http-add-on ./http-add-on/ --namespace keda --values test-values.yaml
 
       - name: Install Helm chart
-        run: helm install http-add-on ./http-add-on/ --namespace keda --values test-values.yaml --wait
+        run: helm install http-add-on ./http-add-on/ --namespace keda --values test-values.yaml --wait --timeout 15m
 
       - name: Show Kubernetes resources
         run: kubectl get all --namespace keda
@@ -133,7 +133,7 @@ jobs:
           do
             READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
             echo "ScaledObjet is ready: $READY"
-            if [[ "$READY" == "True" ]]; then            
+            if [[ "$READY" == "True" ]]; then
               exit 0
             fi
             sleep 15s
