@@ -14,7 +14,7 @@ spec:
     algorithm: RSA
     size: 2048
   duration: 8760h0m0s # 1 year
-  renewBefore: 720h0m0s # 1 month
+  renewBefore: 2160h0m0s # 3 months
   issuerRef:
     name: {{ .Values.operator.name }}-selfsigned-issuer
     kind: Issuer
