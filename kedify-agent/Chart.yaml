@@ -3,8 +3,8 @@ name: kedify-agent
 description: Kedify agent - Helm Chart
 kubeVersion: ">=v1.23.0-0"
 type: application
-version: "v0.0.5"
-appVersion: "v0.1.4"
+version: "v0.0.6"
+appVersion: "v0.1.5"
 icon: https://github.com/kedify/marketing/raw/refs/heads/main/public/assets/images/logo.svg
 dependencies:
   - name: keda
@@ -13,7 +13,7 @@ dependencies:
     condition: keda.enabled
   - name: keda-add-ons-http
     repository: https://kedify.github.io/charts
-    version: v0.8.1-1
+    version: v0.8.1-2
     condition: kedaAddOnsHttp.enabled,keda-add-ons-http.enabled
 home: https://github.com/kedify/charts
 sources:

@@ -106,7 +106,7 @@ scaler:
   resources:
     limits:
       cpu: 0.5
-      memory: 64Mi
+      memory: 512Mi
     requests:
       cpu: 250m
       memory: 20Mi
@@ -184,7 +184,7 @@ interceptor:
     # -- The CPU/memory resource limit for the operator component
     limits:
       cpu: 0.5
-      memory: 64Mi
+      memory: 512Mi
     # -- The CPU/memory resource request for the operator component
     requests:
       cpu: 250m
@@ -235,7 +235,7 @@ images:
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
-  tag: v0.8.1-7
+  tag: v0.8.1-9
   # -- Image name for the operator image component
   operator: ghcr.io/kedify/http-add-on-operator
   # -- Image name for the interceptor image component
