@@ -54,6 +54,10 @@ spec:
           value: "{{ default 9091 .Values.interceptor.admin.port }}"
         - name: KEDA_HTTP_SCALER_STREAM_INTERVAL_MS
           value: "{{ .Values.scaler.streamInterval }}"
+        {{- range .Values.scaler.additionalEnvVars }}
+        - name: "{{ .name }}"
+          value: "{{ .value }}"
+        {{- end }}
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
         livenessProbe:
