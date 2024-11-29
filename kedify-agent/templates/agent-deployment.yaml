@@ -66,6 +66,8 @@ spec:
             - name: PRP_REQUIRES_ANNOTATED_PODS
               value: {{ .Values.agent.features.prpRequiresAnnotatedPods | quote }}
             {{- end }}
+            - name: METRICS_WATCH_NAMESPACE
+              value: {{ .Values.agent.metricsWatchNamespace | quote }}
             - name: RBAC_READ_NODES
               value: {{ .Values.agent.rbac.readNodes | quote }}
             - name: RBAC_READ_PODS
