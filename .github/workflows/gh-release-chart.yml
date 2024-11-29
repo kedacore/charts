@@ -75,7 +75,8 @@ jobs:
           set -o pipefail
           kubectl create ns keda --dry-run=client -o yaml | kubectl apply -f -
           helm repo add kedify https://kedify.github.io/charts
-          helm repo update
+          helm repo update kedify
+          helm dependency update kedify-agent
           helm dependency build kedify-agent
           helm template ./kedify-agent -nkeda -f ./kedify-agent/test/test-values.yaml | kubectl apply -f -
           sleep 10
