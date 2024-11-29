@@ -71,15 +71,17 @@ spec:
             - name: RBAC_READ_NODES
               value: {{ .Values.agent.rbac.readNodes | quote }}
             - name: RBAC_READ_PODS
-              value: {{ .Values.agent.rbac.readPods | quote }}
+              value: {{ (or .Values.agent.rbac.readMetrics .Values.agent.rbac.readPods) | quote }}
             - name: RBAC_READ_DEPLOYMENTS_CLUSTERWIDE
               value: {{ .Values.agent.rbac.readDeploymentsClusterwide | quote }}
+            - name: RBAC_READ_DEPLOYMENTS
+              value: {{ (or .Values.agent.rbac.readMetrics .Values.agent.rbac.readDeployments) | quote }}
             - name: RBAC_READ_SERVICES
               value: {{ .Values.agent.rbac.readServices | quote }}
             - name: RBAC_READ_HPAS
-              value: {{ .Values.agent.rbac.readHpas | quote }}
+              value: {{ (or .Values.agent.rbac.readMetrics .Values.agent.rbac.readHpas) | quote }}
             - name: RBAC_READ_STATEFUL_SETS
-              value: {{ .Values.agent.rbac.readStatefulSets | quote }}
+              value: {{ (or .Values.agent.rbac.readMetrics .Values.agent.rbac.readStatefulSets) | quote }}
             - name: RBAC_MANAGE_KUBE_RESOURCES
               value: {{ .Values.agent.rbac.selfUpdates | quote }}
             - name: RBAC_MANAGE_CUSTOM_RESOURCE_DEFINITIONS

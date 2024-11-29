@@ -1,0 +1,87 @@
+{{- if .Values.agent.rbac.create }}
+{{- if .Values.agent.rbac.readMetrics }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: can-read-metrics
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  verbs:
+  - list
+  - watch
+  - get
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - autoscaling
+  resources:
+  - horizontalpodautoscalers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+
+# if metricsWatchNamespace is empty => apply the cluster role using ClusterRoleBinding (all namespaces)
+# otherwise use RoleBinding and apply it to only whitelisted namespaces (+add .Release.Namespace implicitly)
+{{- if not .Values.agent.metricsWatchNamespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kedify-agent-can-read-metrics
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: can-read-metrics
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+{{- else }}
+  {{- $namespaces := append (splitList "," .Values.agent.metricsWatchNamespace ) .Release.Namespace -}}
+  {{- range $namespaces }}
+---
+# Role binding for namespace '{{ . }}'
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kedify-agent-can-read-metrics
+  namespace: {{ . | trim }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: can-read-metrics
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ $.Release.Namespace }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

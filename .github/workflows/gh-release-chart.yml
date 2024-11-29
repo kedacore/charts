@@ -77,9 +77,7 @@ jobs:
           helm repo add kedify https://kedify.github.io/charts
           helm repo update
           helm dependency build kedify-agent
-          helm template ./kedify-agent -nkeda \
-           --set agent.apiKey=kfy_facefaceface424242d0f7e1963c7d542aee9d62b66c4c705ec70108655b3c000 \
-           --set agent.orgId=9151f21f-42ab-42ab-42ab-f4af67cddf54 | kubectl apply -f -
+          helm template ./kedify-agent -nkeda -f ./kedify-agent/test/test-values.yaml | kubectl apply -f -
           sleep 10
           # todo:
           # kubectl rollout status --timeout=300s -nkeda deploy/kedify-agent
@@ -194,8 +192,7 @@ jobs:
             helm upgrade -i agent kedify/kedify-agent \
               -n keda \
               --create-namespace \
-              --set agent.apiKey=kfy_facefaceface424242d0f7e1963c7d542aee9d62b66c4c705ec70108655b3c000 \
-              --set agent.orgId=9151f21f-42ab-42ab-42ab-f4af67cddf54 \
+              -f ./kedify-agent/test/test-values.yaml \
               --timeout 300s \
               --wait \
               --version ${{ steps.version.outputs.newVersion }} && break

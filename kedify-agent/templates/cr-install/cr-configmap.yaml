@@ -18,8 +18,7 @@ data:
     spec:
       clusterName: {{ .Values.clusterName }}
       kedaInstallations:
-      - agentAutoUpdate: false
-        httpAddonHelm:
+      - httpAddonHelm:
           enabled: true
           values: |-
             ---
@@ -27,15 +26,7 @@ data:
           enabled: true
           values: |-
             ---
-        mode: Disabled
-        name: keda
         namespace: {{ .Release.Namespace }}
-        telemetry:
-          controlPlane:
-            interval: 30
-          kedaResources:
-            interval: 30
-          kubernetesResources:
-            interval: 30
+{{ toYaml .Values.agent.kedifyConfiguration | indent 8 }}
 ---
 {{- end }}
