@@ -525,53 +525,58 @@
 			"type": "object",
 			"properties": {
 				"limits": {
-					"type": "object",
 					"description": "The CPU/memory resource limit for the operator component.\nHard limit, anything above will be OOMKilled (for memory).",
-					"properties": {
-						"cpu": {
-							"anyOf": [
-								{
-									"type": "string",
-									"pattern": "^[1-9]([0-9]*)?m$"
-								},
-								{
-									"type": "number",
-									"minimum": 0,
-									"maximum": 128
-								}
-							]
-						},
-						"memory": {
-							"type": "string",
-							"pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+					"allOf": [
+						{
+							"$ref": "#/$defs/LimitsOrRequests"
 						}
-					},
-					"required": [
-						"cpu",
-						"memory"
 					]
 				},
 				"requests": {
-					"type": "object",
 					"description": "The CPU/memory resource request for the operator component.\n This value is used by k8s scheduler to select a node.",
-					"properties": {
-						"cpu": {
-							"type": "string"
-						},
-						"memory": {
-							"type": "string",
-							"minLength": 1
+					"allOf": [
+						{
+							"$ref": "#/$defs/LimitsOrRequests"
 						}
-					},
-					"required": [
-						"cpu",
-						"memory"
 					]
 				}
 			},
+			"additionalProperties": false,
 			"required": [
 				"limits",
 				"requests"
+			]
+		},
+		"LimitsOrRequests": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+				"cpu": {
+					"anyOf": [
+						{
+							"type": "string",
+							"pattern": "^[1-9]([0-9]*)?m$"
+						},
+						{
+							"type": "string",
+							"pattern": "^[0-9](\\.[0-9]*)?$"
+						},
+						{
+							"type": "number",
+							"multipleOf": 0.1,
+							"minimum": 0,
+							"maximum": 128
+						}
+					]
+				},
+				"memory": {
+					"type": "string",
+					"pattern": "^([+-]?[0-9.]+)([eEinumkKMGTP]*[-+]?[0-9]*)$"
+				}
+			},
+			"required": [
+				"cpu",
+				"memory"
 			]
 		}
 	}
