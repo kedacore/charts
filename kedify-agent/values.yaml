@@ -28,7 +28,7 @@ agent:
   # default kedify config that will be created if createKedifyConfiguration is enabled
   kedifyConfiguration:
     agentAutoUpdate: false
-    mode: Adopt
+    mode: Disabled
     telemetry:
       controlPlane:
         interval: 30
@@ -38,6 +38,7 @@ agent:
         disabled: false
       kubernetesResources:
         interval: 30
+        disabled: true
 
   image:
     tag: "v0.1.6"
