@@ -1,0 +1,38 @@
+
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+  ],
+  "labels": ["renovate"],
+  "prConcurrentLimit": 2,
+  "ignorePaths": ["**/vendor/**"],
+  // ignore everything except those that are white-listed
+  "packageRules": [
+    {
+      "packagePatterns": ["*"],
+      "enabled": false,
+    },
+    {
+      "packageNames": [
+        "ghcr.io/kedify/agent", // docker img
+      ],
+      "enabled": true,
+    },
+  ],
+  "regexManagers": [
+    {
+      // kedify agent
+      "fileMatch": ["^kedify-agent/values.yaml$"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "ghcr.io/kedify/agent",
+      "matchStrings": [
+        "tag:\\s+\"?(?<currentValue>[^\"\n]+)\"?\\s*\n",
+      ],
+    },
+  ],
+  "reviewers": ["team:all"],
+  "prBodyNotes": [
+    "Bump some versions we have inside our code",
+  ],
+}
