@@ -74,7 +74,7 @@ agent:
     # if true, rbac necessary for reading HPAs (horizontal pod autoscalers) is added
     readHpas: false
     # if true, rbac necessary for reading Nodes is added
-    readNodes: false
+    readNodes: true
     # if true, rbac necessary for reading Pods is added
     readPods: true
     # if true, rbac necessary for reading Deployments is added for all namespaces
