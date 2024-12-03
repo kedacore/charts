@@ -128,7 +128,7 @@ jobs:
           tag_prefix: ""
           custom_tag: ${{ inputs.chart }}-${{ steps.version.outputs.newVersion }}
       - name: Create k3s cluster
-        if: inputs.chart == 'keda'
+        if: inputs.chart == 'keda' || inputs.chart == 'kedify-agent'
         uses: AbsaOSS/k3d-action@v2
         with:
           cluster-name: "test-cluster"
