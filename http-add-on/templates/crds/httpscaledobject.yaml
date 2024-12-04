@@ -99,10 +99,6 @@ spec:
                 properties:
                   apiVersion:
                     type: string
-                  deployment:
-                    description: 'Deprecated: The name of the deployment to scale
-                      according to HTTP traffic'
-                    type: string
                   kind:
                     type: string
                   name:
@@ -156,6 +152,22 @@ spec:
                         description: Time window for rate calculation
                         type: string
                     type: object
+                type: object
+              scalingSet:
+                description: |-
+                  ScalingSet to be used for this HTTPScaledObject, if empty, default
+                  interceptor and scaler will be used
+                properties:
+                  kind:
+                    description: Kind of the resource being referred to. Defaults
+                      to HTTPScalingSet.
+                    enum:
+                    - HTTPScalingSet
+                    - ClusterHTTPScalingSet
+                    type: string
+                  name:
+                    description: Name of the scaling set
+                    type: string
                 type: object
               targetPendingRequests:
                 description: (optional) DEPRECATED (use ScalingMetric instead) Target
