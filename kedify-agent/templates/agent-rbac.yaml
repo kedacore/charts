@@ -181,6 +181,13 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
 {{- if .Values.agent.rbac.readNodes }}
 # for metrics and metered billing
 - apiGroups:
