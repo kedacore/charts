@@ -82,6 +82,7 @@ spec:
           - "--zap-log-level={{ .Values.logging.operator.level }}"
           - "--zap-encoder={{ .Values.logging.operator.format }}"
           - "--zap-time-encoding={{ .Values.logging.operator.timeEncoding }}"
+          - "--enable-webhook-patching={{ .Values.operator.enableWebhookPatching }}"
           {{- if .Values.logging.operator.stackTracesEnabled }}
           - "--zap-stacktrace-level=error"
           {{- end }}

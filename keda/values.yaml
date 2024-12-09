@@ -76,6 +76,8 @@ operator:
   # --Disable response compression for k8s restAPI in client-go.
   # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
   disableCompression: true
+  # Enable or disable webhook patching in the operator
+  enableWebhookPatching: true
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
