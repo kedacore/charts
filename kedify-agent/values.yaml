@@ -41,7 +41,7 @@ agent:
         disabled: true
 
   image:
-    tag: "v0.1.7"
+    tag: "v0.1.9"
     repository: ghcr.io/kedify/agent
     pullPolicy: IfNotPresent
   imagePullSecrets: []

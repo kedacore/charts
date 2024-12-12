@@ -18,7 +18,9 @@ data:
     spec:
       clusterName: {{ .Values.clusterName }}
       kedaInstallations:
-      - httpAddonHelm:
+      - agentAutoUpdate: false
+        name: keda
+        httpAddonHelm:
           enabled: true
           values: |-
             ---
