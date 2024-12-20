@@ -1,0 +1,49 @@
+name: Milestones Tracker
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - kedify-agent/**
+
+jobs:
+  milestone_tracker:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure correct milestone
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+
+          has_milestone=$(gh pr view -R kedify/charts ${PR_NUMBER} --json 'milestone' --jq '.milestone.title | length')
+          if [[ "$has_milestone" == 0 ]]; then
+              echo "setting 'kedify-agent/next' milestone for PR #${PR_NUMBER}"
+              gh pr edit -R kedify/charts ${PR_NUMBER} --milestone "kedify-agent/next"
+              exit 0
+          fi
+          labels=( $(gh pr view -R kedify/charts ${PR_NUMBER} --json 'labels' --jq '.labels[].name') )
+          for label in "${labels[@]}"; do
+              if [[ "$label" == "release/kedify-agent" ]]; then
+                  has_release_label="true"
+              fi
+          done
+
+          if [[ "$has_release_label" != "true" ]]; then
+              echo "not a release PR #${PR_NUMBER}, labels: ${labels[*]}"
+          fi
+          milestone=$(gh pr view -R kedify/charts ${PR_NUMBER} --json 'milestone' --jq '.milestone.title')
+          echo "release PR #${PR_NUMBER} with milestone: $milestone"
+          next_milestone_prs=( $(gh pr list -R kedify/charts --search "milestone:kedify-agent/next" --state merged --json number --jq '.[].number') )
+          for pr in "${next_milestone_prs[@]}"; do
+              echo "moving PR #$pr milestone 'kedify-agent/next' => '$milestone'"
+              gh pr edit -R kedify/charts "$pr" --milestone "$milestone"
+          done
+          release_tag=${milestone#*/}
+          pr_body="$(gh pr view $PR_NUMBER --json 'body' --jq '.body')" 
+
+          echo "creating release $milestone"
+          gh release create -R kedify/charts "$milestone" --latest --title "kedify-agent: $release_tag" --notes "${pr_body}"

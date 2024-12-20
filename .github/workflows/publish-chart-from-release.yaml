@@ -1,0 +1,19 @@
+name: Publish kedify-agent chart from release
+
+on:
+  push:
+    tags:
+      - 'kedify-agent/v*.*.*'
+
+jobs:
+  publish-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish Helm chart
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          linting: "off"
+          dependencies: "kedify,https://kedify.github.io/charts"
+          charts_dir: "."
