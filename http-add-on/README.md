@@ -46,7 +46,7 @@ We are a Cloud Native Computing Foundation (CNCF) graduated project.
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
-helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.8.0
+helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.9.0
 ```
 
 ## Introduction
