@@ -863,3 +863,6 @@ asciiArt: true
 
 # -- When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution.
 customManagedBy: ""
+
+# -- Enable service links in pods. Default disabled, due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/)
+enableServiceLinks: false
