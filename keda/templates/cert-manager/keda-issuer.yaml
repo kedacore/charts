@@ -8,6 +8,8 @@ metadata:
   {{- end }}
   name: {{ .Values.operator.name }}-issuer
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   ca:
     secretName: {{ .Values.certificates.certManager.caSecretName }}

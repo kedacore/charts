@@ -4,6 +4,8 @@ kind: Certificate
 metadata:
   name: {{ .Values.operator.name }}-tls-certificates
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   commonName: {{ .Values.operator.name }}
   dnsNames:
