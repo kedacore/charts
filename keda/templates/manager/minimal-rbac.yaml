@@ -113,6 +113,19 @@ rules:
   - update
   - watch
 {{- end }}
+- apiGroups:
+  - eventing.keda.sh
+  resources:
+  - cloudeventsources
+  - cloudeventsources/status
+  - clustercloudeventsources
+  - clustercloudeventsources/status
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
