@@ -7,11 +7,11 @@ metadata:
   name: {{ .Chart.Name }}-external-scaler
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.scaler.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/component: scaler
-      {{- include "keda-http-add-on.labels" . | indent 6 }}
+      {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
@@ -30,21 +30,20 @@ spec:
       {{- end }}
       containers:
       - args:
+          - "--zap-log-level={{ .Values.logging.scaler.level }}"
+          - "--zap-encoder={{ .Values.logging.scaler.format }}"
+          - "--zap-time-encoding={{ .Values.logging.scaler.timeEncoding }}"
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
         name: "{{ .Chart.Name }}-external-scaler"
         ports:
-        - containerPort: {{ .Values.scaler.healthPort }}
-          name: scaler-health
         - containerPort: {{ .Values.scaler.grpcPort }}
-          name: scaler-grpc
+          name: grpc
         env:
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_DEPLOYMENT
           value: "{{ .Chart.Name }}-interceptor"
         - name: KEDA_HTTP_SCALER_PORT
           value: "{{ .Values.scaler.grpcPort }}"
-        - name: KEDA_HTTP_HEALTH_PORT
-          value: "{{ .Values.scaler.healthPort }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_NAMESPACE
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_SERVICE
@@ -55,6 +54,22 @@ spec:
           value: "{{ .Values.scaler.streamInterval }}"
         resources:
           {{- toYaml .Values.scaler.resources | nindent 10 }}
+        livenessProbe:
+          grpc:
+            port: {{ .Values.scaler.grpcPort }}
+            service: liveness
+          timeoutSeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        readinessProbe:
+          grpc:
+            port: {{ .Values.scaler.grpcPort }}
+            service: readiness
+          timeoutSeconds: 1
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
         {{- if .Values.securityContext.scaler }}
         securityContext:
         {{- toYaml .Values.securityContext.scaler | nindent 10 }}

@@ -10,23 +10,23 @@ global:
 image:
   keda:
     # -- Image registry of KEDA operator
-    registry: null
+    registry: ghcr.io
     # -- Image name of KEDA operator
-    repository: ghcr.io/kedacore/keda
+    repository: kedacore/keda
     # -- Image tag of KEDA operator. Optional, given app version of Helm chart is used by default
     tag: ""
   metricsApiServer:
     # -- Image registry of KEDA Metrics API Server
-    registry: null
+    registry: ghcr.io
     # -- Image name of KEDA Metrics API Server
-    repository: ghcr.io/kedacore/keda-metrics-apiserver
+    repository: kedacore/keda-metrics-apiserver
     # -- Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default
     tag: ""
   webhooks:
     # -- Image registry of KEDA admission-webhooks
-    registry: null
+    registry: ghcr.io
     # -- Image name of KEDA admission-webhooks
-    repository: ghcr.io/kedacore/keda-admission-webhooks
+    repository: kedacore/keda-admission-webhooks
     # -- Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default
     tag: ""
   # -- Image pullPolicy for all KEDA components
@@ -42,11 +42,26 @@ crds:
   # -- Defines whether the KEDA CRDs have to be installed or not.
   install: true
 
+  # -- Custom annotations specifically for CRDs
+  additionalAnnotations:
+    {}
+    # foo: bar
+
 # -- Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces
 watchNamespace: ""
 
 # -- Name of secret to use to pull images to use to pull Docker images
 imagePullSecrets: []
+
+networkPolicy:
+  # -- Enable network policies
+  enabled: false
+  # -- Flavor of the network policies (cilium)
+  flavor: "cilium"
+  # -- Allow use of extra egress rules for cilium network policies
+  cilium:
+    operator:
+      extraEgressRules: []
 
 operator:
   # -- Name of the KEDA operator
@@ -58,9 +73,9 @@ operator:
   # You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover.
   # Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability).
   replicaCount: 1
-  # --Disable response compression for k8s restAPI in client-go. 
+  # --Disable response compression for k8s restAPI in client-go.
   # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
-  disableCompression: true 
+  disableCompression: true
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -72,6 +87,24 @@ operator:
     #         values:
     #         - keda-operator
     #     topologyKey: "kubernetes.io/hostname"
+  # -- Additional containers to run as part of the operator deployment
+  extraContainers: []
+    # - name: hello-many
+    # args:
+    #   - -c
+    #   - "while true; do echo hi; sleep 300; done"
+    # command:
+    #   - /bin/sh
+    # image: 'busybox:glibc'
+  # -- Additional init containers to run as part of the operator deployment
+  extraInitContainers: []
+    # - name: hello-once
+    # args:
+    #   - -c
+    #   - "echo 'Hello World!'"
+    # command:
+    #   - /bin/sh
+    # image: 'busybox:glibc'
   # -- Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/))
   livenessProbe:
     initialDelaySeconds: 25
@@ -130,7 +163,7 @@ metricsServer:
     successThreshold: 1
 
 webhooks:
-  # -- Enable admission webhooks (this feature option will be removed in v2.12)
+  # It also used to enable or disable webhook patching in the operator
   enabled: true
   # -- Port number to use for KEDA admission webhooks. Default is 9443.
   port: ""
@@ -167,7 +200,7 @@ webhooks:
     #       - key: app
     #         operator: In
     #         values:
-    #         - keda-operator
+    #         - keda-admission-webhooks
     #     topologyKey: "kubernetes.io/hostname"
 
   # -- [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks
@@ -242,24 +275,52 @@ rbac:
   # -- Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin)
   aggregateToDefaultRoles: false
 
+  # -- Whether RBAC for configured CRDs that can have a `scale` subresource should be created
+  enabledCustomScaledRefKinds: true
+  # -- Customize the namespace of k8s metrics-server deployment
+  # This could also be achieved by the Kubernetes control plane manager flag --use-service-account-credentials:
+  # [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/)
+  controlPlaneServiceAccountsNamespace: kube-system
+  # -- List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`.
+  # The feature needs to be also enabled by `enabledCustomScaledRefKinds`.
+  # If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created
+  # note: Deployments and StatefulSets are supported out of the box
+  scaledRefKinds:
+  - apiGroup: "*"
+    kind: "*"
+  # - apiGroup: argoproj.io
+  #   kind: Rollout
+
 serviceAccount:
-  # -- Specifies whether a service account should be created
-  create: true
-  # -- The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: keda-operator
-  # -- Specifies whether a service account should automount API-Credentials
-  automountServiceAccountToken: true
-  # -- Annotations to add to the service account
-  annotations: {}
+  operator:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-operator
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
+  metricServer:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-metrics-server
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
+  webhooks:
+    # -- Specifies whether a service account should be created
+    create: true
+    # -- The name of the service account to use.
+    name: keda-webhook
+    # -- Specifies whether a service account should automount API-Credentials
+    automountServiceAccountToken: true
+    # -- Annotations to add to the service account
+    annotations: {}
 
 podIdentity:
-  activeDirectory:
-    # Set to the value of the Azure Active Directory Pod Identity
-    # See https://keda.sh/docs/concepts/authentication/#azure-pod-identity
-    # This will be set as a label on the KEDA Pod(s)
-    # -- Identity in Azure Active Directory to use for Azure pod identity
-    identity: ""
   azureWorkload:
     # -- Set to true to enable Azure Workload Identity usage.
     # See https://keda.sh/docs/concepts/authentication/#azure-workload-identity
@@ -321,6 +382,8 @@ logging:
     # -- Logging time encoding for KEDA Operator.
     # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
+    # -- If enabled, the stack traces will be also printed
+    stackTracesEnabled: false
   metricServer:
     # -- Logging level for Metrics Server.
     # allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string
@@ -435,11 +498,11 @@ resources:
   # -- Manage [resource request & limits] of KEDA admission webhooks pod
   webhooks:
     limits:
-      cpu: 50m
-      memory: 100Mi
+      cpu: 1
+      memory: 1000Mi
     requests:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 100m
+      memory: 100Mi
 # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
 nodeSelector: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
@@ -453,7 +516,7 @@ topologySpreadConstraints:
   # -- [Pod Topology Constraints] of KEDA admission webhooks pod
   webhooks: []
 
-# -- [Affinity] for pod scheduling for both KEDA operator and Metrics API Server
+# -- [Affinity] for pod scheduling for KEDA operator, Metrics API Server and KEDA admission webhooks.
 affinity: {}
   # podAntiAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
@@ -464,6 +527,7 @@ affinity: {}
   #         values:
   #         - keda-operator
   #         - keda-operator-metrics-apiserver
+  #         - keda-admission-webhooks
   #     topologyKey: "kubernetes.io/hostname"
 
 # -- priorityClassName for all KEDA components
@@ -542,6 +606,8 @@ prometheus:
     port: 8080
     # -- HTTP port name for exposing metrics server prometheus metrics
     portName: metrics
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -563,8 +629,18 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # --  Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -578,11 +654,15 @@ prometheus:
       additionalLabels: {}
       # -- List of expressions that define custom relabeling rules for metric server podMonitor crd (prometheus operator)
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
   operator:
     # -- Enable KEDA Operator prometheus metrics expose
     enabled: false
     # -- Port used for exposing KEDA Operator prometheus metrics
     port: 8080
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
@@ -605,8 +685,18 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     podMonitor:
       # -- Enables PodMonitor creation for the Prometheus Operator
       enabled: false
@@ -620,6 +710,8 @@ prometheus:
       additionalLabels: {}
       # --  List of expressions that define custom relabeling rules for KEDA Operator podMonitor crd (prometheus operator)
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server PodMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
     prometheusRules:
       # -- Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
@@ -642,6 +734,8 @@ prometheus:
     enabled: false
     # -- Port used for exposing KEDA admission webhooks prometheus metrics
     port: 8080
+    # -- App Protocol for service when scraping metrics endpoint
+    # appProtocol: http
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
@@ -663,8 +757,18 @@ prometheus:
       relabellings: []
       # -- List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabelings: []
+      # -- List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec]
+      metricRelabelings: []
       # -- Additional labels to add for metric server using ServiceMonitor crd (prometheus operator)
       additionalLabels: {}
+      # -- HTTP scheme used for scraping. Defaults to `http`
+      scheme: http
+      # -- TLS configuration for scraping metrics
+      tlsConfig: {}
+        # caFile: /etc/prom-certs/root-cert.pem
+        # certFile: /etc/prom-certs/cert-chain.pem
+        # insecureSkipVerify: true
+        # keyFile: /etc/prom-certs/key.pem
     prometheusRules:
       # -- Enables PrometheusRules creation for the Prometheus Operator
       enabled: false
@@ -693,6 +797,10 @@ certificates:
   certManager:
     # -- Enables Cert-manager for certificate management
     enabled: false
+    # -- Certificate duration
+    duration: 8760h0m0s # 1 year
+    # -- Certificate renewal time before expiration
+    renewBefore: 5840h0m0s # 8 months
     # -- Generates a self-signed CA with Cert-manager.
     # If generateCA is false, the secret with the CA
     # has to be annotated with `cert-manager.io/allow-direct-injection: "true"`
@@ -707,6 +815,20 @@ certificates:
       #   my-secret-annotation-2: "bar"
       # labels:
       #   my-secret-label: foo
+    # -- Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required
+    issuer:
+      # -- Generates an Issuer resource with Cert-manager
+      generate: true
+      # -- Custom Issuer name. Required when generate: false
+      name: foo-org-ca
+      # -- Custom Issuer kind. Required when generate: false
+      kind: ClusterIssuer
+      # -- Custom Issuer group. Required when generate: false
+      group: cert-manager.io
+  operator:
+    # -- Location(s) of CA files for authentication of external TLS connections such as TLS-enabled metrics sources
+    # caDirs:
+    # - /custom/ca
 
 permissions:
   metricServer:
@@ -716,9 +838,14 @@ permissions:
   operator:
     restrict:
       # -- Restrict Secret Access for KEDA operator
+      # if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace
       secret: false
       # -- Restrict Service Token Access for KEDA operator
       saTokens: true
+      # -- Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account
+      # also the configured `watchNamespace`.
+      # the default is an empty array -> no restriction on the secret name
+      namesAllowList: []
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
@@ -733,3 +860,6 @@ extraObjects: []
 
 # -- Capability to turn on/off ASCII art in Helm installation notes
 asciiArt: true
+
+# -- When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution.
+customManagedBy: ""

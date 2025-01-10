@@ -16,9 +16,10 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceAccount.name }}
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
+# https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#extension-apiserver-authenticates-the-request
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -30,14 +31,14 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
     {{- include "keda.labels" . | indent 4 }}
   name: {{ .Values.operator.name }}-auth-reader
-  namespace: kube-system
+  namespace: {{ .Values.rbac.controlPlaneServiceAccountsNamespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
   name: extension-apiserver-authentication-reader
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.serviceAccount.name }}
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1

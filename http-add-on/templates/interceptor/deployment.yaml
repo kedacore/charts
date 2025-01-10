@@ -7,11 +7,10 @@ metadata:
   name: {{ .Chart.Name }}-interceptor
   namespace: {{ .Release.Namespace }}
 spec:
-  replicas: {{ .Values.interceptor.replicas.min }}
   selector:
     matchLabels:
       app.kubernetes.io/component: interceptor
-      {{- include "keda-http-add-on.labels" . | indent 6 }}
+      {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
@@ -30,6 +29,9 @@ spec:
       {{- end }}
       containers:
       - args:
+          - "--zap-log-level={{ .Values.logging.interceptor.level }}"
+          - "--zap-encoder={{ .Values.logging.interceptor.format }}"
+          - "--zap-time-encoding={{ .Values.logging.interceptor.timeEncoding }}"
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"
@@ -48,8 +50,8 @@ spec:
           value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
           value: "{{ .Values.interceptor.replicas.waitTimeout }}"
-        - name: KEDA_HTTP_DEPLOYMENT_CACHE_POLLING_INTERVAL_MS
-          value: "{{ .Values.interceptor.deploymentCachePollingIntervalMS }}"
+        - name: KEDA_HTTP_ENDPOINTS_CACHE_POLLING_INTERVAL_MS
+          value: "{{ .Values.interceptor.endpointsCachePollingIntervalMS }}"
         - name: KEDA_HTTP_FORCE_HTTP2
           value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS
@@ -60,11 +62,37 @@ spec:
           value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
         - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
           value: "{{ .Values.interceptor.expectContinueTimeout }}"
+        {{- if .Values.interceptor.tls.enabled }}
+        - name: KEDA_HTTP_PROXY_TLS_ENABLED
+          value: "true"
+        - name: KEDA_HTTP_PROXY_TLS_CERT_PATH
+          value: "{{ .Values.interceptor.tls.cert_path }}"
+        - name: KEDA_HTTP_PROXY_TLS_KEY_PATH
+          value: "{{ .Values.interceptor.tls.key_path }}"
+        - name: KEDA_HTTP_PROXY_TLS_PORT
+          value: "{{ .Values.interceptor.tls.port }}"
+        {{- end }}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
-          name: inter-admin
+          name: admin
         - containerPort: {{ .Values.interceptor.proxy.port }}
-          name: inter-proxy
+          name: proxy
+        {{- if .Values.interceptor.tls.enabled }}
+        - containerPort: {{ .Values.interceptor.tls.port }}
+          name: proxy-tls
+        volumeMounts:
+          - readOnly: true
+            mountPath: "/certs"
+            name: certs
+        {{- end }}
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: proxy
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: proxy
         resources:
           {{- toYaml .Values.interceptor.resources | nindent 10 }}
         {{- if .Values.securityContext.interceptor }}
@@ -75,6 +103,12 @@ spec:
         {{- toYaml .Values.securityContext | nindent 10 }}
         {{- end }}
       terminationGracePeriodSeconds: 10
+      {{- if .Values.interceptor.tls.enabled }}
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ .Values.interceptor.tls.cert_secret }}
+      {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.interceptor.nodeSelector }}
@@ -86,5 +120,9 @@ spec:
       {{- end }}
       {{- with .Values.interceptor.tolerations }}
       tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.interceptor.topologySpreadConstraints }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}

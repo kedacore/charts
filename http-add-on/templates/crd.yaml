@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.12.0
+    controller-gen.kubebuilder.io/version: v0.15.0
   name: httpscaledobjects.http.keda.sh
 spec:
   group: http.keda.sh
@@ -17,15 +17,12 @@ spec:
   scope: Namespaced
   versions:
   - additionalPrinterColumns:
-    - jsonPath: .spec.scaleTargetRef.deploymentName
-      name: ScaleTargetDeploymentName
+    - jsonPath: .status.targetWorkload
+      name: TargetWorkload
       type: string
-    - jsonPath: .spec.scaleTargetRef
-      name: ScaleTargetServiceName
+    - jsonPath: .status.targetService
+      name: TargetService
       type: string
-    - jsonPath: .spec.scaleTargetRef
-      name: ScaleTargetPort
-      type: integer
     - jsonPath: .spec.replicas.min
       name: MinReplicas
       type: integer
@@ -44,43 +41,40 @@ spec:
         description: HTTPScaledObject is the Schema for the httpscaledobjects API
         properties:
           apiVersion:
-            description: 'APIVersion defines the versioned schema of this representation
-              of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
             type: string
           kind:
-            description: 'Kind is a string value representing the REST resource this
-              object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
             type: string
           metadata:
             type: object
           spec:
             description: HTTPScaledObjectSpec defines the desired state of HTTPScaledObject
             properties:
-              host:
-                description: (optional) (deprecated) The host to route. All requests
-                  which the "Host" header matches .spec.host and the Request Target
-                  matches any .spec.pathPrefixes will be routed to the Service and
-                  Port specified in the scaleTargetRef. The .spec.host field is mutually
-                  exclusive with the .spec.hosts field.
-                type: string
               hosts:
-                description: (optional) The hosts to route. All requests which the
-                  "Host" header matches any .spec.hosts and the Request Target matches
-                  any .spec.pathPrefixes will be routed to the Service and Port specified
-                  in the scaleTargetRef. The .spec.hosts field is mutually exclusive
-                  with the .spec.host field.
+                description: |-
+                  The hosts to route. All requests which the "Host" header
+                  matches any .spec.hosts (and the Request Target matches any
+                  .spec.pathPrefixes) will be routed to the Service and Port specified in
+                  the scaleTargetRef.
                 items:
                   type: string
                 type: array
               pathPrefixes:
-                description: (optional) The paths to route. All requests which the
-                  Request Target matches any .spec.pathPrefixes and the "Host" header
-                  matches any .spec.hosts will be routed to the Service and Port specified
-                  in the scaleTargetRef. The .spec.hosts field is mutually exclusive
-                  with the .spec.host field. When this field is null, any path is
-                  matched.
+                description: |-
+                  The paths to route. All requests which the Request Target matches any
+                  .spec.pathPrefixes (and the "Host" header matches any .spec.hosts)
+                  will be routed to the Service and Port specified in
+                  the scaleTargetRef.
                 items:
                   type: string
                 type: array
@@ -99,31 +93,69 @@ spec:
                     type: integer
                 type: object
               scaleTargetRef:
-                description: The name of the deployment to route HTTP requests to
-                  (and to autoscale).
+                description: |-
+                  The name of the deployment to route HTTP requests to (and to autoscale).
+                  Including validation as a requirement to define either the PortName or the Port
                 properties:
-                  deployment:
-                    description: The name of the deployment to scale according to
-                      HTTP traffic
+                  apiVersion:
+                    type: string
+                  kind:
+                    type: string
+                  name:
                     type: string
                   port:
                     description: The port to route to
                     format: int32
                     type: integer
+                  portName:
+                    description: The port to route to referenced by name
+                    type: string
                   service:
                     description: The name of the service to route to
                     type: string
                 required:
-                - deployment
-                - port
                 - service
                 type: object
+                x-kubernetes-validations:
+                - message: must define either the 'portName' or the 'port'
+                  rule: has(self.portName) != has(self.port)
               scaledownPeriod:
                 description: (optional) Cooldown period value
                 format: int32
                 type: integer
+              scalingMetric:
+                description: (optional) Configuration for the metric used for scaling
+                properties:
+                  concurrency:
+                    description: Scaling based on concurrent requests for a given
+                      target
+                    properties:
+                      targetValue:
+                        default: 100
+                        description: Target value for rate scaling
+                        type: integer
+                    type: object
+                  requestRate:
+                    description: Scaling based the average rate during an specific
+                      time window for a given target
+                    properties:
+                      granularity:
+                        default: 1s
+                        description: Time granularity for rate calculation
+                        type: string
+                      targetValue:
+                        default: 100
+                        description: Target value for rate scaling
+                        type: integer
+                      window:
+                        default: 1m
+                        description: Time window for rate calculation
+                        type: string
+                    type: object
+                type: object
               targetPendingRequests:
-                description: (optional) Target metric value
+                description: (optional) DEPRECATED (use ScalingMetric instead) Target
+                  metric value
                 format: int32
                 type: integer
             required:
@@ -160,12 +192,6 @@ spec:
                     type:
                       description: Type of condition
                       enum:
-                      - Created
-                      - Terminated
-                      - Error
-                      - Pending
-                      - Terminating
-                      - Unknown
                       - Ready
                       type: string
                   required:
@@ -173,6 +199,12 @@ spec:
                   - type
                   type: object
                 type: array
+              targetService:
+                description: TargetService reflects details about the scaled service.
+                type: string
+              targetWorkload:
+                description: TargetWorkload reflects details about the scaled workload.
+                type: string
             type: object
         type: object
     served: true
@@ -180,4 +212,3 @@ spec:
     subresources:
       status: {}
 {{ end }}
-  

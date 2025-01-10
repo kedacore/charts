@@ -5,8 +5,47 @@ crds:
   # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
+logging:
+  operator:
+    # -- Logging level for KEDA http-add-on operator.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on operator.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on operator.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+
+    kubeRbacProxy:
+      # -- Logging level for KEDA http-add-on operator rbac proxy
+      # allowed values: `0` for info, `4` for debug, or an integer value greater than 0
+      level: 10
+  scaler:
+    # -- Logging level for KEDA http-add-on Scaler.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on Scaler.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on Scaler.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+  interceptor:
+    # -- Logging level for KEDA http-add-on Interceptor.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA http-add-on Interceptor.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA http-add-on Interceptor.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
+
 # operator-specific configuration values
 operator:
+  # -- Number of replicas, oerator k8s resources will not be installed if this is set to 0
+  replicas: 1
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
   # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
@@ -32,7 +71,20 @@ operator:
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
 
+  kubeRbacProxy:
+    resources:
+      # -- The CPU/memory resource limit for the operator component's kube rbac proxy
+      limits:
+        cpu: 300m
+        memory: 200Mi
+      # -- The CPU/memory resource request for the operator component's kube rbac proxy
+      requests:
+        cpu: 10m
+        memory: 20Mi
+
 scaler:
+  # -- Number of replicas
+  replicas: 3
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
   # -- The name of the Kubernetes `Service` for the scaler component
@@ -41,8 +93,6 @@ scaler:
   pullPolicy: Always
   # -- The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to.
   grpcPort: 9090
-  # -- The port for the scaler's health check and admin server
-  healthPort: 9091
   # -- The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests.
   pendingRequestsInterceptor: 200
   # -- Interval in ms for communicating IsActive to KEDA
@@ -102,8 +152,8 @@ interceptor:
   keepAlive: 1s
   # -- How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request
   responseHeaderTimeout: 500ms
-  # -- How often (in milliseconds) the interceptor does a full refresh of its deployment cache. The interceptor will also use Kubernetes events to stay up-to-date with the deployment cache changes. This duration is the maximum time it will take to see changes to the deployment state.
-  deploymentCachePollingIntervalMS: 250
+  # -- How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints.
+  endpointsCachePollingIntervalMS: 250
   # -- Whether or not the interceptor should force requests to use HTTP/2
   forceHTTP2: false
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
@@ -120,6 +170,8 @@ interceptor:
   tolerations: []
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
+  # -- Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/))
+  topologySpreadConstraints: []
   # interceptor pod resource limits
   resources:
     # -- The CPU/memory resource limit for the operator component
@@ -130,6 +182,27 @@ interceptor:
     requests:
       cpu: 250m
       memory: 20Mi
+  # configuration of tls for the interceptor
+  tls:
+    # -- Whether a TLS server should be started on the interceptor proxy
+    enabled: false
+    # -- Mount path of the certificate file to use with the interceptor proxy TLS server
+    cert_path: /certs/tls.crt
+    # -- Mount path of the certificate key file to use with the interceptor proxy TLS server
+    key_path: /certs/tls.key
+    # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server
+    cert_secret: keda-tls-certs
+    # -- Port that the interceptor proxy TLS server should be started on
+    port: 8443
+
+  # configuration of pdb for the interceptor
+  pdb:
+    # -- Whether to install the `PodDisruptionBudget` for the interceptor
+    enabled: true
+    # -- The minimum number of replicas that should be available for the interceptor
+    minAvailable: 0
+    # -- The maximum number of replicas that can be unavailable for the interceptor
+    maxUnavailable: 1
 
 # configuration for the images to use for each component
 images:

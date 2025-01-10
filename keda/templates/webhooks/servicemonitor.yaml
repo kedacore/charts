@@ -52,6 +52,15 @@ spec:
     {{- toYaml . | nindent 6 }}
     {{- end }}
   {{- end}}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.metricRelabelings }}
+    metricRelabelings:
+    {{- toYaml . | nindent 6 }}
+    {{- end }}
+    scheme: {{ .Values.prometheus.webhooks.serviceMonitor.scheme }}
+    {{- with .Values.prometheus.webhooks.serviceMonitor.tlsConfig }}
+    tlsConfig:
+    {{ toYaml . | nindent 6}}
+    {{- end }}
   namespaceSelector:
     matchNames:
     - {{ .Release.Namespace }}

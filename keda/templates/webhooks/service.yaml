@@ -31,10 +31,14 @@ spec:
     port: 443
     protocol: TCP
     targetPort: {{ .Values.webhooks.port | default 9443 }}
+    appProtocol: https
   {{- if .Values.prometheus.webhooks.enabled }}
   - name: {{ .Values.prometheus.webhooks.serviceMonitor.port }}
     port: {{ .Values.prometheus.webhooks.port }}
     targetPort: {{ .Values.prometheus.webhooks.port }}
+        {{- with .Values.prometheus.webhooks.appProtocol }}
+    appProtocol: {{ . }}
+    {{- end }}
   {{- end }}
   {{- if .Values.profiling.webhooks.enabled }}
   - name: profiling

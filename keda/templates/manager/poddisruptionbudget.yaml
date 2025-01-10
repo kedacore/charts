@@ -9,7 +9,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    app.kubernetes.io/name: {{ .Values.serviceAccount.name }}
+    app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
 spec:
   {{- if .Values.podDisruptionBudget.minAvailable }}

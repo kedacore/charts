@@ -1,4 +1,4 @@
-{{- if .Values.certificates.certManager.enabled }}
+{{- if and .Values.certificates.certManager.enabled .Values.certificates.certManager.issuer.generate }}
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
@@ -8,6 +8,8 @@ metadata:
   {{- end }}
   name: {{ .Values.operator.name }}-issuer
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "keda.labels" . | indent 4 }}
 spec:
   ca:
     secretName: {{ .Values.certificates.certManager.caSecretName }}

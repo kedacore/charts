@@ -27,14 +27,8 @@ spec:
         app: {{ .Values.operator.name }}-metrics-apiserver
         app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
         {{- include "keda.labels" . | indent 8 }}
-        {{- if .Values.podIdentity.activeDirectory.identity }}
-        aadpodidbinding: {{ .Values.podIdentity.activeDirectory.identity }}
-        {{- end }}
         {{- if .Values.podLabels.metricsAdapter }}
         {{- toYaml .Values.podLabels.metricsAdapter | nindent 8}}
-        {{- end }}
-        {{- if .Values.podIdentity.azureWorkload.enabled }}
-        azure.workload.identity/use: "true"
         {{- end }}
       {{- if or .Values.additionalAnnotations .Values.podAnnotations.metricsAdapter (and .Values.prometheus.metricServer.enabled ( not (or .Values.prometheus.metricServer.podMonitor.enabled .Values.prometheus.metricServer.serviceMonitor.enabled )) )}}
       annotations:
@@ -57,8 +51,8 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Values.serviceAccount.name }}
-      automountServiceAccountToken: true
+      serviceAccountName: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
+      automountServiceAccountToken: {{ kindIs "invalid" (.Values.serviceAccount.metricServer).automountServiceAccountToken | ternary .Values.serviceAccount.automountServiceAccountToken (.Values.serviceAccount.metricServer).automountServiceAccountToken }}
       securityContext:
         {{- if .Values.podSecurityContext.metricServer }}
         {{- toYaml .Values.podSecurityContext.metricServer | nindent 8 }}
@@ -122,8 +116,9 @@ spec:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 -}}
             {{- end }}
+          command:
+           - /keda-adapter
           args:
-          - /usr/local/bin/keda-adapter
           - --port={{ .Values.prometheus.metricServer.port }}
           - --secure-port={{ .Values.service.portHttpsTarget }}
           - --logtostderr=true

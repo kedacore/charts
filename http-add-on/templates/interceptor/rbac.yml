@@ -6,9 +6,17 @@ metadata:
   name: {{ .Chart.Name }}-interceptor
 rules:
 - apiGroups:
-  - apps
+  - ""
   resources:
-  - deployments
+  - endpoints
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
   verbs:
   - get
   - list

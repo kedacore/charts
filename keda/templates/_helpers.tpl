@@ -8,17 +8,24 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
-Generate basic labels
+Generate basic labels for CRD
 */}}
-{{- define "keda.labels" }}
+{{- define "keda.crd-labels" }}
 helm.sh/chart: {{ include "keda.chart" . }}
 app.kubernetes.io/component: operator
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: {{ .Values.customManagedBy | default .Release.Service }}
 app.kubernetes.io/part-of: {{ .Values.operator.name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}
 {{- end }}
+{{- end }}
+
+{{/*
+Generate basic labels
+*/}}
+{{- define "keda.labels" -}}
+{{- include "keda.crd-labels" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Values.additionalLabels }}
 {{ toYaml .Values.additionalLabels }}
 {{- end }}
