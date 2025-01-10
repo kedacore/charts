@@ -717,6 +717,8 @@ permissions:
     restrict:
       # -- Restrict Secret Access for KEDA operator
       secret: false
+      # -- Restrict Service Token Access for KEDA operator
+      saTokens: true
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
