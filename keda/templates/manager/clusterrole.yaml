@@ -39,6 +39,14 @@ rules:
   verbs:
   - list
   - watch
+{{- if eq .Values.permissions.operator.restrict.saTokens false }}
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+{{- end }}
 - apiGroups:
   - '*'
   resources:
