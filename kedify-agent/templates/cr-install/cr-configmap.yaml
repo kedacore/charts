@@ -24,6 +24,10 @@ data:
           enabled: true
           values: |-
             ---
+        otelAddonHelm:
+          enabled: true
+          values: |-
+            ---
         kedaHelm:
           enabled: true
           values: |-
