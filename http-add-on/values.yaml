@@ -235,7 +235,7 @@ images:
   # the build for the latest commit to the `main` branch,
   # and you can target any other commit with `sha-<GIT_SHA[0:7]>`
   # -- Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default
-  tag: v0.9.0-1
+  tag: v0.9.0-3
   # -- Image name for the operator image component
   operator: ghcr.io/kedify/http-add-on-operator
   # -- Image name for the interceptor image component
