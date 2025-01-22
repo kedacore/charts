@@ -17,7 +17,8 @@
       "packageNames": [
         "ghcr.io/kedify/agent", // docker img
       ],
-      "enabled": true,
+      // paused, because the image tag is being updated by PR from a gh action on agent's repo
+      "enabled": false,
     },
   ],
   "regexManagers": [

@@ -87,6 +87,10 @@ spec:
           spec:
             description: KedifyConfigurationSpec defines the desired state of KedifyConfiguration
             properties:
+              cloudAccountID:
+                description: CloudAccountID is the ID of the cloud account of the
+                  user, ie AWS customer account ID
+                type: string
               clusterName:
                 description: ClusterName is the name of this k8s cluster in the Kedify
                   Dashboard
@@ -174,7 +178,6 @@ spec:
                       - InstallOnly
                       - Adopt
                       - Auto
-                      - Disabled
                       type: string
                     name:
                       description: Name of the KEDA installation
@@ -182,6 +185,37 @@ spec:
                     namespace:
                       description: Namespace where KEDA should be installed
                       type: string
+                    otelAddonHelm:
+                      description: OTELAddonHelm defines the otel-addon Helm values
+                        and chart version for OTEL Addon installation
+                      properties:
+                        appVersion:
+                          description: AppVersion defines the actual version of the
+                            application that will be installed (KEDA or HttpAddon,
+                            this should correspond with the container image tags)
+                          type: string
+                        autoUpdate:
+                          description: AutoUpdate controls what strategy should be
+                            used for updating the AppVersion when new releases are
+                            available
+                          enum:
+                          - LatestReleased
+                          - BuildsOnly
+                          - PatchesOnly
+                          - Disabled
+                          type: string
+                        chartVersion:
+                          description: ChartVersion defines the Helm chart version
+                          type: string
+                        enabled:
+                          description: Enabled determines whether the helm chart should
+                            be installed or not (for KEDA helm chart ManagementMode
+                            needs to also allow this)
+                          type: boolean
+                        values:
+                          description: Values defines the Helm values
+                          type: string
+                      type: object
                     telemetry:
                       description: Telemetry defines the telemetry configuration
                       properties:
@@ -238,9 +272,14 @@ spec:
             description: KedifyConfigurationStatus defines the observed state of KedifyConfiguration
             properties:
               agent:
-                description: KedifyConfigurationAgentStatus defines the observed state
-                  of a KedifyConfiguration agent
+                description: Agent contains agent related status information
                 properties:
+                  controlPlaneMetrics:
+                    type: string
+                  k8sResourcesMetrics:
+                    type: string
+                  kedaResourcesMetrics:
+                    type: string
                   phase:
                     type: string
                   reason:
@@ -252,25 +291,21 @@ spec:
                     type: string
                 type: object
               apiService:
-                description: KedifyConfigurationResourceStatus defines the observed
-                  state of a KedifyConfiguration owned resources
+                description: APIService captures the observed status of API Service
+                  registration called v1beta1.external.metrics.k8s.io
                 properties:
                   phase:
                     type: string
                   reason:
                     type: string
                 type: object
-              configSHA256:
-                type: string
-              installations:
+              components:
                 additionalProperties:
                   description: KedifyInstallationStatus defines the observed state
                     of a KedifyInstallation
                   properties:
                     adoptedAt:
                       format: date-time
-                      type: string
-                    controlPlaneMetrics:
                       type: string
                     deployments:
                       additionalProperties:
@@ -286,16 +321,16 @@ spec:
                     firstHealthyAt:
                       format: date-time
                       type: string
-                    httpAddonVersion:
-                      type: string
-                    k8sResourcesMetrics:
-                      type: string
-                    kedaResourcesMetrics:
-                      type: string
-                    kedaVersion:
+                    version:
                       type: string
                   type: object
+                description: Components captures the observed status of Kedify components
+                  (Keda, Http Addon and Otel Addon)
                 type: object
+              configSHA256:
+                description: ConfigSHA256 calculated sha over all relevant fielnd
+                  used for internal purposes
+                type: string
             type: object
         type: object
     served: true
