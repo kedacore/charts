@@ -1,0 +1,61 @@
+{{- if .Values.agent.rbac.create }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: can-adopt-keda
+  namespace: {{ .Release.Namespace }}
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - update
+  resourceNames:
+  - keda-operator
+  - keda-admission-webhooks
+  - keda-operator-metrics-apiserver
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kedify-agent-can-adopt-keda
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: can-adopt-keda
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: can-query-api-registrations
+  namespace: {{ .Release.Namespace }}
+rules:
+- apiGroups:
+    - apiregistration.k8s.io
+  resources: 
+    - apiservices
+  verbs:
+    - get
+    - list
+    - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: can-query-api-registrations
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: can-query-api-registrations
+subjects:
+- kind: ServiceAccount
+  name: kedify-agent
+  namespace: {{ .Release.Namespace }}
+{{- end }}

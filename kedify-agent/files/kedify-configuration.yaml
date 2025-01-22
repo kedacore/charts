@@ -178,6 +178,7 @@ spec:
                       - InstallOnly
                       - Adopt
                       - Auto
+                      - Disabled
                       type: string
                     name:
                       description: Name of the KEDA installation
