@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'kedify-agent/v*.*.*'
+  release:
+    types: [published]
 
 jobs:
   publish-chart:
