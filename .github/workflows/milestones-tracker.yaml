@@ -6,6 +6,9 @@ on:
     paths:
       - kedify-agent/**
 
+permissions:
+  contents: write
+
 jobs:
   milestone_tracker:
     runs-on: ubuntu-latest
