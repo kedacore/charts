@@ -183,6 +183,8 @@ webhooks:
     timeoutSeconds: 1
     failureThreshold: 3
     successThreshold: 1
+  # -- Timeout in seconds for KEDA admission webhooks
+  timeoutSeconds: 10
   # -- Enable webhook to use host network, this is required on EKS with custom CNI
   useHostNetwork: false
   # -- Name of the KEDA admission webhooks
