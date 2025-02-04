@@ -842,6 +842,8 @@ permissions:
       # -- Restrict Secret Access for KEDA operator
       # if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace
       secret: false
+      # -- Restrict Service Token Access for KEDA operator
+      saTokens: true
       # -- Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account
       # also the configured `watchNamespace`.
       # the default is an empty array -> no restriction on the secret name
