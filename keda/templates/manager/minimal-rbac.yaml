@@ -146,4 +146,51 @@ subjects:
 - kind: ServiceAccount
   name: {{ (.Values.serviceAccount.operator).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
+{{- if .Values.serviceAccountTokenCreationRoles }}
+{{- range $r := .Values.serviceAccountTokenCreationRoles }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.operator.name }}-minimal
+    {{- include "keda.labels" $ | indent 4 }}
+  name: {{ $.Values.operator.name }}-token-creator-minimal
+  namespace: {{ $r.namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+  resourceNames:
+  - {{ $r.name }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.operator.name }}-minimal
+    {{- include "keda.labels" $ | indent 4 }}
+  name: {{ $.Values.operator.name }}-token-creator-minimal
+  namespace: {{ $r.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $.Values.operator.name }}-token-creator-minimal
+subjects:
+- kind: ServiceAccount
+  name: {{ $.Values.operator.name }}
+  namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
 {{- end }}
