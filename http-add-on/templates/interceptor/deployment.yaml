@@ -29,9 +29,12 @@ spec:
       {{- end }}
       containers:
       - args:
-          - "--zap-log-level={{ .Values.logging.interceptor.level }}"
-          - "--zap-encoder={{ .Values.logging.interceptor.format }}"
-          - "--zap-time-encoding={{ .Values.logging.interceptor.timeEncoding }}"
+        - "--zap-log-level={{ .Values.logging.interceptor.level }}"
+        - "--zap-encoder={{ .Values.logging.interceptor.format }}"
+        - "--zap-time-encoding={{ .Values.logging.interceptor.timeEncoding }}"
+        {{- if .Values.logging.interceptor.stackTracesEnabled }}
+        - "--zap-stacktrace-level=error"
+        {{- end }}
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"
