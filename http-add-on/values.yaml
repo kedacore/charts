@@ -16,6 +16,8 @@ logging:
     # -- Logging time encoding for KEDA http-add-on operator.
     # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
+    # -- Display stack traces in the logs
+    stackTracesEnabled: false
 
     kubeRbacProxy:
       # -- Logging level for KEDA http-add-on operator rbac proxy
@@ -31,6 +33,9 @@ logging:
     # -- Logging time encoding for KEDA http-add-on Scaler.
     # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
+    # -- Display stack traces in the logs
+    stackTracesEnabled: false
+
   interceptor:
     # -- Logging level for KEDA http-add-on Interceptor.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
@@ -41,6 +46,8 @@ logging:
     # -- Logging time encoding for KEDA http-add-on Interceptor.
     # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
+    # -- Display stack traces in the logs
+    stackTracesEnabled: false
 
 # operator-specific configuration values
 operator:
