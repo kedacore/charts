@@ -4,7 +4,9 @@ kind: ScaledObject
 metadata:
   name: "{{ .Chart.Name }}-interceptor"
   namespace: {{ .Release.Namespace }}
-  labels:    
+  labels:
+    app.kubernetes.io/component: interceptor
+    app.kubernetes.io/name: http-add-on    
     {{- include "keda-http-add-on.labels" . | indent 4 }}
 spec:
   minReplicaCount: {{ .Values.interceptor.replicas.min }}

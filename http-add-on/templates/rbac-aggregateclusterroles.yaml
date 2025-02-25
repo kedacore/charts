@@ -5,6 +5,7 @@ kind: ClusterRole
 metadata:
   name: {{ .Chart.Name }}-edit
   labels:
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
@@ -27,6 +28,7 @@ kind: ClusterRole
 metadata:
   name: {{ .Chart.Name }}-view
   labels:
+    app.kubernetes.io/name: http-add-on
     rbac.authorization.k8s.io/aggregate-to-admin: "true"
     rbac.authorization.k8s.io/aggregate-to-edit: "true"
     rbac.authorization.k8s.io/aggregate-to-view: "true"

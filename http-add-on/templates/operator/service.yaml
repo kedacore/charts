@@ -4,6 +4,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/component: operator
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-controller-manager-metrics-service
   namespace: {{ .Release.Namespace }}
@@ -14,5 +15,6 @@ spec:
     targetPort: metrics
   selector:
     app.kubernetes.io/component: operator
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.matchLabels" . | indent 4 }}
 {{- end }}
