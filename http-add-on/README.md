@@ -116,6 +116,7 @@ their default values.
 | `operator.kubeRbacProxy.resources.requests` | object | `{"cpu":"10m","memory":"20Mi"}` | The CPU/memory resource request for the operator component's kube rbac proxy |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
+| `operator.podAnnotations` | object | `{}` | Annotations to be added to the operator pods |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
 | `operator.replicas` | int | `1` | Number of replicas, oerator k8s resources will not be installed if this is set to 0 |
 | `operator.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the operator component |
@@ -132,6 +133,7 @@ their default values.
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
+| `scaler.podAnnotations` | object | `{}` | Annotations to be added to the scaler pods |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
 | `scaler.replicas` | int | `3` | Number of replicas |
 | `scaler.resources.limits.cpu` | float | `0.5` |  |
@@ -160,6 +162,7 @@ their default values.
 | `interceptor.pdb.enabled` | bool | `true` | Whether to install the `PodDisruptionBudget` for the interceptor |
 | `interceptor.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the interceptor |
 | `interceptor.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the interceptor |
+| `interceptor.podAnnotations` | object | `{}` | Annotations to be added to the interceptor pods |
 | `interceptor.proxy.port` | int | `8080` | The port on which the interceptor's proxy service will listen for live HTTP traffic |
 | `interceptor.proxy.service` | string | `"interceptor-proxy"` | The name of the Kubernetes `Service` for the interceptor's proxy service. This is the service that accepts live HTTP traffic. |
 | `interceptor.pullPolicy` | string | `"Always"` | The image pull policy for the interceptor component |

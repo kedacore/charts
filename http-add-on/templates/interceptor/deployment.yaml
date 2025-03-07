@@ -19,6 +19,12 @@ spec:
         app.kubernetes.io/component: interceptor
         app.kubernetes.io/name: http-add-on
         {{- include "keda-http-add-on.labels" . | indent 8 }}
+      annotations:
+        {{- with .Values.interceptor.podAnnotations }}
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}
