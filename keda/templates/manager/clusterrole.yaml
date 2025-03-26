@@ -210,4 +210,51 @@ rules:
   - list
   - watch
 {{- end -}}
+{{- if .Values.permissions.operator.restrict.serviceAccountTokenCreationRoles }}
+{{- range $r := .Values.permissions.operator.restrict.serviceAccountTokenCreationRoles }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.operator.name }}
+    {{- include "keda.labels" $ | indent 4 }}
+  name: {{ $.Values.operator.name }}-token-creator-{{ $r.name }}
+  namespace: {{ $r.namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+  resourceNames:
+  - {{ $r.name }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  {{- with $.Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ $.Values.operator.name }}
+    {{- include "keda.labels" $ | indent 4 }}
+  name: {{ $.Values.operator.name }}-token-creator-{{ $r.name }}
+  namespace: {{ $r.namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ $.Values.operator.name }}-token-creator-{{ $r.name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ $.Values.operator.name }}
+  namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
 {{- end -}}
