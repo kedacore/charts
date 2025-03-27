@@ -387,12 +387,15 @@ logging:
     # -- If enabled, the stack traces will be also printed
     stackTracesEnabled: false
   metricServer:
-    # -- Logging level for Metrics Server.
-    # allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string
-    level: 0
-    # -- Logging stderrthreshold for Metrics Server
-    # allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG'
-    stderrthreshold: ERROR
+    # -- Logging level for KEDA Operator.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    level: info
+    # -- Logging format for KEDA Operator.
+    # allowed values: `json` or `console`
+    format: console
+    # -- Logging time encoding for KEDA Operator.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    timeEncoding: rfc3339
   webhooks:
     # -- Logging level for KEDA Operator.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
