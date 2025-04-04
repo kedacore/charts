@@ -43,7 +43,7 @@ webhooks:
     resources:
     - scaledobjects
   sideEffects: None
-  timeoutSeconds: 10
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
 - admissionReviewVersions:
   - v1
   clientConfig:
@@ -67,7 +67,7 @@ webhooks:
     resources:
     - triggerauthentications
   sideEffects: None
-  timeoutSeconds: 10
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
 - admissionReviewVersions:
   - v1
   clientConfig:
@@ -91,5 +91,5 @@ webhooks:
     resources:
     - clustertriggerauthentications
   sideEffects: None
-  timeoutSeconds: 10
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
 {{- end }}

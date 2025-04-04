@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: interceptor
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
   namespace: {{ .Release.Namespace }}
@@ -10,12 +11,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: interceptor
+      app.kubernetes.io/name: http-add-on
       {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
         app.kubernetes.io/component: interceptor
+        app.kubernetes.io/name: http-add-on
         {{- include "keda-http-add-on.labels" . | indent 8 }}
+      annotations:
+        {{- with .Values.interceptor.podAnnotations }}
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.interceptor.imagePullSecrets | nindent 8 }}
@@ -29,9 +38,12 @@ spec:
       {{- end }}
       containers:
       - args:
-          - "--zap-log-level={{ .Values.logging.interceptor.level }}"
-          - "--zap-encoder={{ .Values.logging.interceptor.format }}"
-          - "--zap-time-encoding={{ .Values.logging.interceptor.timeEncoding }}"
+        - "--zap-log-level={{ .Values.logging.interceptor.level }}"
+        - "--zap-encoder={{ .Values.logging.interceptor.format }}"
+        - "--zap-time-encoding={{ .Values.logging.interceptor.timeEncoding }}"
+        {{- if .Values.logging.interceptor.stackTracesEnabled }}
+        - "--zap-stacktrace-level=error"
+        {{- end }}
         image: "{{ .Values.images.interceptor }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"

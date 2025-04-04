@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: scaler
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-external-scaler
   namespace: {{ .Release.Namespace }}
@@ -11,12 +12,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: scaler
+      app.kubernetes.io/name: http-add-on
       {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
         app.kubernetes.io/component: scaler
+        app.kubernetes.io/name: http-add-on
         {{- include "keda-http-add-on.labels" . | indent 8 }}
+      annotations:
+        {{- with .Values.scaler.podAnnotations }}
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.scaler.imagePullSecrets | nindent 8 }}
@@ -30,9 +39,12 @@ spec:
       {{- end }}
       containers:
       - args:
-          - "--zap-log-level={{ .Values.logging.scaler.level }}"
-          - "--zap-encoder={{ .Values.logging.scaler.format }}"
-          - "--zap-time-encoding={{ .Values.logging.scaler.timeEncoding }}"
+        - "--zap-log-level={{ .Values.logging.scaler.level }}"
+        - "--zap-encoder={{ .Values.logging.scaler.format }}"
+        - "--zap-time-encoding={{ .Values.logging.scaler.timeEncoding }}"
+        {{- if .Values.logging.scaler.stackTracesEnabled }}
+        - "--zap-stacktrace-level=error"
+        {{- end }}
         image: "{{ .Values.images.scaler }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.scaler.pullPolicy | default "Always" }}
         name: "{{ .Chart.Name }}-external-scaler"

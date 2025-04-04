@@ -2,6 +2,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
+    app.kubernetes.io/component: scaler
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-external-scaler
 rules:
@@ -30,7 +32,8 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-external-scaler
-    app.kubernetes.io/name: {{ .Chart.Name }}-external-scaler
+    app.kubernetes.io/component: scaler
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-external-scaler
 roleRef:

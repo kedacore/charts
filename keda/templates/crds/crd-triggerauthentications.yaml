@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.14.0
+    controller-gen.kubebuilder.io/version: v0.16.5
     {{- if (or .Values.crds.additionalAnnotations .Values.additionalAnnotations) }}
     {{- toYaml (merge .Values.crds.additionalAnnotations .Values.additionalAnnotations) | nindent 4 }}
     {{- end }}
@@ -188,6 +188,8 @@ spec:
                           type: string
                         parameter:
                           type: string
+                        secretKey:
+                          type: string
                         versionId:
                           type: string
                         versionStage:
@@ -307,6 +309,18 @@ spec:
                 - secrets
                 - vaultUri
                 type: object
+              boundServiceAccountToken:
+                items:
+                  properties:
+                    parameter:
+                      type: string
+                    serviceAccountName:
+                      type: string
+                  required:
+                  - parameter
+                  - serviceAccountName
+                  type: object
+                type: array
               configMapTargetRef:
                 items:
                   description: AuthConfigMapTargetRef is used to authenticate using

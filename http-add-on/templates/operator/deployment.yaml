@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: operator
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-controller-manager
   namespace: {{ .Release.Namespace }}
@@ -12,12 +13,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: operator
+      app.kubernetes.io/name: http-add-on
       {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
         app.kubernetes.io/component: operator
+        app.kubernetes.io/name: http-add-on
         {{- include "keda-http-add-on.labels" . | indent 8 }}
+      annotations:
+        {{- with .Values.operator.podAnnotations }}
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.operator.imagePullSecrets | nindent 8 }}
@@ -52,6 +61,9 @@ spec:
         - --zap-log-level={{ .Values.logging.operator.level }}
         - --zap-time-encoding={{ .Values.logging.operator.timeEncoding }}
         - --zap-encoder={{ .Values.logging.operator.format }}
+        {{- if .Values.logging.operator.stackTracesEnabled }}
+        - "--zap-stacktrace-level=error"
+        {{- end }}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-operator"
