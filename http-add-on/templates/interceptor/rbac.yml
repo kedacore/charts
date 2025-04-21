@@ -2,6 +2,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
+    app.kubernetes.io/component: interceptor
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
 rules:
@@ -38,7 +40,8 @@ metadata:
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-interceptor
-    app.kubernetes.io/name: {{ .Chart.Name }}-interceptor
+    app.kubernetes.io/component: interceptor
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-interceptor
 roleRef:

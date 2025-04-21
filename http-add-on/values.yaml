@@ -77,6 +77,8 @@ operator:
   tolerations: []
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
+  # -- Annotations to be added to the operator pods
+  podAnnotations: {}
 
   kubeRbacProxy:
     resources:
@@ -117,6 +119,8 @@ scaler:
     requests:
       cpu: 250m
       memory: 20Mi
+  # -- Annotations to be added to the scaler pods
+  podAnnotations: {}
 
 interceptor:
   # -- The image pull secrets for the interceptor component
@@ -189,6 +193,8 @@ interceptor:
     requests:
       cpu: 250m
       memory: 20Mi
+  # -- Annotations to be added to the interceptor pods
+  podAnnotations: {}
   # configuration of tls for the interceptor
   tls:
     # -- Whether a TLS server should be started on the interceptor proxy

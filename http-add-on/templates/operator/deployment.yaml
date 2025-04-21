@@ -4,6 +4,7 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: operator
+    app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
   name: {{ .Chart.Name }}-controller-manager
   namespace: {{ .Release.Namespace }}
@@ -12,12 +13,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: operator
+      app.kubernetes.io/name: http-add-on
       {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
   template:
     metadata:
       labels:
         app.kubernetes.io/component: operator
+        app.kubernetes.io/name: http-add-on
         {{- include "keda-http-add-on.labels" . | indent 8 }}
+      annotations:
+        {{- with .Values.operator.podAnnotations }}
+        {{- range $key, $value := . }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+        {{- end }}
     spec:
       imagePullSecrets: 
         {{- toYaml .Values.operator.imagePullSecrets | nindent 8 }}

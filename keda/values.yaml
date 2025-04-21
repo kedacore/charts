@@ -855,6 +855,12 @@ permissions:
       # also the configured `watchNamespace`.
       # the default is an empty array -> no restriction on the secret name
       namesAllowList: []
+      # -- Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator
+      # to request service account tokens for use with the boundServiceAccountToken trigger source.
+      # If the namespace does not exist, this will cause the helm chart installation to fail.
+      serviceAccountTokenCreationRoles: []
+      # - name: myServiceAccount
+      #   namespace: myServiceAccountNamespace
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
@@ -876,3 +882,4 @@ customManagedBy: ""
 # -- Enable service links in pods. Although enabled, mirroring k8s default, it is highly recommended to disable,
 # due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/)
 enableServiceLinks: true
+
