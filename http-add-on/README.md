@@ -94,13 +94,16 @@ their default values.
 | `images.tag` | string | `""` | Image tag for the http add on. This tag is applied to the images listed in `images.operator`, `images.interceptor`, and `images.scaler`. Optional, given app version of Helm chart is used by default |
 | `logging.interceptor.format` | string | `"console"` | Logging format for KEDA http-add-on Interceptor. allowed values: `json` or `console` |
 | `logging.interceptor.level` | string | `"info"` | Logging level for KEDA http-add-on Interceptor. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.interceptor.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
 | `logging.interceptor.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Interceptor. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA http-add-on operator. allowed values: `json` or `console` |
 | `logging.operator.kubeRbacProxy.level` | int | `10` | Logging level for KEDA http-add-on operator rbac proxy allowed values: `0` for info, `4` for debug, or an integer value greater than 0 |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA http-add-on operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.operator.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `logging.scaler.format` | string | `"console"` | Logging format for KEDA http-add-on Scaler. allowed values: `json` or `console` |
 | `logging.scaler.level` | string | `"info"` | Logging level for KEDA http-add-on Scaler. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.scaler.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
 | `logging.scaler.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Scaler. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Install aggregate roles for edit and view |
@@ -115,8 +118,8 @@ their default values.
 | `operator.kubeRbacProxy.resources.limits` | object | `{"cpu":"300m","memory":"200Mi"}` | The CPU/memory resource limit for the operator component's kube rbac proxy |
 | `operator.kubeRbacProxy.resources.requests` | object | `{"cpu":"10m","memory":"20Mi"}` | The CPU/memory resource request for the operator component's kube rbac proxy |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
-| `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.podAnnotations` | object | `{}` | Annotations to be added to the operator pods |
+| `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
 | `operator.replicas` | int | `1` | Number of replicas, oerator k8s resources will not be installed if this is set to 0 |
 | `operator.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the operator component |
