@@ -148,7 +148,7 @@ their default values.
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
 | `podSecurityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA operator pod |
-| `resources.operator` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA operator pod |
+| `resources.operator` | object | `{}` | Manage [resource request & limits] of KEDA operator pod |
 | `securityContext.operator` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the operator container |
 | `serviceAccount.operator.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.operator.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
@@ -182,7 +182,7 @@ their default values.
 | `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.metricsAdapter` | object | `{}` | Pod labels for KEDA Metrics Adapter |
 | `podSecurityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA metrics apiserver pod |
-| `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
+| `resources.metricServer` | object | `{}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
 | `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
 | `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
@@ -303,7 +303,7 @@ their default values.
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
 | `podSecurityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] of the KEDA admission webhooks |
-| `resources.webhooks` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA admission webhooks pod |
+| `resources.webhooks` | object | `{}` | Manage [resource request & limits] of KEDA admission webhooks pod |
 | `securityContext.webhooks` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the admission webhooks container |
 | `serviceAccount.webhooks.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.webhooks.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |

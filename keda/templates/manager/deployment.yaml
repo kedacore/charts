@@ -191,8 +191,6 @@ spec:
           resources:
             {{- if .Values.resources.operator }}
             {{- toYaml .Values.resources.operator | nindent 12 }}
-            {{- else }}
-            {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
         {{- if .Values.operator.extraContainers }}
         {{- toYaml .Values.operator.extraContainers | nindent 8 }}
