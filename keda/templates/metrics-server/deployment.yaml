@@ -162,8 +162,6 @@ spec:
           resources:
             {{- if .Values.resources.metricServer }}
             {{- toYaml .Values.resources.metricServer | nindent 12 }}
-            {{- else }}
-            {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
       volumes:
       - name: certificates

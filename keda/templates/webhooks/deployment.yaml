@@ -143,8 +143,6 @@ spec:
           resources:
             {{- if .Values.resources.webhooks }}
             {{- toYaml .Values.resources.webhooks | nindent 12 }}
-            {{- else }}
-            {{- toYaml .Values.resources | nindent 12 }}
             {{- end }}
       volumes:
       - name: certificates
