@@ -509,6 +509,8 @@ resources:
 nodeSelector: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
 tolerations: []
+# -- HostAliases for pod networking ([docs](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/))
+hostAliases: []
 
 topologySpreadConstraints:
   # -- [Pod Topology Constraints] of KEDA operator pod
