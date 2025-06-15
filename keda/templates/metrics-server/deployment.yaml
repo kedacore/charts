@@ -195,7 +195,7 @@ spec:
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.nodeSelector.metricsServer }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.metricsServer.affinity }}
@@ -209,7 +209,7 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.tolerations.metricsServer }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
