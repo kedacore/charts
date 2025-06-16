@@ -114,6 +114,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `operator.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
+| `operator.image.tag` | string | `""` | The tag to use for the operator component image. If not set, the value from `images.tag` will be used. |
 | `operator.imagePullSecrets` | list | `[]` | The image pull secrets for the operator component |
 | `operator.kubeRbacProxy.resources.limits` | object | `{"cpu":"300m","memory":"200Mi"}` | The CPU/memory resource limit for the operator component's kube rbac proxy |
 | `operator.kubeRbacProxy.resources.requests` | object | `{"cpu":"10m","memory":"20Mi"}` | The CPU/memory resource request for the operator component's kube rbac proxy |
@@ -133,6 +134,7 @@ their default values.
 |-----------|------|---------|-------------|
 | `scaler.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `scaler.grpcPort` | int | `9090` | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. |
+| `scaler.image.tag` | string | `""` | The tag to use for the scaler component image. If not set, the value from `images.tag` will be used. |
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
@@ -158,6 +160,7 @@ their default values.
 | `interceptor.expectContinueTimeout` | string | `"1s"` | Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details |
 | `interceptor.forceHTTP2` | bool | `false` | Whether or not the interceptor should force requests to use HTTP/2 |
 | `interceptor.idleConnTimeout` | string | `"90s"` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. |
+| `interceptor.image.tag` | string | `""` | The tag to use for the interceptor component image. If not set, the value from `images.tag` will be used. |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
 | `interceptor.maxIdleConns` | int | `100` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
