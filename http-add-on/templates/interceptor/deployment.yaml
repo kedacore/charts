@@ -84,6 +84,10 @@ spec:
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
         {{- end }}
+        {{- if .Values.profiling.interceptor.enabled }}
+        - name: PROFILING_BIND_ADDRESS
+          value: "127.0.0.1:{{ .Values.profiling.interceptor.port }}"
+        {{- end}}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
           name: admin
