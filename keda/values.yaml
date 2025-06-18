@@ -119,6 +119,8 @@ operator:
     timeoutSeconds: 1
     failureThreshold: 3
     successThreshold: 1
+  # -- [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for the KEDA operator service
+  trafficDistribution: ""
 
 metricsServer:
   # -- ReplicaSets for this Deployment you want to retain (Default: 10)
@@ -207,6 +209,8 @@ webhooks:
 
   # -- [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks
   failurePolicy: Ignore
+  # -- [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for the KEDA admission webhooks service
+  trafficDistribution: ""
 
 upgradeStrategy:
   # -- Capability to configure [Deployment upgrade strategy] for operator
@@ -474,6 +478,8 @@ service:
   portHttpsTarget: 6443
   # -- Annotations to add the KEDA Metric Server service
   annotations: {}
+  # -- [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for KEDA Metric Server service 
+  trafficDistribution: ""
 
 # We provides the default values that we describe in our docs:
 # https://keda.sh/docs/latest/operate/cluster/

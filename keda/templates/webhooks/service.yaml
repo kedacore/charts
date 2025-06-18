@@ -26,6 +26,9 @@ metadata:
   name: {{ .Values.webhooks.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.webhooks.trafficDistribution }}
+  trafficDistribution: {{ .Values.webhooks.trafficDistribution }}
+  {{- end }}
   ports:
   - name: https
     port: 443

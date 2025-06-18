@@ -141,6 +141,7 @@ their default values.
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
+| `operator.trafficDistribution` | string | `""` | [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for the KEDA operator service |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
 | `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. If the namespace does not exist, this will cause the helm chart installation to fail. |
@@ -188,6 +189,7 @@ their default values.
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
 | `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
 | `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
+| `service.trafficDistribution` | string | `""` | [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for KEDA Metric Server service |
 | `serviceAccount.metricServer.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.metricServer.create` | bool | `true` | Specifies whether a service account should be created |
@@ -325,6 +327,7 @@ their default values.
 | `webhooks.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `webhooks.timeoutSeconds` | int | `10` | Timeout in seconds for KEDA admission webhooks |
 | `webhooks.useHostNetwork` | bool | `false` | Enable webhook to use host network, this is required on EKS with custom CNI |
+| `webhooks.trafficDistribution` | string | `""` | [Traffic distribution](https://kubernetes.io/docs/concepts/services-networking/service/#traffic-distribution) policy for the KEDA admission webhooks service |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:

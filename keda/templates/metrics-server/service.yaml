@@ -27,6 +27,9 @@ metadata:
   {{- end }}
 spec:
   type: {{ .Values.service.type }}
+  {{- if .Values.service.trafficDistribution }}
+  trafficDistribution: {{ .Values.service.trafficDistribution }}
+  {{- end }}
   ports:
   - name: https
     port: {{ .Values.service.portHttps }}
