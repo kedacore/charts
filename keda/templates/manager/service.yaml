@@ -25,6 +25,9 @@ metadata:
   name: {{ .Values.operator.name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  {{- if .Values.operator.trafficDistribution }}
+  trafficDistribution: {{ .Values.operator.trafficDistribution }}
+  {{- end }}
   ports:
   - name: metricsservice
     port: 9666
