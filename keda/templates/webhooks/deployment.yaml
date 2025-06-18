@@ -157,7 +157,7 @@ spec:
       hostNetwork: {{ .Values.webhooks.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.nodeSelector.webhooks }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.webhooks.affinity }}
@@ -171,7 +171,7 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.tolerations.webhooks }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
