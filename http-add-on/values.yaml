@@ -90,6 +90,8 @@ operator:
       requests:
         cpu: 10m
         memory: 20Mi
+  # -- Extra environment variables to be added to operator container
+  extraEnv: []
 
 scaler:
   # -- Number of replicas
@@ -121,6 +123,8 @@ scaler:
       memory: 20Mi
   # -- Annotations to be added to the scaler pods
   podAnnotations: {}
+  # -- Extra environment variables to be added to scaler container
+  extraEnv: []
 
 interceptor:
   # -- The image pull secrets for the interceptor component
@@ -207,6 +211,8 @@ interceptor:
     cert_secret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
+  # -- Extra environment variables to be added to interceptor container
+  extraEnv: []
 
   # configuration of pdb for the interceptor
   pdb:
