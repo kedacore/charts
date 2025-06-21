@@ -16,6 +16,7 @@ rules:
   resources:
   - configmaps
   - configmaps/status
+  - endpoints
   - limitranges
   - pods
   - services
