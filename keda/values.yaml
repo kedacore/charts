@@ -482,29 +482,11 @@ service:
 # and remove/comment the default values
 resources:
   # -- Manage [resource request & limits] of KEDA operator pod
-  operator:
-    limits:
-      cpu: 1
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
+  operator: {}
   # -- Manage [resource request & limits] of KEDA metrics apiserver pod
-  metricServer:
-    limits:
-      cpu: 1
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
+  metricServer: {}
   # -- Manage [resource request & limits] of KEDA admission webhooks pod
-  webhooks:
-    limits:
-      cpu: 1
-      memory: 1000Mi
-    requests:
-      cpu: 100m
-      memory: 100Mi
+  webhooks: {}
 # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
 nodeSelector: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
