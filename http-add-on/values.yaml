@@ -55,6 +55,9 @@ operator:
   replicas: 1
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
+  image:
+    # -- The tag to use for the operator component image. If not set, the value from `images.tag` will be used.
+    tag: ""
   # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
   watchNamespace: ""
   # -- The image pull policy for the operator component
@@ -96,6 +99,9 @@ scaler:
   replicas: 3
   # -- The image pull secrets for the scaler component
   imagePullSecrets: []
+  image:
+    # -- The tag to use for the scaler component image. If not set, the value from `images.tag` will be used.
+    tag: ""
   # -- The name of the Kubernetes `Service` for the scaler component
   service: external-scaler
   # -- The image pull policy for the scaler component
@@ -123,6 +129,9 @@ scaler:
   podAnnotations: {}
 
 interceptor:
+  image:
+    # -- The tag to use for the interceptor component image. If not set, the value from `images.tag` will be used.
+    tag: ""
   # -- The image pull secrets for the interceptor component
   imagePullSecrets: []
   # -- The image pull policy for the interceptor component
