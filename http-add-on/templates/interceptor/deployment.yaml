@@ -138,3 +138,6 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.interceptor.priorityClassName }}
+      priorityClassName: {{ .Values.interceptor.priorityClassName }}
+      {{- end }}
