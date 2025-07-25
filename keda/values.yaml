@@ -134,6 +134,15 @@ metricsServer:
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   # -- Defined the DNS policy for the metric server
   dnsPolicy: ClusterFirst
+  # -- [DNS config] for KEDA metrics server pod
+  dnsConfig: {}
+    # nameservers:
+    #   - 8.8.8.8
+    # searches:
+    #   - metrics.example.com
+    # options:
+    #   - name: ndots
+    #     value: "3"
   # -- Enable metric server to use host network
   useHostNetwork: false
   # -- [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field
