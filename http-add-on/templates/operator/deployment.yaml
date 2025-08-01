@@ -64,6 +64,9 @@ spec:
         {{- if .Values.logging.operator.stackTracesEnabled }}
         - "--zap-stacktrace-level=error"
         {{- end }}
+        {{- if .Values.profiling.operator.enabled }}
+        - --profiling-bind-address=127.0.0.1:{{ .Values.profiling.operator.port }}
+        {{- end}}
         image: "{{ .Values.images.operator }}:{{ .Values.images.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-operator"

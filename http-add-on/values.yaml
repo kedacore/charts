@@ -310,3 +310,22 @@ podSecurityContext:
     # runAsUser: 1000
     # runAsGroup: 1000
     # fsGroup: 1000
+
+## This setting lets you enable profiling for all of the components of KEDA http-add-on and on the specific port you choose
+## This can be useful when trying to investigate errors like memory leaks or CPU bottlenecks
+profiling:
+  operator:
+    # -- Enable profiling for KEDA http-add-on Operator
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8085
+  interceptor:
+    # -- Enable profiling for KEDA http-add-on Interceptor
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8086
+  scaler:
+    # -- Enable profiling for KEDA http-add-on Scaler
+    enabled: false
+    # -- Expose profiling on a specific port
+    port: 8087
