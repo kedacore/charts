@@ -107,3 +107,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.scaler.priorityClassName }}
+      priorityClassName: {{ .Values.scaler.priorityClassName }}
+      {{- end }}
