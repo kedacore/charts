@@ -183,6 +183,10 @@ spec:
       {{- if .Values.volumes.metricsApiServer.extraVolumes }}
       {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 6 }}
       {{- end }}
+      {{- with .Values.global.dnsConfig }}
+      dnsConfig:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
       dnsPolicy: {{ .Values.metricsServer.dnsPolicy }}
       {{- if .Values.metricsServer.dnsConfig }}
       dnsConfig:
