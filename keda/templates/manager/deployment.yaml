@@ -243,9 +243,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.global.dnsConfig }}
+      {{- $dnsConfig := .Values.operator.dnsConfig | default .Values.global.dnsConfig }}
+      {{- if $dnsConfig }}
       dnsConfig:
-      {{- toYaml . | nindent 8 }}
+      {{- toYaml $dnsConfig | nindent 8 }}
       {{- end }}
       {{- with .Values.hostAliases }}
       hostAliases:

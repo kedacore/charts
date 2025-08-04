@@ -84,7 +84,7 @@ their default values.
 | `enableServiceLinks` | bool | `true` | Enable service links in pods. Although enabled, mirroring k8s default, it is highly recommended to disable, due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/) |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
-| `global.dnsConfig` | object | `{}` | Dns configuration for keda pods |
+| `global.dnsConfig` | object | `{}` | DNS config for KEDA components |
 | `global.image.registry` | string | `nil` | Global image registry of KEDA components |
 | `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
 | `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
@@ -135,6 +135,7 @@ their default values.
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
+| `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
 | `operator.extraContainers` | list | `[]` | Additional containers to run as part of the operator deployment |
 | `operator.extraInitContainers` | list | `[]` | Additional init containers to run as part of the operator deployment |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
@@ -172,7 +173,7 @@ their default values.
 | `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
-| `metricsServer.dnsConfig` | object | `{}` | [DNS config] for KEDA metrics server pod |
+| `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
@@ -316,6 +317,7 @@ their default values.
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
 | `volumes.webhooks.extraVolumes` | list | `[]` | Extra volumes for admission webhooks deployment |
 | `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
+| `webhooks.dnsConfig` | object | `{}` | DNS config for KEDA admission webhooks pod |
 | `webhooks.enabled` | bool | `true` |  |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
