@@ -183,15 +183,12 @@ spec:
       {{- if .Values.volumes.metricsApiServer.extraVolumes }}
       {{- toYaml .Values.volumes.metricsApiServer.extraVolumes | nindent 6 }}
       {{- end }}
-      {{- with .Values.global.dnsConfig }}
+      {{- $dnsConfig := .Values.metricsServer.dnsConfig | default .Values.global.dnsConfig }}
+      {{- if $dnsConfig }}
       dnsConfig:
-      {{- toYaml . | nindent 8 }}
+      {{- toYaml $dnsConfig | nindent 8 }}
       {{- end }}
       dnsPolicy: {{ .Values.metricsServer.dnsPolicy }}
-      {{- if .Values.metricsServer.dnsConfig }}
-      dnsConfig:
-        {{- toYaml .Values.metricsServer.dnsConfig | nindent 8 }}
-      {{- end }}
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
