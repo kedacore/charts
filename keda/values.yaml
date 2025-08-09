@@ -527,9 +527,22 @@ resources:
       cpu: 100m
       memory: 100Mi
 # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
-nodeSelector: {}
+nodeSelector:
+  # -- Node selector for KEDA operator pod
+  operator: {}
+  # -- Node selector for KEDA metrics apiserver pod
+  metricsServer: {}
+  # -- Node selector for KEDA admission webhooks pod
+  webhooks: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
-tolerations: []
+tolerations:
+  # -- Tolerations for KEDA operator pod
+  operator: []
+  # -- Tolerations for KEDA metrics apiserver pod
+  metricsServer: []
+  # -- Tolerations for KEDA admission webhooks pod
+  webhooks: []
+
 # -- HostAliases for pod networking ([docs](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/))
 hostAliases: []
 
@@ -896,4 +909,3 @@ customManagedBy: ""
 # -- Enable service links in pods. Although enabled, mirroring k8s default, it is highly recommended to disable,
 # due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/)
 enableServiceLinks: true
-
