@@ -97,7 +97,7 @@ their default values.
 | `networkPolicy.cilium` | object | `{"operator":{"extraEgressRules":[]}}` | Allow use of extra egress rules for cilium network policies |
 | `networkPolicy.enabled` | bool | `false` | Enable network policies |
 | `networkPolicy.flavor` | string | `"cilium"` | Flavor of the network policies (cilium) |
-| `nodeSelector` | object | `{"metricsServer":{},"operator":{},"webhooks":{}}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `podIdentity.aws.irsa.audience` | string | `"sts.amazonaws.com"` | Sets the token audience for IRSA. This will be set as an annotation on the KEDA service account. |
 | `podIdentity.aws.irsa.enabled` | bool | `false` | Specifies whether [AWS IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is to be enabled or not. |
 | `podIdentity.aws.irsa.roleArn` | string | `""` | Set to the value of the ARN of an IAM role with a web identity provider. This will be set as an annotation on the KEDA service account. |
@@ -117,7 +117,7 @@ their default values.
 | `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
 | `rbac.scaledRefKinds` | list | `[{"apiGroup":"*","kind":"*"}]` | List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`. The feature needs to be also enabled by `enabledCustomScaledRefKinds`. If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created note: Deployments and StatefulSets are supported out of the box |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
-| `tolerations` | object | `{"metricsServer":[],"operator":[],"webhooks":[]}` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
 
 ### Operator
@@ -133,7 +133,6 @@ their default values.
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.stackTracesEnabled` | bool | `false` | If enabled, the stack traces will be also printed |
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
-| `nodeSelector.operator` | object | `{}` | Node selector for KEDA operator pod |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
@@ -142,11 +141,13 @@ their default values.
 | `operator.extraInitContainers` | list | `[]` | Additional init containers to run as part of the operator deployment |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
+| `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `operator.useHostNetwork` | bool | `false` | Enable operator to use host network |
 | `permissions.operator.restrict.allowAllServiceAccountTokenCreation` | bool | `false` | Allow Keda to access all Service Token for KEDA operator |
+| `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
 | `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. If the namespace does not exist, this will cause the helm chart installation to fail. |
@@ -160,7 +161,6 @@ their default values.
 | `serviceAccount.operator.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.operator.create` | bool | `true` | Specifies whether a service account should be created |
 | `serviceAccount.operator.name` | string | `"keda-operator"` | The name of the service account to use. |
-| `tolerations.operator` | list | `[]` | Tolerations for KEDA operator pod |
 | `topologySpreadConstraints.operator` | list | `[]` | [Pod Topology Constraints] of KEDA operator pod |
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
@@ -184,11 +184,12 @@ their default values.
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
+| `metricsServer.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `metricsServer.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA metric server. While you can run more replicas of our metric server, only one instance will used and serve traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `metricsServer.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
+| `metricsServer.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `metricsServer.useHostNetwork` | bool | `false` | Enable metric server to use host network |
-| `nodeSelector.metricsServer` | object | `{}` | Node selector for KEDA metrics apiserver pod |
 | `permissions.metricServer.restrict.secret` | bool | `false` | Restrict Secret Access for Metrics Server |
 | `podAnnotations.metricsAdapter` | object | `{}` | Pod annotations for KEDA Metrics Adapter |
 | `podDisruptionBudget.metricServer` | object | `{}` | Capability to configure [Pod Disruption Budget] |
@@ -204,7 +205,6 @@ their default values.
 | `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.metricServer.create` | bool | `true` | Specifies whether a service account should be created |
 | `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. |
-| `tolerations.metricsServer` | list | `[]` | Tolerations for KEDA metrics apiserver pod |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
@@ -312,7 +312,6 @@ their default values.
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
 | `logging.webhooks.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
-| `nodeSelector.webhooks` | object | `{}` | Node selector for KEDA admission webhooks pod |
 | `podAnnotations.webhooks` | object | `{}` | Pod annotations for KEDA Admission webhooks |
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
@@ -323,7 +322,6 @@ their default values.
 | `serviceAccount.webhooks.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.webhooks.create` | bool | `true` | Specifies whether a service account should be created |
 | `serviceAccount.webhooks.name` | string | `"keda-webhook"` | The name of the service account to use. |
-| `tolerations.webhooks` | list | `[]` | Tolerations for KEDA admission webhooks pod |
 | `topologySpreadConstraints.webhooks` | list | `[]` | [Pod Topology Constraints] of KEDA admission webhooks pod |
 | `upgradeStrategy.webhooks` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Admission webhooks |
 | `volumes.webhooks.extraVolumeMounts` | list | `[]` | Extra volume mounts for admission webhooks deployment |
@@ -335,11 +333,13 @@ their default values.
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
 | `webhooks.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `webhooks.name` | string | `"keda-admission-webhooks"` | Name of the KEDA admission webhooks |
+| `webhooks.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `webhooks.port` | string | `""` | Port number to use for KEDA admission webhooks. Default is 9443. |
 | `webhooks.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `webhooks.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA admission webhooks |
 | `webhooks.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `webhooks.timeoutSeconds` | int | `10` | Timeout in seconds for KEDA admission webhooks |
+| `webhooks.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `webhooks.useHostNetwork` | bool | `false` | Enable webhook to use host network, this is required on EKS with custom CNI |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to

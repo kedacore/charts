@@ -222,8 +222,10 @@ spec:
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- with .Values.nodeSelector.operator }}
-        {{- toYaml . | nindent 8 }}
+      {{- if .Values.operator.nodeSelector }}
+        {{- toYaml .Values.operator.nodeSelector | nindent 8 }}
+      {{- else if .Values.nodeSelector }}
+        {{- toYaml .Values.nodeSelector }}
       {{- end }}
       {{- if .Values.podIdentity.gcp.enabled }}
         iam.gke.io/gke-metadata-server-enabled: "true"
@@ -239,9 +241,11 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations.operator }}
+      {{- if .Values.operator.tolerations }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.operator.tolerations | nindent 8 }}
+      {{- else if .Values.tolerations }}
+        {{- toYaml .Values.tolerations }}
       {{- end }}
       {{- $dnsConfig := .Values.operator.dnsConfig | default .Values.global.dnsConfig }}
       {{- if $dnsConfig }}
