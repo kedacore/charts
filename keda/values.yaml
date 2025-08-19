@@ -872,6 +872,8 @@ permissions:
       serviceAccountTokenCreationRoles: []
       # - name: myServiceAccount
       #   namespace: myServiceAccountNamespace
+      # -- Allow Keda to access all Service Token for KEDA operator
+      allowAllServiceAccountTokenCreation: false
 
 # -- Array of extra K8s manifests to deploy
 extraObjects: []
