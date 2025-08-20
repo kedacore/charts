@@ -222,10 +222,8 @@ spec:
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- if .Values.operator.nodeSelector }}
-        {{- toYaml .Values.operator.nodeSelector | nindent 8 }}
-      {{- else if .Values.nodeSelector }}
-        {{- toYaml .Values.nodeSelector }}
+      {{- with .Values.operator.nodeSelector | default .Values.nodeSelector }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.podIdentity.gcp.enabled }}
         iam.gke.io/gke-metadata-server-enabled: "true"

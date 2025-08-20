@@ -195,10 +195,8 @@ spec:
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- if .Values.metricsServer.nodeSelector }}
-        {{- toYaml .Values.metricsServer.nodeSelector | nindent 8 }}
-      {{- else if .Values.nodeSelector }}
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- with .Values.metricsServer.nodeSelector | default .Values.nodeSelector }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.metricsServer.affinity }}
       affinity:

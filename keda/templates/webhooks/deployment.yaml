@@ -157,10 +157,8 @@ spec:
       hostNetwork: {{ .Values.webhooks.useHostNetwork }}
       nodeSelector:
         kubernetes.io/os: linux
-      {{- if .Values.webhooks.nodeSelector }}
-        {{- toYaml .Values.webhooks.nodeSelector | nindent 8 }}
-      {{- else if .Values.nodeSelector }}
-        {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- with .Values.webhooks.nodeSelector | default .Values.nodeSelector }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- if .Values.webhooks.affinity }}
       affinity:
