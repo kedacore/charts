@@ -86,6 +86,9 @@ their default values.
 |-----------|------|---------|-------------|
 | `additionalLabels` | object | `{}` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
 | `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
+| `extraEnvs.interceptor` | object | `{}` | Additional ENV vars to be applied to the interceptor container |
+| `extraEnvs.operator` | object | `{}` | Additional ENV vars to be applied to the operator container |
+| `extraEnvs.scaler` | object | `{}` | Additional ENV vars to be applied to the operator container |
 | `images.interceptor` | string | `"ghcr.io/kedacore/http-add-on-interceptor"` | Image name for the interceptor image component |
 | `images.kubeRbacProxy.name` | string | `"gcr.io/kubebuilder/kube-rbac-proxy"` | Image name for the Kube RBAC Proxy image component |
 | `images.kubeRbacProxy.tag` | string | `"v0.13.0"` | Image tag for the Kube RBAC Proxy image component |

@@ -88,6 +88,10 @@ spec:
         - name: PROFILING_BIND_ADDRESS
           value: "127.0.0.1:{{ .Values.profiling.interceptor.port }}"
         {{- end}}
+        {{- range $key, $value := .Values.extraEnvs.interceptor }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
         ports:
         - containerPort: {{ .Values.interceptor.admin.port }}
           name: admin

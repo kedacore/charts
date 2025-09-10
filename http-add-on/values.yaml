@@ -5,6 +5,11 @@ crds:
   # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
+extraEnvs:
+  interceptor: {}
+  operator: {}
+  scaler: {}
+
 logging:
   operator:
     # -- Logging level for KEDA http-add-on operator.
