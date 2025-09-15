@@ -24,6 +24,14 @@ rules:
   - get
   - list
   - watch
+{{- if eq .Values.permissions.operator.restrict.allowAllServiceAccountTokenCreation true }}
+- apiGroups:
+  - ""
+  resources:
+  - serviceaccounts/token
+  verbs:
+  - create
+{{- end }}
 - apiGroups:
   - ""
   resources:
