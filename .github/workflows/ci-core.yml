@@ -42,7 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         enableAzureWorkloadIdentity: [false, true]
-        kubernetesVersion: [v1.32, v1.31, v1.30, v1.23]
+        kubernetesVersion: [v1.33, v1.32, v1.31, v1.23]
         namespace: ["keda", "not-keda"]
         enableCertManager: [false, true]
         include:
@@ -55,12 +55,12 @@ jobs:
           clientId: ""
           # Images are defined on every Kind release
           # See https://github.com/kubernetes-sigs/kind/releases
+        - kubernetesVersion: v1.33
+          kindImage: kindest/node:v1.33.4@sha256:25a6018e48dfcaee478f4a59af81157a437f15e6e140bf103f85a2e7cd0cbbf2
         - kubernetesVersion: v1.32
-          kindImage: kindest/node:v1.32.0@sha256:c48c62eac5da28cdadcf560d1d8616cfa6783b58f0d94cf63ad1bf49600cb027
+          kindImage: kindest/node:v1.32.8@sha256:abd489f042d2b644e2d033f5c2d900bc707798d075e8186cb65e3f1367a9d5a1
         - kubernetesVersion: v1.31
-          kindImage: kindest/node:v1.31.4@sha256:2cb39f7295fe7eafee0842b1052a599a4fb0f8bcf3f83d96c7f4864c357c6c30
-        - kubernetesVersion: v1.30
-          kindImage: kindest/node:v1.30.8@sha256:17cd608b3971338d9180b00776cb766c50d0a0b6b904ab4ff52fd3fc5c6369bf
+          kindImage: kindest/node:v1.31.12@sha256:0f5cc49c5e73c0c2bb6e2df56e7df189240d83cf94edfa30946482eb08ec57d2
         - kubernetesVersion: v1.23
           kindImage: kindest/node:v1.23.17@sha256:59c989ff8a517a93127d4a536e7014d28e235fb3529d9fba91b3951d461edfdb
     steps:
