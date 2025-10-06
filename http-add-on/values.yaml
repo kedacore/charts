@@ -51,6 +51,8 @@ logging:
 
 # operator-specific configuration values
 operator:
+  # -- Extra environment variables to set (key-value map with "ENV name":"value")
+  extraEnvs: {}
   # -- Number of replicas, oerator k8s resources will not be installed if this is set to 0
   replicas: 1
   # -- The image pull secrets for the operator component
@@ -92,6 +94,8 @@ operator:
         memory: 20Mi
 
 scaler:
+  # -- Extra environment variables to set (key-value map with "ENV name":"value")
+  extraEnvs: {}
   # -- Number of replicas
   replicas: 3
   # -- The image pull secrets for the scaler component
@@ -123,6 +127,8 @@ scaler:
   podAnnotations: {}
 
 interceptor:
+  # -- Extra environment variables to set (key-value map with "ENV name":"value")
+  extraEnvs: {}
   # -- The image pull secrets for the interceptor component
   imagePullSecrets: []
   # -- The image pull policy for the interceptor component

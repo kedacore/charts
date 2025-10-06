@@ -79,6 +79,10 @@ spec:
           value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_OPERATOR_WATCH_NAMESPACE
           value: "{{ .Values.operator.watchNamespace }}"
+        {{- range $key, $value := .Values.operator.extraEnvs }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
         ports:
         - name: metrics
           containerPort: 8080
