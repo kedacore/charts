@@ -405,12 +405,21 @@ logging:
     # -- If enabled, the stack traces will be also printed
     stackTracesEnabled: false
   metricServer:
-    # -- Logging level for Metrics Server.
+    # -- Logging level for Metrics Server (Deprecated).
     # allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string
     level: 0
-    # -- Logging stderrthreshold for Metrics Server
+    # -- Logging stderrthreshold for Metrics Server (Deprecated)
     # allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG'
     stderrthreshold: ERROR
+    # -- Zap Logging level for Metrics Server.
+    # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
+    zapLevel: info
+    # -- Zap Logging encoder for Metrics Server.
+    # allowed values: `json` or `console`
+    zapEncoder: console
+    # -- Zap logging time encoding for Metrics Server.
+    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    zapTimeEncoding: rfc3339
   webhooks:
     # -- Logging level for KEDA Operator.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string

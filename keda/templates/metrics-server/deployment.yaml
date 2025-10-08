@@ -131,6 +131,9 @@ spec:
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
           - --cert-dir={{ .Values.certificates.mountPath }}
           - --v={{ .Values.logging.metricServer.level }}
+          - --zap-log-level={{ .Values.logging.metricServer.zapLevel }}
+          - --zap-encoder={{ .Values.logging.metricServer.zapEncoder }}
+          - --zap-time-encoding={{ .Values.logging.metricServer.zapTimeEncoding }}
           {{- if .Values.profiling.metricsServer.enabled }}
           - "--profiling-bind-address=:{{ .Values.profiling.metricsServer.port }}"
           {{- end }}
