@@ -53,9 +53,9 @@ WARNING - prometheus.webhooks.serviceMonitor.relabellings is deprecated, please 
 -------------------------------------------------------------------------------------
 {{- end }}
 
-{{- if lt .Capabilities.KubeVersion.Minor "28" }}
+{{- if lt .Capabilities.KubeVersion.Minor "31" }}
 -------------------------------------------------------------------------------------
-WARNING - Running on unsupported Kubernetes version "1.{{.Capabilities.KubeVersion.Minor}}". KEDA 2.13 is supported and tested on Kubernetes "1.28" or higher. See https://keda.sh/docs/latest/operate/cluster/ for details.
+WARNING - Running on unsupported Kubernetes version "1.{{.Capabilities.KubeVersion.Minor}}". KEDA 2.18 is supported and tested on Kubernetes "1.31" or higher. See https://keda.sh/docs/latest/operate/cluster/ for details.
 -------------------------------------------------------------------------------------
 {{- end }}
 
