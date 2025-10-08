@@ -50,6 +50,30 @@ webhooks:
     service:
       name: {{ .Values.webhooks.name }}
       namespace: {{ .Release.Namespace }}
+      path: /validate-keda-sh-v1alpha1-scaledjob
+  failurePolicy: {{ .Values.webhooks.failurePolicy }}
+  matchPolicy: Equivalent
+  name: vscaledjob.kb.io
+  namespaceSelector: {}
+  objectSelector: {}
+  rules:
+  - apiGroups:
+    - keda.sh
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - scaledjobs
+  sideEffects: None
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: {{ .Values.webhooks.name }}
+      namespace: {{ .Release.Namespace }}
       path: /validate-keda-sh-v1alpha1-triggerauthentication
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
@@ -90,6 +114,54 @@ webhooks:
     - UPDATE
     resources:
     - clustertriggerauthentications
+  sideEffects: None
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: {{ .Values.webhooks.name }}
+      namespace: {{ .Release.Namespace }}
+      path: /validate-eventing-keda-sh-v1alpha1-cloudeventsource
+  failurePolicy: {{ .Values.webhooks.failurePolicy }}
+  matchPolicy: Equivalent
+  name: vcloudeventsource.kb.io
+  namespaceSelector: {}
+  objectSelector: {}
+  rules:
+  - apiGroups:
+    - eventing.keda.sh
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - cloudeventsources
+  sideEffects: None
+  timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
+- admissionReviewVersions:
+  - v1
+  clientConfig:
+    service:
+      name: {{ .Values.webhooks.name }}
+      namespace: {{ .Release.Namespace }}
+      path: /validate-eventing-keda-sh-v1alpha1-clustercloudeventsource
+  failurePolicy: {{ .Values.webhooks.failurePolicy }}
+  matchPolicy: Equivalent
+  name: vclustercloudeventsource.kb.io
+  namespaceSelector: {}
+  objectSelector: {}
+  rules:
+  - apiGroups:
+    - eventing.keda.sh
+    apiVersions:
+    - v1alpha1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - clustercloudeventsources
   sideEffects: None
   timeoutSeconds: {{ .Values.webhooks.timeoutSeconds | default 10 }}
 {{- end }}
