@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.18.0
+helm install keda kedacore/keda --namespace keda --version 2.18.1
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.18.0
+$ helm install keda kedacore/keda --namespace keda --version 2.18.1
 ```
 
 ## Uninstalling the Chart
@@ -170,11 +170,11 @@ their default values.
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
 | `image.metricsApiServer.tag` | string | `""` | Image tag of KEDA Metrics API Server. Optional, given app version of Helm chart is used by default |
-| `logging.metricServer.level` | int | `0` | Logging level for Metrics Server. allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
-| `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
-| `logging.metricServer.zapEncoder` | string | `"console"` | Zap logging encoder for KEDA Operator. allowed values: `json` or `console` |
-| `logging.metricServer.zapLevel` | string | `"info"` | Zap logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
-| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.metricServer.level` | int | `0` | Logging level for Metrics Server (Deprecated). allowed values: `0` for info, `4` for debug, or an integer value greater than 0, specified as string |
+| `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server (Deprecated) allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
+| `logging.metricServer.zapEncoder` | string | `"console"` | Zap Logging encoder for Metrics Server. allowed values: `json` or `console` |
+| `logging.metricServer.zapLevel` | string | `"info"` | Zap Logging level for Metrics Server. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
+| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
