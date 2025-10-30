@@ -325,6 +325,7 @@ serviceAccount:
     # -- Specifies whether a service account should be created
     create: true
     # -- The name of the service account to use.
+    # If set to empty string "", it will fall back to serviceAccount.operator.name (default: keda-operator)
     name: keda-metrics-server
     # -- Specifies whether a service account should automount API-Credentials
     automountServiceAccountToken: true
