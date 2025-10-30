@@ -90,6 +90,11 @@ operator:
   disableCompression: true
   # -- DNS config for KEDA operator pod
   dnsConfig: {}
+  # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+  # -- Defined the DNS policy for the operator
+  dnsPolicy: ClusterFirst
+  # -- Enable operator to use host network
+  useHostNetwork: false
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
