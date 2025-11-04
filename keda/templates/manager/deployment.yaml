@@ -248,6 +248,8 @@ spec:
       dnsConfig:
       {{- toYaml $dnsConfig | nindent 8 }}
       {{- end }}
+      dnsPolicy: {{ .Values.operator.dnsPolicy }}
+      hostNetwork: {{ .Values.operator.useHostNetwork }}
       {{- with .Values.hostAliases }}
       hostAliases:
         {{- toYaml . | nindent 8 }}
