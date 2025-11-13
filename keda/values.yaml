@@ -516,7 +516,6 @@ resources:
   # -- Manage [resource request & limits] of KEDA operator pod
   operator:
     limits:
-      cpu: 1
       memory: 1000Mi
     requests:
       cpu: 100m
@@ -524,7 +523,6 @@ resources:
   # -- Manage [resource request & limits] of KEDA metrics apiserver pod
   metricServer:
     limits:
-      cpu: 1
       memory: 1000Mi
     requests:
       cpu: 100m
@@ -532,7 +530,6 @@ resources:
   # -- Manage [resource request & limits] of KEDA admission webhooks pod
   webhooks:
     limits:
-      cpu: 1
       memory: 1000Mi
     requests:
       cpu: 100m
