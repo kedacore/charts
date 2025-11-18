@@ -30,10 +30,10 @@ Get information about the deployed ScaledObjects:
 Get details about a deployed ScaledObject:
   kubectl describe scaledobject <scaled-object-name> [--namespace <namespace>]
 
-Get information about the deployed ScaledObjects:
+Get information about the deployed TriggerAuthentications:
   kubectl get triggerauthentication [--namespace <namespace>]
 
-Get details about a deployed ScaledObject:
+Get details about a deployed TriggerAuthentication:
   kubectl describe triggerauthentication <trigger-authentication-name> [--namespace <namespace>]
 
 Get an overview of the Horizontal Pod Autoscalers (HPA) that KEDA is using behind the scenes:
