@@ -118,6 +118,8 @@ scaler:
   tolerations: []
   # -- Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/))
   affinity: {}
+  # -- Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/))
+  topologySpreadConstraints: []
   resources:
     limits:
       cpu: 0.5
