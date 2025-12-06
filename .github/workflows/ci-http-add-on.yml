@@ -98,6 +98,26 @@ jobs:
             tag: canary
           rbac:
             aggregateToDefaultRoles: true
+          operator:
+            topologySpreadConstraints:
+              - maxSkew: 1
+                topologyKey: "kubernetes.io/hostname"
+                whenUnsatisfiable: "ScheduleAnyway"
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: operator
+                    app.kubernetes.io/instance: http-add-on
+                    app.kubernetes.io/name: http-add-on
+          scaler:
+            topologySpreadConstraints:
+              - maxSkew: 1
+                topologyKey: "kubernetes.io/hostname"
+                whenUnsatisfiable: "ScheduleAnyway"
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/component: operator
+                    app.kubernetes.io/instance: http-add-on
+                    app.kubernetes.io/name: http-add-on
           interceptor:
             replicas:
               min: 1
