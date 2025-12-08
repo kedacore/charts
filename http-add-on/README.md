@@ -132,6 +132,7 @@ their default values.
 | `operator.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the operator component |
 | `operator.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the operator component |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `operator.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 | `operator.watchNamespace` | string | `""` | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. |
 
 ### Scaler
@@ -154,6 +155,7 @@ their default values.
 | `scaler.service` | string | `"external-scaler"` | The name of the Kubernetes `Service` for the scaler component |
 | `scaler.streamInterval` | int | `200` | Interval in ms for communicating IsActive to KEDA |
 | `scaler.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `scaler.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 
 ### Interceptor
 
