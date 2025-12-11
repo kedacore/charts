@@ -121,6 +121,8 @@ jobs:
           interceptor:
             replicas:
               min: 1
+            proxy:
+              appProtocol: ""
           EOF
 
       - name: Template Helm chart

@@ -153,6 +153,8 @@ interceptor:
     service: interceptor-proxy
     # -- The port on which the interceptor's proxy service will listen for live HTTP traffic
     port: 8080
+    # -- The appProtocol for the interceptor's proxy service ports
+    appProtocol: ""
   replicas:
     # -- The minimum number of interceptor replicas that should ever be running
     min: 3
