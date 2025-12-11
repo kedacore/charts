@@ -12,10 +12,16 @@ spec:
   - name: proxy
     port: {{ default 9091 .Values.interceptor.proxy.port }}
     targetPort: proxy
+    {{- if .Values.interceptor.proxy.appProtocol }}
+    appProtocol: {{ .Values.interceptor.proxy.appProtocol }}
+    {{- end }}
   {{- if .Values.interceptor.tls.enabled }}
   - name: proxy-tls
     port: {{ default 8443 .Values.interceptor.tls.port }}
     targetPort: proxy-tls
+    {{- if .Values.interceptor.proxy.appProtocol }}
+    appProtocol: {{ .Values.interceptor.proxy.appProtocol }}
+    {{- end }}
   {{- end }}
   selector:
     app.kubernetes.io/component: interceptor
