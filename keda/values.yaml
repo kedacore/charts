@@ -820,8 +820,8 @@ opentelemetry:
     # -- Uri of OpenTelemetry Collector to push telemetry to
     uri: ""
   operator:
-      # -- Enable pushing metrics to an OpenTelemetry Collector for operator
-      enabled: false
+    # -- Enable pushing metrics to an OpenTelemetry Collector for operator
+    enabled: false
 
 certificates:
   # -- Enables the self generation for KEDA TLS certificates inside KEDA operator
