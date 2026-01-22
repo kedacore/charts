@@ -40,23 +40,16 @@ spec:
       {{- end }}
       containers:
       - args:
-        - --secure-listen-address=0.0.0.0:{{ .Values.operator.port | default 8443 }}
-        - --upstream=http://127.0.0.1:8080/
-        - --logtostderr=true
-        - --v={{ .Values.logging.operator.kubeRbacProxy.level }}
-        image: "{{ .Values.images.kubeRbacProxy.name }}:{{ .Values.images.kubeRbacProxy.tag }}"
-        name: kube-rbac-proxy
-        resources:
-          {{- toYaml .Values.operator.kubeRbacProxy.resources | nindent 10 }}
-        {{- if .Values.securityContext.kuberbacproxy }}
-        securityContext:
-        {{- toYaml .Values.securityContext.kuberbacproxy | nindent 10 }}
-        {{- else }}
-        securityContext:
-        {{- toYaml .Values.securityContext | nindent 10 }}
+        - --metrics-bind-address=:{{ .Values.operator.port }}
+        {{- if .Values.operator.metrics.secure }}
+        - --metrics-secure=true
         {{- end }}
-      - args:
-        - --metrics-bind-address=127.0.0.1:8080
+        {{- if .Values.operator.metrics.auth }}
+        - --metrics-auth=true
+        {{- end }}
+        {{- if .Values.operator.metrics.certDir }}
+        - --metrics-cert-dir={{ .Values.operator.metrics.certDir }}
+        {{- end }}
         - --leader-elect
         - --zap-log-level={{ .Values.logging.operator.level }}
         - --zap-time-encoding={{ .Values.logging.operator.timeEncoding }}
@@ -85,7 +78,7 @@ spec:
         {{- end }}
         ports:
         - name: metrics
-          containerPort: 8080
+          containerPort: {{ .Values.operator.port }}
         - name: probes
           containerPort: 8081
         livenessProbe:
