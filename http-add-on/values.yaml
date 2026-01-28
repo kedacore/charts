@@ -18,11 +18,6 @@ logging:
     timeEncoding: rfc3339
     # -- Display stack traces in the logs
     stackTracesEnabled: false
-
-    kubeRbacProxy:
-      # -- Logging level for KEDA http-add-on operator rbac proxy
-      # allowed values: `0` for info, `4` for debug, or an integer value greater than 0
-      level: 10
   scaler:
     # -- Logging level for KEDA http-add-on Scaler.
     # allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string
@@ -53,7 +48,7 @@ logging:
 operator:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
   extraEnvs: {}
-  # -- Number of replicas, oerator k8s resources will not be installed if this is set to 0
+  # -- Number of replicas, operator k8s resources will not be installed if this is set to 0
   replicas: 1
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
@@ -84,16 +79,15 @@ operator:
   # -- Annotations to be added to the operator pods
   podAnnotations: {}
 
-  kubeRbacProxy:
-    resources:
-      # -- The CPU/memory resource limit for the operator component's kube rbac proxy
-      limits:
-        cpu: 300m
-        memory: 200Mi
-      # -- The CPU/memory resource request for the operator component's kube rbac proxy
-      requests:
-        cpu: 10m
-        memory: 20Mi
+  # Operator metrics endpoint configuration
+  # NOTE: Consider defaulting to secure: false, auth: false for v1 release
+  metrics:
+    # -- Enable HTTPS for the metrics endpoint
+    secure: true
+    # -- Enable authentication and authorization for the metrics endpoint
+    auth: true
+    # -- Directory containing TLS certificates (tls.crt/tls.key). If empty, self-signed certs are generated.
+    certDir: ""
 
 scaler:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
@@ -197,11 +191,11 @@ interceptor:
   topologySpreadConstraints: []
   # interceptor pod resource limits
   resources:
-    # -- The CPU/memory resource limit for the operator component
+    # -- The CPU/memory resource limit for the interceptor component
     limits:
       cpu: 0.5
       memory: 64Mi
-    # -- The CPU/memory resource request for the operator component
+    # -- The CPU/memory resource request for the interceptor component
     requests:
       cpu: 250m
       memory: 20Mi
@@ -246,12 +240,6 @@ images:
   interceptor: ghcr.io/kedacore/http-add-on-interceptor
   # -- Image name for the scaler image component
   scaler: ghcr.io/kedacore/http-add-on-scaler
-  # the kube-rbac-proxy image to use
-  kubeRbacProxy:
-    # -- Image name for the Kube RBAC Proxy image component
-    name: gcr.io/kubebuilder/kube-rbac-proxy
-    # -- Image tag for the Kube RBAC Proxy image component
-    tag: v0.13.0
 
 rbac:
   # -- Install aggregate roles for edit and view
@@ -269,14 +257,6 @@ securityContext:
   # runAsUser: 1000
   # runAsGroup: 1000
   # operator:
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # allowPrivilegeEscalation: false
-    # readOnlyRootFilesystem: true
-    # seccompProfile:
-    #   type: RuntimeDefault
-  # kuberbacproxy:
     # capabilities:
     #   drop:
     #   - ALL

@@ -88,28 +88,6 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-proxy-role
-    app.kubernetes.io/component: operator
-    app.kubernetes.io/name: http-add-on
-    {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-proxy-role
-rules:
-- apiGroups: ["authentication.k8s.io"]
-  resources:
-  - tokenreviews
-  verbs: ["create"]
-- apiGroups: ["authorization.k8s.io"]
-  resources:
-  - subjectaccessreviews
-  verbs: ["create"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
-    keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-metrics-reader
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
@@ -163,6 +141,7 @@ subjects:
 - kind: ServiceAccount
   name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
+{{- if .Values.operator.metrics.auth }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -171,17 +150,18 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-rolebinding
+    name: {{ .Chart.Name }}-auth-delegator
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-proxy-rolebinding
+  name: {{ .Chart.Name }}-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Chart.Name }}-proxy-role
+  name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
   name: {{ .Chart.Name }}
   namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- end }}
