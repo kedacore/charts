@@ -143,7 +143,7 @@ spec:
             protocol: TCP
           env:
             - name: WATCH_NAMESPACE
-              value: {{ .Values.watchNamespace | quote }}
+              value: {{ .Values.watchNamespace | empty | ternary "" (printf "%s,%s" .Values.watchNamespace .Release.Namespace ) | quote }}
             - name: POD_NAME
               valueFrom:
                 fieldRef:
