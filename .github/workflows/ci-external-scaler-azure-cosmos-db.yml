@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v6.0.1
+      uses: actions/checkout@v6.0.2
 
     - name: Helm install
       uses: Azure/setup-helm@v4
@@ -49,7 +49,7 @@ jobs:
           kindImage: kindest/node:v1.19.16@sha256:dec41184d10deca01a08ea548197b77dc99eeacb56ff3e371af3193c86ca99f4
     steps:
     - name: Check out code
-      uses: actions/checkout@v6.0.1
+      uses: actions/checkout@v6.0.2
 
     - name: Helm install
       uses: Azure/setup-helm@v4
