@@ -213,6 +213,8 @@ interceptor:
     cert_secret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
+    # -- Whether to skip TLS verification for the interceptor proxy TLS server
+    skip_verify: false
 
   # configuration of pdb for the interceptor
   pdb:
