@@ -83,6 +83,8 @@ spec:
           value: "{{ .Values.interceptor.tls.key_path }}"
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
+        - name: KEDA_HTTP_PROXY_TLS_SKIP_VERIFY
+          value: "{{ .Values.interceptor.tls.skip_verify }}"
         {{- end }}
         {{- if .Values.profiling.interceptor.enabled }}
         - name: PROFILING_BIND_ADDRESS

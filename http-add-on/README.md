@@ -192,6 +192,7 @@ their default values.
 | `interceptor.tls.enabled` | bool | `false` | Whether a TLS server should be started on the interceptor proxy |
 | `interceptor.tls.key_path` | string | `"/certs/tls.key"` | Mount path of the certificate key file to use with the interceptor proxy TLS server |
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
+| `interceptor.tls.skip_verify` | bool | `false` | Whether to skip TLS verification for the interceptor proxy TLS server |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
