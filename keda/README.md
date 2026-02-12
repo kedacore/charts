@@ -67,7 +67,7 @@ their default values.
 | `certificates.certManager.duration` | string | `"8760h0m0s"` | Certificate duration |
 | `certificates.certManager.enabled` | bool | `false` | Enables Cert-manager for certificate management |
 | `certificates.certManager.generateCA` | bool | `true` | Generates a self-signed CA with Cert-manager. If generateCA is false, the secret with the CA has to be annotated with `cert-manager.io/allow-direct-injection: "true"` |
-| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. If issuer.generate is false, then issuer.group, issuer.kind and issuer.name are required |
+| `certificates.certManager.issuer` | object | `{"generate":true,"group":"cert-manager.io","kind":"ClusterIssuer","name":"foo-org-ca"}` | Reference to custom Issuer. |
 | `certificates.certManager.issuer.generate` | bool | `true` | Generates an Issuer resource with Cert-manager |
 | `certificates.certManager.issuer.group` | string | `"cert-manager.io"` | Custom Issuer group. Required when generate: false |
 | `certificates.certManager.issuer.kind` | string | `"ClusterIssuer"` | Custom Issuer kind. Required when generate: false |
@@ -184,6 +184,7 @@ their default values.
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
+| `metricsServer.registerAPIService` | bool | `true` | Register the Metrics API Server as External Metrics Provider / APIService. Useful when you already have an API registered for external metrics and want to do a smooth transition. |
 | `metricsServer.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA metric server. While you can run more replicas of our metric server, only one instance will used and serve traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `metricsServer.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `metricsServer.useHostNetwork` | bool | `false` | Enable metric server to use host network |
