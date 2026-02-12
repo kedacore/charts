@@ -201,7 +201,7 @@ their default values.
 | `serviceAccount.metricServer.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.metricServer.create` | bool | `true` | Specifies whether a service account should be created |
-| `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. |
+| `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. If set to empty string `""`, it will fall back to `serviceAccount.operator.name` (default: `keda-operator`). |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
