@@ -170,7 +170,7 @@ interceptor:
   # -- How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request
   responseHeaderTimeout: 500ms
   # -- How often (in milliseconds) the interceptor does a full refresh of its endpoints cache. The interceptor will also use Kubernetes events to stay up-to-date with the endpoints cache changes. This duration is the maximum time it will take to see changes to the endpoints.
-  endpointsCachePollingIntervalMS: 250
+  endpointsCachePollingIntervalMS: 1000
   # -- Whether or not the interceptor should force requests to use HTTP/2
   forceHTTP2: false
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
