@@ -1,3 +1,4 @@
+{{- if .Values.metricsServer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -48,3 +49,4 @@ spec:
   {{- end }}
   selector:
     app: {{ .Values.operator.name }}-metrics-apiserver
+{{- end }}
