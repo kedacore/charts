@@ -68,6 +68,8 @@ spec:
           value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS
           value: "{{ .Values.interceptor.maxIdleConns }}"
+        - name: KEDA_HTTP_MAX_IDLE_CONNS_PER_HOST
+          value: "{{ .Values.interceptor.maxIdleConnsPerHost }}"
         - name: KEDA_HTTP_IDLE_CONN_TIMEOUT
           value: "{{ .Values.interceptor.idleConnTimeout }}"
         - name: KEDA_HTTP_TLS_HANDSHAKE_TIMEOUT
