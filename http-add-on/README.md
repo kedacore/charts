@@ -169,7 +169,8 @@ their default values.
 | `interceptor.idleConnTimeout` | string | `"90s"` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
-| `interceptor.maxIdleConns` | int | `100` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
+| `interceptor.maxIdleConns` | int | `1000` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
+| `interceptor.maxIdleConnsPerHost` | int | `200` | The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool |
 | `interceptor.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `interceptor.pdb.enabled` | bool | `true` | Whether to install the `PodDisruptionBudget` for the interceptor |
 | `interceptor.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the interceptor |

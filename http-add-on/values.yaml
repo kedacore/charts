@@ -174,7 +174,9 @@ interceptor:
   # -- Whether or not the interceptor should force requests to use HTTP/2
   forceHTTP2: false
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
-  maxIdleConns: 100
+  maxIdleConns: 1000
+  # -- The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool
+  maxIdleConnsPerHost: 200
   # -- The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool.
   idleConnTimeout: 90s
   # -- The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout.
