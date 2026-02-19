@@ -1,4 +1,4 @@
-{{- if or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable)  .Values.podDisruptionBudget.metricServer }}
+{{- if and .Values.metricsServer.enabled (or (or .Values.podDisruptionBudget.minAvailable .Values.podDisruptionBudget.maxUnavailable) .Values.podDisruptionBudget.metricServer) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
