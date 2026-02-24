@@ -148,6 +148,8 @@ operator:
     successThreshold: 1
 
 metricsServer:
+  # -- Enable KEDA metrics server and external metrics API resources.
+  enabled: true
   # -- ReplicaSets for this Deployment you want to retain (Default: 10)
   revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA metric server.
