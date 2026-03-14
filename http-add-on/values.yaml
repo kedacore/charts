@@ -139,6 +139,8 @@ interceptor:
     service: interceptor-admin
     # -- The port for the interceptor's admin server to run on
     port: 9090
+    # -- The appProtocol for the interceptor's admin service port
+    appProtocol: ""
   # configurable values for the interceptor's proxy
   # service. the proxy service is the publicly accessible
   # HTTP interface that production requests go to
@@ -216,6 +218,8 @@ interceptor:
     certSecret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
+    # -- The appProtocol for the interceptor's TLS proxy service port
+    appProtocol: ""
     # -- Whether to skip TLS verification for the interceptor proxy TLS server
     # (Deprecated: `skip_verify` is still supported for backward compatibility)
     skipVerify: false

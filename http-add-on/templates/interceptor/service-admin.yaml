@@ -12,6 +12,9 @@ spec:
   - name: admin
     port: {{ default 9091 .Values.interceptor.admin.port }}
     targetPort: admin
+    {{- if .Values.interceptor.admin.appProtocol }}
+    appProtocol: {{ .Values.interceptor.admin.appProtocol }}
+    {{- end }}
   selector:
     app.kubernetes.io/component: interceptor
     app.kubernetes.io/name: http-add-on
