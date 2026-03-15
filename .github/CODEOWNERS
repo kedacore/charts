@@ -1,10 +1,10 @@
-# General owners
-*                                       @kedacore/keda-helm-maintainers
+# Global owners
+* @kedacore/keda-helm-maintainers
 
 # Core owners
-keda/*                                  @kedacore/keda-helm-maintainers @kedacore/keda-core-maintainers
-.github/workflows/ci-core.yml           @kedacore/keda-helm-maintainers @kedacore/keda-core-maintainers
+/keda/                                  @kedacore/keda-helm-maintainers @kedacore/keda-core-maintainers
+/.github/workflows/ci-core.yml          @kedacore/keda-helm-maintainers @kedacore/keda-core-maintainers
 
 # HTTP owners
-http-add-on/*                           @kedacore/keda-helm-maintainers @kedacore/keda-http-maintainers
-.github/workflows/ci-http-add-on.yml    @kedacore/keda-helm-maintainers @kedacore/keda-core-maintainers
+/http-add-on/                           @kedacore/keda-helm-maintainers @kedacore/keda-http-maintainers
+/.github/workflows/ci-http-add-on.yml   @kedacore/keda-helm-maintainers @kedacore/keda-http-maintainers
