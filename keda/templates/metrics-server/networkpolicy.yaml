@@ -1,4 +1,4 @@
-{{- if and .Values.networkPolicy.enabled (eq .Values.networkPolicy.flavor "kubernetes") }}
+{{- if and .Values.metricsServer.enabled .Values.networkPolicy.enabled (eq .Values.networkPolicy.flavor "kubernetes") }}
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:

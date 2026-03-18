@@ -184,6 +184,7 @@ their default values.
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
+| `metricsServer.enabled` | bool | `true` | Enable KEDA metrics server and external metrics API resources. |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
