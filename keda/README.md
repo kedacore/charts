@@ -76,6 +76,7 @@ their default values.
 | `certificates.certManager.secretTemplate` | object | `{}` | Add labels/annotations to secrets created by Certificate resources [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources) |
 | `certificates.mountPath` | string | `"/certs"` | Path where KEDA TLS certificates are mounted |
 | `certificates.secretName` | string | `"kedaorg-certs"` | Secret name to be mounted with KEDA TLS certificates |
+| `certificates.operator.apiServicePatching.enabled` | bool | `true` | Enable APIService patching by KEDA operator. Controls whether KEDA operator will inject the self-generated TLS certificate into the APIService used by KEDA Metrics API Server |
 | `clusterDomain` | string | `"cluster.local"` | Kubernetes cluster domain |
 | `clusterName` | string | `"kubernetes-default"` | Kubernetes cluster name. Used in features such as emitting CloudEvents |
 | `crds.additionalAnnotations` | object | `{}` | Custom annotations specifically for CRDs |
