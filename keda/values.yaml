@@ -146,6 +146,10 @@ operator:
     timeoutSeconds: 1
     failureThreshold: 3
     successThreshold: 1
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
+  nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
+  tolerations: []
 
 metricsServer:
   # -- Enable KEDA metrics server and external metrics API resources.
@@ -192,6 +196,10 @@ metricsServer:
     timeoutSeconds: 1
     failureThreshold: 3
     successThreshold: 1
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
+  nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
+  tolerations: []
 
 webhooks:
   # It also used to enable or disable webhook patching in the operator
@@ -240,6 +248,11 @@ webhooks:
 
   # -- [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks
   failurePolicy: Ignore
+
+  # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
+  nodeSelector: {}
+  # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
+  tolerations: []
 
 upgradeStrategy:
   # -- Capability to configure [Deployment upgrade strategy] for operator
@@ -551,6 +564,7 @@ resources:
 nodeSelector: {}
 # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
 tolerations: []
+
 # -- HostAliases for pod networking ([docs](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/))
 hostAliases: []
 

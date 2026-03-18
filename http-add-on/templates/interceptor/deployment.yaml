@@ -48,8 +48,6 @@ spec:
         imagePullPolicy: '{{ .Values.interceptor.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-interceptor"
         env:
-        - name: KEDA_HTTP_CURRENT_NAMESPACE
-          value: "{{ .Release.Namespace }}"
         - name: KEDA_HTTP_PROXY_PORT
           value: "{{ .Values.interceptor.proxy.port }}"
         - name: KEDA_HTTP_ADMIN_PORT
@@ -62,12 +60,12 @@ spec:
           value: "{{ .Values.interceptor.responseHeaderTimeout }}"
         - name: KEDA_CONDITION_WAIT_TIMEOUT
           value: "{{ .Values.interceptor.replicas.waitTimeout }}"
-        - name: KEDA_HTTP_ENDPOINTS_CACHE_POLLING_INTERVAL_MS
-          value: "{{ .Values.interceptor.endpointsCachePollingIntervalMS }}"
         - name: KEDA_HTTP_FORCE_HTTP2
           value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS
           value: "{{ .Values.interceptor.maxIdleConns }}"
+        - name: KEDA_HTTP_MAX_IDLE_CONNS_PER_HOST
+          value: "{{ .Values.interceptor.maxIdleConnsPerHost }}"
         - name: KEDA_HTTP_IDLE_CONN_TIMEOUT
           value: "{{ .Values.interceptor.idleConnTimeout }}"
         - name: KEDA_HTTP_TLS_HANDSHAKE_TIMEOUT
