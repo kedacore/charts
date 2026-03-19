@@ -206,15 +206,19 @@ interceptor:
     # -- Whether a TLS server should be started on the interceptor proxy
     enabled: false
     # -- Mount path of the certificate file to use with the interceptor proxy TLS server
-    cert_path: /certs/tls.crt
+    # (Deprecated: `cert_path` is still supported for backward compatibility)
+    certPath: /certs/tls.crt
     # -- Mount path of the certificate key file to use with the interceptor proxy TLS server
-    key_path: /certs/tls.key
+    # (Deprecated: `key_path` is still supported for backward compatibility)
+    keyPath: /certs/tls.key
     # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server
-    cert_secret: keda-tls-certs
+    # (Deprecated: `cert_secret` is still supported for backward compatibility)
+    certSecret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
     # -- Whether to skip TLS verification for the interceptor proxy TLS server
-    skip_verify: false
+    # (Deprecated: `skip_verify` is still supported for backward compatibility)
+    skipVerify: false
     # -- Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version.
     minVersion: ""
     # -- Maximum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard maximum version.
