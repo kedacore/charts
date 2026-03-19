@@ -215,6 +215,14 @@ interceptor:
     port: 8443
     # -- Whether to skip TLS verification for the interceptor proxy TLS server
     skip_verify: false
+    # -- Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version.
+    minVersion: ""
+    # -- Maximum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard maximum version.
+    maxVersion: ""
+    # -- Comma-separated list of supported cipher suites for the interceptor proxy TLS server. Defaults to Go's standard cipher suites.
+    cipherSuites: ""
+    # -- Comma-separated list of supported curve preferences for the interceptor proxy TLS server. Defaults to Go's standard curve selections.
+    curvePreferences: ""
 
   # configuration of pdb for the interceptor
   pdb:

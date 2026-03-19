@@ -83,6 +83,22 @@ spec:
           value: "{{ .Values.interceptor.tls.port }}"
         - name: KEDA_HTTP_PROXY_TLS_SKIP_VERIFY
           value: "{{ .Values.interceptor.tls.skip_verify }}"
+        {{- if .Values.interceptor.tls.minVersion }}
+        - name: KEDA_HTTP_PROXY_TLS_MIN_VERSION
+          value: "{{ .Values.interceptor.tls.minVersion }}"
+        {{- end }}
+        {{- if .Values.interceptor.tls.maxVersion }}
+        - name: KEDA_HTTP_PROXY_TLS_MAX_VERSION
+          value: "{{ .Values.interceptor.tls.maxVersion }}"
+        {{- end }}
+        {{- if .Values.interceptor.tls.cipherSuites }}
+        - name: KEDA_HTTP_PROXY_TLS_CIPHER_SUITES
+          value: "{{ .Values.interceptor.tls.cipherSuites }}"
+        {{- end }}
+        {{- if .Values.interceptor.tls.curvePreferences }}
+        - name: KEDA_HTTP_PROXY_TLS_CURVE_PREFERENCES
+          value: "{{ .Values.interceptor.tls.curvePreferences }}"
+        {{- end }}
         {{- end }}
         {{- if .Values.profiling.interceptor.enabled }}
         - name: PROFILING_BIND_ADDRESS

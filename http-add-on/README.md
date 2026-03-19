@@ -189,8 +189,12 @@ their default values.
 | `interceptor.tcpConnectTimeout` | string | `"500ms"` | How long the interceptor waits to establish TCP connections with backends before failing a request. |
 | `interceptor.tls.cert_path` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server |
 | `interceptor.tls.cert_secret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server |
+| `interceptor.tls.cipherSuites` | string | `""` | Comma-separated list of supported cipher suites for the interceptor proxy TLS server. Defaults to Go's standard cipher suites. |
+| `interceptor.tls.curvePreferences` | string | `""` | Comma-separated list of supported curve preferences for the interceptor proxy TLS server. Defaults to Go's standard curve selections. |
 | `interceptor.tls.enabled` | bool | `false` | Whether a TLS server should be started on the interceptor proxy |
 | `interceptor.tls.key_path` | string | `"/certs/tls.key"` | Mount path of the certificate key file to use with the interceptor proxy TLS server |
+| `interceptor.tls.maxVersion` | string | `""` | Maximum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard maximum version. |
+| `interceptor.tls.minVersion` | string | `""` | Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version. |
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
 | `interceptor.tls.skip_verify` | bool | `false` | Whether to skip TLS verification for the interceptor proxy TLS server |
 | `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
