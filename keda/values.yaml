@@ -96,6 +96,9 @@ operator:
   # --Disable response compression for k8s restAPI in client-go.
   # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
   disableCompression: true
+  # -- Leader election ID (Lease resource name) for the controller manager. Defaults to operator.keda.sh.
+  # Override to allow multiple independent KEDA operator deployments in the same namespace.
+  # leaderElectionID: "operator.keda.sh"
   # -- DNS config for KEDA operator pod
   dnsConfig: {}
   # use ClusterFirstWithHostNet if `useHostNetwork: true` https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
