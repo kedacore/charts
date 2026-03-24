@@ -76,13 +76,13 @@ spec:
         - name: KEDA_HTTP_PROXY_TLS_ENABLED
           value: "true"
         - name: KEDA_HTTP_PROXY_TLS_CERT_PATH
-          value: "{{ .Values.interceptor.tls.cert_path }}"
+          value: "{{ if hasKey .Values.interceptor.tls "cert_path" }}{{ .Values.interceptor.tls.cert_path }}{{ else }}{{ .Values.interceptor.tls.certPath }}{{ end }}"
         - name: KEDA_HTTP_PROXY_TLS_KEY_PATH
-          value: "{{ .Values.interceptor.tls.key_path }}"
+          value: "{{ if hasKey .Values.interceptor.tls "key_path" }}{{ .Values.interceptor.tls.key_path }}{{ else }}{{ .Values.interceptor.tls.keyPath }}{{ end }}"
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
         - name: KEDA_HTTP_PROXY_TLS_SKIP_VERIFY
-          value: "{{ .Values.interceptor.tls.skip_verify }}"
+          value: "{{ if hasKey .Values.interceptor.tls "skip_verify" }}{{ .Values.interceptor.tls.skip_verify }}{{ else }}{{ .Values.interceptor.tls.skipVerify }}{{ end }}"
         {{- if .Values.interceptor.tls.minVersion }}
         - name: KEDA_HTTP_PROXY_TLS_MIN_VERSION
           value: "{{ .Values.interceptor.tls.minVersion }}"
@@ -143,7 +143,7 @@ spec:
       volumes:
         - name: certs
           secret:
-            secretName: {{ .Values.interceptor.tls.cert_secret }}
+            secretName: {{ if hasKey .Values.interceptor.tls "cert_secret" }}{{ .Values.interceptor.tls.cert_secret }}{{ else }}{{ .Values.interceptor.tls.certSecret }}{{ end }}
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
