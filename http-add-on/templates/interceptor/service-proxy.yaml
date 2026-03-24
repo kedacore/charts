@@ -19,8 +19,8 @@ spec:
   - name: proxy-tls
     port: {{ default 8443 .Values.interceptor.tls.port }}
     targetPort: proxy-tls
-    {{- if .Values.interceptor.proxy.appProtocol }}
-    appProtocol: {{ .Values.interceptor.proxy.appProtocol }}
+    {{- with (.Values.interceptor.tls.appProtocol | default .Values.interceptor.proxy.appProtocol) }}
+    appProtocol: {{ . }}
     {{- end }}
   {{- end }}
   selector:

@@ -139,6 +139,8 @@ interceptor:
     service: interceptor-admin
     # -- The port for the interceptor's admin server to run on
     port: 9090
+    # -- The appProtocol for the interceptor's admin service port
+    appProtocol: ""
   # configurable values for the interceptor's proxy
   # service. the proxy service is the publicly accessible
   # HTTP interface that production requests go to
@@ -147,7 +149,7 @@ interceptor:
     service: interceptor-proxy
     # -- The port on which the interceptor's proxy service will listen for live HTTP traffic
     port: 8080
-    # -- The appProtocol for the interceptor's proxy service ports
+    # -- The appProtocol for the interceptor's proxy service port
     appProtocol: ""
   replicas:
     # -- The minimum number of interceptor replicas that should ever be running
@@ -205,19 +207,17 @@ interceptor:
   tls:
     # -- Whether a TLS server should be started on the interceptor proxy
     enabled: false
-    # -- Mount path of the certificate file to use with the interceptor proxy TLS server
-    # (Deprecated: `cert_path` is still supported for backward compatibility)
+    # -- Mount path of the certificate file to use with the interceptor proxy TLS server. Also accepts the deprecated `cert_path`.
     certPath: /certs/tls.crt
-    # -- Mount path of the certificate key file to use with the interceptor proxy TLS server
-    # (Deprecated: `key_path` is still supported for backward compatibility)
+    # -- Mount path of the certificate key file to use with the interceptor proxy TLS server. Also accepts the deprecated `key_path`.
     keyPath: /certs/tls.key
-    # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server
-    # (Deprecated: `cert_secret` is still supported for backward compatibility)
+    # -- Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server. Also accepts the deprecated `cert_secret`.
     certSecret: keda-tls-certs
     # -- Port that the interceptor proxy TLS server should be started on
     port: 8443
-    # -- Whether to skip TLS verification for the interceptor proxy TLS server
-    # (Deprecated: `skip_verify` is still supported for backward compatibility)
+    # -- The appProtocol for the interceptor's TLS proxy service port
+    appProtocol: ""
+    # -- Whether to skip TLS verification for the interceptor proxy TLS server. Also accepts the deprecated `skip_verify`.
     skipVerify: false
     # -- Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version.
     minVersion: ""
