@@ -2,7 +2,7 @@
 additionalLabels: {}
 
 crds:
-  # -- Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+  # -- Whether to install the `HTTPScaledObject` and `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
 logging:
