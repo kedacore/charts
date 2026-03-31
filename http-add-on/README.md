@@ -85,7 +85,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `additionalLabels` | object | `{}` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
-| `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` [`CustomResourceDefinition`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
+| `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` and `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
 | `images.interceptor` | string | `"ghcr.io/kedacore/http-add-on-interceptor"` | Image name for the interceptor image component |
 | `images.operator` | string | `"ghcr.io/kedacore/http-add-on-operator"` | Image name for the operator image component |
 | `images.scaler` | string | `"ghcr.io/kedacore/http-add-on-scaler"` | Image name for the scaler image component |

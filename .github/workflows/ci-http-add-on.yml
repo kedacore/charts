@@ -143,6 +143,13 @@ jobs:
       - name: Get all CRDs
         run: kubectl get crds
 
+      - name: Get InterceptorRoute CRD
+        run: kubectl get crds/interceptorroutes.http.keda.sh
+
+      - name: Describe InterceptorRoute CRD
+        run: kubectl describe crds/interceptorroutes.http.keda.sh
+
+      # TODO: Drop `HTTPScaledObject` specific steps after crd is DEPRECATED
       - name: Get HTTPScaledObject CRD
         run: kubectl get crds/httpscaledobjects.http.keda.sh
 
