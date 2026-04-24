@@ -46,7 +46,7 @@ We are a Cloud Native Computing Foundation (CNCF) graduated project.
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
-helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.13.0
+helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.14.0
 ```
 
 ## Introduction
@@ -163,12 +163,9 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
-| `interceptor.expectContinueTimeout` | string | `"1s"` | Special handling for responses with "Expect: 100-continue" response headers. see https://pkg.go.dev/net/http#Transport under the 'ExpectContinueTimeout' field for more details |
 | `interceptor.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
 | `interceptor.forceHTTP2` | bool | `false` | Whether or not the interceptor should force requests to use HTTP/2 |
-| `interceptor.idleConnTimeout` | string | `"90s"` | The timeout after which any idle connection is closed and removed from the interceptor's in-memory connection pool. |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
-| `interceptor.keepAlive` | string | `"1s"` | The interceptor's connection keep alive timeout |
 | `interceptor.maxIdleConns` | int | `1000` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
 | `interceptor.maxIdleConnsPerHost` | int | `200` | The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool |
 | `interceptor.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
@@ -180,14 +177,16 @@ their default values.
 | `interceptor.proxy.port` | int | `8080` | The port on which the interceptor's proxy service will listen for live HTTP traffic |
 | `interceptor.proxy.service` | string | `"interceptor-proxy"` | The name of the Kubernetes `Service` for the interceptor's proxy service. This is the service that accepts live HTTP traffic. |
 | `interceptor.pullPolicy` | string | `"Always"` | The image pull policy for the interceptor component |
+| `interceptor.readinessTimeout` | string | `""` | Time to wait for the backend to become ready, e.g. scale from zero. Replaces the deprecated `interceptor.replicas.waitTimeout` fallback. When unset, uses the code default (disabled). |
 | `interceptor.replicas.max` | int | `50` | The maximum number of interceptor replicas that should ever be running |
 | `interceptor.replicas.min` | int | `3` | The minimum number of interceptor replicas that should ever be running |
-| `interceptor.replicas.waitTimeout` | string | `"20s"` | The maximum time the interceptor should wait for an HTTP request to reach a backend before it is considered a failure |
+| `interceptor.replicas.waitTimeout` | string | `""` | Deprecated fallback for `interceptor.readinessTimeout`. Supported for backward compatibility during upgrades; use `interceptor.readinessTimeout` instead. |
+| `interceptor.requestTimeout` | string | `""` | Total request lifecycle deadline. When unset, uses the code default (disabled). |
 | `interceptor.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the interceptor component |
 | `interceptor.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the interceptor component |
-| `interceptor.responseHeaderTimeout` | string | `"500ms"` | How long the interceptor will wait between forwarding a request to a backend and receiving response headers back before failing the request |
+| `interceptor.responseHeaderTimeout` | string | `""` | Time to wait for response headers from the backend. When unset, uses the code default (300s). |
 | `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
-| `interceptor.tcpConnectTimeout` | string | `"500ms"` | How long the interceptor waits to establish TCP connections with backends before failing a request. |
+| `interceptor.tcpConnectTimeout` | string | `""` | Per-attempt TCP dial timeout. When unset, uses the code default (500ms). |
 | `interceptor.tls.appProtocol` | string | `""` | The appProtocol for the interceptor's TLS proxy service port |
 | `interceptor.tls.certPath` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server. Also accepts the deprecated `cert_path`. |
 | `interceptor.tls.certSecret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server. Also accepts the deprecated `cert_secret`. |
@@ -199,7 +198,6 @@ their default values.
 | `interceptor.tls.minVersion` | string | `""` | Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version. |
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
 | `interceptor.tls.skipVerify` | bool | `false` | Whether to skip TLS verification for the interceptor proxy TLS server. Also accepts the deprecated `skip_verify`. |
-| `interceptor.tlsHandshakeTimeout` | string | `"10s"` | The maximum amount of time the interceptor will wait for a TLS handshake. Set to zero to indicate no timeout. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 

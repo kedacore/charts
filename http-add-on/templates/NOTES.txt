@@ -1,0 +1,16 @@
+{{/* TODO(v1): remove all deprecation warnings below */}}
+{{- if .Values.interceptor.replicas.waitTimeout }}
+WARNING: interceptor.replicas.waitTimeout is deprecated, use interceptor.readinessTimeout instead.
+{{- end }}
+{{- if .Values.interceptor.keepAlive }}
+WARNING: interceptor.keepAlive has been removed. TCP keepalive now uses Go's default (15s).
+{{- end }}
+{{- if .Values.interceptor.idleConnTimeout }}
+WARNING: interceptor.idleConnTimeout has been removed. Uses Go's default (90s).
+{{- end }}
+{{- if .Values.interceptor.tlsHandshakeTimeout }}
+WARNING: interceptor.tlsHandshakeTimeout has been removed. Uses Go's default (10s).
+{{- end }}
+{{- if .Values.interceptor.expectContinueTimeout }}
+WARNING: interceptor.expectContinueTimeout has been removed. Uses Go's default (1s).
+{{- end }}

@@ -52,26 +52,29 @@ spec:
           value: "{{ .Values.interceptor.proxy.port }}"
         - name: KEDA_HTTP_ADMIN_PORT
           value: "{{ .Values.interceptor.admin.port }}"
+        {{- with .Values.interceptor.requestTimeout }}
+        - name: KEDA_HTTP_REQUEST_TIMEOUT
+          value: "{{ . }}"
+        {{- end }}
+        {{- with .Values.interceptor.responseHeaderTimeout }}
+        - name: KEDA_HTTP_RESPONSE_HEADER_TIMEOUT
+          value: "{{ . }}"
+        {{- end }}
+        {{/* TODO(v1): remove waitTimeout fallback */}}
+        {{- with (.Values.interceptor.readinessTimeout | default .Values.interceptor.replicas.waitTimeout) }}
+        - name: KEDA_HTTP_READINESS_TIMEOUT
+          value: "{{ . }}"
+        {{- end }}
+        {{- with .Values.interceptor.tcpConnectTimeout }}
         - name: KEDA_HTTP_CONNECT_TIMEOUT
-          value: "{{ .Values.interceptor.tcpConnectTimeout }}"
-        - name: KEDA_HTTP_KEEP_ALIVE
-          value: "{{ .Values.interceptor.keepAlive }}"
-        - name: KEDA_RESPONSE_HEADER_TIMEOUT
-          value: "{{ .Values.interceptor.responseHeaderTimeout }}"
-        - name: KEDA_CONDITION_WAIT_TIMEOUT
-          value: "{{ .Values.interceptor.replicas.waitTimeout }}"
+          value: "{{ . }}"
+        {{- end }}
         - name: KEDA_HTTP_FORCE_HTTP2
           value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS
           value: "{{ .Values.interceptor.maxIdleConns }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS_PER_HOST
           value: "{{ .Values.interceptor.maxIdleConnsPerHost }}"
-        - name: KEDA_HTTP_IDLE_CONN_TIMEOUT
-          value: "{{ .Values.interceptor.idleConnTimeout }}"
-        - name: KEDA_HTTP_TLS_HANDSHAKE_TIMEOUT
-          value: "{{ .Values.interceptor.tlsHandshakeTimeout }}"
-        - name: KEDA_HTTP_EXPECT_CONTINUE_TIMEOUT
-          value: "{{ .Values.interceptor.expectContinueTimeout }}"
         {{- if .Values.interceptor.tls.enabled }}
         - name: KEDA_HTTP_PROXY_TLS_ENABLED
           value: "true"
