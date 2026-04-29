@@ -363,31 +363,37 @@ spec:
                 properties:
                   fallback:
                     description: |-
-                      Fallback service to route to when the target is scaling from zero
-                      and the wait timeout expires.
+                      Fallback target to route to when the primary backend does not become
+                      ready within the readiness timeout.
                     properties:
-                      port:
-                        description: Port number on the Service. Mutually exclusive
-                          with portName.
-                        format: int32
-                        maximum: 65535
-                        minimum: 1
-                        type: integer
-                      portName:
-                        description: Named port on the Service. Mutually exclusive
-                          with port.
-                        minLength: 1
-                        type: string
                       service:
-                        description: Name of the Kubernetes Service.
-                        minLength: 1
-                        type: string
+                        description: Kubernetes Service to use as the fallback target.
+                        properties:
+                          name:
+                            description: Name of the Kubernetes Service.
+                            minLength: 1
+                            type: string
+                          port:
+                            description: Port number on the Service. Mutually exclusive
+                              with portName.
+                            format: int32
+                            maximum: 65535
+                            minimum: 1
+                            type: integer
+                          portName:
+                            description: Named port on the Service. Mutually exclusive
+                              with port.
+                            minLength: 1
+                            type: string
+                        required:
+                        - name
+                        type: object
+                        x-kubernetes-validations:
+                        - message: exactly one of 'port' or 'portName' must be set
+                          rule: has(self.port) != has(self.portName)
                     required:
                     - service
                     type: object
-                    x-kubernetes-validations:
-                    - message: exactly one of 'port' or 'portName' must be set
-                      rule: has(self.port) != has(self.portName)
                 required:
                 - fallback
                 type: object
@@ -461,11 +467,12 @@ spec:
                     description: Scale based on concurrent request count.
                     properties:
                       targetValue:
-                        default: 100
                         description: Target concurrent request count per replica.
                         format: int32
                         minimum: 1
                         type: integer
+                    required:
+                    - targetValue
                     type: object
                   requestRate:
                     description: Scale based on request rate.
@@ -475,7 +482,6 @@ spec:
                         description: Bucket size for rate calculation within the window.
                         type: string
                       targetValue:
-                        default: 100
                         description: Target request rate per replica.
                         format: int32
                         minimum: 1
@@ -485,6 +491,8 @@ spec:
                         description: Sliding time window over which the request rate
                           is calculated.
                         type: string
+                    required:
+                    - targetValue
                     type: object
                 type: object
                 x-kubernetes-validations:
@@ -516,6 +524,31 @@ spec:
                 x-kubernetes-validations:
                 - message: exactly one of 'port' or 'portName' must be set
                   rule: has(self.port) != has(self.portName)
+              timeouts:
+                description: Timeout configuration for request handling.
+                properties:
+                  readiness:
+                    description: |-
+                      Time to wait for the backend to become ready (e.g. scale-from-zero).
+                      Unset: uses the global KEDA_HTTP_READINESS_TIMEOUT (default: disabled).
+                      Set to "0s" to disable the dedicated readiness deadline so the full
+                      request budget is available for cold starts. When a fallback service
+                      is configured and this is "0s", a 30s default is applied.
+                    type: string
+                  request:
+                    description: |-
+                      Total time allowed for the entire request lifecycle.
+                      Unset: uses the global KEDA_HTTP_REQUEST_TIMEOUT (default: disabled).
+                      Set to "0s" to disable the request deadline.
+                    type: string
+                  responseHeader:
+                    description: |-
+                      Max time to wait for the response headers from the backend after the
+                      request has been fully sent. Does not include cold-start wait time.
+                      Unset: uses the global KEDA_HTTP_RESPONSE_HEADER_TIMEOUT (default: 300s).
+                      Set to "0s" to disable the response header deadline.
+                    type: string
+                type: object
             required:
             - scalingMetric
             - target
