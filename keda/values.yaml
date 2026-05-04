@@ -532,6 +532,11 @@ service:
   portHttpsTarget: 6443
   # -- Annotations to add the KEDA Metric Server service
   annotations: {}
+  # -- The minimum TLS version to use when KEDA components provide a TLS-enabled service.
+  minTlsVersion: "TLS13"
+  # -- The list of cipher suites to use when KEDA components provide a TLS-enabled service. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure.
+  tlsCipherList: ""
+
 
 # We provides the default values that we describe in our docs:
 # https://keda.sh/docs/latest/operate/cluster/
@@ -607,6 +612,8 @@ http:
     enabled: true
   # -- The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them)
   minTlsVersion: TLS12
+  # -- The list of cipher suites to use when making HTTP over TLS connections. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure.
+  tlsCipherList: ""
 
 ## This setting lets you enable profiling for all of the components of KEDA and in the specific port you choose
 ## This can be useful when trying to investigate errors like memory leaks or CPU or even look at goroutines to understand better

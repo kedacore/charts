@@ -164,6 +164,12 @@ spec:
               value: {{ .Values.http.timeout | quote }}
             - name: KEDA_HTTP_MIN_TLS_VERSION
               value: {{ .Values.http.minTlsVersion }}
+            - name: KEDA_HTTP_TLS_CIPHER_LIST
+              value: {{ .Values.http.tlsCipherList | quote }}
+            - name: KEDA_SERVICE_MIN_TLS_VERSION
+              value: {{ .Values.service.minTlsVersion }}
+            - name: KEDA_SERVICE_TLS_CIPHER_LIST
+              value: {{ .Values.service.tlsCipherList | quote }}
             {{- if ( not .Values.http.keepAlive.enabled ) }}
             - name: KEDA_HTTP_DISABLE_KEEP_ALIVE
               value: "true"
