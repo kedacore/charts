@@ -20,6 +20,31 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  verify-crds:
+    name: Verify CRDs are up-to-date
+    runs-on: ubuntu-slim
+    steps:
+      - name: Check out code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v4
+
+      - name: Verify InterceptorRoute CRD matches source
+        run: |
+          APP_VERSION=$(yq '.appVersion' http-add-on/Chart.yaml)
+          echo "Checking CRDs against http-add-on v${APP_VERSION}"
+
+          curl -sSfL "https://raw.githubusercontent.com/kedacore/http-add-on/v${APP_VERSION}/config/crd/bases/http.keda.sh_interceptorroutes.yaml" \
+            -o /tmp/source-interceptorroutes.yaml
+
+          # Strip Helm template guards
+          grep -v '^{{' http-add-on/templates/crds/crd-interceptorroutes.yaml > /tmp/chart-interceptorroutes.yaml
+
+          if diff -u /tmp/source-interceptorroutes.yaml /tmp/chart-interceptorroutes.yaml; then
+            echo "InterceptorRoute CRD is up-to-date"
+          else
+            echo "::error::InterceptorRoute CRD is out of sync"
+            exit 1
+          fi
+
   lint-helm-3-x:
     name: Lint Helm Chart
     runs-on: ubuntu-latest
