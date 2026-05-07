@@ -64,9 +64,9 @@ spec:
         imagePullPolicy: '{{ .Values.operator.pullPolicy | default "Always" }}'
         name: "{{ .Chart.Name }}-operator"
         env:
-        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
+        - name: KEDA_HTTP_OPERATOR_EXTERNAL_SCALER_SERVICE
           value: "{{ .Chart.Name }}-{{ .Values.scaler.service }}"
-        - name: KEDAHTTP_OPERATOR_EXTERNAL_SCALER_PORT
+        - name: KEDA_HTTP_OPERATOR_EXTERNAL_SCALER_PORT
           value: "{{ default 9090 .Values.scaler.grpcPort }}"
         - name: KEDA_HTTP_OPERATOR_NAMESPACE
           value: "{{ .Release.Namespace }}"
