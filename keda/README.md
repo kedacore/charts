@@ -92,6 +92,7 @@ their default values.
 | `hostAliases` | list | `[]` | HostAliases for pod networking ([docs](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/)) |
 | `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
 | `http.minTlsVersion` | string | `"TLS12"` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) |
+| `http.tlsCipherList` | string | `""` | The list of cipher suites to use when making HTTP over TLS connections. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
 | `image.pullPolicy` | string | `"Always"` | Image pullPolicy for all KEDA components |
 | `imagePullSecrets` | list | `[]` | Name of secret to use to pull images to use to pull Docker images |
@@ -119,6 +120,8 @@ their default values.
 | `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
 | `rbac.scaledRefKinds` | list | `[{"apiGroup":"*","kind":"*"}]` | List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`. The feature needs to be also enabled by `enabledCustomScaledRefKinds`. If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created note: Deployments and StatefulSets are supported out of the box |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
+| `service.minTlsVersion` | string | `"TLS13"` | The minimum TLS version to use when KEDA components listen via TLS-enabled services (gRPC & Webhook). |
+| `service.tlsCipherList` | string | `""` | The list of cipher suites to use when KEDA components listen via TLS-enabled services. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
 
