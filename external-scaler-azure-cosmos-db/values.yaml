@@ -24,3 +24,14 @@ resources:
   limits:
     cpu: 100m
     memory: 512Mi
+
+podIdentity:
+  azureWorkload:
+    # -- Set to true to enable Azure Workload Identity usage.
+    # See https://keda.sh/docs/concepts/authentication/#azure-workload-identity
+    # This will be set as a label on the deployment.
+    enabled: false
+
+serviceAccount:
+  # -- The name of the service account to use.
+  name: ""
