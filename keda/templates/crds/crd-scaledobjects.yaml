@@ -285,6 +285,7 @@ spec:
                     - currentReplicas
                     - currentReplicasIfHigher
                     - currentReplicasIfLower
+                    - cached
                     type: string
                   failureThreshold:
                     format: int32
