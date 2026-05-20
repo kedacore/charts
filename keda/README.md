@@ -140,6 +140,7 @@ their default values.
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
+| `operator.enableHighCardinalityMetrics` | bool | `true` | Enable high-cardinality metrics for the KEDA operator, such as HTTP and gRPC duration histograms. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
 | `operator.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the operator |
 | `operator.extraContainers` | list | `[]` | Additional containers to run as part of the operator deployment |
@@ -187,6 +188,7 @@ their default values.
 | `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
+| `metricsServer.enableHighCardinalityMetrics` | bool | `true` | Enable high-cardinality metrics for the KEDA Metrics API Server, such as gRPC duration histograms. |
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.enabled` | bool | `true` | Enable KEDA metrics server and external metrics API resources. |
