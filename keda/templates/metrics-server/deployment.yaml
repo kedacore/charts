@@ -132,7 +132,6 @@ spec:
           - --logtostderr=true
           - --stderrthreshold={{ .Values.logging.metricServer.stderrthreshold }}
           - --disable-compression={{ .Values.metricsServer.disableCompression}}
-          - --enable-high-cardinality-metrics={{ .Values.metricsServer.enableHighCardinalityMetrics }}
           - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9666
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
