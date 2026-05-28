@@ -163,6 +163,7 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
+| `interceptor.drainTimeout` | string | `"30s"` | Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds). |
 | `interceptor.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.maxIdleConns` | int | `1000` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
@@ -185,7 +186,9 @@ their default values.
 | `interceptor.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the interceptor component |
 | `interceptor.responseHeaderTimeout` | string | `""` | Time to wait for response headers from the backend. When unset, uses the code default (300s). |
 | `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
+| `interceptor.shutdownDelay` | string | `"5s"` | Time between receiving SIGTERM and closing the proxy listener. During this window the readiness probe returns 503 while the server continues serving both in-flight and new requests, giving Kubernetes time to propagate endpoint removal. |
 | `interceptor.tcpConnectTimeout` | string | `""` | Per-attempt TCP dial timeout. When unset, uses the code default (500ms). |
+| `interceptor.terminationGracePeriodSeconds` | int | `45` | Time Kubernetes waits before sending SIGKILL after SIGTERM. Must be at least shutdownDelay + drainTimeout. |
 | `interceptor.tls.appProtocol` | string | `""` | The appProtocol for the interceptor's TLS proxy service port |
 | `interceptor.tls.certPath` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server. Also accepts the deprecated `cert_path`. |
 | `interceptor.tls.certSecret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server. Also accepts the deprecated `cert_secret`. |

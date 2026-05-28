@@ -73,6 +73,10 @@ spec:
           value: "{{ .Values.interceptor.maxIdleConns }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS_PER_HOST
           value: "{{ .Values.interceptor.maxIdleConnsPerHost }}"
+        - name: KEDA_HTTP_SHUTDOWN_DELAY
+          value: "{{ .Values.interceptor.shutdownDelay }}"
+        - name: KEDA_HTTP_DRAIN_TIMEOUT
+          value: "{{ .Values.interceptor.drainTimeout }}"
         {{- if .Values.interceptor.tls.enabled }}
         - name: KEDA_HTTP_PROXY_TLS_ENABLED
           value: "true"
@@ -139,7 +143,7 @@ spec:
         securityContext:
         {{- toYaml .Values.securityContext | nindent 10 }}
         {{- end }}
-      terminationGracePeriodSeconds: 10
+      terminationGracePeriodSeconds: {{ .Values.interceptor.terminationGracePeriodSeconds }}
       {{- if .Values.interceptor.tls.enabled }}
       volumes:
         - name: certs
