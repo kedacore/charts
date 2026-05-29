@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.0
+    controller-gen.kubebuilder.io/version: v0.20.1
     {{- if (or .Values.crds.additionalAnnotations .Values.additionalAnnotations) }}
     {{- toYaml (merge .Values.crds.additionalAnnotations .Values.additionalAnnotations) | nindent 4 }}
     {{- end }}
@@ -76,6 +76,7 @@ spec:
                 type: string
               failedJobsHistoryLimit:
                 format: int32
+                minimum: 0
                 type: integer
               jobTargetRef:
                 description: JobSpec describes how the job execution will look like.
@@ -459,7 +460,6 @@ spec:
                           namespace:
                             type: string
                         type: object
-                        x-kubernetes-preserve-unknown-fields: true
                       spec:
                         description: |-
                           Specification of the desired behavior of the pod.
@@ -2131,7 +2131,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -3742,7 +3741,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -5382,7 +5380,6 @@ spec:
                                         type: string
                                     required:
                                     - containerPort
-                                    - protocol
                                     type: object
                                   type: array
                                   x-kubernetes-list-map-keys:
@@ -8962,22 +8959,35 @@ spec:
                 type: object
               maxReplicaCount:
                 format: int32
+                minimum: 1
                 type: integer
               minReplicaCount:
                 format: int32
+                minimum: 0
                 type: integer
               pollingInterval:
                 format: int32
+                minimum: 1
                 type: integer
               rollout:
                 description: Rollout defines the strategy for job rollouts
                 properties:
                   propagationPolicy:
+                    enum:
+                    - foreground
+                    - background
                     type: string
                   strategy:
+                    enum:
+                    - gradual
+                    - immediate
                     type: string
                 type: object
               rolloutStrategy:
+                description: 'Deprecated: Use Rollout.Strategy instead (see https://github.com/kedacore/keda/issues/3596).'
+                enum:
+                - gradual
+                - immediate
                 type: string
               scalingStrategy:
                 description: ScalingStrategy defines the strategy of Scaling
@@ -8988,16 +8998,26 @@ spec:
                   customScalingRunningJobPercentage:
                     type: string
                   multipleScalersCalculation:
+                    enum:
+                    - min
+                    - avg
+                    - sum
+                    - max
                     type: string
                   pendingPodConditions:
                     items:
                       type: string
                     type: array
                   strategy:
+                    enum:
+                    - custom
+                    - accurate
+                    - eager
                     type: string
                 type: object
               successfulJobsHistoryLimit:
                 format: int32
+                minimum: 0
                 type: integer
               triggers:
                 items:
@@ -9011,6 +9031,9 @@ spec:
                         kind:
                           description: Kind of the resource being referred to. Defaults
                             to TriggerAuthentication.
+                          enum:
+                          - TriggerAuthentication
+                          - ClusterTriggerAuthentication
                           type: string
                         name:
                           type: string
@@ -9021,9 +9044,15 @@ spec:
                       additionalProperties:
                         type: string
                       type: object
+                    metricType:
+                      description: |-
+                        MetricTargetType specifies the type of metric being targeted, and should be either
+                        "Value", "AverageValue", or "Utilization"
+                      type: string
                     name:
                       type: string
                     type:
+                      minLength: 1
                       type: string
                     useCachedMetrics:
                       type: boolean
@@ -9031,6 +9060,7 @@ spec:
                   - metadata
                   - type
                   type: object
+                minItems: 1
                 type: array
             required:
             - jobTargetRef

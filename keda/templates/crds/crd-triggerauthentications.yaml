@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.20.0
+    controller-gen.kubebuilder.io/version: v0.20.1
     {{- if (or .Values.crds.additionalAnnotations .Values.additionalAnnotations) }}
     {{- toYaml (merge .Values.crds.additionalAnnotations .Values.additionalAnnotations) | nindent 4 }}
     {{- end }}
@@ -143,6 +143,11 @@ spec:
                       AuthPodIdentity allows users to select the platform native identity
                       mechanism
                     properties:
+                      externalID:
+                        description: ExternalID sets the External ID to be used when
+                          assuming an identity. This is only applicable when using
+                          AWS pod identity with a RoleArn.
+                        type: string
                       identityAuthorityHost:
                         description: Set identityAuthorityHost to override the default
                           Azure authority host. If this is set, then the IdentityTenantID
@@ -198,6 +203,7 @@ spec:
                       - name
                       - parameter
                       type: object
+                    minItems: 1
                     type: array
                 required:
                 - secrets
@@ -253,6 +259,11 @@ spec:
                       AuthPodIdentity allows users to select the platform native identity
                       mechanism
                     properties:
+                      externalID:
+                        description: ExternalID sets the External ID to be used when
+                          assuming an identity. This is only applicable when using
+                          AWS pod identity with a RoleArn.
+                        type: string
                       identityAuthorityHost:
                         description: Set identityAuthorityHost to override the default
                           Azure authority host. If this is set, then the IdentityTenantID
@@ -302,6 +313,7 @@ spec:
                       - name
                       - parameter
                       type: object
+                    minItems: 1
                     type: array
                   vaultUri:
                     type: string
@@ -392,6 +404,11 @@ spec:
                       AuthPodIdentity allows users to select the platform native identity
                       mechanism
                     properties:
+                      externalID:
+                        description: ExternalID sets the External ID to be used when
+                          assuming an identity. This is only applicable when using
+                          AWS pod identity with a RoleArn.
+                        type: string
                       identityAuthorityHost:
                         description: Set identityAuthorityHost to override the default
                           Azure authority host. If this is set, then the IdentityTenantID
@@ -441,6 +458,7 @@ spec:
                       - id
                       - parameter
                       type: object
+                    minItems: 1
                     type: array
                 required:
                 - secrets
@@ -454,6 +472,9 @@ spec:
                   authentication:
                     description: VaultAuthentication contains the list of Hashicorp
                       Vault authentication methods
+                    enum:
+                    - token
+                    - kubernetes
                     type: string
                   credential:
                     description: Credential defines the Hashicorp Vault credentials
@@ -502,23 +523,78 @@ spec:
                           type: object
                         type:
                           description: VaultSecretType defines the type of vault secret
+                          enum:
+                          - ""
+                          - secretV2
+                          - secret
+                          - pki
                           type: string
                       required:
                       - key
                       - parameter
                       - path
                       type: object
+                    minItems: 1
                     type: array
                 required:
                 - address
                 - authentication
                 - secrets
                 type: object
+              oauth2:
+                properties:
+                  clientId:
+                    type: string
+                  clientSecret:
+                    properties:
+                      valueFrom:
+                        properties:
+                          secretKeyRef:
+                            properties:
+                              key:
+                                type: string
+                              name:
+                                type: string
+                            required:
+                            - key
+                            - name
+                            type: object
+                        required:
+                        - secretKeyRef
+                        type: object
+                    required:
+                    - valueFrom
+                    type: object
+                  scopes:
+                    items:
+                      type: string
+                    type: array
+                  tokenUrl:
+                    type: string
+                  tokenUrlParams:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  type:
+                    default: clientCredentials
+                    enum:
+                    - clientCredentials
+                    type: string
+                required:
+                - clientId
+                - tokenUrl
+                - type
+                type: object
               podIdentity:
                 description: |-
                   AuthPodIdentity allows users to select the platform native identity
                   mechanism
                 properties:
+                  externalID:
+                    description: ExternalID sets the External ID to be used when assuming
+                      an identity. This is only applicable when using AWS pod identity
+                      with a RoleArn.
+                    type: string
                   identityAuthorityHost:
                     description: Set identityAuthorityHost to override the default
                       Azure authority host. If this is set, then the IdentityTenantID
