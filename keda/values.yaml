@@ -62,6 +62,12 @@ crds:
 # -- Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces
 watchNamespace: ""
 
+# -- Restricts the operator to reconcile only ScaledObjects, ScaledJobs, TriggerAuthentications and
+# ClusterTriggerAuthentications matching the given Kubernetes label selector. Default (empty) means
+# no label-based filtering. Mirrors `watchNamespace`, but filters by label instead of by namespace.
+# Examples: "environment=production", "tier in (gold,silver)", "!canary"
+watchLabelSelector: ""
+
 # -- Name of secret to use to pull images to use to pull Docker images
 imagePullSecrets: []
 

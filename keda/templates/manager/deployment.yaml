@@ -150,6 +150,8 @@ spec:
           env:
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
+            - name: WATCH_LABEL_SELECTOR
+              value: {{ .Values.watchLabelSelector | quote }}
             - name: POD_NAME
               valueFrom:
                 fieldRef:
