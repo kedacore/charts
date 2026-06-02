@@ -220,6 +220,7 @@ spec:
       tolerations:
         {{- toYaml .Values.metricsServer.tolerations | nindent 8 }}
       {{- else if .Values.tolerations }}
+      tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}
       {{- end }}
 {{- end }}

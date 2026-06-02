@@ -255,6 +255,7 @@ spec:
       tolerations:
         {{- toYaml .Values.operator.tolerations | nindent 8 }}
       {{- else if .Values.tolerations }}
+      tolerations:
         {{- toYaml .Values.tolerations }}
       {{- end }}
       {{- $dnsConfig := .Values.operator.dnsConfig | default .Values.global.dnsConfig }}
