@@ -69,8 +69,6 @@ spec:
         - name: KEDA_HTTP_CONNECT_TIMEOUT
           value: "{{ . }}"
         {{- end }}
-        - name: KEDA_HTTP_FORCE_HTTP2
-          value: "{{ .Values.interceptor.forceHTTP2 }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS
           value: "{{ .Values.interceptor.maxIdleConns }}"
         - name: KEDA_HTTP_MAX_IDLE_CONNS_PER_HOST
