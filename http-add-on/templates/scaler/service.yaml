@@ -12,6 +12,11 @@ spec:
   - name: grpc
     port: {{ default 9090 .Values.scaler.grpcPort }}
     targetPort: grpc
+  {{- if .Values.scaler.metrics.prometheus.enabled }}
+  - name: metrics
+    port: {{ .Values.scaler.metrics.prometheus.port }}
+    targetPort: metrics
+  {{- end }}
   selector:
     app.kubernetes.io/component: scaler
     app.kubernetes.io/name: http-add-on

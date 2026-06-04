@@ -124,6 +124,22 @@ scaler:
   # -- Annotations to be added to the scaler pods
   podAnnotations: {}
 
+  # OpenTelemetry observability configuration for the scaler
+  metrics:
+    prometheus:
+      # -- Enable the Prometheus metrics exporter for the scaler
+      enabled: true
+      # -- Port for the scaler's Prometheus `/metrics` endpoint
+      port: 2223
+    otlp:
+      # -- Enable the OTLP HTTP metrics exporter for the scaler
+      enabled: false
+  tracing:
+    # -- Enable OTLP tracing for the scaler
+    enabled: false
+    # -- Tracing exporter protocol (`console`, `http/protobuf`, or `grpc`)
+    protocol: "console"
+
 interceptor:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
   extraEnvs: {}

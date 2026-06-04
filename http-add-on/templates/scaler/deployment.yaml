@@ -51,6 +51,10 @@ spec:
         ports:
         - containerPort: {{ .Values.scaler.grpcPort }}
           name: grpc
+        {{- if .Values.scaler.metrics.prometheus.enabled }}
+        - containerPort: {{ .Values.scaler.metrics.prometheus.port }}
+          name: metrics
+        {{- end }}
         env:
         - name: KEDA_HTTP_SCALER_TARGET_ADMIN_DEPLOYMENT
           value: "{{ .Chart.Name }}-interceptor"
@@ -64,6 +68,16 @@ spec:
           value: "{{ default 9091 .Values.interceptor.admin.port }}"
         - name: KEDA_HTTP_SCALER_STREAM_INTERVAL_MS
           value: "{{ .Values.scaler.streamInterval }}"
+        - name: OTEL_PROM_EXPORTER_ENABLED
+          value: "{{ .Values.scaler.metrics.prometheus.enabled }}"
+        - name: OTEL_PROM_EXPORTER_PORT
+          value: "{{ .Values.scaler.metrics.prometheus.port }}"
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENABLED
+          value: "{{ .Values.scaler.metrics.otlp.enabled }}"
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENABLED
+          value: "{{ .Values.scaler.tracing.enabled }}"
+        - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+          value: "{{ .Values.scaler.tracing.protocol }}"
         {{- if .Values.profiling.scaler.enabled }}
         - name: PROFILING_BIND_ADDRESS
           value: "127.0.0.1:{{ .Values.profiling.scaler.port }}"
