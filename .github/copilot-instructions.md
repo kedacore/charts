@@ -10,8 +10,8 @@ over `if`/`else if`:
 
 ```yaml
 # Preferred — single toYaml, nindent only once
-tolerations:
 {{- with .Values.component.tolerations | default .Values.tolerations }}
+tolerations:
   {{- toYaml . | nindent 8 }}
 {{- end }}
 
