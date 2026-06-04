@@ -240,12 +240,9 @@ spec:
       {{- if .Values.podIdentity.gcp.enabled }}
         iam.gke.io/gke-metadata-server-enabled: "true"
       {{- end }}
-      {{- if .Values.operator.affinity }}
+      {{- with .Values.operator.affinity | default .Values.affinity }}
       affinity:
-        {{- toYaml .Values.operator.affinity | nindent 8 }}
-      {{- else if .Values.affinity }}
-      affinity:
-        {{- toYaml .Values.affinity | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.topologySpreadConstraints.operator }}
       topologySpreadConstraints:

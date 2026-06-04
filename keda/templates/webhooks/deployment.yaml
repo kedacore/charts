@@ -160,12 +160,9 @@ spec:
       {{- with .Values.webhooks.nodeSelector | default .Values.nodeSelector }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.webhooks.affinity }}
+      {{- with .Values.webhooks.affinity | default .Values.affinity }}
       affinity:
-        {{- toYaml .Values.webhooks.affinity | nindent 8 }}
-      {{- else if .Values.affinity }}
-      affinity:
-        {{- toYaml .Values.affinity | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.topologySpreadConstraints.webhooks }}
       topologySpreadConstraints:
