@@ -251,12 +251,9 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.operator.tolerations }}
+      {{- with .Values.operator.tolerations | default .Values.tolerations }}
       tolerations:
-        {{- toYaml .Values.operator.tolerations | nindent 8 }}
-      {{- else if .Values.tolerations }}
-      tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $dnsConfig := .Values.operator.dnsConfig | default .Values.global.dnsConfig }}
       {{- if $dnsConfig }}
