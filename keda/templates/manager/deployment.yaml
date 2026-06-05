@@ -240,23 +240,17 @@ spec:
       {{- if .Values.podIdentity.gcp.enabled }}
         iam.gke.io/gke-metadata-server-enabled: "true"
       {{- end }}
-      {{- if .Values.operator.affinity }}
+      {{- with .Values.operator.affinity | default .Values.affinity }}
       affinity:
-        {{- toYaml .Values.operator.affinity | nindent 8 }}
-      {{- else if .Values.affinity }}
-      affinity:
-        {{- toYaml .Values.affinity | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.topologySpreadConstraints.operator }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.operator.tolerations }}
+      {{- with .Values.operator.tolerations | default .Values.tolerations }}
       tolerations:
-        {{- toYaml .Values.operator.tolerations | nindent 8 }}
-      {{- else if .Values.tolerations }}
-      tolerations:
-        {{- toYaml .Values.tolerations | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $dnsConfig := .Values.operator.dnsConfig | default .Values.global.dnsConfig }}
       {{- if $dnsConfig }}
