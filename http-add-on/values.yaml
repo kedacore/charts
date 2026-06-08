@@ -173,8 +173,6 @@ interceptor:
   readinessTimeout: ""
   # -- Per-attempt TCP dial timeout. When unset, uses the code default (500ms).
   tcpConnectTimeout: ""
-  # -- Whether or not the interceptor should force requests to use HTTP/2
-  forceHTTP2: false
   # -- The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit
   maxIdleConns: 1000
   # -- The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool
