@@ -142,6 +142,9 @@ their default values.
 | `scaler.grpcPort` | int | `9090` | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. |
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `scaler.metrics.otlp.enabled` | bool | `false` | Enable the OTLP HTTP metrics exporter for the scaler |
+| `scaler.metrics.prometheus.enabled` | bool | `true` | Enable the Prometheus metrics exporter for the scaler |
+| `scaler.metrics.prometheus.port` | int | `2223` | Port for the scaler's Prometheus `/metrics` endpoint |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.podAnnotations` | object | `{}` | Annotations to be added to the scaler pods |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
@@ -154,6 +157,8 @@ their default values.
 | `scaler.streamInterval` | int | `200` | Interval in ms for communicating IsActive to KEDA |
 | `scaler.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `scaler.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
+| `scaler.tracing.enabled` | bool | `false` | Enable OTLP tracing for the scaler |
+| `scaler.tracing.protocol` | string | `"console"` | Tracing exporter protocol (`console`, `http/protobuf`, or `grpc`) |
 
 ### Interceptor
 
