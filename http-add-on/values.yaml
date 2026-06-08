@@ -181,6 +181,13 @@ interceptor:
     # -- The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor
     pollingInterval: 1
 
+  # -- Time between receiving SIGTERM and closing the proxy listener. During this window the readiness probe returns 503 while the server continues serving both in-flight and new requests, giving Kubernetes time to propagate endpoint removal.
+  shutdownDelay: 5s
+  # -- Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds).
+  drainTimeout: 30s
+  # -- Time Kubernetes waits before sending SIGKILL after SIGTERM. Must be at least shutdownDelay + drainTimeout.
+  terminationGracePeriodSeconds: 45
+
   # -- Total request lifecycle deadline. When unset, uses the code default (disabled).
   requestTimeout: ""
   # -- Time to wait for response headers from the backend. When unset, uses the code default (300s).
