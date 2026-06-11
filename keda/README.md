@@ -140,6 +140,7 @@ their default values.
 | `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
+| `operator.enableHighCardinalityMetricsLabels` | bool | `false` | Enable high-cardinality labels for scaler HTTP request duration metrics on the KEDA operator. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
 | `operator.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the operator |
 | `operator.extraContainers` | list | `[]` | Additional containers to run as part of the operator deployment |
