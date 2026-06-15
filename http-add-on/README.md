@@ -46,7 +46,7 @@ We are a Cloud Native Computing Foundation (CNCF) graduated project.
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
-helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.14.0
+helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.15.0
 ```
 
 ## Introduction
@@ -141,10 +141,10 @@ their default values.
 | `scaler.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
 | `scaler.grpcPort` | int | `9090` | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. |
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
-| `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.metrics.otlp.enabled` | bool | `false` | Enable the OTLP HTTP metrics exporter for the scaler |
 | `scaler.metrics.prometheus.enabled` | bool | `true` | Enable the Prometheus metrics exporter for the scaler |
 | `scaler.metrics.prometheus.port` | int | `2223` | Port for the scaler's Prometheus `/metrics` endpoint |
+| `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.podAnnotations` | object | `{}` | Annotations to be added to the scaler pods |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
