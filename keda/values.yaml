@@ -106,6 +106,8 @@ operator:
   dnsPolicy: ClusterFirst
   # -- Enable operator to use host network
   useHostNetwork: false
+  # -- (bool) Sets `hostUsers` on the KEDA operator pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace.
+  hostUsers:
   # -- [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -174,6 +176,8 @@ metricsServer:
   dnsConfig: {}
   # -- Enable metric server to use host network
   useHostNetwork: false
+  # -- (bool) Sets `hostUsers` on the KEDA metrics server pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace.
+  hostUsers:
   # -- [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field
   affinity: {}
     # podAntiAffinity:
@@ -231,6 +235,8 @@ webhooks:
   timeoutSeconds: 10
   # -- Enable webhook to use host network, this is required on EKS with custom CNI
   useHostNetwork: false
+  # -- (bool) Sets `hostUsers` on the KEDA admission webhooks pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace.
+  hostUsers:
   # -- Name of the KEDA admission webhooks
   name: keda-admission-webhooks
   # -- ReplicaSets for this Deployment you want to retain (Default: 10)

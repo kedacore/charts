@@ -155,6 +155,9 @@ spec:
       {{- toYaml .Values.volumes.webhooks.extraVolumes | nindent 6 }}
       {{- end }}
       hostNetwork: {{ .Values.webhooks.useHostNetwork }}
+      {{- if not (kindIs "invalid" .Values.webhooks.hostUsers) }}
+      hostUsers: {{ .Values.webhooks.hostUsers }}
+      {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.webhooks.nodeSelector | default .Values.nodeSelector }}

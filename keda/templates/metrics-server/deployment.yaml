@@ -200,6 +200,9 @@ spec:
       {{- end }}
       dnsPolicy: {{ .Values.metricsServer.dnsPolicy }}
       hostNetwork: {{ .Values.metricsServer.useHostNetwork }}
+      {{- if not (kindIs "invalid" .Values.metricsServer.hostUsers) }}
+      hostUsers: {{ .Values.metricsServer.hostUsers }}
+      {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
       {{- with .Values.metricsServer.nodeSelector | default .Values.nodeSelector }}

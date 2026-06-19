@@ -259,6 +259,9 @@ spec:
       {{- end }}
       dnsPolicy: {{ .Values.operator.dnsPolicy }}
       hostNetwork: {{ .Values.operator.useHostNetwork }}
+      {{- if not (kindIs "invalid" .Values.operator.hostUsers) }}
+      hostUsers: {{ .Values.operator.hostUsers }}
+      {{- end }}
       {{- with .Values.hostAliases }}
       hostAliases:
         {{- toYaml . | nindent 8 }}
