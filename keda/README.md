@@ -146,6 +146,7 @@ their default values.
 | `operator.extraInitContainers` | list | `[]` | Additional init containers to run as part of the operator deployment |
 | `operator.leaderElectionID` | string | `nil` | When set, overrides the leader election Lease resource name via the `--leader-election-id` flag. When unset (default), the flag is not passed and the operator uses its built-in default (`operator.keda.sh`). Override to allow multiple independent KEDA operator deployments in the same namespace. |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
+| `operator.metricsServiceTargetPort` | int | `9666` | Port for the gRPC Metrics Service endpoint that the KEDA operator binds to and the metrics server connects to. |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |

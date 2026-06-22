@@ -69,7 +69,7 @@ spec:
               app: {{ .Values.operator.name }}
       ports:
         - protocol: TCP
-          port: 9666
+          port: {{ .Values.operator.metricsServiceTargetPort }}
     # Allow egress to any pod in the cluster for metric collection
     - to:
         - namespaceSelector: {}
