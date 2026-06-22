@@ -133,6 +133,8 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
+| `deploymentAnnotations.keda` | object | `{}` | Deployment annotations for KEDA operator |
+| `deploymentLabels.keda` | object | `{}` | Deployment labels for KEDA operator |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -183,6 +185,8 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `deploymentAnnotations.metricsAdapter` | object | `{}` | Deployment annotations for KEDA Metrics Adapter |
+| `deploymentLabels.metricsAdapter` | object | `{}` | Deployment labels for KEDA Metrics Adapter |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
@@ -324,6 +328,8 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `deploymentAnnotations.webhooks` | object | `{}` | Deployment annotations for KEDA Admission webhooks |
+| `deploymentLabels.webhooks` | object | `{}` | Deployment labels for KEDA Admission webhooks |
 | `extraArgs.webhooks` | object | `{}` | Additional KEDA admission webhooks container arguments |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
