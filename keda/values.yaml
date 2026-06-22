@@ -319,6 +319,20 @@ podLabels:
   metricsAdapter: {}
   # -- Pod labels for KEDA Admission webhooks
   webhooks: {}
+deploymentAnnotations:
+  # -- Deployment annotations for KEDA operator
+  keda: {}
+  # -- Deployment annotations for KEDA Metrics Adapter
+  metricsAdapter: {}
+  # -- Deployment annotations for KEDA Admission webhooks
+  webhooks: {}
+deploymentLabels:
+  # -- Deployment labels for KEDA operator
+  keda: {}
+  # -- Deployment labels for KEDA Metrics Adapter
+  metricsAdapter: {}
+  # -- Deployment labels for KEDA Admission webhooks
+  webhooks: {}
 
 rbac:
   # -- Specifies whether RBAC should be used
