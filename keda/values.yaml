@@ -679,9 +679,9 @@ envComponent:
   #   value: 'ENV-VALUE'
   # -- Additional Metrics Adapter container environment variables
   metricsServer: []
-  # -- Additional KEDA admission webhook container environment variables
   # - name: ENV_NAME
   #   value: 'ENV-VALUE'
+  # -- Additional KEDA admission webhook container environment variables
   webhooks: []
   # - name: ENV_NAME
   #   value: 'ENV-VALUE'

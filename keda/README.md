@@ -323,7 +323,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `envComponent.webhooks` | list | `[]` | Additional KEDA admission webhook container environment variables - name: ENV_NAME   value: 'ENV-VALUE' |
+| `envComponent.webhooks` | list | `[]` | Additional KEDA admission webhook container environment variables |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
