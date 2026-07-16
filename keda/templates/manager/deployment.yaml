@@ -190,7 +190,7 @@ spec:
               value: {{ .Values.opentelemetry.collector.uri | quote }}
             {{- end }}
             {{- if .Values.env }}
-            {{- toYaml .Values.env | nindent 12 -}}
+            {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
             {{- if .Values.envComponent.operator }}
             {{- tpl (toYaml .Values.envComponent.operator) $ | nindent 12 }}

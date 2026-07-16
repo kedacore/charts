@@ -122,7 +122,7 @@ spec:
               value: {{ .Values.permissions.metricServer.restrict.secret | quote }}
             {{- end }}
             {{- if .Values.env }}
-            {{- toYaml .Values.env | nindent 12 -}}
+            {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
             {{- if .Values.envComponent.metricsServer }}
             {{- tpl (toYaml .Values.envComponent.webhooks) $ | nindent 12 }}
