@@ -671,6 +671,21 @@ env: []
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
 
+# -- Additional environment variables that will be passed onto specific KEDA components
+envComponent:
+  # -- Additional KEDA Operator container environment variables
+  operator: []
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
+  # -- Additional Metrics Adapter container environment variables
+  metricsServer: []
+  # -- Additional KEDA admission webhook container environment variables
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
+  webhooks: []
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
+
 # Extra volumes and volume mounts for the deployment. Optional.
 volumes:
   keda:
