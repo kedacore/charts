@@ -36,11 +36,11 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-role
+    name: {{ .Release.Name }}-role
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-role
+  name: {{ .Release.Name }}-role
 rules:
 - apiGroups:
   - http.keda.sh
@@ -91,11 +91,11 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-metrics-reader
+    name: {{ .Release.Name }}-metrics-reader
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-metrics-reader
+  name: {{ .Release.Name }}-metrics-reader
 rules:
 - nonResourceURLs:
   - /metrics
@@ -131,15 +131,15 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-rolebinding
+    name: {{ .Release.Name }}-rolebinding
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-rolebinding
+  name: {{ .Release.Name }}-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Chart.Name }}-role
+  name: {{ .Release.Name }}-role
 subjects:
 - kind: ServiceAccount
   name: {{ .Chart.Name }}
@@ -153,11 +153,11 @@ metadata:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     app: {{ .Chart.Name }}
-    name: {{ .Chart.Name }}-auth-delegator
+    name: {{ .Release.Name }}-auth-delegator
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
     {{- include "keda-http-add-on.labels" . | indent 4 }}
-  name: {{ .Chart.Name }}-auth-delegator
+  name: {{ .Release.Name }}-auth-delegator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
