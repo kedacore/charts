@@ -10,7 +10,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
     {{- with .Values.deploymentAnnotations.metricsAdapter }}
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
     {{- end }}
   {{- end }}
   labels:
@@ -18,7 +18,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}-metrics-apiserver
     {{- include "keda.labels" . | indent 4 }}
     {{- with .Values.deploymentLabels.metricsAdapter }}
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
     {{- end }}
 spec:
   revisionHistoryLimit: {{ .Values.metricsServer.revisionHistoryLimit}}

@@ -9,7 +9,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
     {{- with .Values.deploymentAnnotations.keda }}
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
     {{- end }}
   {{- end }}
   labels:
@@ -18,7 +18,7 @@ metadata:
     app.kubernetes.io/name: {{ .Values.operator.name }}
     {{- include "keda.labels" . | indent 4 }}
     {{- with .Values.deploymentLabels.keda }}
-    {{- toYaml . | nindent 4 }}
+    {{- tpl (toYaml .) $ | nindent 4 }}
     {{- end }}
 spec:
   revisionHistoryLimit: {{ .Values.operator.revisionHistoryLimit}}
