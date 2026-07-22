@@ -197,14 +197,14 @@ their default values.
 | `interceptor.tls.appProtocol` | string | `""` | The appProtocol for the interceptor's TLS proxy service port |
 | `interceptor.tls.certPath` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server. Also accepts the deprecated `cert_path`. |
 | `interceptor.tls.certSecret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server. Also accepts the deprecated `cert_secret`. |
-| `interceptor.tls.cipherSuites` | string | `""` | Comma-separated list of supported cipher suites for the interceptor proxy TLS server. Defaults to Go's standard cipher suites. |
-| `interceptor.tls.curvePreferences` | string | `""` | Comma-separated list of supported curve preferences for the interceptor proxy TLS server. Defaults to Go's standard curve selections. |
+| `interceptor.tls.cipherSuites` | string | `""` | Comma-separated list of supported TLS cipher suites. Defaults to Go's standard cipher suites. |
+| `interceptor.tls.curvePreferences` | string | `""` | Comma-separated list of supported TLS curve preferences. Defaults to Go's standard curve selections. |
 | `interceptor.tls.enabled` | bool | `false` | Whether a TLS server should be started on the interceptor proxy |
 | `interceptor.tls.keyPath` | string | `"/certs/tls.key"` | Mount path of the certificate key file to use with the interceptor proxy TLS server. Also accepts the deprecated `key_path`. |
-| `interceptor.tls.maxVersion` | string | `""` | Maximum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard maximum version. |
-| `interceptor.tls.minVersion` | string | `""` | Minimum TLS version for the interceptor proxy TLS server (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version. |
+| `interceptor.tls.maxVersion` | string | `""` | Maximum TLS version (e.g. "1.2" or "1.3"). Defaults to Go's standard maximum version. |
+| `interceptor.tls.minVersion` | string | `""` | Minimum TLS version (e.g. "1.2" or "1.3"). Defaults to Go's standard minimum version. |
 | `interceptor.tls.port` | int | `8443` | Port that the interceptor proxy TLS server should be started on |
-| `interceptor.tls.skipVerify` | bool | `false` | Whether to skip TLS verification for the interceptor proxy TLS server. Also accepts the deprecated `skip_verify`. |
+| `interceptor.tls.skipVerify` | bool | `false` | Whether to skip TLS certificate verification for upstream connections. Also accepts the deprecated `skip_verify`. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 
