@@ -86,22 +86,22 @@ spec:
           value: "{{ if hasKey .Values.interceptor.tls "key_path" }}{{ .Values.interceptor.tls.key_path }}{{ else }}{{ .Values.interceptor.tls.keyPath }}{{ end }}"
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
-        - name: KEDA_HTTP_PROXY_TLS_SKIP_VERIFY
+        - name: KEDA_HTTP_TLS_SKIP_VERIFY
           value: "{{ if hasKey .Values.interceptor.tls "skip_verify" }}{{ .Values.interceptor.tls.skip_verify }}{{ else }}{{ .Values.interceptor.tls.skipVerify }}{{ end }}"
         {{- if .Values.interceptor.tls.minVersion }}
-        - name: KEDA_HTTP_PROXY_TLS_MIN_VERSION
+        - name: KEDA_HTTP_TLS_MIN_VERSION
           value: "{{ .Values.interceptor.tls.minVersion }}"
         {{- end }}
         {{- if .Values.interceptor.tls.maxVersion }}
-        - name: KEDA_HTTP_PROXY_TLS_MAX_VERSION
+        - name: KEDA_HTTP_TLS_MAX_VERSION
           value: "{{ .Values.interceptor.tls.maxVersion }}"
         {{- end }}
         {{- if .Values.interceptor.tls.cipherSuites }}
-        - name: KEDA_HTTP_PROXY_TLS_CIPHER_SUITES
+        - name: KEDA_HTTP_TLS_CIPHER_SUITES
           value: "{{ .Values.interceptor.tls.cipherSuites }}"
         {{- end }}
         {{- if .Values.interceptor.tls.curvePreferences }}
-        - name: KEDA_HTTP_PROXY_TLS_CURVE_PREFERENCES
+        - name: KEDA_HTTP_TLS_CURVE_PREFERENCES
           value: "{{ .Values.interceptor.tls.curvePreferences }}"
         {{- end }}
         {{- end }}
