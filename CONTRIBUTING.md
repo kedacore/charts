@@ -30,8 +30,20 @@ You can easily release a new Helm chart version:
         ```
 6. Re-index the Helm repo to add our new version:
     ```shell
-    $ helm repo index docs --url https://kedacore.github.io/charts
+    $ mkdir /tmp/new-release
+    $ cp docs/keda-x.y.z.tgz /tmp/new-release/
+    $ helm repo index /tmp/new-release --url https://kedacore.github.io/charts --merge docs/index.yaml
+    $ cp /tmp/new-release/index.yaml docs/index.yaml
+    $ rm -rf /tmp/new-release
     ```
+
+    ⚠️ Do NOT run `helm repo index docs` directly — this rescans every
+    historical .tgz in docs/ and overwrites their original `created`
+    timestamp with the current time (see issue [#877](https://github.com/kedacore/charts/issues/877)). Instead, isolate
+    the newly packaged chart(s) and merge against the existing index,
+    so only the new entry gets a fresh `created` and every other
+    entry keeps its original release timestamp:
+
 7. Update the version in the "Browse all our Helm charts" section of our README.md
 8. Commit changes:
     ```shell
