@@ -143,6 +143,10 @@ scaler:
 interceptor:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
   extraEnvs: {}
+  # -- Extra volume mounts for the interceptor container
+  extraVolumeMounts: []
+  # -- Extra volumes for the interceptor pod
+  extraVolumes: []
   # -- The image pull secrets for the interceptor component
   imagePullSecrets: []
   # -- The image pull policy for the interceptor component
@@ -244,6 +248,8 @@ interceptor:
     cipherSuites: ""
     # -- Comma-separated list of supported TLS curve preferences. Defaults to Go's standard curve selections.
     curvePreferences: ""
+    # -- List of directories containing PEM CA certificates to trust for outbound backend connections, in addition to the system CA pool.
+    caDirs: []
 
   # configuration of pdb for the interceptor
   pdb:

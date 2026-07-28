@@ -170,6 +170,8 @@ their default values.
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
 | `interceptor.drainTimeout` | string | `"30s"` | Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds). |
 | `interceptor.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
+| `interceptor.extraVolumeMounts` | list | `[]` | Extra volume mounts for the interceptor container |
+| `interceptor.extraVolumes` | list | `[]` | Extra volumes for the interceptor pod |
 | `interceptor.imagePullSecrets` | list | `[]` | The image pull secrets for the interceptor component |
 | `interceptor.maxIdleConns` | int | `1000` | The maximum number of idle connections allowed in the interceptor's in-memory connection pool. Set to 0 to indicate no limit |
 | `interceptor.maxIdleConnsPerHost` | int | `200` | The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool |
@@ -195,6 +197,7 @@ their default values.
 | `interceptor.tcpConnectTimeout` | string | `""` | Per-attempt TCP dial timeout. When unset, uses the code default (500ms). |
 | `interceptor.terminationGracePeriodSeconds` | int | `45` | Time Kubernetes waits before sending SIGKILL after SIGTERM. Must be at least shutdownDelay + drainTimeout. |
 | `interceptor.tls.appProtocol` | string | `""` | The appProtocol for the interceptor's TLS proxy service port |
+| `interceptor.tls.caDirs` | list | `[]` | List of directories containing PEM CA certificates to trust for outbound backend connections, in addition to the system CA pool. |
 | `interceptor.tls.certPath` | string | `"/certs/tls.crt"` | Mount path of the certificate file to use with the interceptor proxy TLS server. Also accepts the deprecated `cert_path`. |
 | `interceptor.tls.certSecret` | string | `"keda-tls-certs"` | Name of the Kubernetes secret that contains the certificates to be used with the interceptor proxy TLS server. Also accepts the deprecated `cert_secret`. |
 | `interceptor.tls.cipherSuites` | string | `""` | Comma-separated list of supported TLS cipher suites. Defaults to Go's standard cipher suites. |
