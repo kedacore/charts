@@ -607,6 +607,12 @@ priorityClassName: ""
 http:
   # -- The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them)
   timeout: 3000
+  # -- Maximum number of idle HTTP connections across all hosts. When unset, the operator default (0, no limit) applies.
+  maxIdleConns:
+  # -- Maximum number of idle HTTP connections to keep per host. When unset, the operator default (1000) applies.
+  maxIdleConnsPerHost:
+  # -- Maximum time an idle HTTP connection remains in the pool. When unset, the operator default (90s) applies. Must be greater than zero.
+  idleConnTimeout:
   keepAlive:
     # -- Enable HTTP connection keep alive
     enabled: true
