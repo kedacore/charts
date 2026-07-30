@@ -116,6 +116,9 @@ spec:
           - "--ca-dir={{ . }}"
           {{- end }}
           {{- end }}
+          - "--http-max-idle-conns={{ .Values.http.maxIdleConns }}"
+          - "--http-max-idle-conns-per-host={{ .Values.http.maxIdleConnsPerHost }}"
+          - "--http-idle-conn-timeout={{ .Values.http.idleConnTimeout }}"
           {{- range $key, $value := .Values.extraArgs.keda }}
           - "--{{ $key }}={{ $value }}"
           {{- end }}
