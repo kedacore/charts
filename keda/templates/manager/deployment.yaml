@@ -116,15 +116,9 @@ spec:
           - "--ca-dir={{ . }}"
           {{- end }}
           {{- end }}
-          {{- if not (kindIs "invalid" .Values.http.maxIdleConns) }}
           - "--http-max-idle-conns={{ .Values.http.maxIdleConns }}"
-          {{- end }}
-          {{- if not (kindIs "invalid" .Values.http.maxIdleConnsPerHost) }}
           - "--http-max-idle-conns-per-host={{ .Values.http.maxIdleConnsPerHost }}"
-          {{- end }}
-          {{- if not (kindIs "invalid" .Values.http.idleConnTimeout) }}
           - "--http-idle-conn-timeout={{ .Values.http.idleConnTimeout }}"
-          {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - "--{{ $key }}={{ $value }}"
           {{- end }}

@@ -90,10 +90,10 @@ their default values.
 | `grpcTLSCertsSecret` | string | `""` | Set this if you are using an external scaler and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /grpccerts path on the Pod |
 | `hashiCorpVaultTLS` | string | `""` | Set this if you are using HashiCorp Vault and want to communicate over TLS (recommended). This variable holds the name of the secret that will be mounted to the /vault path on the Pod |
 | `hostAliases` | list | `[]` | HostAliases for pod networking ([docs](https://kubernetes.io/docs/concepts/services-networking/add-entries-to-pod-etc-hosts-with-host-aliases/)) |
-| `http.idleConnTimeout` | string | `nil` | Maximum time an idle HTTP connection remains in the pool. When unset, the operator default (90s) applies. Must be greater than zero. |
+| `http.idleConnTimeout` | string | `"90s"` | Maximum time an idle HTTP connection remains in the pool. Must be greater than zero. |
 | `http.keepAlive.enabled` | bool | `true` | Enable HTTP connection keep alive |
-| `http.maxIdleConns` | int | `nil` | Maximum number of idle HTTP connections across all hosts. When unset, the operator default (0, no limit) applies. |
-| `http.maxIdleConnsPerHost` | int | `nil` | Maximum number of idle HTTP connections to keep per host. When unset, the operator default (1000) applies. |
+| `http.maxIdleConns` | int | `0` | Maximum number of idle HTTP connections across all hosts. Zero means no limit. |
+| `http.maxIdleConnsPerHost` | int | `1000` | Maximum number of idle HTTP connections to keep per host |
 | `http.minTlsVersion` | string | `"TLS12"` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) |
 | `http.tlsCipherList` | string | `""` | The list of cipher suites to use when making HTTP over TLS connections. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
