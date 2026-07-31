@@ -86,15 +86,10 @@ spec:
           value: "{{ if hasKey .Values.interceptor.tls "key_path" }}{{ .Values.interceptor.tls.key_path }}{{ else }}{{ .Values.interceptor.tls.keyPath }}{{ end }}"
         - name: KEDA_HTTP_PROXY_TLS_PORT
           value: "{{ .Values.interceptor.tls.port }}"
-        - name: KEDA_HTTP_TLS_SKIP_VERIFY
-          value: "{{ if hasKey .Values.interceptor.tls "skip_verify" }}{{ .Values.interceptor.tls.skip_verify }}{{ else }}{{ .Values.interceptor.tls.skipVerify }}{{ end }}"
-        {{- if .Values.interceptor.tls.minVersion }}
-        - name: KEDA_HTTP_TLS_MIN_VERSION
-          value: "{{ .Values.interceptor.tls.minVersion }}"
         {{- end }}
-        {{- if .Values.interceptor.tls.maxVersion }}
-        - name: KEDA_HTTP_TLS_MAX_VERSION
-          value: "{{ .Values.interceptor.tls.maxVersion }}"
+        {{- if .Values.interceptor.tls.caDirs }}
+        - name: KEDA_HTTP_TLS_CA_DIRS
+          value: "{{ join "," .Values.interceptor.tls.caDirs }}"
         {{- end }}
         {{- if .Values.interceptor.tls.cipherSuites }}
         - name: KEDA_HTTP_TLS_CIPHER_SUITES
@@ -104,7 +99,16 @@ spec:
         - name: KEDA_HTTP_TLS_CURVE_PREFERENCES
           value: "{{ .Values.interceptor.tls.curvePreferences }}"
         {{- end }}
+        {{- if .Values.interceptor.tls.maxVersion }}
+        - name: KEDA_HTTP_TLS_MAX_VERSION
+          value: "{{ .Values.interceptor.tls.maxVersion }}"
         {{- end }}
+        {{- if .Values.interceptor.tls.minVersion }}
+        - name: KEDA_HTTP_TLS_MIN_VERSION
+          value: "{{ .Values.interceptor.tls.minVersion }}"
+        {{- end }}
+        - name: KEDA_HTTP_TLS_SKIP_VERIFY
+          value: "{{ if hasKey .Values.interceptor.tls "skip_verify" }}{{ .Values.interceptor.tls.skip_verify }}{{ else }}{{ .Values.interceptor.tls.skipVerify }}{{ end }}"
         {{- if .Values.profiling.interceptor.enabled }}
         - name: PROFILING_BIND_ADDRESS
           value: "127.0.0.1:{{ .Values.profiling.interceptor.port }}"
@@ -121,10 +125,17 @@ spec:
         {{- if .Values.interceptor.tls.enabled }}
         - containerPort: {{ .Values.interceptor.tls.port }}
           name: proxy-tls
+        {{- end }}
+        {{- if or .Values.interceptor.tls.enabled .Values.interceptor.extraVolumeMounts }}
         volumeMounts:
+        {{- if .Values.interceptor.tls.enabled }}
           - readOnly: true
             mountPath: "/certs"
             name: certs
+        {{- end }}
+        {{- with .Values.interceptor.extraVolumeMounts }}
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
         {{- end }}
         livenessProbe:
           httpGet:
@@ -144,11 +155,16 @@ spec:
         {{- toYaml .Values.securityContext | nindent 10 }}
         {{- end }}
       terminationGracePeriodSeconds: {{ .Values.interceptor.terminationGracePeriodSeconds }}
-      {{- if .Values.interceptor.tls.enabled }}
+      {{- if or .Values.interceptor.tls.enabled .Values.interceptor.extraVolumes }}
       volumes:
+      {{- if .Values.interceptor.tls.enabled }}
         - name: certs
           secret:
             secretName: {{ if hasKey .Values.interceptor.tls "cert_secret" }}{{ .Values.interceptor.tls.cert_secret }}{{ else }}{{ .Values.interceptor.tls.certSecret }}{{ end }}
+      {{- end }}
+      {{- with .Values.interceptor.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- end }}
       nodeSelector:
         kubernetes.io/os: linux
