@@ -24,10 +24,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
-      uses: actions/checkout@v6.0.2
+      uses: actions/checkout@v7.0.1
 
     - name: Helm install
-      uses: Azure/setup-helm@v5
+      uses: Azure/setup-helm@v5.0.1
 
     - name: Lint 'Azure Cosmos DB external scaler' Helm chart
       run: helm lint ./external-scaler-azure-cosmos-db/ --strict
@@ -49,10 +49,10 @@ jobs:
           kindImage: kindest/node:v1.19.16@sha256:dec41184d10deca01a08ea548197b77dc99eeacb56ff3e371af3193c86ca99f4
     steps:
     - name: Check out code
-      uses: actions/checkout@v6.0.2
+      uses: actions/checkout@v7.0.1
 
     - name: Helm install
-      uses: Azure/setup-helm@v5
+      uses: Azure/setup-helm@v5.0.1
       
     - name: Create k8s ${{ matrix.kubernetesVersion }} Kind Cluster
       uses: helm/kind-action@v1.14.0
