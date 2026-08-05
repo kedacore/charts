@@ -168,6 +168,7 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
+| `interceptor.coldStartMaxPendingRequests` | int | `0` | Default limit on requests held per route while its backend has no ready endpoints, e.g. during scale-from-zero. Routes override it via `coldStart.maxPendingRequests`. 0 means unlimited. The limit applies per interceptor replica. |
 | `interceptor.drainTimeout` | string | `"30s"` | Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds). |
 | `interceptor.directPodRouting` | bool | `true` | Route requests directly to a ready pod IP instead of the Service ClusterIP, bypassing kube-proxy and other Service-layer features (NetworkPolicy, session affinity, topology-aware routing). Set to false to keep Service-based routing. |
 | `interceptor.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
