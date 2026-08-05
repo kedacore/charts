@@ -76,7 +76,7 @@ spec:
         - name: KEDA_HTTP_DIRECT_POD_ROUTING
           value: "{{ .Values.interceptor.directPodRouting }}"
         - name: KEDA_HTTP_COLD_START_MAX_PENDING_REQUESTS
-          value: "{{ .Values.interceptor.coldStartMaxPendingRequests }}"
+          value: "{{ .Values.interceptor.coldStart.maxPendingRequests }}"
         - name: KEDA_HTTP_SHUTDOWN_DELAY
           value: "{{ .Values.interceptor.shutdownDelay }}"
         - name: KEDA_HTTP_DRAIN_TIMEOUT
