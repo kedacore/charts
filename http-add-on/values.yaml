@@ -204,6 +204,12 @@ interceptor:
   maxIdleConns: 1000
   # -- The maximum number of idle connections allowed per host in the interceptor's in-memory connection pool
   maxIdleConnsPerHost: 200
+  # -- Route requests directly to a ready pod IP instead of the Service ClusterIP, bypassing kube-proxy and other Service-layer features (NetworkPolicy, session affinity, topology-aware routing). Set to false to keep Service-based routing.
+  directPodRouting: true
+  # cold start behavior when scaling from zero
+  coldStart:
+    # -- Default limit on requests held per route while its backend has no ready endpoints, e.g. during scale-from-zero. Routes override it via coldStart.maxPendingRequests. 0 means unlimited. The limit applies per interceptor replica.
+    maxPendingRequests: 0
   # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
