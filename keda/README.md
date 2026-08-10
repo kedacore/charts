@@ -130,8 +130,8 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
-| `deploymentAnnotations.keda` | object | `{}` | Deployment annotations for KEDA operator |
-| `deploymentLabels.keda` | object | `{}` | Deployment labels for KEDA operator |
+| `deploymentAnnotations.keda` | object | `{}` | Deployment annotations for KEDA operator. Rendered through `tpl` |
+| `deploymentLabels.keda` | object | `{}` | Deployment labels for KEDA operator. Rendered through `tpl` |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -178,8 +178,8 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `deploymentAnnotations.metricsAdapter` | object | `{}` | Deployment annotations for KEDA Metrics Adapter |
-| `deploymentLabels.metricsAdapter` | object | `{}` | Deployment labels for KEDA Metrics Adapter |
+| `deploymentAnnotations.metricsAdapter` | object | `{}` | Deployment annotations for KEDA Metrics Adapter. Rendered through `tpl` |
+| `deploymentLabels.metricsAdapter` | object | `{}` | Deployment labels for KEDA Metrics Adapter. Rendered through `tpl` |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
@@ -317,8 +317,8 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `deploymentAnnotations.webhooks` | object | `{}` | Deployment annotations for KEDA Admission webhooks |
-| `deploymentLabels.webhooks` | object | `{}` | Deployment labels for KEDA Admission webhooks |
+| `deploymentAnnotations.webhooks` | object | `{}` | Deployment annotations for KEDA Admission webhooks. Rendered through `tpl` |
+| `deploymentLabels.webhooks` | object | `{}` | Deployment labels for KEDA Admission webhooks. Rendered through `tpl` |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |

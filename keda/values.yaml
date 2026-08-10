@@ -319,19 +319,23 @@ podLabels:
   metricsAdapter: {}
   # -- Pod labels for KEDA Admission webhooks
   webhooks: {}
+# Values here are rendered through `tpl`, so `{{ ... }}` is evaluated as a template.
+# Escape it as `{{ "{{" }} ... }}` if you need a literal.
 deploymentAnnotations:
-  # -- Deployment annotations for KEDA operator
+  # -- Deployment annotations for KEDA operator. Rendered through `tpl`
   keda: {}
-  # -- Deployment annotations for KEDA Metrics Adapter
+  # -- Deployment annotations for KEDA Metrics Adapter. Rendered through `tpl`
   metricsAdapter: {}
-  # -- Deployment annotations for KEDA Admission webhooks
+  # -- Deployment annotations for KEDA Admission webhooks. Rendered through `tpl`
   webhooks: {}
+# Values here are rendered through `tpl`, so `{{ ... }}` is evaluated as a template.
+# Escape it as `{{ "{{" }} ... }}` if you need a literal.
 deploymentLabels:
-  # -- Deployment labels for KEDA operator
+  # -- Deployment labels for KEDA operator. Rendered through `tpl`
   keda: {}
-  # -- Deployment labels for KEDA Metrics Adapter
+  # -- Deployment labels for KEDA Metrics Adapter. Rendered through `tpl`
   metricsAdapter: {}
-  # -- Deployment labels for KEDA Admission webhooks
+  # -- Deployment labels for KEDA Admission webhooks. Rendered through `tpl`
   webhooks: {}
 
 rbac:
