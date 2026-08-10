@@ -144,7 +144,7 @@ their default values.
 | `operator.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the operator |
 | `operator.extraContainers` | list | `[]` | Additional containers to run as part of the operator deployment |
 | `operator.extraInitContainers` | list | `[]` | Additional init containers to run as part of the operator deployment |
-| `operator.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA operator pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace. |
+| `operator.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA operator pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
 | `operator.leaderElectionID` | string | `nil` | When set, overrides the leader election Lease resource name via the `--leader-election-id` flag. When unset (default), the flag is not passed and the operator uses its built-in default (`operator.keda.sh`). Override to allow multiple independent KEDA operator deployments in the same namespace. |
 | `operator.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
@@ -191,7 +191,7 @@ their default values.
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.enabled` | bool | `true` | Enable KEDA metrics server and external metrics API resources. |
-| `metricsServer.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA metrics server pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace. |
+| `metricsServer.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA metrics server pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `metricsServer.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
@@ -340,7 +340,7 @@ their default values.
 | `webhooks.enabled` | bool | `true` |  |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
-| `webhooks.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA admission webhooks pod to opt into [user namespaces](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/). Leave unset to preserve the cluster default; set to `false` to run the pod in its own user namespace. |
+| `webhooks.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA admission webhooks pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
 | `webhooks.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":25,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for admission webhooks ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `webhooks.name` | string | `"keda-admission-webhooks"` | Name of the KEDA admission webhooks |
 | `webhooks.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
