@@ -126,6 +126,8 @@ their default values.
 | `service.minTlsVersion` | string | `"TLS13"` | The minimum TLS version to use when KEDA components listen via TLS-enabled services (gRPC & Webhook). |
 | `service.tlsCipherList` | string | `""` | The list of cipher suites to use when KEDA components listen via TLS-enabled services. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
+| `watchLabelSelector` | string | `""` | Restricts the operator to reconcile only ScaledObjects and ScaledJobs (and their derived HorizontalPodAutoscalers) matching the given Kubernetes label selector. Default (empty) means no label-based filtering. Mirrors `watchNamespace`, but filters by label instead of by namespace. Examples: "environment=production", "tier in (gold,silver)", "!canary" |
+| `watchLabelSelectorForTriggerauth` | string | `""` | Restricts the operator to reconcile only TriggerAuthentications and ClusterTriggerAuthentications matching the given Kubernetes label selector. Default (empty) means no label-based filtering. Decoupled from `watchLabelSelector` so a single cluster-scoped ClusterTriggerAuthentication can be shared across operators scoped to different label selectors. |
 | `watchNamespace` | string | `""` | Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces |
 
 ### Operator
