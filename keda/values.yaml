@@ -108,6 +108,8 @@ operator:
   # --Disable response compression for k8s restAPI in client-go.
   # Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission.
   disableCompression: true
+  # -- Port for the gRPC Metrics Service endpoint that the KEDA operator binds to and the metrics server connects to.
+  metricsServiceTargetPort: 9666
   # -- Leader election ID (Lease resource name) for the controller manager. Defaults to operator.keda.sh.
   # Override to allow multiple independent KEDA operator deployments in the same namespace.
   # leaderElectionID: "operator.keda.sh"

@@ -132,7 +132,7 @@ spec:
           - --logtostderr=true
           - --stderrthreshold={{ .Values.logging.metricServer.stderrthreshold }}
           - --disable-compression={{ .Values.metricsServer.disableCompression}}
-          - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:9666
+          - --metrics-service-address={{ .Values.operator.name }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.operator.metricsServiceTargetPort }}
           - --client-ca-file={{ .Values.certificates.mountPath }}/ca.crt
           - --tls-cert-file={{ .Values.certificates.mountPath }}/tls.crt
           - --tls-private-key-file={{ .Values.certificates.mountPath }}/tls.key
