@@ -26,3 +26,16 @@ app.kubernetes.io/version: {{ .Values.image.tag | default .Chart.AppVersion }}
 {{ . | toYaml }}
 {{- end }}
 {{- end }}
+
+{{/*
+Name of the service account to use.
+When serviceAccount.create is false and no name is given, fall back to the namespace's
+"default" service account rather than referencing one that does not exist.
+*/}}
+{{- define "external-scaler-azure-cosmos-db.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+{{- default .Chart.Name .Values.serviceAccount.name -}}
+{{- else -}}
+{{- default "default" .Values.serviceAccount.name -}}
+{{- end -}}
+{{- end -}}

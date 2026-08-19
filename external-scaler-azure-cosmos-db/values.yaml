@@ -24,3 +24,20 @@ resources:
   limits:
     cpu: 100m
     memory: 512Mi
+
+# -- Node selector for the 'Azure Cosmos DB external scaler' pod
+nodeSelector: {}
+
+# -- Tolerations for the 'Azure Cosmos DB external scaler' pod
+tolerations: []
+
+# -- Affinity for the 'Azure Cosmos DB external scaler' pod
+affinity: {}
+
+serviceAccount:
+  # -- Whether to create a ServiceAccount for the 'Azure Cosmos DB external scaler'
+  create: true
+  # -- Name of the ServiceAccount; defaults to the chart name
+  name: ""
+  # -- Annotations for the ServiceAccount (e.g. azure.workload.identity/client-id)
+  annotations: {}

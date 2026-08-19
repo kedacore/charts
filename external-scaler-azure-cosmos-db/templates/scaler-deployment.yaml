@@ -15,6 +15,7 @@ spec:
       labels:
         {{- include "external-scaler-azure-cosmos-db.labels" . | indent 8 }}
     spec:
+      serviceAccountName: {{ include "external-scaler-azure-cosmos-db.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
@@ -25,3 +26,15 @@ spec:
           resources:
             {{- .Values.resources | toYaml | nindent 12 }}
       terminationGracePeriodSeconds: 10
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
