@@ -84,6 +84,7 @@ their default values.
 | `customManagedBy` | string | `""` | When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution. |
 | `enableServiceLinks` | bool | `true` | Enable service links in pods. Although enabled, mirroring k8s default, it is highly recommended to disable, due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/) |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
+| `envComponent` | object | `{"metricsServer":[],"operator":[],"webhooks":[]}` | Additional environment variables that will be passed onto specific KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
 | `global.dnsConfig` | object | `{}` | DNS config for KEDA components |
 | `global.image.registry` | string | `nil` | Global image registry of KEDA components |
@@ -95,8 +96,8 @@ their default values.
 | `http.maxIdleConns` | int | `0` | Maximum number of idle HTTP connections across all hosts. Zero means no limit. |
 | `http.maxIdleConnsPerHost` | int | `1000` | Maximum number of idle HTTP connections to keep per host |
 | `http.minTlsVersion` | string | `"TLS12"` | The minimum TLS version to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and this value does not necessarily apply to them) |
-| `http.tlsCipherList` | string | `""` | The list of cipher suites to use when making HTTP over TLS connections. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `http.timeout` | int | `3000` | The default HTTP timeout to use for all scalers that use raw HTTP clients (some scalers use SDKs to access target services. These have built-in HTTP clients, and the timeout does not necessarily apply to them) |
+| `http.tlsCipherList` | string | `""` | The list of cipher suites to use when making HTTP over TLS connections. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `image.pullPolicy` | string | `"Always"` | Image pullPolicy for all KEDA components |
 | `imagePullSecrets` | list | `[]` | Name of secret to use to pull images to use to pull Docker images |
 | `networkPolicy.cilium` | object | `{"operator":{"extraEgressRules":[]}}` | Allow use of extra egress rules for cilium network policies |
@@ -123,8 +124,6 @@ their default values.
 | `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
 | `rbac.scaledRefKinds` | list | `[{"apiGroup":"*","kind":"*"}]` | List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`. The feature needs to be also enabled by `enabledCustomScaledRefKinds`. If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created note: Deployments and StatefulSets are supported out of the box |
 | `securityContext` | object | [See below](#KEDA-is-secure-by-default) | [Security context] for all containers |
-| `service.minTlsVersion` | string | `"TLS13"` | The minimum TLS version to use when KEDA components listen via TLS-enabled services (gRPC & Webhook). |
-| `service.tlsCipherList` | string | `""` | The list of cipher suites to use when KEDA components listen via TLS-enabled services. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `watchLabelSelector` | string | `""` | Restricts the operator to reconcile only ScaledObjects and ScaledJobs (and their derived HorizontalPodAutoscalers) matching the given Kubernetes label selector. Default (empty) means no label-based filtering. Mirrors `watchNamespace`, but filters by label instead of by namespace. Examples: "environment=production", "tier in (gold,silver)", "!canary" |
 | `watchLabelSelectorForTriggerauth` | string | `""` | Restricts the operator to reconcile only TriggerAuthentications and ClusterTriggerAuthentications matching the given Kubernetes label selector. Default (empty) means no label-based filtering. Decoupled from `watchLabelSelector` so a single cluster-scoped ClusterTriggerAuthentication can be shared across operators scoped to different label selectors. |
@@ -135,6 +134,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
+| `envComponent.operator` | list | `[]` | Additional KEDA Operator container environment variables |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -157,9 +157,9 @@ their default values.
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
+| `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `operator.useHostNetwork` | bool | `false` | Enable operator to use host network |
 | `permissions.operator.restrict.allowAllServiceAccountTokenCreation` | bool | `false` | Allow Keda to access all Service Token for KEDA operator |
-| `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
 | `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. If the namespace does not exist, this will cause the helm chart installation to fail. |
@@ -182,6 +182,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `envComponent.metricsServer` | list | `[]` | Additional Metrics Adapter container environment variables |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
@@ -212,8 +213,10 @@ their default values.
 | `resources.metricServer` | object | `{"limits":{"cpu":1,"memory":"1000Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Manage [resource request & limits] of KEDA metrics apiserver pod |
 | `securityContext.metricServer` | object | [See below](#KEDA-is-secure-by-default) | [Security context] of the metricServer container |
 | `service.annotations` | object | `{}` | Annotations to add the KEDA Metric Server service |
+| `service.minTlsVersion` | string | `"TLS13"` | The minimum TLS version to use when KEDA components provide a TLS-enabled service. |
 | `service.portHttps` | int | `443` | HTTPS port for KEDA Metric Server service |
 | `service.portHttpsTarget` | int | `6443` | HTTPS port for KEDA Metric Server container |
+| `service.tlsCipherList` | string | `""` | The list of cipher suites to use when KEDA components provide a TLS-enabled service. When left empty or unset, the TLS implementation will provide a default list of cipher suites which are believed to be secure. |
 | `service.type` | string | `"ClusterIP"` | KEDA Metric Server service type |
 | `serviceAccount.metricServer.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
@@ -320,6 +323,7 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `envComponent.webhooks` | list | `[]` | Additional KEDA admission webhook container environment variables |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
