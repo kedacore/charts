@@ -124,8 +124,8 @@ spec:
             {{- if .Values.env }}
             {{- toYaml .Values.env | nindent 12 }}
             {{- end }}
-            {{- if .Values.envComponent.metricsServer }}
-            {{- tpl (toYaml .Values.envComponent.metricsServer) $ | nindent 12 }}
+            {{- if .Values.metricsServer.env }}
+            {{- tpl (toYaml .Values.metricsServer.env) $ | nindent 12 }}
             {{- end }}
           command:
            - /keda-adapter

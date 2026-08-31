@@ -98,6 +98,10 @@ networkPolicy:
 operator:
   # -- Name of the KEDA operator
   name: keda-operator
+  # -- Additional KEDA Operator container environment variables
+  env: []
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
   # -- ReplicaSets for this Deployment you want to retain (Default: 10)
   revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA operator.
@@ -171,6 +175,10 @@ operator:
 metricsServer:
   # -- Enable KEDA metrics server and external metrics API resources.
   enabled: true
+  # -- Additional Metrics Adapter container environment variables
+  env: []
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
   # -- ReplicaSets for this Deployment you want to retain (Default: 10)
   revisionHistoryLimit: 10
   # -- Capability to configure the number of replicas for KEDA metric server.
@@ -223,6 +231,10 @@ metricsServer:
 webhooks:
   # It also used to enable or disable webhook patching in the operator
   enabled: true
+  # -- Additional KEDA admission webhook container environment variables
+  env: []
+  # - name: ENV_NAME
+  #   value: 'ENV-VALUE'
   # -- Port number to use for KEDA admission webhooks. Default is 9443.
   port: ""
   # -- Port number to use for KEDA admission webhooks health probe
@@ -670,21 +682,6 @@ extraArgs:
 env: []
 # - name: ENV_NAME
 #   value: 'ENV-VALUE'
-
-# -- Additional environment variables that will be passed onto specific KEDA components
-envComponent:
-  # -- Additional KEDA Operator container environment variables
-  operator: []
-  # - name: ENV_NAME
-  #   value: 'ENV-VALUE'
-  # -- Additional Metrics Adapter container environment variables
-  metricsServer: []
-  # - name: ENV_NAME
-  #   value: 'ENV-VALUE'
-  # -- Additional KEDA admission webhook container environment variables
-  webhooks: []
-  # - name: ENV_NAME
-  #   value: 'ENV-VALUE'
 
 # Extra volumes and volume mounts for the deployment. Optional.
 volumes:

@@ -84,7 +84,6 @@ their default values.
 | `customManagedBy` | string | `""` | When specified, each rendered resource will have `app.kubernetes.io/managed-by: ${this}` label on it. Useful, when using only helm template with some other solution. |
 | `enableServiceLinks` | bool | `true` | Enable service links in pods. Although enabled, mirroring k8s default, it is highly recommended to disable, due to its legacy status [Legacy container links](https://docs.docker.com/engine/network/links/) |
 | `env` | list | `[]` | Additional environment variables that will be passed onto all KEDA components |
-| `envComponent` | object | `{"metricsServer":[],"operator":[],"webhooks":[]}` | Additional environment variables that will be passed onto specific KEDA components |
 | `extraObjects` | list | `[]` | Array of extra K8s manifests to deploy |
 | `global.dnsConfig` | object | `{}` | DNS config for KEDA components |
 | `global.image.registry` | string | `nil` | Global image registry of KEDA components |
@@ -134,7 +133,6 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
-| `envComponent.operator` | list | `[]` | Additional KEDA Operator container environment variables |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
@@ -147,6 +145,7 @@ their default values.
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
 | `operator.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the operator |
+| `operator.env` | list | `[]` | Additional KEDA Operator container environment variables |
 | `operator.extraContainers` | list | `[]` | Additional containers to run as part of the operator deployment |
 | `operator.extraInitContainers` | list | `[]` | Additional init containers to run as part of the operator deployment |
 | `operator.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA operator pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
@@ -182,7 +181,6 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `envComponent.metricsServer` | list | `[]` | Additional Metrics Adapter container environment variables |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
@@ -197,6 +195,7 @@ their default values.
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
 | `metricsServer.dnsPolicy` | string | `"ClusterFirst"` | Defined the DNS policy for the metric server |
 | `metricsServer.enabled` | bool | `true` | Enable KEDA metrics server and external metrics API resources. |
+| `metricsServer.env` | list | `[]` | Additional Metrics Adapter container environment variables |
 | `metricsServer.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA metrics server pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
 | `metricsServer.livenessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":1}` | Liveness probes for Metrics API Server ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)) |
 | `metricsServer.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
@@ -323,7 +322,6 @@ their default values.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `envComponent.webhooks` | list | `[]` | Additional KEDA admission webhook container environment variables |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
@@ -347,6 +345,7 @@ their default values.
 | `webhooks.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA admission webhooks. Takes precedence over the `affinity` field |
 | `webhooks.dnsConfig` | object | `{}` | DNS config for KEDA admission webhooks pod |
 | `webhooks.enabled` | bool | `true` |  |
+| `webhooks.env` | list | `[]` | Additional KEDA admission webhook container environment variables |
 | `webhooks.failurePolicy` | string | `"Ignore"` | [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks |
 | `webhooks.healthProbePort` | int | `8081` | Port number to use for KEDA admission webhooks health probe |
 | `webhooks.hostUsers` | bool | `nil` | Sets `hostUsers` on the KEDA admission webhooks pod. Leave unset to preserve the cluster default, `false` to run the pod in its own [user namespace](https://kubernetes.io/docs/concepts/workloads/pods/user-namespaces/), or `true` to explicitly use the host user namespace. |
