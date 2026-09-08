@@ -26,6 +26,13 @@ spec:
   maxUnavailable: {{ .Values.podDisruptionBudget.operator.maxUnavailable }}
   {{- end }}
   {{- end }}
+  {{- $uepPolicy := .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  {{- if and .Values.podDisruptionBudget.operator .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
+  {{- $uepPolicy = .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
+  {{- end }}
+  {{- with $uepPolicy }}
+  unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}
