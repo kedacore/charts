@@ -27,8 +27,8 @@ metadata:
 spec:
   ports:
   - name: metricsservice
-    port: 9666
-    targetPort: 9666
+    port: {{ .Values.operator.metricsServiceTargetPort }}
+    targetPort: {{ .Values.operator.metricsServiceTargetPort }}
   {{- if .Values.prometheus.operator.enabled }}
   - name: metrics
     port: {{ .Values.prometheus.operator.port }}

@@ -26,7 +26,7 @@ spec:
         - namespaceSelector: {}
       ports:
         - protocol: TCP
-          port: 9666
+          port: {{ .Values.operator.metricsServiceTargetPort }}
     {{- if .Values.prometheus.operator.enabled }}
     # Allow ingress from any pod in the cluster on the prometheus metrics port
     - from:
