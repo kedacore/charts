@@ -170,6 +170,8 @@ spec:
               value: {{ .Values.operator.name }}
             - name: KEDA_HTTP_DEFAULT_TIMEOUT
               value: {{ .Values.http.timeout | quote }}
+            - name: KEDA_KUBERNETES_API_TIMEOUT
+              value: {{ .Values.operator.kubernetesApiTimeout | quote }}
             - name: KEDA_HTTP_MIN_TLS_VERSION
               value: {{ .Values.http.minTlsVersion }}
             - name: KEDA_HTTP_TLS_CIPHER_LIST
