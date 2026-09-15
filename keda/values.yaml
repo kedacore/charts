@@ -673,12 +673,17 @@ profiling:
     # -- Expose profiling on a specific port
     port: 8084
 
-## Extra KEDA Operator and Metrics Adapter container arguments
+## Extra KEDA Operator, Metrics Adapter and Admission Webhooks container arguments
 extraArgs:
   # -- Additional KEDA Operator container arguments
   keda: {}
   # -- Additional Metrics Adapter container arguments
   metricsAdapter: {}
+  # -- Additional KEDA admission webhooks container arguments
+  webhooks: {}
+  # Example:
+  # webhooks:
+  #   cache-miss-to-direct-client: "true"
 
 # -- Additional environment variables that will be passed onto all KEDA components
 env: []
