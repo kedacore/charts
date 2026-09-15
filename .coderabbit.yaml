@@ -1,0 +1,85 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: en-US
+early_access: false
+
+tone_instructions: >-
+  Be concise and actionable. Avoid style-only comments, repeating CI results,
+  and suggesting changes outside the PR scope.
+
+reviews:
+  profile: chill
+  high_level_summary: false
+  poem: false
+  request_changes_workflow: false
+  collapse_walkthrough: true
+  enable_prompt_for_ai_agents: false
+  assess_linked_issues: true
+
+  path_filters:
+    - "!docs/*.tgz"
+    - "!docs/index.yaml"
+    - "!keda/README.md"
+    - "!http-add-on/README.md"
+    - "!external-scaler-azure-cosmos-db/README.md"
+
+  path_instructions:
+    - path: "**/templates/**"
+      instructions: |
+        Review the rendered Kubernetes resources, not only the template syntax.
+        Check nil-safe defaults, toYaml indentation, quoting, namespace handling,
+        stable names/selectors, immutable-field changes, RBAC least privilege,
+        security contexts, and upgrade compatibility. Component overrides should
+        use the repository's established with/default fallback pattern.
+
+    - path: "**/values.yaml"
+      instructions: |
+        Preserve backward-compatible defaults. New values must be documented in the
+        matching README.md.gotmpl and, where a values schema exists, represented in
+        values.schema.json. Check that defaults render valid resources both when the
+        feature is disabled and enabled.
+
+    - path: "**/values.schema.json"
+      instructions: |
+        Check that schema types, constraints, defaults, and nesting match values.yaml
+        and the templates. Avoid constraints that reject previously valid values
+        unless the PR explicitly introduces a breaking change.
+
+    - path: "**/README.md.gotmpl"
+      instructions: |
+        This is the source for generated chart documentation. Check user-facing
+        examples and prose here; do not request direct edits to generated README.md.
+
+    - path: "keda/templates/crds/**"
+      instructions: |
+        These CRDs are imported from the corresponding KEDA release. Verify source
+        and version consistency and avoid suggesting stylistic hand edits.
+
+    - path: "**/Chart.yaml"
+      instructions: |
+        Check dependency and application-version consistency. Chart version bumps
+        normally belong to the documented release process, not ordinary feature PRs.
+
+    - path: ".github/workflows/**"
+      instructions: |
+        Review permissions, pinned action revisions, fork-controlled inputs, secret
+        exposure, shell injection risks, and coverage of each affected chart. Do not
+        duplicate findings already reported by CI.
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      - ".github/copilot-instructions.md"
+      - "CONTRIBUTING.md"
+  learnings:
+    scope: local
+  issues:
+    scope: local
+  pull_requests:
+    scope: local
+  linked_repositories:
+    - repository: "kedacore/keda"
+      instructions: >-
+        This is the source of KEDA APIs, CRDs, flags, images, RBAC, and runtime
+        behavior represented by the Helm chart. Use it to detect drift.
