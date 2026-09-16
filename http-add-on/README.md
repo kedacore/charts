@@ -212,6 +212,7 @@ their default values.
 | `interceptor.tls.skipVerify` | bool | `false` | Whether to skip TLS certificate verification for upstream connections. Also accepts the deprecated `skip_verify`. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
+| `interceptor.watchNamespace` | string | `""` | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the interceptor to watch all namespaces. |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
