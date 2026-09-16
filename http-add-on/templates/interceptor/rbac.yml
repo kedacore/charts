@@ -40,7 +40,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-interceptor
     app.kubernetes.io/component: interceptor
     app.kubernetes.io/name: http-add-on
