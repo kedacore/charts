@@ -46,7 +46,7 @@ We are a Cloud Native Computing Foundation (CNCF) graduated project.
 helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
-helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.15.0
+helm install http-add-on kedacore/keda-add-ons-http --create-namespace --namespace keda --version 0.16.0
 ```
 
 ## Introduction
@@ -168,9 +168,9 @@ their default values.
 | `interceptor.admin.port` | int | `9090` | The port for the interceptor's admin server to run on |
 | `interceptor.admin.service` | string | `"interceptor-admin"` | The name of the Kubernetes `Service` for the interceptor's admin service |
 | `interceptor.affinity` | object | `{}` | Affinity for pod scheduling ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes-using-node-affinity/)) |
-| `interceptor.coldStart.maxPendingRequests` | int | `0` | Default limit on requests held per route while its backend has no ready endpoints, e.g. during scale-from-zero. Routes override it via `coldStart.maxPendingRequests`. 0 means unlimited. The limit applies per interceptor replica. |
-| `interceptor.drainTimeout` | string | `"30s"` | Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds). |
+| `interceptor.coldStart.maxPendingRequests` | int | `0` | Default limit on requests held per route while its backend has no ready endpoints, e.g. during scale-from-zero. Routes override it via coldStart.maxPendingRequests. 0 means unlimited. The limit applies per interceptor replica. |
 | `interceptor.directPodRouting` | bool | `true` | Route requests directly to a ready pod IP instead of the Service ClusterIP, bypassing kube-proxy and other Service-layer features (NetworkPolicy, session affinity, topology-aware routing). Set to false to keep Service-based routing. |
+| `interceptor.drainTimeout` | string | `"30s"` | Maximum time to wait for in-flight requests (including WebSocket connections) to complete after the proxy listener closes. `0` waits indefinitely (bounded only by terminationGracePeriodSeconds). |
 | `interceptor.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
 | `interceptor.extraVolumeMounts` | list | `[]` | Extra volume mounts for the interceptor container |
 | `interceptor.extraVolumes` | list | `[]` | Extra volumes for the interceptor pod |
@@ -212,7 +212,6 @@ their default values.
 | `interceptor.tls.skipVerify` | bool | `false` | Whether to skip TLS certificate verification for upstream connections. Also accepts the deprecated `skip_verify`. |
 | `interceptor.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `interceptor.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
-| `interceptor.watchNamespace` | string | `""` | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the interceptor to watch all namespaces. |
 
 Specify each parameter using the `--set key=value[,key=value]` argument to
 `helm install`. For example:
