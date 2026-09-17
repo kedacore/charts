@@ -173,8 +173,8 @@ operator:
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
   tolerations: []
-  # -- Timeout for Kubernetes API operations in scaling loops. Set to `0s` to disable the timeout.
-  kubernetesApiTimeout: 0s
+  # -- Additional timeout beyond the ScaledObject or ScaledJob polling interval for Kubernetes API operations in scaling loops. Setting `0s` uses the polling interval as the timeout; the timeout cannot be disabled
+  kubernetesApiTimeout: 5s
 
 metricsServer:
   # -- Enable KEDA metrics server and external metrics API resources.
