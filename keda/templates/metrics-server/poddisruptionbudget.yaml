@@ -26,6 +26,13 @@ spec:
   maxUnavailable: {{ .Values.podDisruptionBudget.metricServer.maxUnavailable }}
   {{- end }}
   {{- end }}
+  {{- $uepPolicy := .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  {{- if and .Values.podDisruptionBudget.metricServer .Values.podDisruptionBudget.metricServer.unhealthyPodEvictionPolicy }}
+  {{- $uepPolicy = .Values.podDisruptionBudget.metricServer.unhealthyPodEvictionPolicy }}
+  {{- end }}
+  {{- with $uepPolicy }}
+  unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}-metrics-apiserver

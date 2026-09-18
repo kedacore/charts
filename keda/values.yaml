@@ -314,20 +314,25 @@ upgradeStrategy:
     #   maxSurge: 1
 
 podDisruptionBudget:
+  #  unhealthyPodEvictionPolicy: AlwaysAllow
+
   # -- Capability to configure [Pod Disruption Budget]
   operator: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
+    #  unhealthyPodEvictionPolicy: AlwaysAllow
 
   # -- Capability to configure [Pod Disruption Budget]
   metricServer: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
+    #  unhealthyPodEvictionPolicy: AlwaysAllow
 
   # -- Capability to configure [Pod Disruption Budget]
   webhooks: {}
     #  minAvailable: 1
     #  maxUnavailable: 1
+    #  unhealthyPodEvictionPolicy: AlwaysAllow
 
 # -- Custom labels to add into metadata
 additionalLabels:
