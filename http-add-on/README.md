@@ -194,7 +194,7 @@ their default values.
 | `interceptor.resources.limits` | object | `{"cpu":0.5,"memory":"64Mi"}` | The CPU/memory resource limit for the interceptor component |
 | `interceptor.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the interceptor component |
 | `interceptor.responseHeaderTimeout` | string | `""` | Time to wait for response headers from the backend. When unset, uses the code default (300s). |
-| `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
+| `interceptor.scaledObject.pollingInterval` | int | `1` | The interval (in seconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor |
 | `interceptor.shutdownDelay` | string | `"5s"` | Time between receiving SIGTERM and closing the proxy listener. During this window the readiness probe returns 503 while the server continues serving both in-flight and new requests, giving Kubernetes time to propagate endpoint removal. |
 | `interceptor.tcpConnectTimeout` | string | `""` | Per-attempt TCP dial timeout. When unset, uses the code default (500ms). |
 | `interceptor.terminationGracePeriodSeconds` | int | `45` | Time Kubernetes waits before sending SIGKILL after SIGTERM. Must be at least shutdownDelay + drainTimeout. |
