@@ -1,3 +1,9 @@
+{{- include "keda.validateVault" . -}}
+{{- include "keda.validateServiceAccountTokens" . -}}
+{{- $vault := include "keda.vaultAuth" . | fromJson -}}
+{{- $vaultProjections := include "keda.vaultProjections" . | fromJsonArray -}}
+{{- $tokens := include "keda.serviceAccountTokens" . | fromJson -}}
+{{- $tokenAudiences := include "keda.serviceAccountTokenAudiences" . | fromJsonArray -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -122,6 +128,16 @@ spec:
           - "--http-max-idle-conns={{ .Values.http.maxIdleConns }}"
           - "--http-max-idle-conns-per-host={{ .Values.http.maxIdleConnsPerHost }}"
           - "--http-idle-conn-timeout={{ .Values.http.idleConnTimeout }}"
+          {{- if or (eq $tokens.mode "legacy") $tokenAudiences }}
+          - {{ printf "--service-account-token-mode=%s" $tokens.mode | quote }}
+          {{- end }}
+          {{- if $vault.audience }}
+          {{- $tokenFile := "" }}
+          {{- if and $vault.audience $vault.projectedTokenMountPath }}
+          {{- $tokenFile = printf "%s/token" $vault.projectedTokenMountPath }}
+          {{- end }}
+          - {{ printf "--vault-kubernetes-auth-token-file=%s" $tokenFile | quote }}
+          {{- end }}
           {{- range $key, $value := .Values.extraArgs.keda }}
           - "--{{ $key }}={{ $value }}"
           {{- end }}
@@ -154,6 +170,14 @@ spec:
             name: metricsservice
             protocol: TCP
           env:
+            {{- if $tokenAudiences }}
+            - name: KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES
+              value: {{ mustToJson $tokenAudiences | quote }}
+            {{- end }}
+            {{- with .Values.operator.outboundFilter }}
+            - name: KEDA_OUTBOUND_FILTER
+              value: {{ mustToJson . | quote }}
+            {{- end }}
             - name: WATCH_NAMESPACE
               value: {{ .Values.watchNamespace | quote }}
             - name: WATCH_LABEL_SELECTOR
@@ -201,6 +225,11 @@ spec:
             {{- tpl (toYaml .Values.operator.env) $ | nindent 12 }}
             {{- end }}
           volumeMounts:
+          {{- range $vaultProjections }}
+          - name: {{ include "keda.vaultVolumeName" .audience }}
+            mountPath: {{ .projectedTokenMountPath | quote }}
+            readOnly: true
+          {{- end }}
           - mountPath: {{ .Values.certificates.mountPath }}
             name: certificates
             readOnly: true
@@ -229,6 +258,15 @@ spec:
       {{- toYaml .Values.operator.extraInitContainers | nindent 8 }}
       {{- end }}
       volumes:
+      {{- range $vaultProjections }}
+      - name: {{ include "keda.vaultVolumeName" .audience }}
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: token
+              audience: {{ .audience | quote }}
+              expirationSeconds: 3600
+      {{- end }}
       - name: certificates
         secret:
           defaultMode: 420
