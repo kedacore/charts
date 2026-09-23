@@ -27,6 +27,13 @@ spec:
   maxUnavailable: {{ .Values.podDisruptionBudget.webhooks.maxUnavailable }}
   {{- end }}
   {{- end }}
+  {{- $uepPolicy := .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  {{- if and .Values.podDisruptionBudget.webhooks .Values.podDisruptionBudget.webhooks.unhealthyPodEvictionPolicy }}
+  {{- $uepPolicy = .Values.podDisruptionBudget.webhooks.unhealthyPodEvictionPolicy }}
+  {{- end }}
+  {{- with $uepPolicy }}
+  unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.webhooks.name }}
