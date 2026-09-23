@@ -14,6 +14,9 @@ spec:
     metadata:
       labels:
         {{- include "external-scaler-azure-cosmos-db.labels" . | indent 8 }}
+        {{- if .Values.podIdentity.azureWorkload.enabled }}
+        azure.workload.identity/use: "true"
+        {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
@@ -25,3 +28,6 @@ spec:
           resources:
             {{- .Values.resources | toYaml | nindent 12 }}
       terminationGracePeriodSeconds: 10
+      {{- if .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      {{- end }}
