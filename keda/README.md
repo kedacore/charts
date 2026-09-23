@@ -130,10 +130,19 @@ their default values.
 
 ### Operator
 
+KEDA 2.21+ requires approved token audiences for Vault Kubernetes authentication and
+`boundServiceAccountToken`. To restore the old, insecure behavior, set
+`operator.serviceAccountTokens.mode: legacy` and clear all audience settings,
+including `hashiCorpVault.kubernetesAuth.audience`. Vault endpoint filtering is
+optional and off by default. See the [migration guide](https://keda.sh/docs/2.21/migration/#service-account-token-audiences)
+for receiver configuration and upgrade steps.
+
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
+| `hashiCorpVault.kubernetesAuth.audience` | string | `"vault"` | Projected operator-token audience, also globally approved. Empty disables projection; does not configure named-SA minting. Use an audience not accepted by kube-apiserver. |
+| `hashiCorpVault.kubernetesAuth.projectedTokenMountPath` | string | `"/var/run/secrets/keda-vault"` | Mount directory for the Vault token (<path>/token). Empty/null disables projection and implicit file selection; explicit TA token paths remain usable. |
 | `image.keda.registry` | string | `"ghcr.io"` | Image registry of KEDA operator |
 | `image.keda.repository` | string | `"kedacore/keda"` | Image name of KEDA operator |
 | `image.keda.tag` | string | `""` | Image tag of KEDA operator. Optional, given app version of Helm chart is used by default |
@@ -155,15 +164,18 @@ their default values.
 | `operator.metricsServiceTargetPort` | int | `9666` | Port for the gRPC Metrics Service endpoint that the KEDA operator binds to and the metrics server connects to. |
 | `operator.name` | string | `"keda-operator"` | Name of the KEDA operator |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `operator.outboundFilter` | object | `{}` | Optional Vault endpoint filter (KEDA 2.21+), passed as KEDA_OUTBOUND_FILTER. Empty disables filtering. Max 64 KiB. |
 | `operator.readinessProbe` | object | `{"failureThreshold":3,"initialDelaySeconds":20,"periodSeconds":3,"successThreshold":1,"timeoutSeconds":1}` | Readiness probes for operator ([docs](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)) |
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
+| `operator.serviceAccountTokens.additionalAllowedAudiences` | list | `[]` | Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config: max 64 KiB. |
+| `operator.serviceAccountTokens.mode` | string | `"enforce-audience"` | Token audience policy for Vault and boundServiceAccountToken. Legacy disables enforcement and cannot be combined with configured audiences. |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `operator.useHostNetwork` | bool | `false` | Enable operator to use host network |
 | `permissions.operator.restrict.allowAllServiceAccountTokenCreation` | bool | `false` | Allow Keda to access all Service Token for KEDA operator |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
-| `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. If the namespace does not exist, this will cause the helm chart installation to fail. |
+| `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. Optional audience configures minting for this namespace/name; omit it in legacy mode. Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES. If the namespace does not exist, this will cause the helm chart installation to fail. |
 | `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
