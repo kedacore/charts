@@ -169,13 +169,13 @@ for receiver configuration and upgrade steps.
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `operator.serviceAccountTokens.additionalAllowedAudiences` | list | `[]` | Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config: max 64 KiB. |
-| `operator.serviceAccountTokens.mode` | string | `"enforce-audience"` | Token audience policy for Vault and boundServiceAccountToken. Legacy disables enforcement and cannot be combined with configured audiences. |
+| `operator.serviceAccountTokens.mode` | string | `"enforce-audience"` | Token audience policy shared by Vault, boundServiceAccountToken and the gcp-workload-service-account, azure-workload-service-account and aws-workload-service-account providers. Legacy disables enforcement, cannot be combined with configured audiences, and does not support these providers. |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `operator.useHostNetwork` | bool | `false` | Enable operator to use host network |
 | `permissions.operator.restrict.allowAllServiceAccountTokenCreation` | bool | `false` | Allow Keda to access all Service Token for KEDA operator |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
-| `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. Optional audience configures minting for this namespace/name; omit it in legacy mode. Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES. If the namespace does not exist, this will cause the helm chart installation to fail. |
+| `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for Vault, boundServiceAccountToken and the gcp-workload-service-account, azure-workload-service-account and aws-workload-service-account providers. Audience configures minting for this exact namespace/name and is required for explicit service account selection; omit it in legacy mode. Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES. Cloud federation requires a provider-specific audience; see the service account selection section in the README. Approval delegates all cloud identities trusting this account and audience to users who can configure scaling authentication in its namespace, even when their Pods do not use the account. Shared Vault and boundServiceAccountToken flows can export the raw federation JWT; credentials are not confined to KEDA or scaling operations. If the namespace does not exist, this will cause the helm chart installation to fail. |
 | `podAnnotations.keda` | object | `{}` | Pod annotations for KEDA operator |
 | `podDisruptionBudget.operator` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.keda` | object | `{}` | Pod labels for KEDA operator |
@@ -190,6 +190,87 @@ for receiver configuration and upgrade steps.
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
 | `volumes.keda.extraVolumes` | list | `[]` | Extra volumes for KEDA deployment |
+
+#### Service account selection for cloud federation
+
+The `gcp-workload-service-account`, `azure-workload-service-account`, and
+`aws-workload-service-account` providers require `spec.podIdentity.serviceAccountName`
+and exchange a token for that account in the ScaledObject or ScaledJob namespace
+with Google IAM, Microsoft Entra ID, or AWS STS. This requires matching operator
+and CRD support; updating the CRDs alone does not enable this feature in older
+operator versions.
+
+Create the workload namespaces and service accounts before installing the chart,
+then approve each exact namespace/account and its token audience:
+
+```yaml
+operator:
+  serviceAccountTokens:
+    mode: enforce-audience
+permissions:
+  operator:
+    restrict:
+      serviceAccountTokenCreationRoles:
+        - name: scaling-gcp
+          namespace: payments
+          audience: https://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/kubernetes/providers/production-cluster
+        - name: scaling-azure
+          namespace: payments
+          audience: api://AzureADTokenExchange
+        - name: scaling-aws
+          namespace: payments
+          audience: sts.amazonaws.com
+```
+
+The chart grants token-creation permissions for each listed account and supplies
+the audience mappings to the operator. Keep
+`permissions.operator.restrict.allowAllServiceAccountTokenCreation` disabled.
+An entry in `operator.serviceAccountTokens.additionalAllowedAudiences` alone does
+not approve a service account for this flow. Each namespace/account supports one
+audience; use separate accounts for different cloud providers. Explicit selection
+does not support `legacy` token mode.
+
+Configure the cloud identity provider to trust the cluster's OIDC issuer and the
+exact subject `system:serviceaccount:payments:SERVICE_ACCOUNT`. Grant only the
+permissions needed by the scaler. Use an audience that the Kubernetes API server
+does not accept.
+
+The authentication resource sets `serviceAccountName` in its top-level
+`spec.podIdentity`, together with the provider's identity fields:
+
+| Provider | Identity fields | Token audience |
+| --- | --- | --- |
+| `gcp-workload-service-account` | Optional `identityId` for IAM service-account impersonation | Google IAM workload identity pool/provider resource, as above |
+| `azure-workload-service-account` | Required `identityId` and `identityTenantId` | `api://AzureADTokenExchange` |
+| `aws-workload-service-account` | Required `roleArn` | `sts.amazonaws.com` |
+
+The existing `gcp`, `azure-workload`, and `aws` providers keep their existing
+authentication behavior and do not accept `serviceAccountName`.
+
+The namespace always comes from the consuming ScaledObject or ScaledJob, including
+when using a ClusterTriggerAuthentication. Nested secret-provider authentication
+does not support this field. This flow covers Google IAM WIF, Azure WIF, and AWS
+IAM OIDC/IRSA; GKE-managed federation and EKS Pod Identity use separate mechanisms.
+
+**Approval delegates the account's cloud identities to the namespace.** Users who
+can configure scaling resources and their authentication there can select an
+approved account, even if their workload Pods do not use that account. KEDA does
+not authorize the individual authentication resource author against that cloud
+identity.
+
+The audience mappings and token-creation RBAC are shared with
+`boundServiceAccountToken` and Vault Kubernetes authentication. Namespace users
+can use those flows to send the raw Kubernetes federation JWT to an endpoint they
+control, then exchange it outside KEDA. Approval therefore delegates every cloud
+identity whose trust policy accepts that issuer, subject, and audience. For AWS,
+this can include roles other than the authentication resource's `roleArn`.
+Credentials are not confined to KEDA or to scaling operations. Use dedicated
+service accounts and least-privilege cloud identities for this delegation.
+
+Removing an approval stops future Kubernetes token requests after the operator
+applies the updated configuration; previously issued Kubernetes tokens and cloud
+credentials can remain usable until they expire. The configured scaler may send
+cloud credentials to its metrics endpoint.
 
 ### Metrics server
 

@@ -97,7 +97,7 @@ networkPolicy:
 
 operator:
   serviceAccountTokens:
-    # -- Token audience policy for Vault and boundServiceAccountToken. When configured as "legacy", it disables enforcement and cannot be combined with configured audiences.
+    # -- Token audience policy shared by Vault, boundServiceAccountToken and the gcp-workload-service-account, azure-workload-service-account and aws-workload-service-account providers. Legacy disables enforcement, cannot be combined with configured audiences, and does not support these providers.
     mode: enforce-audience  # enforce-audience, legacy
     # -- Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config.
     additionalAllowedAudiences: []
@@ -984,9 +984,12 @@ permissions:
       # the default is an empty array -> no restriction on the secret name
       namesAllowList: []
       # -- Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator
-      # to request service account tokens for use with the boundServiceAccountToken trigger source.
-      # Optional audience configures minting for this namespace/name; omit it in legacy mode.
+      # to request service account tokens for Vault, boundServiceAccountToken and the gcp-workload-service-account, azure-workload-service-account and aws-workload-service-account providers.
+      # Audience configures minting for this exact namespace/name and is required for explicit service account selection; omit it in legacy mode.
       # Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES.
+      # Cloud federation requires a provider-specific audience; see the service account selection section in the README.
+      # Approval delegates all cloud identities trusting this account and audience to users who can configure scaling authentication in its namespace, even when their Pods do not use the account.
+      # Shared Vault and boundServiceAccountToken flows can export the raw federation JWT; credentials are not confined to KEDA or scaling operations.
       # If the namespace does not exist, this will cause the helm chart installation to fail.
       serviceAccountTokenCreationRoles: []
       # - name: metrics-reader
