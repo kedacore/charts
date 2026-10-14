@@ -379,6 +379,10 @@ rbac:
   # This could also be achieved by the Kubernetes control plane manager flag --use-service-account-credentials:
   # [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/)
   controlPlaneServiceAccountsNamespace: kube-system
+  # -- Grant the metrics server read access to the `extension-apiserver-authentication` ConfigMap via a cluster-scoped
+  # ClusterRole/ClusterRoleBinding instead of a RoleBinding namespaced into `controlPlaneServiceAccountsNamespace`.
+  # Useful on clusters where that namespace is immutable to the installing principal.
+  authReaderClusterScoped: false
   # -- List of custom resources that support the `scale` subresource and can be referenced by `scaledobject.spec.scaleTargetRef`.
   # The feature needs to be also enabled by `enabledCustomScaledRefKinds`.
   # If left empty, RBAC for `apiGroups: *` and `resources: *, */scale` will be created
