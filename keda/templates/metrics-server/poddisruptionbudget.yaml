@@ -30,8 +30,10 @@ spec:
   {{- if and .Values.podDisruptionBudget.metricServer .Values.podDisruptionBudget.metricServer.unhealthyPodEvictionPolicy }}
   {{- $uepPolicy = .Values.podDisruptionBudget.metricServer.unhealthyPodEvictionPolicy }}
   {{- end }}
+  {{- if semverCompare ">=1.26-0" .Capabilities.KubeVersion.Version }}
   {{- with $uepPolicy }}
   unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
   {{- end }}
   selector:
     matchLabels:

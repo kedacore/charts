@@ -30,10 +30,9 @@ spec:
   {{- if and .Values.podDisruptionBudget.operator .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
   {{- $uepPolicy = .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
   {{- end }}
-  {{- if and (semverCompare ">=1.26-0" .Capabilities.KubeVersion.Version) $uepPolicy }}
+  {{- if semverCompare ">=1.26-0" .Capabilities.KubeVersion.Version }}
   {{- with $uepPolicy }}
   unhealthyPodEvictionPolicy: {{ . }}
-  {{- end }}
   {{- end }}
   {{- end }}
   selector:
