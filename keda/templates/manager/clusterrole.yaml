@@ -271,7 +271,7 @@ roleRef:
   name: {{ $.Values.operator.name }}-token-creator-{{ $r.name }}
 subjects:
 - kind: ServiceAccount
-  name: {{ $.Values.operator.name }}
+  name: {{ ($.Values.serviceAccount.operator).name | default $.Values.serviceAccount.name }}
   namespace: {{ $.Release.Namespace }}
 {{- end }}
 {{- end }}

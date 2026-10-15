@@ -117,6 +117,10 @@ spec:
         - name: PROFILING_BIND_ADDRESS
           value: "127.0.0.1:{{ .Values.profiling.interceptor.port }}"
         {{- end}}
+        {{- if .Values.interceptor.watchNamespace }}
+        - name: KEDA_HTTP_WATCH_NAMESPACE
+          value: "{{ .Values.interceptor.watchNamespace }}"
+        {{- end }}
         {{- range $key, $value := .Values.interceptor.extraEnvs }}
         - name: {{ $key }}
           value: {{ $value | quote }}

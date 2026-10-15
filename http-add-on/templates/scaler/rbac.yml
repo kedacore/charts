@@ -31,7 +31,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-external-scaler
     app.kubernetes.io/component: scaler
     app.kubernetes.io/name: http-add-on

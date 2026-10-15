@@ -96,6 +96,17 @@ networkPolicy:
       extraEgressRules: []
 
 operator:
+  serviceAccountTokens:
+    # -- Token audience policy for Vault and boundServiceAccountToken. When configured as "legacy", it disables enforcement and cannot be combined with configured audiences.
+    mode: enforce-audience  # enforce-audience, legacy
+    # -- Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config.
+    additionalAllowedAudiences: []
+  # -- Optional endpoint filter, passed as KEDA_OUTBOUND_FILTER. Empty disables filtering. Max 64 KiB.
+  outboundFilter: {}
+  # Example policy (replace {} above):
+  #   hashiCorpVault:
+  #     mode: "off" # off, warn, or enforce
+  #     allowedEndpoints: [] # exact HTTP(S) origins; empty denies all in enforce mode
   # -- Name of the KEDA operator
   name: keda-operator
   # -- Additional KEDA Operator container environment variables
@@ -173,10 +184,14 @@ operator:
   nodeSelector: {}
   # -- Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/))
   tolerations: []
+  # -- Additional timeout beyond the ScaledObject or ScaledJob polling interval for Kubernetes API operations in scaling loops. Setting `0s` uses the polling interval as the timeout; the timeout cannot be disabled
+  kubernetesApiTimeout: 5s
 
 metricsServer:
-  # -- Enable KEDA metrics server and external metrics API resources.
+  # -- Enable KEDA metrics server.
   enabled: true
+  # -- Enable registering KEDA metrics server as external metrics API resource.
+  registerAPIService: true
   # -- Additional Metrics Adapter container environment variables
   env: []
   # - name: ENV_NAME
@@ -458,6 +473,13 @@ grpcTLSCertsSecret: ""
 # over TLS (recommended). This variable holds the name of the secret that
 # will be mounted to the /vault path on the Pod
 hashiCorpVaultTLS: ""
+
+hashiCorpVault:
+  kubernetesAuth:
+    # -- Projected operator-token audience, also globally approved. Empty disables projection; does not configure named-SA minting. Use an audience not accepted by kube-apiserver.
+    audience: vault
+    # -- Mount directory for the Vault token (<path>/token). Empty/null disables projection and implicit file selection; explicit TA token paths remain usable.
+    projectedTokenMountPath: /var/run/secrets/keda-vault
 
 logging:
   operator:
@@ -968,10 +990,13 @@ permissions:
       namesAllowList: []
       # -- Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator
       # to request service account tokens for use with the boundServiceAccountToken trigger source.
+      # Optional audience configures minting for this namespace/name; omit it in legacy mode.
+      # Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES.
       # If the namespace does not exist, this will cause the helm chart installation to fail.
       serviceAccountTokenCreationRoles: []
-      # - name: myServiceAccount
-      #   namespace: myServiceAccountNamespace
+      # - name: metrics-reader
+      #   namespace: apps
+      #   audience: metrics-api
       # -- Allow Keda to access all Service Token for KEDA operator
       allowAllServiceAccountTokenCreation: false
 

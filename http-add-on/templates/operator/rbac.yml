@@ -35,7 +35,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-role
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
@@ -90,7 +89,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-metrics-reader
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
@@ -108,7 +106,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-role-binding
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
@@ -130,7 +127,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-rolebinding
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on
@@ -152,7 +148,6 @@ metadata:
   labels:
     httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
-    app: {{ .Chart.Name }}
     name: {{ .Release.Name }}-auth-delegator
     app.kubernetes.io/component: operator
     app.kubernetes.io/name: http-add-on

@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "operator": {
+      "type": "object",
+      "properties": {
+        "serviceAccountTokens": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "mode": {"type": "string", "enum": ["enforce-audience", "legacy"]},
+            "additionalAllowedAudiences": {
+              "type": "array",
+              "items": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "outboundFilter": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "hashiCorpVault": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "mode": {"type": "string", "enum": ["off", "warn", "enforce"]},
+                "allowedEndpoints": {
+                  "type": "array",
+                  "items": {"type": "string", "pattern": "^https?://[^/?#@*\\s]+/?$"}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "hashiCorpVault": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kubernetesAuth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "audience": {"type": "string"},
+            "projectedTokenMountPath": {"type": ["string", "null"], "pattern": "^(/.*)?$"}
+          }
+        }
+      }
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "operator": {
+          "type": "object",
+          "properties": {
+            "restrict": {
+              "type": "object",
+              "properties": {
+                "serviceAccountTokenCreationRoles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {"type": "string", "maxLength": 253, "pattern": "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$"},
+                      "namespace": {"type": "string", "maxLength": 63, "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},
+                      "audience": {"type": "string", "minLength": 1}
+                    },
+                    "required": ["name", "namespace"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

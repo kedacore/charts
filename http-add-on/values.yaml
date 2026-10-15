@@ -182,7 +182,7 @@ interceptor:
   # configuration for the ScaledObject resource for the
   # interceptor
   scaledObject:
-    # -- The interval (in milliseconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor
+    # -- The interval (in seconds) that KEDA should poll the external scaler to fetch scaling metrics about the interceptor
     pollingInterval: 1
 
   # -- Time between receiving SIGTERM and closing the proxy listener. During this window the readiness probe returns 503 while the server continues serving both in-flight and new requests, giving Kubernetes time to propagate endpoint removal.

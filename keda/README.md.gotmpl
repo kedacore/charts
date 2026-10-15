@@ -59,17 +59,24 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if not (or (contains "operator" .Key) (contains "keda" .Key) (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (contains "webhooks" .Key) (hasPrefix "service." .Key) ) }}
+  {{- if not (or (contains "operator" .Key) (contains "keda" .Key) (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "metricServer" .Key) (contains "metricsServer" .Key) (contains "metricsApiServer" .Key) (contains "metricsAdapter" .Key) (contains "webhooks" .Key) (hasPrefix "service." .Key) (hasPrefix "hashiCorpVault." .Key) ) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
 
 ### Operator
 
+KEDA 2.21+ requires approved token audiences for Vault Kubernetes authentication and
+`boundServiceAccountToken`. To restore the old, insecure behavior, set
+`operator.serviceAccountTokens.mode: legacy` and clear all audience settings,
+including `hashiCorpVault.kubernetesAuth.audience`. Vault endpoint filtering is
+optional and off by default. See the [migration guide](https://keda.sh/docs/2.21/migration/#service-account-token-audiences)
+for receiver configuration and upgrade steps.
+
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 {{- range .Values }}
-  {{- if and (or (contains "operator" .Key) (contains "keda" .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "profiling" .Key))) }}
+  {{- if and (or (contains "operator" .Key) (contains "keda" .Key) (hasPrefix "hashiCorpVault." .Key)) (not (or (contains "opentelemetry" .Key) (contains "prometheus" .Key) (contains "profiling" .Key))) }}
 | `{{ .Key }}` | {{ .Type }} | {{ if .Default }}{{ .Default }}{{ else }}{{ .AutoDefault }}{{ end }} | {{ if .Description }}{{ .Description }}{{ else }}{{ .AutoDescription }}{{ end }} |
   {{- end }}
 {{- end }}
