@@ -124,8 +124,8 @@ their default values.
 | `operator.metrics.secure` | bool | `true` | Enable HTTPS for the metrics endpoint |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `operator.pdb.enabled` | bool | `false` | Whether to install the `PodDisruptionBudget` for the operator |
-| `operator.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the operator (used when `minAvailable` is unset) |
-| `operator.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the operator. Takes precedence over `maxUnavailable`, since a PDB can't set both |
+| `operator.pdb.maxUnavailable` | int or string | `1` | The maximum number of replicas that can be unavailable for the operator when `minAvailable` is unset. `0` blocks voluntary evictions |
+| `operator.pdb.minAvailable` | int or string | `nil` | The minimum number of replicas that should be available for the operator. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both |
 | `operator.podAnnotations` | object | `{}` | Annotations to be added to the operator pods |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
@@ -150,8 +150,8 @@ their default values.
 | `scaler.metrics.prometheus.port` | int | `2223` | Port for the scaler's Prometheus `/metrics` endpoint |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `scaler.pdb.enabled` | bool | `false` | Whether to install the `PodDisruptionBudget` for the scaler |
-| `scaler.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the scaler (used when `minAvailable` is unset) |
-| `scaler.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the scaler. Takes precedence over `maxUnavailable`, since a PDB can't set both |
+| `scaler.pdb.maxUnavailable` | int or string | `1` | The maximum number of replicas that can be unavailable for the scaler when `minAvailable` is unset. `0` blocks voluntary evictions |
+| `scaler.pdb.minAvailable` | int or string | `nil` | The minimum number of replicas that should be available for the scaler. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.podAnnotations` | object | `{}` | Annotations to be added to the scaler pods |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |

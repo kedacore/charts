@@ -83,9 +83,9 @@ operator:
   pdb:
     # -- Whether to install the `PodDisruptionBudget` for the operator
     enabled: false
-    # -- The minimum number of replicas that should be available for the operator. Takes precedence over `maxUnavailable`, since a PDB can't set both
-    minAvailable: 0
-    # -- The maximum number of replicas that can be unavailable for the operator (used when `minAvailable` is unset)
+    # -- (int or string) The minimum number of replicas that should be available for the operator. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both
+    minAvailable: null
+    # -- (int or string) The maximum number of replicas that can be unavailable for the operator when `minAvailable` is unset. `0` blocks voluntary evictions
     maxUnavailable: 1
 
   # Operator metrics endpoint configuration
@@ -141,9 +141,9 @@ scaler:
   pdb:
     # -- Whether to install the `PodDisruptionBudget` for the scaler
     enabled: false
-    # -- The minimum number of replicas that should be available for the scaler. Takes precedence over `maxUnavailable`, since a PDB can't set both
-    minAvailable: 0
-    # -- The maximum number of replicas that can be unavailable for the scaler (used when `minAvailable` is unset)
+    # -- (int or string) The minimum number of replicas that should be available for the scaler. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both
+    minAvailable: null
+    # -- (int or string) The maximum number of replicas that can be unavailable for the scaler when `minAvailable` is unset. `0` blocks voluntary evictions
     maxUnavailable: 1
 
   # OpenTelemetry observability configuration for the scaler
