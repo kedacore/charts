@@ -123,6 +123,9 @@ their default values.
 | `operator.metrics.certDir` | string | `""` | Directory containing TLS certificates (tls.crt/tls.key). If empty, self-signed certs are generated. |
 | `operator.metrics.secure` | bool | `true` | Enable HTTPS for the metrics endpoint |
 | `operator.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `operator.pdb.enabled` | bool | `false` | Whether to install the `PodDisruptionBudget` for the operator |
+| `operator.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the operator (used when `minAvailable` is unset) |
+| `operator.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the operator. Takes precedence over `maxUnavailable`, since a PDB can't set both |
 | `operator.podAnnotations` | object | `{}` | Annotations to be added to the operator pods |
 | `operator.port` | int | `8443` | The port for the operator main server to run on |
 | `operator.pullPolicy` | string | `"Always"` | The image pull policy for the operator component |
@@ -141,10 +144,14 @@ their default values.
 | `scaler.extraEnvs` | object | `{}` | Extra environment variables to set (key-value map with "ENV name":"value") |
 | `scaler.grpcPort` | int | `9090` | The port for the scaler's gRPC server. This is the server that KEDA will send scaling requests to. |
 | `scaler.imagePullSecrets` | list | `[]` | The image pull secrets for the scaler component |
+| `scaler.lifecycle` | object | `{}` | Lifecycle hooks for the scaler container. A `preStop` sleep (e.g. `{preStop: {sleep: {seconds: 10}}}`) keeps the scaler serving KEDA's gRPC calls until its endpoint is removed from the `Service` ([docs](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/)) |
 | `scaler.metrics.otlp.enabled` | bool | `false` | Enable the OTLP HTTP metrics exporter for the scaler |
 | `scaler.metrics.prometheus.enabled` | bool | `true` | Enable the Prometheus metrics exporter for the scaler |
 | `scaler.metrics.prometheus.port` | int | `2223` | Port for the scaler's Prometheus `/metrics` endpoint |
 | `scaler.nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
+| `scaler.pdb.enabled` | bool | `false` | Whether to install the `PodDisruptionBudget` for the scaler |
+| `scaler.pdb.maxUnavailable` | int | `1` | The maximum number of replicas that can be unavailable for the scaler (used when `minAvailable` is unset) |
+| `scaler.pdb.minAvailable` | int | `0` | The minimum number of replicas that should be available for the scaler. Takes precedence over `maxUnavailable`, since a PDB can't set both |
 | `scaler.pendingRequestsInterceptor` | int | `200` | The number of "target requests" that the external scaler will report to KEDA for the interceptor's scaling metrics. See the [KEDA external scaler documentation](https://keda.sh/docs/2.4/concepts/external-scalers/) for details on target requests. |
 | `scaler.podAnnotations` | object | `{}` | Annotations to be added to the scaler pods |
 | `scaler.pullPolicy` | string | `"Always"` | The image pull policy for the scaler component |
@@ -155,6 +162,7 @@ their default values.
 | `scaler.resources.requests.memory` | string | `"20Mi"` |  |
 | `scaler.service` | string | `"external-scaler"` | The name of the Kubernetes `Service` for the scaler component |
 | `scaler.streamInterval` | int | `200` | Interval in ms for communicating IsActive to KEDA |
+| `scaler.terminationGracePeriodSeconds` | int | `10` | Time the scaler pod is given to shut down; must exceed any `preStop` delay |
 | `scaler.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `scaler.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
 | `scaler.tracing.enabled` | bool | `false` | Enable OTLP tracing for the scaler |

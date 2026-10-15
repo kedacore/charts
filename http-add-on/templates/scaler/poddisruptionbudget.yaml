@@ -1,0 +1,22 @@
+{{- if .Values.scaler.pdb.enabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: scaler
+    app.kubernetes.io/name: http-add-on
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-external-scaler
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: scaler
+      app.kubernetes.io/name: http-add-on
+      {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
+  {{- if .Values.scaler.pdb.minAvailable }}
+  minAvailable: {{ .Values.scaler.pdb.minAvailable }}
+  {{- else if .Values.scaler.pdb.maxUnavailable }}
+  maxUnavailable: {{ .Values.scaler.pdb.maxUnavailable }}
+  {{- end }}
+{{- end -}}
