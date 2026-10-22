@@ -42,6 +42,9 @@ spec:
         - protocol: TCP
           port: {{ .Values.profiling.metricsServer.port }}
     {{- end }}
+    {{- if .Values.networkPolicy.kubernetes.metricsServer.extraIngressRules }}
+    {{ toYaml .Values.networkPolicy.kubernetes.metricsServer.extraIngressRules | nindent 4 }}
+    {{- end }}
   egress:
     # Allow DNS resolution
     - to:
@@ -54,10 +57,9 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
-    # Allow access to Kubernetes API server
-    - to:
-        - namespaceSelector: {}
-      ports:
+    # Allow access to Kubernetes API server.
+    # The API server is not selectable by namespaceSelector or podSelector, so no to clause is set
+    - ports:
         - protocol: TCP
           port: 443
         - protocol: TCP
