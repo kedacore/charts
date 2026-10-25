@@ -21,10 +21,11 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # Allow ingress from Kubernetes API server for admission webhooks
-    - from:
-        - namespaceSelector: {}
-      ports:
+    # Allow ingress on the admission webhook port from any source including
+    # the Kubernetes control plane. No `from` selector -- on managed platforms
+    # (EKS Auto Mode, GKE) the control plane uses ENI IPs that don't match
+    # namespaceSelector.
+    - ports:
         - protocol: TCP
           port: {{ .Values.webhooks.port | default 9443 }}
     {{- if .Values.prometheus.webhooks.enabled }}
@@ -47,13 +48,10 @@ spec:
     {{ toYaml .Values.networkPolicy.kubernetes.webhooks.extraIngressRules | nindent 4 }}
     {{- end }}
   egress:
-    # Allow DNS resolution
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
+    # Allow DNS resolution. Uses a plain port rule without a podSelector
+    # for compatibility with node-local DNS (e.g. EKS Auto Mode) where
+    # the resolver is not a pod labeled k8s-app=kube-dns.
+    - ports:
         - protocol: UDP
           port: 53
         - protocol: TCP
