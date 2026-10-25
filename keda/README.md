@@ -102,7 +102,7 @@ their default values.
 | `networkPolicy.cilium` | object | `{"operator":{"extraEgressRules":[]}}` | Allow use of extra egress rules for cilium network policies |
 | `networkPolicy.enabled` | bool | `false` | Enable network policies |
 | `networkPolicy.flavor` | string | `"cilium"` | Flavor of the network policies (cilium, kubernetes) |
-| `networkPolicy.kubernetes` | object | `{"metricsServer":{"extraEgressRules":[]},"operator":{"extraEgressRules":[]},"webhooks":{"extraEgressRules":[]}}` | Allow use of extra egress rules for kubernetes network policies |
+| `networkPolicy.kubernetes` | object | `{"metricsServer":{"extraEgressRules":[],"extraIngressRules":[]},"operator":{"extraEgressRules":[],"extraIngressRules":[]},"webhooks":{"extraEgressRules":[],"extraIngressRules":[]}}` | Allow use of extra ingress and egress rules for kubernetes network policies |
 | `nodeSelector` | object | `{}` | Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)) |
 | `podIdentity.aws.irsa.audience` | string | `"sts.amazonaws.com"` | Sets the token audience for IRSA. This will be set as an annotation on the KEDA service account. |
 | `podIdentity.aws.irsa.enabled` | bool | `false` | Specifies whether [AWS IAM Roles for Service Accounts (IRSA)](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) is to be enabled or not. |
