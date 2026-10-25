@@ -118,6 +118,7 @@ their default values.
 | `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `priorityClassName` | string | `""` | priorityClassName for all KEDA components |
 | `rbac.aggregateToDefaultRoles` | bool | `false` | Specifies whether RBAC for CRDs should be [aggregated](https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles) to default roles (view, edit, admin) |
+| `rbac.authReaderClusterScoped` | bool | `false` | Grant the metrics server read access to the `extension-apiserver-authentication` ConfigMap via a cluster-scoped ClusterRole/ClusterRoleBinding instead of a RoleBinding namespaced into `controlPlaneServiceAccountsNamespace`. Useful on clusters where that namespace is immutable to the installing principal. |
 | `rbac.controlPlaneServiceAccountsNamespace` | string | `"kube-system"` | Customize the namespace of k8s metrics-server deployment This could also be achieved by the Kubernetes control plane manager flag --use-service-account-credentials: [docs](https://kubernetes.io/docs/reference/command-line-tools-reference/kube-controller-manager/) |
 | `rbac.create` | bool | `true` | Specifies whether RBAC should be used |
 | `rbac.enabledCustomScaledRefKinds` | bool | `true` | Whether RBAC for configured CRDs that can have a `scale` subresource should be created |
