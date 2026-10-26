@@ -298,6 +298,8 @@ webhooks:
 
   # -- [Failure policy](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#failure-policy) to use with KEDA admission webhooks
   failurePolicy: Ignore
+  # -- [Namespace selector](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/#matching-requests-namespaceselector) to use with KEDA admission webhooks. Has no effect on the cluster-scoped `ClusterTriggerAuthentication` and `ClusterCloudEventSource` webhooks, which Kubernetes always calls
+  namespaceSelector: {}
 
   # -- Node selector for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/))
   nodeSelector: {}
