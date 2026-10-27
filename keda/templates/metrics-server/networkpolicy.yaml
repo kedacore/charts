@@ -20,10 +20,11 @@ spec:
     - Ingress
     - Egress
   ingress:
-    # Allow ingress from any pod in the cluster on the HTTPS metrics API port
-    - from:
-        - namespaceSelector: {}
-      ports:
+    # Allow ingress on the HTTPS metrics API port from any source including
+    # the Kubernetes control plane (aggregated APIService health checks).
+    # No `from` selector -- on managed platforms (EKS Auto Mode, GKE) the
+    # control plane uses ENI IPs that don't match namespaceSelector.
+    - ports:
         - protocol: TCP
           port: {{ .Values.service.portHttpsTarget }}
     {{- if .Values.prometheus.metricServer.enabled }}
@@ -43,13 +44,10 @@ spec:
           port: {{ .Values.profiling.metricsServer.port }}
     {{- end }}
   egress:
-    # Allow DNS resolution
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
+    # Allow DNS resolution. Uses a plain port rule without a podSelector
+    # for compatibility with node-local DNS (e.g. EKS Auto Mode) where
+    # the resolver is not a pod labeled k8s-app=kube-dns.
+    - ports:
         - protocol: UDP
           port: 53
         - protocol: TCP
