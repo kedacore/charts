@@ -12,9 +12,10 @@ spec:
   secretName: {{ .Values.certificates.certManager.caSecretName }}
   secretTemplate:
     {{- toYaml .Values.certificates.certManager.secretTemplate | nindent 4 }}
+  {{- if .Values.certificates.certManager.caPrivateKey }}
   privateKey:
-    algorithm: RSA
-    size: 2048
+    {{- toYaml .Values.certificates.certManager.caPrivateKey | nindent 4 }}
+  {{- end }}
   duration: 43800h0m0s     # 5 years
   renewBefore: 14600h0m0s  # 1.6 year, 1/3rd of the duration
   issuerRef:
