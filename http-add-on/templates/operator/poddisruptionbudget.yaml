@@ -1,0 +1,22 @@
+{{- if .Values.operator.pdb.enabled -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: operator
+    app.kubernetes.io/name: http-add-on
+    {{- include "keda-http-add-on.labels" . | indent 4 }}
+  name: {{ .Chart.Name }}-controller-manager
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: operator
+      app.kubernetes.io/name: http-add-on
+      {{- include "keda-http-add-on.matchLabels" . | indent 6 }}
+  {{- if not (kindIs "invalid" .Values.operator.pdb.minAvailable) }}
+  minAvailable: {{ .Values.operator.pdb.minAvailable }}
+  {{- else if not (kindIs "invalid" .Values.operator.pdb.maxUnavailable) }}
+  maxUnavailable: {{ .Values.operator.pdb.maxUnavailable }}
+  {{- end }}
+{{- end -}}

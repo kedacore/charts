@@ -79,6 +79,15 @@ operator:
   # -- Annotations to be added to the operator pods
   podAnnotations: {}
 
+  # configuration of pdb for the operator
+  pdb:
+    # -- Whether to install the `PodDisruptionBudget` for the operator
+    enabled: false
+    # -- (int or string) The minimum number of replicas that should be available for the operator. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both
+    minAvailable: null
+    # -- (int or string) The maximum number of replicas that can be unavailable for the operator when `minAvailable` is unset. `0` blocks voluntary evictions
+    maxUnavailable: 1
+
   # Operator metrics endpoint configuration
   # NOTE: Consider defaulting to secure: false, auth: false for v1 release
   metrics:
@@ -123,6 +132,19 @@ scaler:
       memory: 20Mi
   # -- Annotations to be added to the scaler pods
   podAnnotations: {}
+  # -- Lifecycle hooks for the scaler container. A `preStop` sleep (e.g. `{preStop: {sleep: {seconds: 10}}}`) keeps the scaler serving KEDA's gRPC calls until its endpoint is removed from the `Service` ([docs](https://kubernetes.io/docs/concepts/containers/container-lifecycle-hooks/))
+  lifecycle: {}
+  # -- Time the scaler pod is given to shut down; must exceed any `preStop` delay
+  terminationGracePeriodSeconds: 10
+
+  # configuration of pdb for the scaler
+  pdb:
+    # -- Whether to install the `PodDisruptionBudget` for the scaler
+    enabled: false
+    # -- (int or string) The minimum number of replicas that should be available for the scaler. When set (including `0`), it takes precedence over `maxUnavailable`, since a PDB can't set both
+    minAvailable: null
+    # -- (int or string) The maximum number of replicas that can be unavailable for the scaler when `minAvailable` is unset. `0` blocks voluntary evictions
+    maxUnavailable: 1
 
   # OpenTelemetry observability configuration for the scaler
   metrics:
