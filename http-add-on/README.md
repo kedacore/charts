@@ -15,24 +15,24 @@ The KEDA HTTP Add On allows Kubernetes users to automatically scale their HTTP s
 
 Although this is an **alpha release** project right now, we have prepared a walkthrough document that with instructions on getting started for basic usage.
 
-See that document at [docs/walkthrough.md](https://github.com/kedacore/http-add-on/tree/main/docs/walkthrough.md)
+See the [getting started guide](https://keda.sh/http-add-on/latest/getting-started/).
 
 ## Design
 
 The HTTP add-on is composed of multiple mostly independent components. This design was chosen to allow for highly
 customizable installations while allowing us to ship reasonable defaults.
 
-- We have written a complete design document. Please see it at [docs/design.md](https://github.com/kedacore/http-add-on/tree/main/docs/design.md).
-- For more context on the design, please see our [scope document](https://github.com/kedacore/http-add-on/tree/main/docs/scope.md).
-- If you have further questions about the project, please see our [FAQ document](https://github.com/kedacore/http-add-on/tree/main/docs/faq.md).
+- The components and how they fit together are described in the [architecture overview](https://keda.sh/http-add-on/latest/concepts/architecture/).
+- For more context on the design, please see the [concepts documentation](https://keda.sh/http-add-on/latest/concepts/).
+- If you have further questions about the project, please see the [troubleshooting guide](https://keda.sh/http-add-on/latest/operations/troubleshooting/) or ask in [GitHub Discussions](https://github.com/kedacore/http-add-on/discussions).
 
 ## Installation
 
-Please see the [complete installation instructions](https://github.com/kedacore/http-add-on/tree/main/docs/install.md).
+Please see the [complete installation instructions](https://keda.sh/http-add-on/latest/operations/installation/).
 
 ## Contributing
 
-Please see the [contributing documentation for all instructions](https://github.com/kedacore/http-add-on/tree/main/docs/contributing.md).
+Please see the [contributing documentation for all instructions](https://github.com/kedacore/http-add-on/blob/main/CONTRIBUTING.md).
 
 ---
 We are a Cloud Native Computing Foundation (CNCF) graduated project.
@@ -57,7 +57,7 @@ As part of that, it will install all the required Custom Resource Definitions (C
 
 ## Installing the Chart
 
-To install the chart with the release name `http-add-on`, please read the [install instructions on the official repository to get started](https://github.com/kedacore/http-add-on/tree/main/docs/install.md):
+To install the chart with the release name `http-add-on`, please read the [install instructions in the official documentation to get started](https://keda.sh/http-add-on/latest/operations/installation/):
 
 ```console
 $ helm install http-add-on kedacore/keda-add-ons-http --namespace keda
