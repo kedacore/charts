@@ -86,14 +86,17 @@ networkPolicy:
   cilium:
     operator:
       extraEgressRules: []
-  # -- Allow use of extra egress rules for kubernetes network policies
+  # -- Allow use of extra ingress and egress rules for kubernetes network policies
   kubernetes:
     operator:
       extraEgressRules: []
+      extraIngressRules: []
     metricsServer:
       extraEgressRules: []
+      extraIngressRules: []
     webhooks:
       extraEgressRules: []
+      extraIngressRules: []
 
 operator:
   serviceAccountTokens:
