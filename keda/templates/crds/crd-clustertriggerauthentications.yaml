@@ -158,6 +158,8 @@ spec:
                           must also be set
                         type: string
                       identityId:
+                        description: For gcp-workload-service-account, identityId
+                          is the optional IAM service account email to impersonate.
                         type: string
                       identityOwner:
                         description: IdentityOwner configures which identity has to
@@ -176,8 +178,11 @@ spec:
                         description: PodIdentityProvider contains the list of providers
                         enum:
                         - azure-workload
+                        - azure-workload-service-account
                         - gcp
+                        - gcp-workload-service-account
                         - aws
+                        - aws-workload-service-account
                         - aws-eks
                         - none
                         type: string
@@ -185,9 +190,26 @@ spec:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
                           exclusive with IdentityOwner
                         type: string
+                      serviceAccountName:
+                        description: |-
+                          ServiceAccountName selects a Kubernetes service account in the ScaledObject or ScaledJob namespace.
+                          Required for providers gcp-workload-service-account, azure-workload-service-account and
+                          aws-workload-service-account in the top-level podIdentity. The operator must be configured
+                          with an approved audience and token-creation RBAC for this service account.
+                        minLength: 1
+                        type: string
                     required:
                     - provider
                     type: object
+                    x-kubernetes-validations:
+                    - message: workload service account providers require serviceAccountName
+                      rule: '!(self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account''])
+                        || has(self.serviceAccountName)'
+                    - message: serviceAccountName requires a workload service account
+                        provider
+                      rule: '!has(self.serviceAccountName) || self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account'']'
                   region:
                     type: string
                   secrets:
@@ -274,6 +296,8 @@ spec:
                           must also be set
                         type: string
                       identityId:
+                        description: For gcp-workload-service-account, identityId
+                          is the optional IAM service account email to impersonate.
                         type: string
                       identityOwner:
                         description: IdentityOwner configures which identity has to
@@ -292,8 +316,11 @@ spec:
                         description: PodIdentityProvider contains the list of providers
                         enum:
                         - azure-workload
+                        - azure-workload-service-account
                         - gcp
+                        - gcp-workload-service-account
                         - aws
+                        - aws-workload-service-account
                         - aws-eks
                         - none
                         type: string
@@ -301,9 +328,26 @@ spec:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
                           exclusive with IdentityOwner
                         type: string
+                      serviceAccountName:
+                        description: |-
+                          ServiceAccountName selects a Kubernetes service account in the ScaledObject or ScaledJob namespace.
+                          Required for providers gcp-workload-service-account, azure-workload-service-account and
+                          aws-workload-service-account in the top-level podIdentity. The operator must be configured
+                          with an approved audience and token-creation RBAC for this service account.
+                        minLength: 1
+                        type: string
                     required:
                     - provider
                     type: object
+                    x-kubernetes-validations:
+                    - message: workload service account providers require serviceAccountName
+                      rule: '!(self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account''])
+                        || has(self.serviceAccountName)'
+                    - message: serviceAccountName requires a workload service account
+                        provider
+                      rule: '!has(self.serviceAccountName) || self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account'']'
                   secrets:
                     items:
                       properties:
@@ -509,6 +553,8 @@ spec:
                           must also be set
                         type: string
                       identityId:
+                        description: For gcp-workload-service-account, identityId
+                          is the optional IAM service account email to impersonate.
                         type: string
                       identityOwner:
                         description: IdentityOwner configures which identity has to
@@ -527,8 +573,11 @@ spec:
                         description: PodIdentityProvider contains the list of providers
                         enum:
                         - azure-workload
+                        - azure-workload-service-account
                         - gcp
+                        - gcp-workload-service-account
                         - aws
+                        - aws-workload-service-account
                         - aws-eks
                         - none
                         type: string
@@ -536,9 +585,26 @@ spec:
                         description: RoleArn sets the AWS RoleArn to be used. Mutually
                           exclusive with IdentityOwner
                         type: string
+                      serviceAccountName:
+                        description: |-
+                          ServiceAccountName selects a Kubernetes service account in the ScaledObject or ScaledJob namespace.
+                          Required for providers gcp-workload-service-account, azure-workload-service-account and
+                          aws-workload-service-account in the top-level podIdentity. The operator must be configured
+                          with an approved audience and token-creation RBAC for this service account.
+                        minLength: 1
+                        type: string
                     required:
                     - provider
                     type: object
+                    x-kubernetes-validations:
+                    - message: workload service account providers require serviceAccountName
+                      rule: '!(self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account''])
+                        || has(self.serviceAccountName)'
+                    - message: serviceAccountName requires a workload service account
+                        provider
+                      rule: '!has(self.serviceAccountName) || self.provider in [''azure-workload-service-account'',
+                        ''gcp-workload-service-account'', ''aws-workload-service-account'']'
                   secrets:
                     items:
                       properties:
@@ -695,6 +761,8 @@ spec:
                       must also be set
                     type: string
                   identityId:
+                    description: For gcp-workload-service-account, identityId is the
+                      optional IAM service account email to impersonate.
                     type: string
                   identityOwner:
                     description: IdentityOwner configures which identity has to be
@@ -713,8 +781,11 @@ spec:
                     description: PodIdentityProvider contains the list of providers
                     enum:
                     - azure-workload
+                    - azure-workload-service-account
                     - gcp
+                    - gcp-workload-service-account
                     - aws
+                    - aws-workload-service-account
                     - aws-eks
                     - none
                     type: string
@@ -722,9 +793,25 @@ spec:
                     description: RoleArn sets the AWS RoleArn to be used. Mutually
                       exclusive with IdentityOwner
                     type: string
+                  serviceAccountName:
+                    description: |-
+                      ServiceAccountName selects a Kubernetes service account in the ScaledObject or ScaledJob namespace.
+                      Required for providers gcp-workload-service-account, azure-workload-service-account and
+                      aws-workload-service-account in the top-level podIdentity. The operator must be configured
+                      with an approved audience and token-creation RBAC for this service account.
+                    minLength: 1
+                    type: string
                 required:
                 - provider
                 type: object
+                x-kubernetes-validations:
+                - message: workload service account providers require serviceAccountName
+                  rule: '!(self.provider in [''azure-workload-service-account'', ''gcp-workload-service-account'',
+                    ''aws-workload-service-account'']) || has(self.serviceAccountName)'
+                - message: serviceAccountName requires a workload service account
+                    provider
+                  rule: '!has(self.serviceAccountName) || self.provider in [''azure-workload-service-account'',
+                    ''gcp-workload-service-account'', ''aws-workload-service-account'']'
               secretTargetRef:
                 items:
                   description: AuthSecretTargetRef is used to authenticate using a
