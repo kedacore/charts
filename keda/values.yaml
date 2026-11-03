@@ -932,6 +932,12 @@ certificates:
   certManager:
     # -- Enables Cert-manager for certificate management
     enabled: false
+    # -- Certificate private key configuration.
+    # When setting `algorithm`, also set a matching `size` (RSA: 2048/4096/8192, ECDSA: 256/384/521).
+    # [docs](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificatePrivateKey)
+    privateKey:
+      algorithm: RSA
+      size: 2048
     # -- Certificate duration
     duration: 8760h0m0s # 1 year
     # -- Certificate renewal time before expiration
@@ -942,6 +948,12 @@ certificates:
     generateCA: true
     # -- Secret name where the CA is stored (generatedby cert-manager or user given)
     caSecretName: "kedaorg-ca"
+    # -- CA private key configuration.
+    # When setting `algorithm`, also set a matching `size` (RSA: 2048/4096/8192, ECDSA: 256/384/521).
+    # [docs](https://cert-manager.io/docs/reference/api-docs/#cert-manager.io/v1.CertificatePrivateKey)
+    caPrivateKey:
+      algorithm: RSA
+      size: 2048
     # -- Add labels/annotations to secrets created by Certificate resources
     # [docs](https://cert-manager.io/docs/usage/certificate/#creating-certificate-resources)
     secretTemplate: {}
