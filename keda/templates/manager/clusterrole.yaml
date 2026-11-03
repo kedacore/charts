@@ -17,6 +17,7 @@ rules:
   - configmaps
   - configmaps/status
   - limitranges
+  - nodes
   - pods
   - services
   - serviceaccounts
