@@ -65,6 +65,13 @@ $ helm install http-add-on kedacore/keda-add-ons-http --namespace keda
 
 > **Important:** This chart **needs** KEDA installed in your cluster to work properly.
 
+## Upgrading from `HTTPScaledObject`
+
+The deprecated `HTTPScaledObject` API (`http.keda.sh/v1alpha1`) and its CRD are no longer part of this chart, use `InterceptorRoute` instead.
+Helm deletes the `HTTPScaledObject` CRD on upgrade, which also deletes all `HTTPScaledObject`s and the `ScaledObject`s they own.
+The chart therefore refuses to install or upgrade while `HTTPScaledObject`s exist in the cluster.
+Migrate them first, see the [migration guide](https://keda.sh/http-add-on/1.0/operations/migrate-httpscaledobject-to-interceptorroute/). Keeping the owned `ScaledObject`s when deleting an `HTTPScaledObject` needs the `httpscaledobject.keda.sh/orphan-scaledobject=true` annotation, which requires add-on v0.14 or later.
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `http-add-on` Helm chart:
@@ -85,7 +92,7 @@ their default values.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `additionalLabels` | object | `{}` | Additional labels to be applied to installed resources. Note that not all resources will receive these labels. |
-| `crds.install` | bool | `true` | Whether to install the `HTTPScaledObject` and `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
+| `crds.install` | bool | `true` | Whether to install the `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/) |
 | `images.interceptor` | string | `"ghcr.io/kedacore/http-add-on-interceptor"` | Image name for the interceptor image component |
 | `images.operator` | string | `"ghcr.io/kedacore/http-add-on-operator"` | Image name for the operator image component |
 | `images.scaler` | string | `"ghcr.io/kedacore/http-add-on-scaler"` | Image name for the scaler image component |
@@ -131,7 +138,7 @@ their default values.
 | `operator.resources.requests` | object | `{"cpu":"250m","memory":"20Mi"}` | The CPU/memory resource request for the operator component |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `operator.topologySpreadConstraints` | list | `[]` | Topology spread constraints ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/)) |
-| `operator.watchNamespace` | string | `""` | The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. |
+| `operator.watchNamespace` | string | `""` | The namespace to watch for new `InterceptorRoute`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces. |
 
 ### Scaler
 

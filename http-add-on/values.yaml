@@ -2,7 +2,7 @@
 additionalLabels: {}
 
 crds:
-  # -- Whether to install the `HTTPScaledObject` and `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
+  # -- Whether to install the `InterceptorRoute` [`CustomResourceDefinitions`](https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/)
   install: true
 
 logging:
@@ -52,7 +52,7 @@ operator:
   replicas: 1
   # -- The image pull secrets for the operator component
   imagePullSecrets: []
-  # -- The namespace to watch for new `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
+  # -- The namespace to watch for new `InterceptorRoute`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
   watchNamespace: ""
   # -- The image pull policy for the operator component
   pullPolicy: Always

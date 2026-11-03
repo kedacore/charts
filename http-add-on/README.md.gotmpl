@@ -65,6 +65,13 @@ $ helm install http-add-on kedacore/keda-add-ons-http --namespace keda
 
 > **Important:** This chart **needs** KEDA installed in your cluster to work properly.
 
+## Upgrading from `HTTPScaledObject`
+
+The deprecated `HTTPScaledObject` API (`http.keda.sh/v1alpha1`) and its CRD are no longer part of this chart, use `InterceptorRoute` instead.
+Helm deletes the `HTTPScaledObject` CRD on upgrade, which also deletes all `HTTPScaledObject`s and the `ScaledObject`s they own.
+The chart therefore refuses to install or upgrade while `HTTPScaledObject`s exist in the cluster.
+Migrate them first, see the [migration guide](https://keda.sh/http-add-on/1.0/operations/migrate-httpscaledobject-to-interceptorroute/). Keeping the owned `ScaledObject`s when deleting an `HTTPScaledObject` needs the `httpscaledobject.keda.sh/orphan-scaledobject=true` annotation, which requires add-on v0.14 or later.
+
 ## Uninstalling the Chart
 
 To uninstall/delete the `http-add-on` Helm chart:
