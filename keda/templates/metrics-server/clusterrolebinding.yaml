@@ -20,6 +20,50 @@ subjects:
   namespace: {{ .Release.Namespace }}
 ---
 # https://kubernetes.io/docs/tasks/extend-kubernetes/configure-aggregation-layer/#extension-apiserver-authenticates-the-request
+{{- if .Values.rbac.authReaderClusterScoped }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
+    {{- include "keda.labels" . | indent 4 }}
+  name: {{ .Values.operator.name }}-auth-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  resourceNames:
+  - extension-apiserver-authentication
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ .Values.operator.name }}-auth-reader
+    {{- include "keda.labels" . | indent 4 }}
+  name: {{ .Values.operator.name }}-auth-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Values.operator.name }}-auth-reader
+subjects:
+- kind: ServiceAccount
+  name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
+  namespace: {{ .Release.Namespace }}
+{{- else }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
@@ -40,6 +84,7 @@ subjects:
 - kind: ServiceAccount
   name: {{ (.Values.serviceAccount.metricServer).name | default .Values.serviceAccount.name }}
   namespace: {{ .Release.Namespace }}
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
