@@ -1,0 +1,10 @@
+{{- /*
+The HTTPScaledObject CRD is no longer shipped. Helm deletes it on upgrade, which
+cascades to all HTTPScaledObjects and the ScaledObjects they own.
+*/ -}}
+{{- if lookup "apiextensions.k8s.io/v1" "CustomResourceDefinition" "" "httpscaledobjects.http.keda.sh" }}
+{{- $httpScaledObjects := lookup "http.keda.sh/v1alpha1" "HTTPScaledObject" "" "" -}}
+{{- if and $httpScaledObjects $httpScaledObjects.items }}
+{{- fail "HTTPScaledObjects exist in this cluster, but the HTTPScaledObject API has been removed. Upgrading would delete them together with the ScaledObjects they own. Migrate them to InterceptorRoutes first. To keep their ScaledObjects when deleting them, annotate them with httpscaledobject.keda.sh/orphan-scaledobject=true (requires add-on v0.14 or later), see https://keda.sh/http-add-on/1.0/operations/migrate-httpscaledobject-to-interceptorroute/" }}
+{{- end }}
+{{- end }}

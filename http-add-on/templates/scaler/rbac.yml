@@ -18,7 +18,6 @@ rules:
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects
   - interceptorroutes
   verbs:
   - get
@@ -29,7 +28,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Release.Name }}-external-scaler
     app.kubernetes.io/component: scaler
