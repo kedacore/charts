@@ -100,15 +100,15 @@ their default values.
 | `logging.interceptor.format` | string | `"console"` | Logging format for KEDA http-add-on Interceptor. allowed values: `json` or `console` |
 | `logging.interceptor.level` | string | `"info"` | Logging level for KEDA http-add-on Interceptor. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.interceptor.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
-| `logging.interceptor.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Interceptor. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.interceptor.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Interceptor. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA http-add-on operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA http-add-on operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
-| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on operator. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `logging.scaler.format` | string | `"console"` | Logging format for KEDA http-add-on Scaler. allowed values: `json` or `console` |
 | `logging.scaler.level` | string | `"info"` | Logging level for KEDA http-add-on Scaler. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.scaler.stackTracesEnabled` | bool | `false` | Display stack traces in the logs |
-| `logging.scaler.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Scaler. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.scaler.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA http-add-on Scaler. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `podSecurityContext` | object | [See below](#KEDA-is-secure-by-default) | [Pod security context] for all pods |
 | `profiling.interceptor.enabled` | bool | `false` | Enable profiling for KEDA http-add-on Interceptor |
 | `profiling.interceptor.port` | int | `8086` | Expose profiling on a specific port |

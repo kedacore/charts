@@ -486,7 +486,7 @@ logging:
     # allowed values: `json` or `console`
     format: console
     # -- Logging time encoding for KEDA Operator.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
     # -- If enabled, the stack traces will be also printed
     stackTracesEnabled: false
@@ -504,7 +504,7 @@ logging:
     # allowed values: `json` or `console`
     zapEncoder: console
     # -- Zap logging time encoding for Metrics Server.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     zapTimeEncoding: rfc3339
   webhooks:
     # -- Logging level for KEDA Operator.
@@ -514,7 +514,7 @@ logging:
     # allowed values: `json` or `console`
     format: console
     # -- Logging time encoding for KEDA Operator.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
 
 # -- [Security context] for all containers
