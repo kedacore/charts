@@ -26,6 +26,15 @@ spec:
   maxUnavailable: {{ .Values.podDisruptionBudget.operator.maxUnavailable }}
   {{- end }}
   {{- end }}
+  {{- $uepPolicy := .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  {{- if and .Values.podDisruptionBudget.operator .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
+  {{- $uepPolicy = .Values.podDisruptionBudget.operator.unhealthyPodEvictionPolicy }}
+  {{- end }}
+  {{- if semverCompare ">=1.26-0" .Capabilities.KubeVersion.Version }}
+  {{- with $uepPolicy }}
+  unhealthyPodEvictionPolicy: {{ . }}
+  {{- end }}
+  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.operator.name }}
