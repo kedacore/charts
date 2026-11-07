@@ -149,7 +149,7 @@ for receiver configuration and upgrade steps.
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.stackTracesEnabled` | bool | `false` | If enabled, the stack traces will be also printed |
-| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
@@ -203,7 +203,7 @@ for receiver configuration and upgrade steps.
 | `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server (Deprecated) allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
 | `logging.metricServer.zapEncoder` | string | `"console"` | Zap Logging encoder for Metrics Server. allowed values: `json` or `console` |
 | `logging.metricServer.zapLevel` | string | `"info"` | Zap Logging level for Metrics Server. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
-| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
@@ -343,7 +343,7 @@ for receiver configuration and upgrade steps.
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
 | `logging.webhooks.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
-| `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `podAnnotations.webhooks` | object | `{}` | Pod annotations for KEDA Admission webhooks |
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |

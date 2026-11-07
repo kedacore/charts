@@ -14,7 +14,7 @@ logging:
     # allowed values: `json` or `console`
     format: console
     # -- Logging time encoding for KEDA http-add-on operator.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
     # -- Display stack traces in the logs
     stackTracesEnabled: false
@@ -26,7 +26,7 @@ logging:
     # allowed values: `json` or `console`
     format: console
     # -- Logging time encoding for KEDA http-add-on Scaler.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
     # -- Display stack traces in the logs
     stackTracesEnabled: false
@@ -39,7 +39,7 @@ logging:
     # allowed values: `json` or `console`
     format: console
     # -- Logging time encoding for KEDA http-add-on Interceptor.
-    # allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano`
+    # allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano`
     timeEncoding: rfc3339
     # -- Display stack traces in the logs
     stackTracesEnabled: false
