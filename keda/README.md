@@ -257,12 +257,13 @@ for receiver configuration and upgrade steps.
 | `prometheus.metricServer.podMonitor.scrapeTimeout` | string | `""` | Scraping timeout for metric server using podMonitor crd (prometheus operator) |
 | `prometheus.metricServer.port` | int | `8080` | HTTP port used for exposing metrics server prometheus metrics |
 | `prometheus.metricServer.portName` | string | `"metrics"` | HTTP port name for exposing metrics server prometheus metrics |
-| `prometheus.metricServer.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
+| `prometheus.metricServer.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"namespace":"","podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.metricServer.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.metricServer.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.metricServer.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.metricServer.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
 | `prometheus.metricServer.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.metricServer.serviceMonitor.namespace` | string | `""` | Namespace to create the metric server ServiceMonitor in. Defaults to the release namespace |
 | `prometheus.metricServer.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.metricServer.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.metricServer.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
@@ -285,12 +286,13 @@ for receiver configuration and upgrade steps.
 | `prometheus.operator.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA Operator using prometheusRules crd (prometheus operator) |
 | `prometheus.operator.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
 | `prometheus.operator.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA Operator using prometheusRules crd (prometheus operator) |
-| `prometheus.operator.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
+| `prometheus.operator.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"namespace":"","podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.operator.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.operator.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus Operator |
 | `prometheus.operator.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.operator.serviceMonitor.jobLabel` | string | `""` | JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
 | `prometheus.operator.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.operator.serviceMonitor.namespace` | string | `""` | Namespace to create the KEDA Operator ServiceMonitor in. Defaults to the release namespace |
 | `prometheus.operator.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.operator.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.operator.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
@@ -306,12 +308,13 @@ for receiver configuration and upgrade steps.
 | `prometheus.webhooks.prometheusRules.alerts` | list | `[]` | Additional alerts to add for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
 | `prometheus.webhooks.prometheusRules.enabled` | bool | `false` | Enables PrometheusRules creation for the Prometheus Operator |
 | `prometheus.webhooks.prometheusRules.namespace` | string | `""` | Scraping namespace for KEDA admission webhooks using prometheusRules crd (prometheus operator) |
-| `prometheus.webhooks.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
+| `prometheus.webhooks.serviceMonitor` | object | `{"additionalLabels":{},"enabled":false,"interval":"","jobLabel":"","metricRelabelings":[],"namespace":"","podTargetLabels":[],"port":"metrics","relabelings":[],"relabellings":[],"scheme":"http","scrapeTimeout":"","targetLabels":[],"targetPort":"","tlsConfig":{}}` | App Protocol for service when scraping metrics endpoint appProtocol: http |
 | `prometheus.webhooks.serviceMonitor.additionalLabels` | object | `{}` | Additional labels to add for metric server using ServiceMonitor crd (prometheus operator) |
 | `prometheus.webhooks.serviceMonitor.enabled` | bool | `false` | Enables ServiceMonitor creation for the Prometheus webhooks |
 | `prometheus.webhooks.serviceMonitor.interval` | string | `""` | Interval at which metrics should be scraped If not specified Prometheus’ global scrape interval is used. |
 | `prometheus.webhooks.serviceMonitor.jobLabel` | string | `""` | jobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec] |
 | `prometheus.webhooks.serviceMonitor.metricRelabelings` | list | `[]` | List of expressions that define custom  metric relabeling rules for metric server ServiceMonitor crd after scrape has happened (prometheus operator). [RelabelConfig Spec] |
+| `prometheus.webhooks.serviceMonitor.namespace` | string | `""` | Namespace to create the KEDA admission webhooks ServiceMonitor in. Defaults to the release namespace |
 | `prometheus.webhooks.serviceMonitor.podTargetLabels` | list | `[]` | PodTargetLabels transfers labels on the Kubernetes `Pod` onto the created metrics |
 | `prometheus.webhooks.serviceMonitor.port` | string | `"metrics"` | Name of the service port this endpoint refers to. Mutually exclusive with targetPort |
 | `prometheus.webhooks.serviceMonitor.relabelings` | list | `[]` | List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec] |
