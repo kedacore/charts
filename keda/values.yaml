@@ -760,7 +760,7 @@ prometheus:
       interval: ""
       # -- Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used
       scrapeTimeout: ""
-      # -- When true, Prometheus keeps the labels exported by the metric server (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it
+      # -- When true, Prometheus keeps the labels exported by the metric server (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it. Has no effect when Prometheus sets `overrideHonorLabels: true`
       honorLabels: false
       # -- DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabellings: []
@@ -818,7 +818,7 @@ prometheus:
       interval: ""
       # -- Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used
       scrapeTimeout: ""
-      # -- When true, Prometheus keeps the labels exported by the KEDA Operator (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it
+      # -- When true, Prometheus keeps the labels exported by the KEDA Operator (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it. Has no effect when Prometheus sets `overrideHonorLabels: true`
       honorLabels: false
       # -- DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabellings: []
@@ -892,7 +892,7 @@ prometheus:
       interval: ""
       # -- Timeout after which the scrape is ended If not specified, the Prometheus global scrape timeout is used unless it is less than Interval in which the latter is used
       scrapeTimeout: ""
-      # -- When true, Prometheus keeps the labels exported by the KEDA Webhooks (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it
+      # -- When true, Prometheus keeps the labels exported by the KEDA Webhooks (such as `namespace`) instead of renaming them to `exported_<label>` on conflict. KEDA's Grafana dashboard queries `exported_namespace`, so leave this off if you use it. Has no effect when Prometheus sets `overrideHonorLabels: true`
       honorLabels: false
       # -- DEPRECATED. List of expressions that define custom relabeling rules for metric server ServiceMonitor crd (prometheus operator). [RelabelConfig Spec]
       relabellings: []
