@@ -40,6 +40,9 @@ spec:
     {{- with .Values.prometheus.operator.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
+    {{- if .Values.prometheus.operator.serviceMonitor.honorLabels }}
+    honorLabels: true
+    {{- end }}
   {{- if .Values.prometheus.operator.serviceMonitor.relabelings}}
     {{- with .Values.prometheus.operator.serviceMonitor.relabelings }}
     relabelings:
