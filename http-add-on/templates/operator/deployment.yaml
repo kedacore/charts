@@ -36,7 +36,7 @@ spec:
       {{- toYaml .Values.podSecurityContext.operator | nindent 8 }}
       {{- else }}
       securityContext:
-      {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- toYaml (omit .Values.podSecurityContext "operator" "scaler" "interceptor") | nindent 8 }}
       {{- end }}
       containers:
       - args:
@@ -92,7 +92,7 @@ spec:
         {{- toYaml .Values.securityContext.operator | nindent 10 }}
         {{- else }}
         securityContext:
-        {{- toYaml .Values.securityContext | nindent 10 }}
+        {{- toYaml (omit .Values.securityContext "operator" "scaler" "interceptor") | nindent 10 }}
         {{- end }}
       terminationGracePeriodSeconds: 10
       nodeSelector:
