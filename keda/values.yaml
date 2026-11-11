@@ -88,6 +88,10 @@ networkPolicy:
       extraEgressRules: []
   # -- Allow use of extra ingress and egress rules for kubernetes network policies
   kubernetes:
+    apiServer:
+      # -- Destination CIDRs for the API server egress rule of the kubernetes network policies. An empty list keeps the rule without a destination so it works on any cluster.
+      # A single address needs a /32 or /128 suffix. Depending on the CNI, the API server may need to be listed by its endpoint addresses as well as the kubernetes Service ClusterIP.
+      cidrs: []
     operator:
       extraEgressRules: []
       extraIngressRules: []
