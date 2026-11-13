@@ -35,6 +35,37 @@
         }
       }
     },
+    "preDeleteJob": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enabled": {"type": "boolean"},
+        "image": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "imagePullPolicy": {"type": "string"},
+            "registry": {"type": "string"},
+            "repository": {"type": "string"},
+            "tag": {"type": "string"}
+          }
+        },
+        "name": {"type": "string"},
+        "resources": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1
+        },
+        "ttlSecondsAfterFinished": {"type": "integer"},
+        "containerResources": {"type": "object"}
+      }
+    },
     "hashiCorpVault": {
       "type": "object",
       "additionalProperties": false,

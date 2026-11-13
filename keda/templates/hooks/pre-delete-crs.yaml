@@ -1,0 +1,108 @@
+{{- if .Values.preDeleteJob.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.preDeleteJob.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ .Values.preDeleteJob.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+rules:
+  - apiGroups:
+      - keda.sh
+    resources:
+      {{- range .Values.preDeleteJob.resources }}
+      - {{ . }}
+      {{- end }}
+    verbs:
+      - get
+      - list
+      - watch
+      - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.preDeleteJob.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.preDeleteJob.name }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ .Values.preDeleteJob.name }}
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.preDeleteJob.name }}
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  {{- if .Values.preDeleteJob.ttlSecondsAfterFinished }}
+  ttlSecondsAfterFinished: {{ .Values.preDeleteJob.ttlSecondsAfterFinished }}
+  {{- end }}
+  template:
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.imagePullSecrets }}
+        - name: {{ . }}
+      {{- end }}
+      {{- end }}
+      serviceAccountName: {{ .Values.preDeleteJob.name }}
+      restartPolicy: Never
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: kubectl
+          {{- $registry := .Values.preDeleteJob.image.registry }}
+          {{- if and .Values.global.image.registry (eq $registry "registry.k8s.io") }}
+          {{- $registry = .Values.global.image.registry }}
+          {{- end }}
+          {{- if $registry }}
+          image: "{{ $registry }}/{{ .Values.preDeleteJob.image.repository }}:{{ .Values.preDeleteJob.image.tag }}"
+          {{- else }}
+          image: "{{ .Values.preDeleteJob.image.repository }}:{{ .Values.preDeleteJob.image.tag }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.preDeleteJob.image.imagePullPolicy }}
+          {{- with .Values.preDeleteJob.containerResources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          args:
+            {{- range .Values.preDeleteJob.args }}
+            - {{ . | quote }}
+            {{- end }}
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+{{- end }}
