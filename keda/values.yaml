@@ -59,6 +59,42 @@ crds:
     {}
     # foo: bar
 
+# -- Pre-delete hook job that deletes the KEDA Custom Resources (ScaledObject, ScaledJob) in the
+# release namespace before the chart is uninstalled.
+# When enabled, a Job runs kubectl delete --all --wait with a timeout so the CRs are removed
+# (and their finalizers processed) before the CRDs go away.
+preDeleteJob:
+  # -- Enable the pre-delete cleanup job
+  enabled: false
+  # -- Common name for the ServiceAccount, Role, RoleBinding and Job
+  name: keda-delete-crs
+  # -- Full arguments passed to kubectl in the pre-delete job.
+  # Override to change which resources are cleaned up or to adjust the wait/timeout flags.
+  args:
+    - delete
+    - scaledobjects,scaledjobs
+    - --all
+    - --wait
+    - --timeout=2m
+  # -- Resource types granted to the hook's Role (and targeted by the delete command)
+  resources:
+    - scaledobjects
+    - scaledjobs
+  # -- Seconds after which a finished Job is automatically deleted by the kube-controller-manager
+  ttlSecondsAfterFinished: 300
+  # -- Image settings for the pre-delete job
+  image:
+    # -- Image registry of the pre-delete job. global.image.registry takes precedence when set, then this value, then no registry
+    registry: registry.k8s.io
+    # -- Image name of the pre-delete job
+    repository: kubectl
+    # -- Image tag of the pre-delete job
+    tag: v1.36.6
+    # -- Image pullPolicy of the pre-delete job
+    imagePullPolicy: IfNotPresent
+  # -- Resources for the kubectl container (not to be confused with preDeleteJob.resources, the RBAC resource types)
+  containerResources: {}
+
 # -- Defines Kubernetes namespaces to watch to scale their workloads. Default watches all namespaces
 watchNamespace: ""
 
