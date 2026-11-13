@@ -24,9 +24,10 @@ spec:
   usages:
     - server auth
     - client auth
+  {{- if .Values.certificates.certManager.privateKey }}
   privateKey:
-    algorithm: RSA
-    size: 2048
+    {{- toYaml .Values.certificates.certManager.privateKey | nindent 4 }}
+  {{- end }}
   duration: {{ .Values.certificates.certManager.duration }}
   renewBefore: {{ .Values.certificates.certManager.renewBefore }}
   issuerRef:
