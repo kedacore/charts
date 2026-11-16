@@ -746,6 +746,8 @@ prometheus:
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
+      # -- Namespace to create the metric server ServiceMonitor in. Defaults to the release namespace
+      namespace: ""
       # -- JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec]
       jobLabel: ""
       # -- TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics
@@ -801,6 +803,8 @@ prometheus:
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus Operator
       enabled: false
+      # -- Namespace to create the KEDA Operator ServiceMonitor in. Defaults to the release namespace
+      namespace: ""
       # -- JobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec]
       jobLabel: ""
       # -- TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics
@@ -874,6 +878,8 @@ prometheus:
     serviceMonitor:
       # -- Enables ServiceMonitor creation for the Prometheus webhooks
       enabled: false
+      # -- Namespace to create the KEDA admission webhooks ServiceMonitor in. Defaults to the release namespace
+      namespace: ""
       # -- jobLabel selects the label from the associated Kubernetes service which will be used as the job label for all metrics. [ServiceMonitor Spec]
       jobLabel: ""
       # -- TargetLabels transfers labels from the Kubernetes `Service` onto the created metrics
