@@ -30,7 +30,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vscaledobject.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
@@ -54,7 +55,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vscaledjob.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
@@ -78,7 +80,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vstriggerauthentication.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
@@ -102,7 +105,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vsclustertriggerauthentication.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
@@ -126,7 +130,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vcloudeventsource.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
@@ -150,7 +155,8 @@ webhooks:
   failurePolicy: {{ .Values.webhooks.failurePolicy }}
   matchPolicy: Equivalent
   name: vclustercloudeventsource.kb.io
-  namespaceSelector: {}
+  namespaceSelector:
+    {{- toYaml .Values.webhooks.namespaceSelector | nindent 4 }}
   objectSelector: {}
   rules:
   - apiGroups:
