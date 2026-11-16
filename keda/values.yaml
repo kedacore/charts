@@ -59,10 +59,13 @@ crds:
     {}
     # foo: bar
 
-# -- Pre-delete hook job that deletes the KEDA Custom Resources (ScaledObject, ScaledJob) in the
-# release namespace before the chart is uninstalled.
+# -- Pre-delete hook job that deletes all namespaced KEDA Custom Resources (ScaledObject, ScaledJob,
+# TriggerAuthentication, CloudEventSource) in the release namespace before the chart is uninstalled.
 # When enabled, a Job runs kubectl delete --all --wait with a timeout so the CRs are removed
 # (and their finalizers processed) before the CRDs go away.
+# Note: cluster-scoped KEDA Custom Resources (ClusterTriggerAuthentication, ClusterCloudEventSource)
+# are not cleaned up, as the hook is limited to the release namespace and a namespaced Role cannot
+# delete cluster-scoped resources. Remove unneeded ones manually before uninstalling if desired.
 preDeleteJob:
   # -- Enable the pre-delete cleanup job
   enabled: false
@@ -72,7 +75,7 @@ preDeleteJob:
   # Override to change which resources are cleaned up or to adjust the wait/timeout flags.
   args:
     - delete
-    - scaledobjects,scaledjobs
+    - scaledobjects,scaledjobs,triggerauthentications,cloudeventsources
     - --all
     - --wait
     - --timeout=2m
@@ -80,6 +83,8 @@ preDeleteJob:
   resources:
     - scaledobjects
     - scaledjobs
+    - triggerauthentications
+    - cloudeventsources
   # -- Seconds after which a finished Job is automatically deleted by the kube-controller-manager
   ttlSecondsAfterFinished: 300
   # -- Image settings for the pre-delete job

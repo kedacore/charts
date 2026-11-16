@@ -21,6 +21,7 @@ metadata:
 rules:
   - apiGroups:
       - keda.sh
+      - eventing.keda.sh
     resources:
       {{- range .Values.preDeleteJob.resources }}
       - {{ . }}
