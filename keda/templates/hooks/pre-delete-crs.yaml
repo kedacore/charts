@@ -63,11 +63,9 @@ spec:
   {{- end }}
   template:
     spec:
-      {{- if .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
-      {{- range .Values.imagePullSecrets }}
-        - name: {{ . }}
-      {{- end }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ .Values.preDeleteJob.name }}
       restartPolicy: Never
@@ -77,10 +75,7 @@ spec:
       {{- end }}
       containers:
         - name: kubectl
-          {{- $registry := .Values.preDeleteJob.image.registry }}
-          {{- if and .Values.global.image.registry (eq $registry "registry.k8s.io") }}
-          {{- $registry = .Values.global.image.registry }}
-          {{- end }}
+          {{- $registry := .Values.global.image.registry | default .Values.preDeleteJob.image.registry | default "" }}
           {{- if $registry }}
           image: "{{ $registry }}/{{ .Values.preDeleteJob.image.repository }}:{{ .Values.preDeleteJob.image.tag }}"
           {{- else }}
