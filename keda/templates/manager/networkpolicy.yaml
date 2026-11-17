@@ -43,6 +43,9 @@ spec:
         - protocol: TCP
           port: {{ .Values.profiling.operator.port }}
     {{- end }}
+    {{- if .Values.networkPolicy.kubernetes.operator.extraIngressRules }}
+    {{ toYaml .Values.networkPolicy.kubernetes.operator.extraIngressRules | nindent 4 }}
+    {{- end }}
   egress:
     # Allow DNS resolution. Uses a plain port rule without a podSelector
     # for compatibility with node-local DNS (e.g. EKS Auto Mode) where
@@ -52,14 +55,21 @@ spec:
           port: 53
         - protocol: TCP
           port: 53
-    # Allow access to Kubernetes API server
-    - to:
-        - namespaceSelector: {}
-      ports:
+    # Allow access to Kubernetes API server.
+    # The API server is not selectable by namespaceSelector or podSelector, so the rule
+    # has no to clause unless networkPolicy.kubernetes.apiServer.cidrs is set
+    - ports:
         - protocol: TCP
           port: 443
         - protocol: TCP
           port: 6443
+      {{- with .Values.networkPolicy.kubernetes.apiServer.cidrs }}
+      to:
+        {{- range . }}
+        - ipBlock:
+            cidr: {{ . | quote }}
+        {{- end }}
+      {{- end }}
     # Allow egress to any pod in the cluster for scalers and custom resources
     - to:
         - namespaceSelector: {}

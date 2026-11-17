@@ -75,6 +75,26 @@
           }
         }
       }
+    },
+    "networkPolicy": {
+      "type": "object",
+      "properties": {
+        "kubernetes": {
+          "type": "object",
+          "properties": {
+            "apiServer": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "cidrs": {
+                  "type": "array",
+                  "items": {"type": "string", "pattern": "^[0-9A-Fa-f.:]+/[0-9]{1,3}$"}
+                }
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
