@@ -140,6 +140,8 @@ for receiver configuration and upgrade steps.
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `certificates.operator` | string | `nil` |  |
+| `deploymentAnnotations.keda` | object | `{}` | Deployment annotations for KEDA operator. Rendered through `tpl` |
+| `deploymentLabels.keda` | object | `{}` | Deployment labels for KEDA operator. Rendered through `tpl` |
 | `extraArgs.keda` | object | `{}` | Additional KEDA Operator container arguments |
 | `hashiCorpVault.kubernetesAuth.audience` | string | `"vault"` | Projected operator-token audience, also globally approved. Empty disables projection; does not configure named-SA minting. Use an audience not accepted by kube-apiserver. |
 | `hashiCorpVault.kubernetesAuth.projectedTokenMountPath` | string | `"/var/run/secrets/keda-vault"` | Mount directory for the Vault token (<path>/token). Empty/null disables projection and implicit file selection; explicit TA token paths remain usable. |
@@ -195,6 +197,8 @@ for receiver configuration and upgrade steps.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `deploymentAnnotations.metricsAdapter` | object | `{}` | Deployment annotations for KEDA Metrics Adapter. Rendered through `tpl` |
+| `deploymentLabels.metricsAdapter` | object | `{}` | Deployment labels for KEDA Metrics Adapter. Rendered through `tpl` |
 | `extraArgs.metricsAdapter` | object | `{}` | Additional Metrics Adapter container arguments |
 | `image.metricsApiServer.registry` | string | `"ghcr.io"` | Image registry of KEDA Metrics API Server |
 | `image.metricsApiServer.repository` | string | `"kedacore/keda-metrics-apiserver"` | Image name of KEDA Metrics API Server |
@@ -337,6 +341,8 @@ for receiver configuration and upgrade steps.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
+| `deploymentAnnotations.webhooks` | object | `{}` | Deployment annotations for KEDA Admission webhooks. Rendered through `tpl` |
+| `deploymentLabels.webhooks` | object | `{}` | Deployment labels for KEDA Admission webhooks. Rendered through `tpl` |
 | `extraArgs.webhooks` | object | `{}` | Additional KEDA admission webhooks container arguments |
 | `image.webhooks.registry` | string | `"ghcr.io"` | Image registry of KEDA admission-webhooks |
 | `image.webhooks.repository` | string | `"kedacore/keda-admission-webhooks"` | Image name of KEDA admission-webhooks |
