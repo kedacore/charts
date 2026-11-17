@@ -54,6 +54,8 @@ operator:
   imagePullSecrets: []
   # -- The namespace to watch for new `InterceptorRoute`s. Leave this blank (i.e. `""`) to tell the operator to watch all namespaces.
   watchNamespace: ""
+  # -- Priority class name for the operator pods
+  priorityClassName: ""
   # -- The image pull policy for the operator component
   pullPolicy: Always
   # operator pod resource limits
@@ -92,6 +94,8 @@ operator:
 scaler:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
   extraEnvs: {}
+  # -- Priority class name for the scaler pods
+  priorityClassName: ""
   # -- Number of replicas
   replicas: 3
   # -- The image pull secrets for the scaler component
@@ -143,6 +147,10 @@ scaler:
 interceptor:
   # -- Extra environment variables to set (key-value map with "ENV name":"value")
   extraEnvs: {}
+  # -- The namespace to watch for `HTTPScaledObject`s. Leave this blank (i.e. `""`) to tell the interceptor to watch all namespaces.
+  watchNamespace: ""
+  # -- Priority class name for the interceptor pods
+  priorityClassName: ""
   # -- Extra volume mounts for the interceptor container
   extraVolumeMounts: []
   # -- Extra volumes for the interceptor pod
