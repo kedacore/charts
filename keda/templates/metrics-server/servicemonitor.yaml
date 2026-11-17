@@ -40,6 +40,9 @@ spec:
     {{- with .Values.prometheus.metricServer.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
+    {{- if .Values.prometheus.metricServer.serviceMonitor.honorLabels }}
+    honorLabels: true
+    {{- end }}
   {{- if .Values.prometheus.metricServer.serviceMonitor.relabelings}}
     {{- with .Values.prometheus.metricServer.serviceMonitor.relabelings }}
     relabelings:

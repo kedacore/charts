@@ -49,6 +49,14 @@
         }
       }
     },
+    "prometheus": {
+      "type": "object",
+      "properties": {
+        "metricServer": {"type": "object", "properties": {"serviceMonitor": {"type": "object", "properties": {"honorLabels": {"type": "boolean"}}}}},
+        "operator": {"type": "object", "properties": {"serviceMonitor": {"type": "object", "properties": {"honorLabels": {"type": "boolean"}}}}},
+        "webhooks": {"type": "object", "properties": {"serviceMonitor": {"type": "object", "properties": {"honorLabels": {"type": "boolean"}}}}}
+      }
+    },
     "permissions": {
       "type": "object",
       "properties": {

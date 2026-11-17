@@ -41,6 +41,9 @@ spec:
     {{- with .Values.prometheus.webhooks.serviceMonitor.scrapeTimeout }}
     scrapeTimeout: {{ . }}
     {{- end }}
+    {{- if .Values.prometheus.webhooks.serviceMonitor.honorLabels }}
+    honorLabels: true
+    {{- end }}
   {{- if .Values.prometheus.webhooks.serviceMonitor.relabelings}}
     {{- with .Values.prometheus.webhooks.serviceMonitor.relabelings }}
     relabelings:
