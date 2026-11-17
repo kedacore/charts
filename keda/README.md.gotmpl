@@ -81,6 +81,87 @@ for receiver configuration and upgrade steps.
   {{- end }}
 {{- end }}
 
+#### Service account selection for cloud federation
+
+The `gcp-workload-service-account`, `azure-workload-service-account`, and
+`aws-workload-service-account` providers require `spec.podIdentity.serviceAccountName`
+and exchange a token for that account in the ScaledObject or ScaledJob namespace
+with Google IAM, Microsoft Entra ID, or AWS STS. This requires matching operator
+and CRD support; updating the CRDs alone does not enable this feature in older
+operator versions.
+
+Create the workload namespaces and service accounts before installing the chart,
+then approve each exact namespace/account and its token audience:
+
+```yaml
+operator:
+  serviceAccountTokens:
+    mode: enforce-audience
+permissions:
+  operator:
+    restrict:
+      serviceAccountTokenCreationRoles:
+        - name: scaling-gcp
+          namespace: payments
+          audience: https://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/kubernetes/providers/production-cluster
+        - name: scaling-azure
+          namespace: payments
+          audience: api://AzureADTokenExchange
+        - name: scaling-aws
+          namespace: payments
+          audience: sts.amazonaws.com
+```
+
+The chart grants token-creation permissions for each listed account and supplies
+the audience mappings to the operator. Keep
+`permissions.operator.restrict.allowAllServiceAccountTokenCreation` disabled.
+An entry in `operator.serviceAccountTokens.additionalAllowedAudiences` alone does
+not approve a service account for this flow. Each namespace/account supports one
+audience; use separate accounts for different cloud providers. Explicit selection
+does not support `legacy` token mode.
+
+Configure the cloud identity provider to trust the cluster's OIDC issuer and the
+exact subject `system:serviceaccount:payments:SERVICE_ACCOUNT`. Grant only the
+permissions needed by the scaler. Use an audience that the Kubernetes API server
+does not accept.
+
+The authentication resource sets `serviceAccountName` in its top-level
+`spec.podIdentity`, together with the provider's identity fields:
+
+| Provider | Identity fields | Token audience |
+| --- | --- | --- |
+| `gcp-workload-service-account` | Optional `identityId` for IAM service-account impersonation | Google IAM workload identity pool/provider resource, as above |
+| `azure-workload-service-account` | Required `identityId` and `identityTenantId` | `api://AzureADTokenExchange` |
+| `aws-workload-service-account` | Required `roleArn` | `sts.amazonaws.com` |
+
+The existing `gcp`, `azure-workload`, and `aws` providers keep their existing
+authentication behavior and do not accept `serviceAccountName`.
+
+The namespace always comes from the consuming ScaledObject or ScaledJob, including
+when using a ClusterTriggerAuthentication. Nested secret-provider authentication
+does not support this field. This flow covers Google IAM WIF, Azure WIF, and AWS
+IAM OIDC/IRSA; GKE-managed federation and EKS Pod Identity use separate mechanisms.
+
+**Approval delegates the account's cloud identities to the namespace.** Users who
+can configure scaling resources and their authentication there can select an
+approved account, even if their workload Pods do not use that account. KEDA does
+not authorize the individual authentication resource author against that cloud
+identity.
+
+The audience mappings and token-creation RBAC are shared with
+`boundServiceAccountToken` and Vault Kubernetes authentication. Namespace users
+can use those flows to send the raw Kubernetes federation JWT to an endpoint they
+control, then exchange it outside KEDA. Approval therefore delegates every cloud
+identity whose trust policy accepts that issuer, subject, and audience. For AWS,
+this can include roles other than the authentication resource's `roleArn`.
+Credentials are not confined to KEDA or to scaling operations. Use dedicated
+service accounts and least-privilege cloud identities for this delegation.
+
+Removing an approval stops future Kubernetes token requests after the operator
+applies the updated configuration; previously issued Kubernetes tokens and cloud
+credentials can remain usable until they expire. The configured scaler may send
+cloud credentials to its metrics endpoint.
+
 ### Metrics server
 
 | Parameter | Type | Default | Description |
