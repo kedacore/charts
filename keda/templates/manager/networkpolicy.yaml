@@ -44,13 +44,10 @@ spec:
           port: {{ .Values.profiling.operator.port }}
     {{- end }}
   egress:
-    # Allow DNS resolution
-    - to:
-        - namespaceSelector: {}
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
+    # Allow DNS resolution. Uses a plain port rule without a podSelector
+    # for compatibility with node-local DNS (e.g. EKS Auto Mode) where
+    # the resolver is not a pod labeled k8s-app=kube-dns.
+    - ports:
         - protocol: UDP
           port: 53
         - protocol: TCP

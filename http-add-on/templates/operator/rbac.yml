@@ -33,7 +33,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Release.Name }}-role
     app.kubernetes.io/component: operator
@@ -44,7 +43,6 @@ rules:
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects
   - interceptorroutes
   verbs:
   - create
@@ -57,37 +55,22 @@ rules:
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects/finalizers
   - interceptorroutes/finalizers
   verbs:
   - update
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects/status
   - interceptorroutes/status
   verbs:
   - get
   - patch
   - update
-- apiGroups:
-  - keda.sh
-  resources:
-  - scaledobjects
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Release.Name }}-metrics-reader
     app.kubernetes.io/component: operator
@@ -104,7 +87,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Chart.Name }}-role-binding
     app.kubernetes.io/component: operator
@@ -125,7 +107,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Release.Name }}-rolebinding
     app.kubernetes.io/component: operator
@@ -146,7 +127,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    httpscaledobjects.http.keda.sh/version: {{ .Values.images.tag | default .Chart.AppVersion }}
     keda.sh/addon: {{ .Chart.Name }}
     name: {{ .Release.Name }}-auth-delegator
     app.kubernetes.io/component: operator

@@ -166,9 +166,6 @@ jobs:
         run: kubectl get all --namespace keda
         if: always()
 
-      - name: Get all HTTPScaledObjects
-        run: kubectl get httpscaledobjects
-
       - name: Get all CRDs
         run: kubectl get crds
 
@@ -178,22 +175,23 @@ jobs:
       - name: Describe InterceptorRoute CRD
         run: kubectl describe crds/interceptorroutes.http.keda.sh
 
-      # TODO: Drop `HTTPScaledObject` specific steps after crd is DEPRECATED
-      - name: Get HTTPScaledObject CRD
-        run: kubectl get crds/httpscaledobjects.http.keda.sh
-
-      - name: Describe HTTPScaledObject CRD
-        run: kubectl describe crds/httpscaledobjects.http.keda.sh
+      - name: Create InterceptorRoute
+        run: |
+          kubectl apply -f - <<'EOF'
+          apiVersion: http.keda.sh/v1beta1
+          kind: InterceptorRoute
+          metadata:
+            name: smoke
+            namespace: keda
+          spec:
+            target:
+              service: smoke
+              port: 8080
+            scalingMetric:
+              concurrency:
+                targetValue: 100
+          EOF
+          kubectl wait --for=condition=Ready interceptorroute/smoke --namespace keda --timeout=60s
 
       - name: Validate Interceptor ScaledObject
-        run: |
-          for N in {1..3}
-          do
-            READY=$(kubectl get so/keda-add-ons-http-interceptor -n keda -o jsonpath='{.status.conditions[?(@.type=="Ready")].status}')
-            echo "ScaledObjet is ready: $READY"
-            if [[ "$READY" == "True" ]]; then            
-              exit 0
-            fi
-            sleep 15s
-          done
-          exit 1
+        run: kubectl wait --for=condition=Ready scaledobject/keda-add-ons-http-interceptor --namespace keda --timeout=120s

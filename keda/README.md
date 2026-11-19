@@ -21,7 +21,7 @@ helm repo add kedacore https://kedacore.github.io/charts
 helm repo update
 
 kubectl create namespace keda
-helm install keda kedacore/keda --namespace keda --version 2.21.0
+helm install keda kedacore/keda --namespace keda --version 2.21.1
 ```
 
 ## Introduction
@@ -36,7 +36,7 @@ To install the chart with the release name `keda`:
 
 ```console
 $ kubectl create namespace keda
-$ helm install keda kedacore/keda --namespace keda --version 2.21.0
+$ helm install keda kedacore/keda --namespace keda --version 2.21.1
 ```
 
 ## Uninstalling the Chart
@@ -151,7 +151,7 @@ for receiver configuration and upgrade steps.
 | `logging.operator.format` | string | `"console"` | Logging format for KEDA Operator. allowed values: `json` or `console` |
 | `logging.operator.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
 | `logging.operator.stackTracesEnabled` | bool | `false` | If enabled, the stack traces will be also printed |
-| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.operator.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `operator.affinity` | object | `{}` | [Affinity] for pod scheduling for KEDA operator. Takes precedence over the `affinity` field |
 | `operator.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `operator.dnsConfig` | object | `{}` | DNS config for KEDA operator pod |
@@ -205,7 +205,7 @@ for receiver configuration and upgrade steps.
 | `logging.metricServer.stderrthreshold` | string | `"ERROR"` | Logging stderrthreshold for Metrics Server (Deprecated) allowed values: 'DEBUG','INFO','WARN','ERROR','ALERT','EMERG' |
 | `logging.metricServer.zapEncoder` | string | `"console"` | Zap Logging encoder for Metrics Server. allowed values: `json` or `console` |
 | `logging.metricServer.zapLevel` | string | `"info"` | Zap Logging level for Metrics Server. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
-| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.metricServer.zapTimeEncoding` | string | `"rfc3339"` | Zap logging time encoding for Metrics Server. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `metricsServer.affinity` | object | `{}` | [Affinity] for pod scheduling for Metrics API Server. Takes precedence over the `affinity` field |
 | `metricsServer.disableCompression` | bool | `true` | Disable response compression for k8s restAPI in client-go. Disabling compression simply means that turns off the process of making data smaller for K8s restAPI in client-go for faster transmission. |
 | `metricsServer.dnsConfig` | object | `{}` | DNS config for KEDA metrics server pod |
@@ -237,7 +237,7 @@ for receiver configuration and upgrade steps.
 | `serviceAccount.metricServer.annotations` | object | `{}` | Annotations to add to the service account |
 | `serviceAccount.metricServer.automountServiceAccountToken` | bool | `true` | Specifies whether a service account should automount API-Credentials |
 | `serviceAccount.metricServer.create` | bool | `true` | Specifies whether a service account should be created |
-| `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. |
+| `serviceAccount.metricServer.name` | string | `"keda-metrics-server"` | The name of the service account to use. If set to empty string `""`, it will fall back to `serviceAccount.operator.name` (default: `keda-operator`). |
 | `topologySpreadConstraints.metricsServer` | list | `[]` | [Pod Topology Constraints] of KEDA metrics apiserver pod |
 | `upgradeStrategy.metricsApiServer` | object | `{}` | Capability to configure [Deployment upgrade strategy] for Metrics Api Server |
 | `volumes.metricsApiServer.extraVolumeMounts` | list | `[]` | Extra volume mounts for metric server deployment |
@@ -345,7 +345,7 @@ for receiver configuration and upgrade steps.
 | `image.webhooks.tag` | string | `""` | Image tag of KEDA admission-webhooks . Optional, given app version of Helm chart is used by default |
 | `logging.webhooks.format` | string | `"console"` | Logging format for KEDA Admission webhooks. allowed values: `json` or `console` |
 | `logging.webhooks.level` | string | `"info"` | Logging level for KEDA Operator. allowed values: `debug`, `info`, `error`, or an integer value greater than 0, specified as string |
-| `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nano`, `iso8601`, `rfc3339` or `rfc3339nano` |
+| `logging.webhooks.timeEncoding` | string | `"rfc3339"` | Logging time encoding for KEDA Operator. allowed values are `epoch`, `millis`, `nanos`, `iso8601`, `rfc3339` or `rfc3339nano` |
 | `podAnnotations.webhooks` | object | `{}` | Pod annotations for KEDA Admission webhooks |
 | `podDisruptionBudget.webhooks` | object | `{}` | Capability to configure [Pod Disruption Budget] |
 | `podLabels.webhooks` | object | `{}` | Pod labels for KEDA Admission webhooks |
@@ -445,6 +445,6 @@ Autogenerated from chart metadata using [helm-docs](https://github.com/norwoodj/
 [Pod security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 [Security context]: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-container
 [Pod Topology Constraints]: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
-[RelabelConfig Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.RelabelConfig
+[RelabelConfig Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#monitoring.coreos.com/v1.RelabelConfig
 [resource request & limits]: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
-[ServiceMonitor Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api.md#monitoring.coreos.com/v1.ServiceMonitor
+[ServiceMonitor Spec]: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/api-reference/api.md#monitoring.coreos.com/v1.ServiceMonitor

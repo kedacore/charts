@@ -13,7 +13,6 @@ rules:
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects
   - interceptorroutes
   verbs:
   - create
@@ -38,7 +37,6 @@ rules:
 - apiGroups:
   - http.keda.sh
   resources:
-  - httpscaledobjects
   - interceptorroutes
   verbs:
   - get
