@@ -16,6 +16,7 @@ rules:
   resources:
   - horizontalpodautoscalers
   verbs:
+  - get
   - list
   - watch
 - apiGroups:
