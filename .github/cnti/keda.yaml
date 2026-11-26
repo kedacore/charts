@@ -1,0 +1,9 @@
+# CNTi Test Suite configuration for the keda chart, used by
+# .github/workflows/cnti.yml. The chart is installed with its defaults.
+config_version: "v2"
+deployments:
+  helm_dirs:
+    - name: keda
+      # Relative to this file.
+      helm_directory: ../../keda
+      namespace: keda

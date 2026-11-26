@@ -1,0 +1,15 @@
+# The essential tests' results the keda chart knows and accepts, for the CNTi
+# job (.github/workflows/cnti.yml, expected_results). A test not listed is
+# expected to pass. When a result changes, the job says so in its summary and
+# as a warning; the badge doesn't change. Update this file in the pull request
+# that changes the result.
+- test: specialized_init_system
+  status: failed
+  reason: >-
+    The KEDA images start their Go binary as PID 1, without an init process
+    such as tini or dumb-init
+- test: zombie_handled
+  status: failed
+  reason: >-
+    The binary runs as PID 1 and does not reap orphaned child processes, which
+    an init process would
