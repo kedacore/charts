@@ -1,0 +1,87 @@
+# Installs each chart below with its defaults on a kind cluster, runs the
+# CNTi Test Suite's essential tests against it and publishes the result as
+# the chart's badge in the README. https://github.com/lfn-cnti/testsuite-action
+#
+# A chart takes .github/cnti/<chart>.yaml (the suite configuration) and
+# .github/cnti/<chart>-expected.yaml (its known results), and its badge is
+# published to <chart>/ on the orphan branch `badges`.
+name: CNTi essential
+
+on:
+  schedule:
+    # Weekly, Mondays, off the full hour: GitHub delays or drops scheduled runs
+    # under load, which peaks at the start of each hour.
+    - cron: "41 3 * * 1"
+  workflow_dispatch:
+  # Pull requests that change a tested chart, the job or its configuration.
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/cnti.yml
+      - .github/cnti/**
+      - keda/**
+
+permissions:
+  contents: read
+
+# One run per branch or pull request at a time; a new commit on a pull
+# request cancels the run for the previous one.
+concurrency:
+  group: cnti-essential-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  # Runs on main (weekly or by hand): the only runs that publish the badges,
+  # and the only ones with a write token. Forks that enable scheduled
+  # workflows do not run either job.
+  essential:
+    if: github.repository == 'kedacore/charts' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      # Publishes the badges to the orphan branch `badges`.
+      contents: write
+    strategy: &essential-strategy
+      # One chart's result doesn't stop another's. The charts publish to
+      # separate directories; the action retries a badge push that races
+      # another.
+      fail-fast: false
+      matrix:
+        chart:
+          - keda
+    steps: &essential-steps
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # The suite doesn't need the job's write token; the action passes it
+          # to the badge publisher on its own.
+          persist-credentials: false
+
+      # Creates a kind cluster of a control plane and two workers, installs
+      # the chart with its defaults, and runs the essential tests.
+      - uses: lfn-cnti/testsuite-action@3c0e163cbbdde302cdd9abb9dbe8c2cbd6a72c71 # v1.4.0
+        with:
+          # A released suite version, bumped on purpose after reading the
+          # release notes.
+          version: v2.4.1
+          cnf_config: .github/cnti/${{ matrix.chart }}.yaml
+          tests: cert
+          badge_branch: badges
+          badge_name: ${{ matrix.chart }}
+          # Known results: a test whose result changes is reported in the job
+          # summary and as a warning.
+          expected_results: .github/cnti/${{ matrix.chart }}-expected.yaml
+          # Artifact names must be unique within a run.
+          artifact_name: cnti-${{ matrix.chart }}
+
+  # Pull requests, and manual runs on other branches: the same steps with a
+  # read-only token. The action publishes the badges only from the default
+  # branch, so nothing is published here.
+  essential-pr:
+    if: github.repository == 'kedacore/charts' && (github.event_name == 'pull_request' || github.ref != 'refs/heads/main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy: *essential-strategy
+    steps: *essential-steps

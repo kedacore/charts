@@ -6,6 +6,8 @@ KEDA can run on both the cloud and the edge, integrates natively with Kubernetes
 We are a Cloud Native Computing Foundation (CNCF) graduated project.
 ![CNCF Logo](https://raw.githubusercontent.com/kedacore/keda/main/images/logo-cncf.svg)
 
+[![CNTi essential](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/kedacore/charts/badges/keda/cnti-badge.json&label=CNTi%20essential)](https://github.com/kedacore/charts/actions/workflows/cnti.yml)
+
 ## Getting Started
 
 ### Adding our Helm chart repo
