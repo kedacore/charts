@@ -69,6 +69,19 @@
                     },
                     "required": ["name", "namespace"]
                   }
+                },
+                "cloudWorkloadIdentityTokenCreationRoles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "name": {"type": "string", "maxLength": 253, "pattern": "^[a-z0-9]([-a-z0-9.]*[a-z0-9])?$"},
+                      "namespace": {"type": "string", "maxLength": 63, "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"},
+                      "audience": {"type": "string", "minLength": 1}
+                    },
+                    "required": ["name", "namespace", "audience"]
+                  }
                 }
               }
             }

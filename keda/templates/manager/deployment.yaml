@@ -4,6 +4,7 @@
 {{- $vaultProjections := include "keda.vaultProjections" . | fromJsonArray -}}
 {{- $tokens := include "keda.serviceAccountTokens" . | fromJson -}}
 {{- $tokenAudiences := include "keda.serviceAccountTokenAudiences" . | fromJsonArray -}}
+{{- $cloudTokenAudiences := include "keda.cloudWorkloadIdentityAudiences" . | fromJsonArray -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -128,7 +129,7 @@ spec:
           - "--http-max-idle-conns={{ .Values.http.maxIdleConns }}"
           - "--http-max-idle-conns-per-host={{ .Values.http.maxIdleConnsPerHost }}"
           - "--http-idle-conn-timeout={{ .Values.http.idleConnTimeout }}"
-          {{- if or (eq $tokens.mode "legacy") $tokenAudiences }}
+          {{- if or (eq $tokens.mode "legacy") $tokenAudiences $cloudTokenAudiences }}
           - {{ printf "--service-account-token-mode=%s" $tokens.mode | quote }}
           {{- end }}
           {{- if $vault.audience }}
@@ -173,6 +174,10 @@ spec:
             {{- if $tokenAudiences }}
             - name: KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES
               value: {{ mustToJson $tokenAudiences | quote }}
+            {{- end }}
+            {{- if $cloudTokenAudiences }}
+            - name: KEDA_CLOUD_WORKLOAD_IDENTITY_AUDIENCES
+              value: {{ mustToJson $cloudTokenAudiences | quote }}
             {{- end }}
             {{- with .Values.operator.outboundFilter }}
             - name: KEDA_OUTBOUND_FILTER

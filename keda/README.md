@@ -169,10 +169,11 @@ for receiver configuration and upgrade steps.
 | `operator.replicaCount` | int | `1` | Capability to configure the number of replicas for KEDA operator. While you can run more replicas of our operator, only one operator instance will be the leader and serving traffic. You can run multiple replicas, but they will not improve the performance of KEDA, it could only reduce downtime during a failover. Learn more in [our documentation](https://keda.sh/docs/latest/operate/cluster/#high-availability). |
 | `operator.revisionHistoryLimit` | int | `10` | ReplicaSets for this Deployment you want to retain (Default: 10) |
 | `operator.serviceAccountTokens.additionalAllowedAudiences` | list | `[]` | Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config: max 64 KiB. |
-| `operator.serviceAccountTokens.mode` | string | `"enforce-audience"` | Token audience policy for Vault and boundServiceAccountToken. Legacy disables enforcement and cannot be combined with configured audiences. |
+| `operator.serviceAccountTokens.mode` | string | `"enforce-audience"` | Token audience policy for Vault, boundServiceAccountToken, and cloud workload service account federation. When configured as "legacy", it disables enforcement, cannot be combined with configured audiences, and does not support workload service account providers. |
 | `operator.tolerations` | list | `[]` | Tolerations for pod scheduling ([docs](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)) |
 | `operator.useHostNetwork` | bool | `false` | Enable operator to use host network |
 | `permissions.operator.restrict.allowAllServiceAccountTokenCreation` | bool | `false` | Allow Keda to access all Service Token for KEDA operator |
+| `permissions.operator.restrict.cloudWorkloadIdentityTokenCreationRoles` | list | `[]` | Creates namespaced Roles/RoleBindings allowing the KEDA operator to mint short-lived Kubernetes tokens for cloud workload service account federation (for example, podIdentity.provider: gcp-workload-service-account) and serializes the exact namespace/name/audience mappings into KEDA_CLOUD_WORKLOAD_IDENTITY_AUDIENCES. Strictly isolated from KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES (Vault and boundServiceAccountToken). Requires enforce-audience mode and a Google Workload Identity Pool provider or GKE identitynamespace audience. If a configured namespace does not exist, Helm chart installation will fail. |
 | `permissions.operator.restrict.namesAllowList` | list | `[]` | Array of strings denoting what secrets the KEDA operator will be able to read, this takes into account also the configured `watchNamespace`. the default is an empty array -> no restriction on the secret name |
 | `permissions.operator.restrict.secret` | bool | `false` | Restrict Secret Access for KEDA operator if true, KEDA operator will be able to read only secrets in {{ .Release.Namespace }} namespace |
 | `permissions.operator.restrict.serviceAccountTokenCreationRoles` | list | `[]` | Creates roles and rolebindings from namespaced service accounts in the array which allow the KEDA operator to request service account tokens for use with the boundServiceAccountToken trigger source. Optional audience configures minting for this namespace/name; omit it in legacy mode. Enforce-audience mode requires a mapping here or in KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES. If the namespace does not exist, this will cause the helm chart installation to fail. |
@@ -190,6 +191,53 @@ for receiver configuration and upgrade steps.
 | `upgradeStrategy.operator` | object | `{}` | Capability to configure [Deployment upgrade strategy] for operator |
 | `volumes.keda.extraVolumeMounts` | list | `[]` | Extra volume mounts for KEDA deployment |
 | `volumes.keda.extraVolumes` | list | `[]` | Extra volumes for KEDA deployment |
+
+#### Cloud workload service account federation (GCP)
+
+To allow a `TriggerAuthentication` or `ClusterTriggerAuthentication` to federate a
+specific Kubernetes service account with GCP (`podIdentity.provider: gcp-workload-service-account`
+and `podIdentity.serviceAccountName`), approve each exact namespace, service account,
+and Google audience via `permissions.operator.restrict.cloudWorkloadIdentityTokenCreationRoles`:
+
+```yaml
+operator:
+  serviceAccountTokens:
+    mode: enforce-audience
+permissions:
+  operator:
+    restrict:
+      cloudWorkloadIdentityTokenCreationRoles:
+        # External Google IAM Workload Identity Pool provider:
+        - name: scaling-gcp
+          namespace: payments
+          audience: https://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/kubernetes/providers/production-cluster
+        # Or GKE project workload identity pool:
+        - name: scaling-gke
+          namespace: payments
+          audience: identitynamespace:my-project.svc.id.goog:https://container.googleapis.com/v1/projects/my-project/locations/us-central1/clusters/prod-cluster
+```
+
+This creates a namespaced `Role` and `RoleBinding` granting the operator `create`
+on `serviceaccounts/token` for each named account and populates
+`KEDA_CLOUD_WORKLOAD_IDENTITY_AUDIENCES`. These approvals are strictly isolated
+from `KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES` (Vault and generic
+`boundServiceAccountToken`), require `enforce-audience` mode, and always resolve
+the service account in the consuming `ScaledObject` or `ScaledJob` namespace
+(including when referenced from a `ClusterTriggerAuthentication`).
+
+Supported scalers for `gcp-workload-service-account` are `gcp-pubsub`,
+`gcp-spanner`, `gcp-stackdriver`, `gcp-storage`, and `prometheus` (pinned to
+Google Cloud Managed Service for Prometheus at `https://monitoring.googleapis.com`
+with TLS verification required). Nested secret-provider `podIdentity` blocks
+(`gcpSecretManager`, `awsSecretManager`, `azureKeyVault`) and `azureServicePrincipal`
+cannot be combined with `serviceAccountName`.
+
+**Approval delegates the account's cloud identities to the namespace.** Users who
+can configure scaling resources and their authentication in that namespace can
+select an approved account even if their workload Pods do not use it. Use
+dedicated, least-privilege service accounts. Removing an approval stops future
+token minting once applied to the operator; already issued assertions and cloud
+credentials remain valid until expiry.
 
 ### Metrics server
 
