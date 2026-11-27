@@ -81,6 +81,53 @@ for receiver configuration and upgrade steps.
   {{- end }}
 {{- end }}
 
+#### Cloud workload service account federation (GCP)
+
+To allow a `TriggerAuthentication` or `ClusterTriggerAuthentication` to federate a
+specific Kubernetes service account with GCP (`podIdentity.provider: gcp-workload-service-account`
+and `podIdentity.serviceAccountName`), approve each exact namespace, service account,
+and Google audience via `permissions.operator.restrict.cloudWorkloadIdentityTokenCreationRoles`:
+
+```yaml
+operator:
+  serviceAccountTokens:
+    mode: enforce-audience
+permissions:
+  operator:
+    restrict:
+      cloudWorkloadIdentityTokenCreationRoles:
+        # External Google IAM Workload Identity Pool provider:
+        - name: scaling-gcp
+          namespace: payments
+          audience: https://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/kubernetes/providers/production-cluster
+        # Or GKE project workload identity pool:
+        - name: scaling-gke
+          namespace: payments
+          audience: identitynamespace:my-project.svc.id.goog:https://container.googleapis.com/v1/projects/my-project/locations/us-central1/clusters/prod-cluster
+```
+
+This creates a namespaced `Role` and `RoleBinding` granting the operator `create`
+on `serviceaccounts/token` for each named account and populates
+`KEDA_CLOUD_WORKLOAD_IDENTITY_AUDIENCES`. These approvals are strictly isolated
+from `KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES` (Vault and generic
+`boundServiceAccountToken`), require `enforce-audience` mode, and always resolve
+the service account in the consuming `ScaledObject` or `ScaledJob` namespace
+(including when referenced from a `ClusterTriggerAuthentication`).
+
+Supported scalers for `gcp-workload-service-account` are `gcp-pubsub`,
+`gcp-spanner`, `gcp-stackdriver`, `gcp-storage`, and `prometheus` (pinned to
+Google Cloud Managed Service for Prometheus at `https://monitoring.googleapis.com`
+with TLS verification required). Nested secret-provider `podIdentity` blocks
+(`gcpSecretManager`, `awsSecretManager`, `azureKeyVault`) and `azureServicePrincipal`
+cannot be combined with `serviceAccountName`.
+
+**Approval delegates the account's cloud identities to the namespace.** Users who
+can configure scaling resources and their authentication in that namespace can
+select an approved account even if their workload Pods do not use it. Use
+dedicated, least-privilege service accounts. Removing an approval stops future
+token minting once applied to the operator; already issued assertions and cloud
+credentials remain valid until expiry.
+
 ### Metrics server
 
 | Parameter | Type | Default | Description |

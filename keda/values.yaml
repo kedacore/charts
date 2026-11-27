@@ -97,7 +97,7 @@ networkPolicy:
 
 operator:
   serviceAccountTokens:
-    # -- Token audience policy for Vault and boundServiceAccountToken. When configured as "legacy", it disables enforcement and cannot be combined with configured audiences.
+    # -- Token audience policy for Vault, boundServiceAccountToken, and cloud workload service account federation. When configured as "legacy", it disables enforcement, cannot be combined with configured audiences, and does not support workload service account providers.
     mode: enforce-audience  # enforce-audience, legacy
     # -- Approved audiences for extra token files; creates no mounts or minting defaults. Use audiences not accepted by kube-apiserver. Combined audience config.
     additionalAllowedAudiences: []
@@ -993,6 +993,17 @@ permissions:
       # - name: metrics-reader
       #   namespace: apps
       #   audience: metrics-api
+      # -- Creates namespaced Roles/RoleBindings allowing the KEDA operator to mint short-lived Kubernetes tokens for cloud workload service account federation (for example, podIdentity.provider: gcp-workload-service-account) and serializes the exact namespace/name/audience mappings into KEDA_CLOUD_WORKLOAD_IDENTITY_AUDIENCES.
+      # Strictly isolated from KEDA_SERVICE_ACCOUNT_TOKEN_AUDIENCES (Vault and boundServiceAccountToken).
+      # Requires enforce-audience mode and a Google Workload Identity Pool provider or GKE identitynamespace audience.
+      # If a configured namespace does not exist, Helm chart installation will fail.
+      cloudWorkloadIdentityTokenCreationRoles: []
+      # - name: scaling-gcp
+      #   namespace: payments
+      #   audience: https://iam.googleapis.com/projects/123456789012/locations/global/workloadIdentityPools/kubernetes/providers/production-cluster
+      # - name: scaling-gke
+      #   namespace: payments
+      #   audience: identitynamespace:my-project.svc.id.goog:https://container.googleapis.com/v1/projects/my-project/locations/us-central1/clusters/prod-cluster
       # -- Allow Keda to access all Service Token for KEDA operator
       allowAllServiceAccountTokenCreation: false
 
